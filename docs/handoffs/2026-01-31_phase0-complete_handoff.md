@@ -46,6 +46,7 @@ dsm-graph-explorer/
 ├── .claude/CLAUDE.md          # Points to central DSM at D:\data-science\agentic-ai-data-science-methodology
 ├── .gitignore                 # Python project gitignore
 ├── README.md                  # Project overview
+├── SPRINT_PLAN.md             # Sprint 1 project plan (phases, scope, timeline)
 ├── pyproject.toml             # Dependencies configured
 ├── src/
 │   ├── parser/               # NEXT: Implement markdown parser here
@@ -79,7 +80,7 @@ Git: Initialized, initial commit ec70fd8
 - **Blog materials:** Complete preparation in `docs/blog/materials.md`
 - **Blog journal:** Template ready for daily updates
 - **Feedback system:** Three files initialized
-- **Sprint 1 Plan:** Available at central DSM repo: `D:\data-science\agentic-ai-data-science-methodology\plan\DSM_Graph_Explorer_Sprint1_Plan.md`
+- **Sprint 1 Plan:** Available in this repository at `SPRINT_PLAN.md`
 
 ---
 
@@ -328,7 +329,7 @@ Document answers in `docs/decisions/` as you make them.
 ## Reference Documents
 
 ### Sprint 1 Plan
-`D:\data-science\agentic-ai-data-science-methodology\plan\DSM_Graph_Explorer_Sprint1_Plan.md`
+`SPRINT_PLAN.md` (in this repository root)
 
 Full project plan with:
 - MUST/SHOULD/COULD scope
@@ -418,7 +419,7 @@ Create checkpoint in `docs/checkpoints/` when:
    - This handoff document
    - `README.md` (project overview)
    - `.claude/CLAUDE.md` (methodology references)
-   - `plan/DSM_Graph_Explorer_Sprint1_Plan.md` (in central DSM repo)
+   - `SPRINT_PLAN.md` (project plan with phases, scope, timeline)
 
 2. **Activate virtual environment:**
    ```bash

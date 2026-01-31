@@ -136,7 +136,7 @@ This project is built using the [Agentic AI Data Science Methodology](https://gi
 - **Section 2:** Project Structure Patterns (in-repo docs/)
 - **Section 2.5.6-2.5.8:** Blog as Standard Deliverable
 
-For more details, see the [project plan](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology/blob/main/plan/DSM_Graph_Explorer_Sprint1_Plan.md).
+For more details, see [SPRINT_PLAN.md](SPRINT_PLAN.md) in this repository.
 
 ---
 
