@@ -255,9 +255,9 @@ Following Section 6.4.5 (Project Feedback Deliverables):
 
 ### Three-File System
 
-1. **`docs/dsm-feedback-backlogs.md`** — DSM gaps and improvement opportunities
-2. **`docs/dsm-feedback-methodology.md`** — DSM section effectiveness scoring (1-5)
-3. **`docs/dsm-feedback-blog.md`** — Blog process effectiveness
+1. **`docs/feedback/backlogs.md`** — DSM gaps and improvement opportunities
+2. **`docs/feedback/methodology.md`** — DSM section effectiveness scoring (1-5)
+3. **`docs/feedback/blog.md`** — Blog process effectiveness
 
 **Updated at every sprint boundary**, not just at project end.
 
@@ -301,9 +301,10 @@ dsm-graph-explorer/
 │   ├── blog/
 │   │   ├── materials.md
 │   │   └── journal.md
-│   ├── dsm-feedback-backlogs.md
-│   ├── dsm-feedback-methodology.md
-│   └── dsm-feedback-blog.md
+│   └── feedback/
+│       ├── backlogs.md
+│       ├── methodology.md
+│       └── blog.md
 ├── outputs/
 │   └── reports/
 │       └── dsm-integrity-report.md

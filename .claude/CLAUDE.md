@@ -28,7 +28,7 @@ This project uses the **DSM 4.0 Pattern** (in-repo `docs/` folder):
 - Decisions: `docs/decisions/`
 - Checkpoints: `docs/checkpoints/`
 - Blog materials: `docs/blog/`
-- Feedback files: `docs/dsm-feedback-*.md`
+- Feedback: `docs/feedback/`
 
 Reference: DSM 4.0 Section 2 (Project Structure Patterns)
 

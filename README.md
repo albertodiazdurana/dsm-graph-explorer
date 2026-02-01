@@ -52,7 +52,7 @@ dsm-graph-explorer/
 │   ├── decisions/        # Decision logs (DEC-001, ...)
 │   ├── checkpoints/      # Sprint checkpoints
 │   ├── blog/             # Blog materials and journal
-│   └── dsm-feedback-*.md # Three-file DSM feedback system
+│   └── feedback/          # Three-file DSM feedback system
 ├── outputs/reports/       # Generated integrity reports
 ├── pyproject.toml         # Project configuration
 └── README.md

@@ -58,6 +58,12 @@ _Add observations as they arise during implementation_
 - **Priority:** High
 - **Potential backlog:** BACKLOG-XXX: Add research/grounding phase to DSM 4.0 Development Protocol
 
+- **Gap:** DSM 4.0 Section 2 (Project Structure Patterns) specifies feedback files as loose files in the `docs/` directory (e.g., `docs/dsm-feedback-backlogs.md`), inconsistent with the subfolder pattern used for all other document types (`docs/handoffs/`, `docs/decisions/`, `docs/checkpoints/`, `docs/blog/`). The project structure template should use `docs/feedback/` as a subfolder.
+- **Impact:** Feedback files were initially created at `docs/dsm-feedback-*.md` following the Phase 0 handoff instructions, then had to be manually moved to `docs/feedback/` mid-project. References in CLAUDE.md, README.md, and SPRINT_PLAN.md all needed updating. This is avoidable friction.
+- **Proposed solution:** Update the DSM 4.0 Section 2 project structure template to use `docs/feedback/` as a subfolder (containing `backlogs.md`, `methodology.md`, `blog.md`) instead of loose `docs/dsm-feedback-*.md` files. This is consistent with the existing subfolder convention for other document types.
+- **Priority:** Medium
+- **Potential backlog:** BACKLOG-XXX: Standardize feedback file location in DSM 4.0 project structure template
+
 ---
 
 ### Phase 2: Core Modules
@@ -95,4 +101,4 @@ At project completion, list all potential backlog items discovered:
 ---
 
 **Last Updated:** 2026-02-01
-**Total Observations:** 3
+**Total Observations:** 4
