@@ -95,16 +95,18 @@ Each sprint is a self-contained deliverable. Every sprint boundary produces:
 
 **Key finding:** The approach follows the well-established parsing → symbol resolution → dependency analysis → validation pipeline from code static analysis, applied to documentation. The gap (prose reference validation) is real and unserved by existing markdown tools.
 
-### Sprint 1: Parser MVP [IN PROGRESS]
+### Sprint 1: Parser MVP [COMPLETE]
+
+**Date completed:** 2026-02-01
 
 **Objective:** Build a markdown parser to extract sections and cross-references from DSM documentation.
 
 **Deliverables:**
-- [ ] `src/parser/markdown_parser.py` — Read markdown files, extract sections with hierarchical numbering
-- [ ] `src/parser/cross_ref_extractor.py` — Extract cross-reference patterns (Section, Appendix, DSM)
-- [ ] `tests/fixtures/sample_dsm.md` — Test fixture with DSM patterns and edge cases
-- [ ] `tests/test_parser.py` — Unit tests for both parser modules (TDD)
-- [ ] `docs/decisions/DEC-001_parser_library_choice.md` — Decision document
+- [x] `src/parser/markdown_parser.py` — Read markdown files, extract sections with hierarchical numbering
+- [x] `src/parser/cross_ref_extractor.py` — Extract cross-reference patterns (Section, Appendix, DSM)
+- [x] `tests/fixtures/sample_dsm.md` — Test fixture with DSM patterns and edge cases
+- [x] `tests/test_parser.py` — Unit tests for both parser modules (TDD)
+- [x] `docs/decisions/DEC-001_parser_library_choice.md` — Decision document
 
 **Decisions made:**
 - Parser library: **Pure regex** (simple, no dependencies, handles structured patterns well)
@@ -112,9 +114,9 @@ Each sprint is a self-contained deliverable. Every sprint boundary produces:
 - Code blocks: **Skipped** using fenced code block state tracking (toggle on ``` lines)
 
 **Sprint boundary deliverables:**
-- [ ] DSM feedback update
-- [ ] Blog journal entry
-- [ ] Checkpoint document
+- [x] DSM feedback update
+- [x] Blog journal entry
+- [x] Checkpoint document
 
 ### Sprint 2: Validation Engine
 
@@ -331,5 +333,5 @@ dsm-graph-explorer/
 
 ---
 
-**Plan Status:** Sprint 1 in progress
+**Plan Status:** Sprint 1 Complete
 **Last Updated:** 2026-02-01
