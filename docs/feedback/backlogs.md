@@ -64,6 +64,12 @@ _Add observations as they arise during implementation_
 - **Priority:** Medium
 - **Potential backlog:** BACKLOG-XXX: Standardize feedback file location in DSM 4.0 project structure template
 
+- **Gap:** DSM Appendix E.12 (Validation Tracker) and Section 6.4.5 (Three-File Feedback System, specifically `methodology.md`) overlap significantly. Both score DSM sections on effectiveness and capture recommendations. The Validation Tracker uses 4-criterion scoring (clarity, applicability, completeness, efficiency) with individual dated entries, while `methodology.md` uses a single overall score per section with "what worked well" / "what needs improvement" columns. The naming ("validation" vs "feedback") doesn't clarify the distinction. The sql-query-agent project independently flagged this same confusion (Entry 3 in its validation tracker, scored 3.0 for clarity).
+- **Impact:** Projects either maintain redundant documents (doubling overhead) or must decide which to use without clear guidance. Two concurrent dog-fooding projects arrived at the same pain point independently — strong signal this needs resolution.
+- **Proposed solution:** Consolidate into the three-file feedback system. Either (a) enrich `methodology.md` with the 4-criterion scoring from E.12 if the extra granularity is desired, or (b) keep the simpler single-score format and deprecate the standalone Validation Tracker. The three-file system (backlogs, methodology, blog) already covers gaps, section effectiveness, and blog process — adding a 4th file duplicates rather than extends.
+- **Priority:** Medium
+- **Potential backlog:** BACKLOG-XXX: Consolidate Validation Tracker (E.12) with Three-File Feedback System (6.4.5)
+
 ---
 
 ### Phase 2: Core Modules
@@ -101,4 +107,4 @@ At project completion, list all potential backlog items discovered:
 ---
 
 **Last Updated:** 2026-02-01
-**Total Observations:** 4
+**Total Observations:** 5
