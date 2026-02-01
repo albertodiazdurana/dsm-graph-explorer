@@ -32,6 +32,10 @@ This project uses the **DSM 4.0 Pattern** (in-repo `docs/` folder):
 
 Reference: DSM 4.0 Section 2 (Project Structure Patterns)
 
+## Collaboration Protocol
+
+**Pre-generation brief (MANDATORY):** Before creating or modifying any file, provide a brief explanation of: (1) what the file is, (2) why it's needed, (3) what it will contain at a high level. Wait for user acknowledgment before proceeding. The user needs context to approve — never generate artifacts without explanation first.
+
 ## Development Approach
 
 - **TDD (Test-Driven Development)**: Write tests before implementation
@@ -65,7 +69,7 @@ Following Section 2.5.6 (Blog/Communication Deliverable Process):
 
 ## Project Plan
 
-Sprint 1 project plan: `D:\data-science\agentic-ai-data-science-methodology\plan\DSM_Graph_Explorer_Sprint1_Plan.md`
+Sprint plan: `docs/plan/SPRINT_PLAN.md`
 
 ## Author
 
