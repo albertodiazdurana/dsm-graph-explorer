@@ -3,13 +3,15 @@
 **Version:** 0.1.0 (Alpha)
 **Status:** In Development — Sprint 3 In Progress
 
-Repository integrity validator and graph database explorer for the DSM (Agentic AI Data Science Methodology) framework.
+Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
 ---
 
 ## Overview
 
-DSM Graph Explorer is a tool designed to maintain integrity across large documentation repositories with complex cross-reference patterns. Built using the DSM 4.0 Software Engineering Adaptation, this project demonstrates dog-fooding a data science methodology to build software tooling.
+The [DSM framework](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) is a structured methodology for human-AI collaboration in data science and software engineering projects. As the framework grows, its documentation accumulates hundreds of cross-references between sections, appendices, and versioned documents. Keeping these references consistent manually becomes error-prone.
+
+DSM Graph Explorer automates this integrity checking: it parses DSM markdown files, extracts cross-references, validates them against actual section headings, and reports broken links and version mismatches. The project itself is built using DSM 4.0 (Software Engineering Adaptation), making it a dog-fooding exercise — using the methodology to build tooling that validates the methodology.
 
 ### Features
 
@@ -148,12 +150,15 @@ ruff check src/ tests/
 
 ## Methodology
 
-This project is built using the [Agentic AI Data Science Methodology](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology), specifically:
+This project is built using the [Agentic AI Data Science Methodology (DSM)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology). The DSM provides structured guidance for human-AI collaborative projects, covering everything from sprint cadence to feedback tracking. This project follows:
 
-- **DSM 4.0:** Software Engineering Adaptation
-- **Section 3:** Development Protocol (TDD approach)
-- **Section 2:** Project Structure Patterns (in-repo docs/)
-- **Section 2.5.6-2.5.8:** Blog as Standard Deliverable
+- **DSM 4.0:** Software Engineering Adaptation — the track for building software with AI collaboration
+- **Section 3:** Development Protocol — TDD approach with pre-generation briefs
+- **Section 2:** Project Structure Patterns — in-repo `docs/` with checkpoints, decisions, and feedback
+- **Section 2.5.6-2.5.8:** Blog as Standard Deliverable — capturing the development journey
+- **Section 6.4-6.5:** Checkpoint, Feedback, and Gateway Reviews — systematic quality gates
+
+The three-file feedback system (`docs/feedback/`) tracks methodology effectiveness as the project progresses, generating actionable improvements back into the DSM itself.
 
 For more details, see [SPRINT_PLAN.md](docs/plan/SPRINT_PLAN.md) in this repository.
 
