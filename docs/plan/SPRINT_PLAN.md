@@ -28,6 +28,7 @@ Build a repository integrity validator and graph database explorer for the DSM m
 - CI/CD workflow (GitHub Actions)
 - Backlog status validation (done/ items have Status: Implemented)
 - DSM_0 alignment checker (sections match descriptions)
+- Semantic cross-reference validation: TF-IDF keyword similarity between reference context and target section title (lightweight, scikit-learn). Detects meaning drift when sections are rewritten but keep their numbers.
 
 **COULD (Future project):**
 - Neo4j graph database with DSM structure (prototype with NetworkX first)
@@ -35,6 +36,7 @@ Build a repository integrity validator and graph database explorer for the DSM m
 - Web visualization (Neo4j Browser)
 - Relationship mapping (REFERENCES, CONTAINS, PARENT_OF)
 - spaCy NER for advanced reference extraction
+- Sentence transformer embeddings for deep semantic cross-reference alignment (upgrade from TF-IDF). Reference: [tfidf-to-transformers-with-disaster-tweets](https://github.com/albertodiazdurana/tfidf-to-transformers-with-disaster-tweets) — prior work demonstrating TF-IDF → embeddings → transformers progression for context-sensitive text classification
 
 ### Success Criteria
 

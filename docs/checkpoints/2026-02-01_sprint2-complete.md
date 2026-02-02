@@ -73,6 +73,12 @@ Multiple files → extract_cross_references() each → dict[str, list[CrossRefer
 2. **Exit codes:** Should broken refs cause non-zero exit for CI integration?
 3. **Output location:** Default report path? Auto-create `outputs/reports/`?
 
+### Future Enhancement: Semantic Cross-Reference Validation
+Sprint 2's structural validator checks that referenced sections *exist*. A deeper check would verify that the reference *context* aligns with the target section's *content* — detecting meaning drift when sections are rewritten but keep their numbers. Three-tier approach:
+1. **TF-IDF keyword similarity** (SHOULD scope) — compare reference context with section title using scikit-learn. Lightweight, no new heavy dependencies.
+2. **Sentence transformer embeddings** (COULD scope) — use BERT-based embeddings for deeper semantic alignment.
+3. Prior work: [tfidf-to-transformers-with-disaster-tweets](https://github.com/albertodiazdurana/tfidf-to-transformers-with-disaster-tweets) demonstrates this TF-IDF → embeddings → transformers progression for context-sensitive classification.
+
 ### How to Resume
 1. Read this checkpoint
 2. Read `docs/plan/SPRINT_PLAN.md` (Sprint 3 section)
