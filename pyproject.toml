@@ -31,7 +31,7 @@ dev = [
 ]
 
 [project.scripts]
-dsm-validate = "dsm_graph_explorer.cli:main"
+dsm-validate = "cli:main"
 
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]

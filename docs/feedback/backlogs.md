@@ -72,19 +72,15 @@ _Add observations as they arise during implementation_
 
 ---
 
-### Phase 2: Core Modules
+### Sprint 3: CLI & Real-World Run
 
-**Date:** _TBD_
+**Date:** 2026-02-02
 
-_Observations from Phase 2_
-
----
-
-### Phase 3: Integration & Evaluation
-
-**Date:** _TBD_
-
-_Observations from Phase 3_
+- **Gap:** The pre-generation brief protocol (added to DSM as feedback from Sprint 1, now in Custom Instructions template v1.1) lacks guidance on **what constitutes approval**. The protocol says "explain before generating" but does not specify that the agent must receive an **explicit acknowledgment** before proceeding. In Sprint 3, the agent provided a pre-generation brief for the CLI module, the user said "ready" (signaling readiness to start the sprint, not approval of specific files), and the agent generated both test and implementation files without waiting for per-file approval. The user had to intervene: "Why did you do this? This should be documented as a user-agent collaboration error."
+- **Impact:** The agent created 2 files (`tests/test_cli.py`, `src/cli.py`) without the user reviewing or approving the design. This breaks the collaborative flow and undermines the human's role as approver. It is the same class of error that prompted the pre-generation brief protocol in Sprint 1 — meaning the protocol's wording is insufficient to prevent recurrence.
+- **Proposed solution:** Strengthen the pre-generation brief protocol to explicitly require: "(1) Agent explains what it will create, (2) **Agent waits for explicit user approval** (e.g., 'go ahead', 'approved', 'yes'), (3) Agent generates the artifact." The word "approval" or "acknowledgment" must appear in the protocol. A simple "ready" from the user in a different context (e.g., starting a sprint) should not be interpreted as blanket file-creation approval.
+- **Priority:** High
+- **Potential backlog:** BACKLOG-XXX: Strengthen pre-generation brief to require explicit approval before file creation
 
 ---
 
@@ -106,5 +102,5 @@ At project completion, list all potential backlog items discovered:
 
 ---
 
-**Last Updated:** 2026-02-01
-**Total Observations:** 5
+**Last Updated:** 2026-02-02
+**Total Observations:** 6
