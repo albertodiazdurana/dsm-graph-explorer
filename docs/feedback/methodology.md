@@ -67,20 +67,27 @@ This helps assess whether DSM 4.0 is effective for dog-fooding (building DSM too
 
 ---
 
-## Phase 2: Core Modules
+## Sprint 2: Validation Engine
 
-**Date:** _TBD_
+**Date:** 2026-02-01
 
 | DSM Section Referenced | Score (1-5) | What Worked Well | What Needs Improvement |
 |------------------------|-------------|------------------|------------------------|
-| _Section X.Y_ | _1-5_ | _Comments_ | _Comments_ |
+| DSM 4.0 Section 3 (Development Protocol) | 5 | TDD with pre-generation brief (now inherited from Custom Instructions) worked smoothly | _None — Sprint 1 feedback incorporated_ |
+| DSM 4.0 Section 2 (Project Structure Patterns) | 5 | Modular structure (validator/, reporter/) followed naturally | _None_ |
+| Section 6.5 (Gateway Reviews) | 5 | Caught missing `@` reference; systematic quality gates work | First use — format effective |
+| Section 6.4 (Checkpoint and Feedback Protocol) | 5 | Checkpoint captured full state; feedback tracked observations | _None_ |
+| Custom Instructions Template (v1.1) | 4 | `@` reference inheritance reduces duplication | "Generate no files directly" needed Claude Code override |
 
 **Observations:**
-_Add observations during Phase 2_
+- Sprint 2 smoother than Sprint 1 — pre-generation brief and sprint cadence now embedded
+- Gateway 2 review (Section 6.5) proved immediate value catching template gap
+- TDD cycle well-supported by DSM 4.0 Section 3
+- Custom Instructions `@` inheritance reduces cross-project duplication
 
 ---
 
-## Phase 3: Integration & Evaluation
+## Sprint 3: CLI & Real-World Run
 
 **Date:** _TBD_
 
@@ -128,5 +135,5 @@ _Synthesis of all improvement suggestions_
 ---
 
 **Last Updated:** 2026-02-01
-**Sections Referenced So Far:** 7
-**Average Score So Far:** 4.7
+**Sections Referenced So Far:** 12
+**Average Score So Far:** 4.8

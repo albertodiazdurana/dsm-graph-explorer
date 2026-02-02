@@ -107,22 +107,40 @@ This project is a direct example of DSM dog-fooding: we're applying DSM 4.0 Soft
 
 ## Sprint 2: Validation Engine
 
-**Date:** _TBD_
+**Date:** 2026-02-01
 
 ### Work Completed
-_To be filled during Sprint 2_
+- Designed cross-file validation API: `build_section_index()` aggregates sections from multiple `ParsedDocument` objects into a lookup index
+- Implemented `src/validator/cross_ref_validator.py` with severity levels (ERROR/WARNING)
+- Implemented `src/validator/version_validator.py` with pattern-based version extraction and consistency checking
+- Implemented `src/reporter/report_generator.py` with both markdown and Rich console output
+- Wrote 74 new tests (51 validator + 23 reporter) including 4 end-to-end integration tests
+- Completed Gateway 2 alignment review — added `@` reference to Custom Instructions template
 
 ### Design Decisions
-_Validation logic, error handling, report format choices_
+- **Severity levels over binary:** ERROR for broken section/appendix refs, WARNING for unknown DSM doc identifiers. Enables triage.
+- **Section index as bridge:** `build_section_index()` creates `dict[str, list[str]]` mapping section numbers to file paths — mirrors compiler symbol tables.
+- **Both markdown + Rich:** Markdown for archivable reports, Rich for interactive CLI. Different outputs for different contexts.
+- **Known identifier list:** `KNOWN_DSM_IDS` avoids coupling to file system — validates portably.
+- **Primary version comparison:** First version per file avoids CHANGELOG multi-version ambiguity.
 
 ### Observations
-_Validation strictness, error clarity, dog-fooding insights_
+- The section index as an intermediate data structure cleanly separates parsing from validation
+- Sprint 1 fixture already contained known broken references — served as validation ground truth
+- Version extraction needed deduplication for overlapping regex patterns
+- Gateway 2 alignment review (DSM Section 6.5) caught a real issue (missing Custom Instructions `@` reference)
 
 ### Metrics Captured
-_Validation performance, error rates_
+- **Tests:** 126 total (52 Sprint 1 + 74 Sprint 2)
+- **Coverage:** 99% overall (100% on all Sprint 2 modules)
+- **New source modules:** 3 files, ~185 lines of implementation
+- **Fixture broken refs detected:** 6+ errors (2.4.8 x2, 3.5, 4.4, 14, C.1.3)
 
 ### Aha Moments
-_Discoveries from testing against actual DSM repository_
+- **Section index mirrors symbol tables.** The cross-file validation API parallels compiler design: parser builds a symbol table (section index), validator resolves references against it. The code static analysis analogy from the research phase continues to hold.
+- **Known ID list avoids coupling.** Validating DSM references against a list rather than the filesystem keeps the tool portable and fast.
+- **Fixtures serve multiple sprints.** sample_dsm.md, created for parser testing, became the validation ground truth. Good fixtures compound in value.
+- **Gateway reviews catch real drift.** The DSM alignment review found the missing `@` reference — quality gates work when they're systematic.
 
 ---
 
@@ -204,4 +222,4 @@ Before ending each work session:
 ---
 
 **Last Updated:** 2026-02-01
-**Current Sprint:** Sprint 1 - Parser MVP (complete)
+**Current Sprint:** Sprint 2 - Validation Engine (complete)

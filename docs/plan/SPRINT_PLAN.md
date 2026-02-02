@@ -118,26 +118,29 @@ Each sprint is a self-contained deliverable. Every sprint boundary produces:
 - [x] Blog journal entry
 - [x] Checkpoint document
 
-### Sprint 2: Validation Engine
+### Sprint 2: Validation Engine [COMPLETE]
+
+**Date completed:** 2026-02-01
 
 **Objective:** Implement validation logic and integrity report generation.
 
 **Deliverables:**
-- [ ] `src/validator/cross_ref_validator.py` — Validate references exist as actual sections
-- [ ] `src/validator/version_validator.py` — Check version consistency across DSM_0, README, CHANGELOG
-- [ ] `src/reporter/report_generator.py` — Generate markdown integrity reports
-- [ ] `tests/test_validator.py` — Unit tests for validators
-- [ ] `tests/test_reporter.py` — Unit tests for reporter
+- [x] `src/validator/cross_ref_validator.py` — Validate references exist as actual sections
+- [x] `src/validator/version_validator.py` — Check version consistency across DSM_0, README, CHANGELOG
+- [x] `src/reporter/report_generator.py` — Generate markdown integrity reports + Rich console output
+- [x] `tests/test_validator.py` — 51 unit tests for validators
+- [x] `tests/test_reporter.py` — 23 tests for reporter (including 4 integration tests)
 
-**Key decisions to make:**
-- Validation strictness (warning vs error levels)
-- Report format (console vs markdown vs both)
-- Error message clarity and actionability
+**Decisions made:**
+- Validation strictness: **Severity levels** (ERROR for broken refs, WARNING for unknown DSM docs)
+- Report format: **Both** markdown files and Rich console output
+- DSM references: **Known identifier list** (`KNOWN_DSM_IDS`)
+- Cross-file API: **`build_section_index()`** aggregates across multiple `ParsedDocument` objects
 
 **Sprint boundary deliverables:**
-- [ ] DSM feedback update
-- [ ] Blog journal entry
-- [ ] Checkpoint document
+- [x] DSM feedback update
+- [x] Blog journal entry
+- [x] Checkpoint document
 
 ### Sprint 3: CLI & Real-World Run
 
@@ -330,8 +333,11 @@ dsm-graph-explorer/
 | Skip code blocks? | Yes | Toggle state on fenced ``` lines to avoid false positives. |
 | Testing approach? | Unit tests + integration tests | Unit tests per sprint, integration tests in Sprint 3. |
 | Report format? | Markdown (primary) | Console output via Rich for CLI; markdown for saved reports. |
+| Validation strictness? | Severity levels | ERROR for broken refs, WARNING for unknown DSM docs. |
+| DSM document refs? | Known identifier list | `KNOWN_DSM_IDS` list; unknown IDs produce warnings. |
+| Cross-file API? | Section index aggregation | `build_section_index()` merges multiple ParsedDocument objects. |
 
 ---
 
-**Plan Status:** Sprint 1 Complete
+**Plan Status:** Sprint 2 Complete
 **Last Updated:** 2026-02-01
