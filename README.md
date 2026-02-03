@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.1.0 (Alpha)
-**Status:** In Development — Sprint 3 In Progress
+**Status:** In Development — Sprint 3 Complete
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -160,7 +160,7 @@ This project is built using the [Agentic AI Data Science Methodology (DSM)](http
 
 The three-file feedback system (`docs/feedback/`) tracks methodology effectiveness as the project progresses, generating actionable improvements back into the DSM itself.
 
-For more details, see [SPRINT_PLAN.md](docs/plan/SPRINT_PLAN.md) in this repository.
+For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) and [epoch-2-plan.md](docs/plan/epoch-2-plan.md) (upcoming) in this repository.
 
 ---
 
@@ -171,12 +171,10 @@ For more details, see [SPRINT_PLAN.md](docs/plan/SPRINT_PLAN.md) in this reposit
 - [x] **Phase 0.5:** Research & Grounding — validated approach against published best practices ([research](docs/research/handoff_graph_explorer_research.md))
 - [x] **Sprint 1:** Parser MVP — markdown parser, cross-reference extractor, 52 tests at 98% coverage ([DEC-001](docs/decisions/DEC-001_parser_library_choice.md))
 - [x] **Sprint 2:** Validation Engine — cross-ref validator, version checker, report generator, 126 tests at 99% coverage
-
-### In Progress
-- [ ] **Sprint 3:** CLI & Real-World Run — CLI interface (implemented), real-world run pending, first DSM integrity report
+- [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 145 tests at 98% coverage, first DSM integrity report (448 broken references found)
 
 ### Up Next
-- [ ] **Sprint 4:** Documentation & Publication — CI/CD, blog draft
+- [ ] **Sprint 4:** Documentation & Publication — CI/CD, blog draft, error remediation ([DEC-003](docs/decisions/DEC-003_error_remediation_strategy.md))
 
 ---
 
@@ -205,6 +203,6 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-02
-**Current Sprint:** Sprint 3 In Progress — CLI & Real-World Run
+**Last Updated:** 2026-02-04
+**Current Sprint:** Sprint 3 Complete — 448 broken references identified in DSM repository
 **Tests:** 145 passed, 98% coverage

@@ -64,7 +64,7 @@
 
 | DSM Section | Sprint | Times Used | Avg Score | Top Issue |
 |-------------|--------|------------|-----------|-----------|
-| DSM 4.0 Section 2 (Project Structure) | Phase 0, S1 | 3 | 4.3 | Feedback file location inconsistent |
+| DSM 4.0 Section 2 (Project Structure) | Phase 0, S1, S3 | 4 | 3.3 | docs/ folder structure unclear for agents |
 | DSM 4.0 Section 3 (Development Protocol) | S1, S2, S3 | 4 | 3.5 | Missing pre-generation brief, explicit approval |
 | Section 2.5.6 (Blog Process) | Phase 0, S1 | 2 | 5.0 | None |
 | Section 6.4 (Checkpoint Protocol) | S1, S2, S3 | 3 | 4.5 | Missing sprint boundary checklist |
@@ -137,6 +137,20 @@
 - **Reasoning:** Design decisions need validation against real data. Initial assumptions were incomplete.
 - **Recommendation:** Real-world testing essential before declaring MVP complete.
 
+### Entry 10: docs/ Folder Structure Confusion — Agent Required Multiple Corrections
+- **Date:** 2026-02-03 | **Sprint:** S3 | **Type:** Gap (Significant)
+- **Context:** Sprint 3 closure required organizing documentation files. Agent needed to understand where feedback files go, where blog files go, what each docs/ subfolder contains, and the expected format of each file type.
+- **Finding:** The agent demonstrated significant confusion about the docs/ folder structure despite DSM 4.0 Section 2 documentation. Specific errors requiring user correction:
+  1. Attempted to create DSM backlog items directly in DSM repository instead of in project's `docs/feedback/backlogs.md`
+  2. Confused about whether `blog.md` belongs in `docs/feedback/` or `docs/blog/`
+  3. Did not understand the purpose distinction between `docs/backlog/` (alignment reports) vs `docs/feedback/` (DSM feedback)
+  4. Required user to provide sql-agent `docs-folder-reference-sql-agent.md` as explicit reference
+  5. Required user to point to sql-agent `docs/feedback/backlogs.md` and `docs/feedback/methodology.md` as format examples
+  6. Multiple iterations needed to get file formats correct (rejected first attempts that didn't follow TRANSFER-1 entry format)
+- **Scores:** Clarity 1, Applicability 3, Completeness 1, Efficiency 1 (Avg: 1.5)
+- **Reasoning:** DSM 4.0 Section 2 lists folder names but does not adequately explain: (a) the **purpose** of each subfolder, (b) what **files** belong in each, (c) the **format** expected for each file type, (d) the **relationship** between folders (e.g., feedback/ is for DSM methodology feedback, backlog/ is for cross-project alignment). The agent needed an external reference project (sql-agent) to understand the structure — this should be self-contained in DSM.
+- **Recommendation:** Create a standardized "docs/ Folder Structure Reference" document in DSM 4.0. For each subfolder, specify: (1) Purpose, (2) Files it contains, (3) Format/template for each file, (4) When files are created/updated. Include a complete reference implementation or link to one. See `backlogs.md`.
+
 ---
 
 ## 5. Methodology Observations for DSM
@@ -147,6 +161,7 @@
 4. **Cross-project learning compounds** — Patterns from sql-agent (TRANSFER-1 to TRANSFER-4) applied directly here.
 5. **Real data validates design decisions** — KNOWN_DSM_IDS seemed complete until real-world run revealed gaps.
 6. **Dog-fooding surfaces gaps faster** — Two concurrent projects found the same Validation Tracker/Feedback overlap issue.
+7. **docs/ folder structure needs explicit documentation** — AI agents cannot infer folder purposes from names alone. The agent required 6 corrections and external references (sql-agent) to understand where files belong. Folder names are not self-documenting; purpose, contents, format, and relationships must be explicit.
 
 ---
 
@@ -164,5 +179,5 @@
 ---
 
 **Last Updated:** 2026-02-03
-**Entries So Far:** 9
-**Average Score:** 4.1
+**Entries So Far:** 10
+**Average Score:** 3.85

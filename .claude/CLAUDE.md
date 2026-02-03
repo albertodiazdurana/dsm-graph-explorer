@@ -1,80 +1,93 @@
 @D:/data-science/agentic-ai-data-science-methodology/DSM_Custom_Instructions_v1.1.md
 
 # Project: DSM Graph Explorer
-Domain: Software Engineering / Repository Integrity Validation
 
-## Project-Specific Instructions
+**Type:** Software Engineering (DSM 4.0 Track)
+**Author:** Alberto Diaz Durana
+**Domain:** Repository Integrity Validation / Graph Database Exploration
 
-### Project Type
+---
 
-**Software Engineering** (DSM 4.0 Track)
+## Project Context
 
-This is a Python application for repository integrity validation and graph database exploration. Follow DSM 4.0 Section 3 (Development Protocol) and Section 4 (Tests vs Capability Experiments).
+- **Purpose**: Python application for repository integrity validation and graph database exploration
+- **DSM Track**: DSM 4.0 (Software Engineering Adaptation)
+- **Key DSM Sections**: Section 3 (Development Protocol), Section 4 (Tests vs Capability Experiments)
 
-### Agent File Creation
+## Technical Stack
 
-This project uses **Claude Code**, which can create and edit files directly. The agent may write files after receiving user approval via the pre-generation brief protocol (inherited from Custom Instructions template). The template's "Generate no files directly" guidance is overridden for this tooling environment.
+- **Language**: Python 3.12+
+- **Testing**: pytest (80%+ coverage target)
+- **Dependencies**: See `pyproject.toml`
 
-### Central DSM Location
+## Project Structure
 
-The full DSM documentation is maintained in the central repository:
-`D:\data-science\agentic-ai-data-science-methodology\`
+```
+dsm-graph-explorer/
+├── .claude/              # AI agent configuration
+├── src/                  # Application source code
+├── tests/                # Test suite
+├── docs/
+│   ├── plan/
+│   │   ├── epoch-1-plan.md  # Epoch 1 roadmap (complete)
+│   │   └── epoch-2-plan.md  # Epoch 2 roadmap (next)
+│   ├── decisions/           # Architecture Decision Records
+│   ├── checkpoints/         # Milestone checkpoints
+│   ├── handoffs/            # Session continuity notes
+│   ├── backlog/             # DSM-to-project alignment reports
+│   ├── feedback/            # Project-to-DSM feedback
+│   └── blog/                # Blog materials and drafts
+└── pyproject.toml
+```
 
-### Key DSM Documents
+## Environment
 
-- **DSM 4.0**: `DSM_4.0_Software_Engineering_Adaptation_v1.0.md` (primary guidance for this project)
+- **Platform**: Windows
+- **Project path**: `D:\data-science\dsm-graph-explorer\`
+- **DSM repository**: `D:\data-science\agentic-ai-data-science-methodology\`
+
+## Key References
+
+- **DSM 4.0**: `DSM_4.0_Software_Engineering_Adaptation_v1.0.md` (primary)
 - **DSM 1.0**: `DSM_1.0_Data_Science_Collaboration_Methodology_v1.1.md`
-- **DSM Appendices**: `DSM_1.0_Methodology_Appendices.md`
 - **PM Guidelines**: `DSM_2.0_ProjectManagement_Guidelines_v2_v1.1.md`
 - **Getting Started**: `DSM_0_START_HERE_Complete_Guide.md`
 
-### Project Structure Pattern
+---
 
-This project uses the **DSM 4.0 Pattern** (in-repo `docs/` folder):
-- Handoffs: `docs/handoffs/`
-- Decisions: `docs/decisions/`
-- Checkpoints: `docs/checkpoints/`
-- Blog materials: `docs/blog/`
-- Feedback: `docs/feedback/`
+## Working Style
 
-Reference: DSM 4.0 Section 2 (Project Structure Patterns)
+I always want to understand what we are doing. Before generating any file I want to read a brief explanation of what it is and why we need it. This should be the way in which we work: I need to have context to approve.
 
-### Development Approach
+## Development Protocol
+
+This project uses Claude Code to write files directly. User reviews in IDE.
+
+**Collaboration workflow:** (1) Agent explains what and why, (2) Human reviews and approves, (3) Agent executes.
+
+- Explain **what** and **why** before creating or modifying each file — describe the purpose, the specific changes, and how they fit the current task. Wait for approval before executing.
+- For approval prompts, use `AskUserQuestion` tool with Yes/No options instead of plain text "Should I proceed?" questions.
+- Write files directly using Claude Code tools
+- Build modules incrementally — one module at a time, tests alongside
+- Run `pytest tests/` after each module to verify before proceeding
+- Keep changes focused: one logical unit per step
+
+## Development Approach
 
 - **TDD (Test-Driven Development)**: Write tests before implementation
 - **Incremental development**: Build one function at a time, test, then next
 - **Blog as deliverable**: Document journey throughout (Section 2.5.6-2.5.8)
 - **Three-file feedback system**: Track DSM methodology effectiveness
 
-### Quick Reference
+## DSM Alignment
 
-#### Testing
-- Framework: pytest
-- Coverage target: 80%+ for MVP
-- Location: `tests/`
+- Check `docs/backlog/` at session start for any DSM alignment reports
+- Update `docs/feedback/` files (backlogs.md, methodology.md, blog.md) at sprint boundaries
+- Follow the sprint boundary checklist: checkpoint, feedback files, decision log, blog entry
 
-#### Dependencies
-- Python: 3.12+
-- See `pyproject.toml` for full dependency list
-
-#### Key Sections
-- Section 3: Development Protocol (DSM 4.0)
-- Section 4.4: Tests vs Capability Experiments (DSM 4.0)
-- Section 2.5.6-2.5.8: Blog/Communication Process
-- Section 6.4: Checkpoint and Feedback Protocol
-
-### Blog Integration
+## Blog Integration
 
 Following Section 2.5.6 (Blog/Communication Deliverable Process):
-- **Materials**: `docs/blog/materials.md` (prepared)
+- **Materials**: `docs/blog/materials.md`
 - **Journal**: `docs/blog/journal.md` (daily observations)
-- **Steps**: Preparation -> Scoping -> Capture -> Drafting -> Review -> Publication
-
-### Project Plan
-
-Sprint plan: `docs/plan/SPRINT_PLAN.md`
-
-### Author
-
-**Alberto Diaz Durana**
-[GitHub](https://github.com/albertodiazdurana) | [LinkedIn](https://www.linkedin.com/in/albertodiazdurana/)
+- **Steps**: Preparation → Scoping → Capture → Drafting → Review → Publication

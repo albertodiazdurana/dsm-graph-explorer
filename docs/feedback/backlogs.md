@@ -33,6 +33,25 @@
 - **Proposed Solution:** Add a mandatory step between Phase 0 (Setup) and Phase 1 (Development): "**Phase 0.5: Research & Grounding** — Before implementation, conduct a brief state-of-the-art review: (1) identify related tools and approaches, (2) assess gaps your project fills, (3) validate your technical approach against published best practices, (4) document findings in `docs/research/`."
 - **Evidence:** A research review (coreference resolution literature, existing markdown link checkers, code static analysis patterns) confirmed our regex approach fills a real gap and follows the well-established parsing → resolution → validation pipeline. Without it, we would have proceeded on assumption rather than evidence.
 
+### Create comprehensive docs/ folder structure reference document
+- **DSM Section:** DSM 4.0 Section 2 (Project Structure Patterns)
+- **Problem:** DSM 4.0 Section 2 lists folder names (`docs/handoffs/`, `docs/decisions/`, etc.) but does not adequately explain the **purpose** of each subfolder, what **files** belong in each, the **format** expected for each file type, or the **relationship** between folders. AI agents (and humans new to DSM) cannot understand the structure without external references.
+- **Proposed Solution:** Create a "docs/ Folder Structure Reference" section in DSM 4.0 Section 2. For each subfolder, document:
+  1. **Purpose** — What this folder is for (e.g., "feedback/ contains observations about DSM methodology effectiveness")
+  2. **Files** — List of expected files with descriptions (e.g., "backlogs.md — proposed improvements to DSM")
+  3. **Format** — Template or format specification for each file type
+  4. **Timing** — When files are created/updated (e.g., "at sprint boundaries")
+  5. **Relationship** — How this folder relates to others (e.g., "feedback/ is for DSM methodology feedback; backlog/ is for cross-project alignment reports")
+  Include a link to a reference implementation project (e.g., sql-query-agent) as a concrete example.
+- **Evidence:** During Sprint 3 closure, the AI agent required **6 explicit corrections** from the user:
+  1. Tried to create backlog items in DSM repository instead of project's `docs/feedback/backlogs.md`
+  2. Confused `docs/feedback/` vs `docs/blog/` for blog-related files
+  3. Did not understand `docs/backlog/` (alignment) vs `docs/feedback/` (DSM feedback) distinction
+  4. User had to provide `docs-folder-reference-sql-agent.md` as explicit reference
+  5. User had to point to sql-agent files as format examples
+  6. Multiple iterations needed to get file formats correct
+  This level of confusion — requiring an external reference project — indicates the documentation is insufficient for self-contained understanding.
+
 ---
 
 ## Medium Priority
@@ -70,4 +89,4 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-02-03
-**Total Proposals:** 8
+**Total Proposals:** 9
