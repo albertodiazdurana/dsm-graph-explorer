@@ -146,22 +146,46 @@ This project is a direct example of DSM dog-fooding: we're applying DSM 4.0 Soft
 
 ## Sprint 3: CLI & Real-World Run
 
-**Date:** _TBD_
+**Date:** 2026-02-03
 
 ### Work Completed
-_To be filled during Sprint 3_
+- Implemented `src/cli.py` — Click-based CLI wiring full pipeline (find files → parse → extract refs → validate → report)
+- Wrote 19 tests in `tests/test_cli.py` covering help/version, file/directory input, output options, exit codes, validation content, glob patterns
+- Fixed entry point in `pyproject.toml` from `dsm_graph_explorer.cli:main` to `cli:main`
+- Ran first real-world validation against DSM repository (122 files)
+- Expanded `KNOWN_DSM_IDS` from 5 to 11 entries after real-world findings
+- Generated integrity report: `outputs/reports/dsm-integrity-report.md`
+- Applied cross-project alignment document patterns from sql-query-agent
 
 ### Design Decisions
-_CLI design, integration testing approach_
+- **Click for CLI:** Industry standard, decorator-based, excellent testing support via CliRunner
+- **Default to current directory:** Intuitive; user can specify files/directories explicitly
+- **`--strict` for CI:** Exit 0 by default (informational); exit 1 with `--strict` when errors found
+- **No default output path:** User chooses where to save; auto-creates parent directories
+- **`**/*.md` default glob:** Standard recursive markdown scan
+- **Repeatable `--version-files`:** Opt-in version consistency check; not all runs need it
 
 ### Observations
-_Running against full DSM repo, issues discovered_
+- Real-world run validated the tool's purpose: 448 errors found in DSM documentation
+- Most errors are in CHANGELOG.md and checkpoints — historical references that were valid when written but became stale as DSM evolved. Not bugs; informational.
+- KNOWN_DSM_IDS initial list was incomplete: missed short forms (DSM 1 vs DSM 1.0) and documents (DSM 0.1, 2.1, 3). Real-world testing essential.
+- Pre-generation brief protocol violated again (same class of error as Sprint 1) — wording needs strengthening
+- Cross-project alignment document (TRANSFER-1 to TRANSFER-4) patterns transferred cleanly
 
 ### Metrics Captured
-_Final metrics: references validated, time saved, bugs found_
+- **Tests:** 145 total (126 Sprint 2 + 19 Sprint 3)
+- **Coverage:** 98% overall
+- **Files scanned:** 122 markdown files in DSM repository
+- **Errors found:** 448 broken section/appendix references
+- **Warnings (before fix):** 152 unknown DSM identifiers
+- **Warnings (after fix):** 0
+- **CLI source:** 1 file, ~60 lines of implementation
 
 ### Aha Moments
-_Dog-fooding insights from real DSM validation_
+- **"Expected drift" is a category.** Not all validation errors are actionable. CHANGELOG and checkpoints document historical section numbers that were valid at the time. The tool reports them, but they're informational — shows the methodology evolved.
+- **Real data validates design decisions.** KNOWN_DSM_IDS seemed complete until we ran against real files. 152 warnings revealed the gap. Design → Test → Real-world → Fix is a necessary loop.
+- **Cross-project learning compounds.** Patterns refined in sql-query-agent (feedback protocol, blog workflow, sprint checklist) applied directly here. Formalizing transfers accelerates future projects.
+- **Same error, different sprint.** Pre-generation brief violation recurred despite Sprint 1 feedback. Protocol wording is insufficient; shows methodology evolution is iterative.
 
 ---
 
@@ -221,5 +245,5 @@ Before ending each work session:
 
 ---
 
-**Last Updated:** 2026-02-01
-**Current Sprint:** Sprint 2 - Validation Engine (complete)
+**Last Updated:** 2026-02-03
+**Current Sprint:** Sprint 3 - CLI & Real-World Run (complete)

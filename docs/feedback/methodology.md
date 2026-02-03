@@ -1,139 +1,168 @@
-# DSM Feedback: Methodology Effectiveness
+# DSM Feedback: Project Methodology
 
 **Project:** DSM Graph Explorer
-**Purpose:** Record which DSM guidance was used and evaluate its effectiveness for software engineering projects.
-
-**Reference:** Section 6.4.5 (Project Feedback Deliverables) — File 2 of 3
-
----
-
-## Instructions
-
-Track:
-- **Which DSM sections were referenced** during each phase
-- **Effectiveness scoring** (1-5 scale: 1=Not helpful, 5=Extremely helpful)
-- **What worked well** and **what needs improvement**
-- **Observations** on DSM 4.0 applicability to software engineering
-
-This helps assess whether DSM 4.0 is effective for dog-fooding (building DSM tooling with DSM methodology).
+**Author:** Alberto Diaz Durana
+**DSM Version Used:** DSM 4.0 v1.0, DSM 1.0 v1.1
+**Date:** 2026-01-31 (started)
+**Duration:** Sprint 1-3 complete
 
 ---
 
-## Scoring Guide
+## 1. Project Overview
 
-| Score | Meaning |
-|-------|---------|
-| 5 | Extremely helpful — Clear, actionable, perfectly matched the need |
-| 4 | Very helpful — Good guidance with minor gaps |
-| 3 | Moderately helpful — Useful but required adaptation |
-| 2 | Somewhat helpful — Vague or incomplete guidance |
-| 1 | Not helpful — Missing, unclear, or irrelevant |
-
----
-
-## Phase 0: Environment Setup
-
-**Date:** 2026-01-31
-
-| DSM Section Referenced | Score (1-5) | What Worked Well | What Needs Improvement |
-|------------------------|-------------|------------------|------------------------|
-| DSM 4.0 Section 2 (Project Structure Patterns) | 5 | Clear distinction between DSM 1.0 vs DSM 4.0 patterns; easy to follow | _None so far_ |
-| Section 2.5.6 (Blog/Communication Deliverable Process) | 5 | Materials template provided structure upfront; prevented technical debt | _None so far_ |
-| Section 6.4.5 (Project Feedback Deliverables) | 5 | Three-file feedback system is clear and well-documented | _None so far_ |
-
-**Observations:**
-- DSM 4.0 Section 2 (just added in v1.3.18) was immediately useful for this project
-- Blog materials preparation upfront (Section 2.5.6) works well to avoid accumulating blog debt
-- Having DSM 4.0 for software engineering makes dog-fooding smooth
+| Item | Planned | Actual |
+|------|---------|--------|
+| **Objective** | Repository integrity validator for DSM cross-references | Complete — CLI tool validates 122 files, finds 448 broken refs |
+| **Language** | Python 3.12+ | Active — pytest, Click, Rich |
+| **Timeline** | 4 sprints (Parser → Validation → CLI → Documentation) | Sprint 3 complete |
+| **Deliverables** | CLI tool + integrity reports + blog | CLI done, first report generated |
 
 ---
 
-## Sprint 1: Parser MVP
+## 2. Technical Pipeline (What Was Actually Built)
 
-**Date:** 2026-02-01
+### Phase 0: Environment Setup
+- Repository created at `D:\data-science\dsm-graph-explorer\`
+- Project structure: `src/`, `tests/`, `docs/`, `outputs/`
+- pyproject.toml with pytest, Click, Rich dependencies
+- CLAUDE.md configured for Claude Code collaboration
 
-| DSM Section Referenced | Score (1-5) | What Worked Well | What Needs Improvement |
-|------------------------|-------------|------------------|------------------------|
-| DSM 4.0 Section 3 (Development Protocol) | 4 | TDD workflow guidance was clear and effective | Missing pre-generation brief step for human-AI collaboration (added as feedback) |
-| DSM 4.0 Section 2 (Project Structure Patterns) | 4 | Clear folder structure guidance | Feedback files specified as loose files inconsistent with subfolder pattern (added as feedback) |
-| Section 6.4 (Checkpoint and Feedback Protocol) | 5 | Three-file feedback system worked well; checkpoint template captured all state | _None_ |
-| Section 2.5.6 (Blog/Communication Process) | 5 | Journal capture during sprint produced rich material; dog-fooding narrative emerged naturally | _None_ |
+### Sprint 1: Parser MVP
+- `src/parser/markdown_parser.py` — extracts sections from headings
+- `src/parser/cross_ref_extractor.py` — extracts cross-references from body text
+- 52 unit tests, 98% coverage
+- DEC-001: Pure regex over markdown libraries
 
-**Observations:**
-- DSM 4.0 Development Protocol works well for TDD but needs a collaboration step (pre-generation brief) before artifact creation
-- Short sprint cadence (not in DSM) proved more effective than monolithic sprint — produced 4 feedback items in one sprint
-- Research-first grounding (Phase 0.5, not in DSM) validated the approach against published best practices before implementation
-- Dog-fooding surfaced methodology gaps that theoretical review would not have found
+### Sprint 2: Validation Engine
+- `src/validator/cross_ref_validator.py` — validates refs against section index
+- `src/validator/version_validator.py` — checks version consistency
+- `src/reporter/report_generator.py` — markdown + Rich console output
+- 74 new tests (126 total), 99% coverage
 
----
-
-## Sprint 2: Validation Engine
-
-**Date:** 2026-02-01
-
-| DSM Section Referenced | Score (1-5) | What Worked Well | What Needs Improvement |
-|------------------------|-------------|------------------|------------------------|
-| DSM 4.0 Section 3 (Development Protocol) | 5 | TDD with pre-generation brief (now inherited from Custom Instructions) worked smoothly | _None — Sprint 1 feedback incorporated_ |
-| DSM 4.0 Section 2 (Project Structure Patterns) | 5 | Modular structure (validator/, reporter/) followed naturally | _None_ |
-| Section 6.5 (Gateway Reviews) | 5 | Caught missing `@` reference; systematic quality gates work | First use — format effective |
-| Section 6.4 (Checkpoint and Feedback Protocol) | 5 | Checkpoint captured full state; feedback tracked observations | _None_ |
-| Custom Instructions Template (v1.1) | 4 | `@` reference inheritance reduces duplication | "Generate no files directly" needed Claude Code override |
-
-**Observations:**
-- Sprint 2 smoother than Sprint 1 — pre-generation brief and sprint cadence now embedded
-- Gateway 2 review (Section 6.5) proved immediate value catching template gap
-- TDD cycle well-supported by DSM 4.0 Section 3
-- Custom Instructions `@` inheritance reduces cross-project duplication
+### Sprint 3: CLI & Real-World Run
+- `src/cli.py` — Click-based CLI wiring full pipeline
+- 19 tests (145 total), 98% coverage
+- First real-world run: 122 files, 448 errors, 0 warnings (after fix)
+- DEC-002: CLI design choices documented
 
 ---
 
-## Sprint 3: CLI & Real-World Run
+## 3. Libraries & Tools
 
-**Date:** _TBD_
-
-| DSM Section Referenced | Score (1-5) | What Worked Well | What Needs Improvement |
-|------------------------|-------------|------------------|------------------------|
-| _Section X.Y_ | _1-5_ | _Comments_ | _Comments_ |
-
-**Observations:**
-_Add observations during Phase 3_
+| Library | Version | Purpose |
+|---------|---------|---------|
+| click | 8.1+ | CLI framework |
+| rich | 13.0+ | Console output formatting |
+| pytest | 7.4+ | Testing framework |
+| pytest-cov | 4.1+ | Coverage reporting |
 
 ---
 
-## Phase 4: Documentation
+## 4. DSM Section Scoring
 
-**Date:** _TBD_
+### Sections Used
 
-| DSM Section Referenced | Score (1-5) | What Worked Well | What Needs Improvement |
-|------------------------|-------------|------------------|------------------------|
-| _Section X.Y_ | _1-5_ | _Comments_ | _Comments_ |
+| DSM Section | Sprint | Times Used | Avg Score | Top Issue |
+|-------------|--------|------------|-----------|-----------|
+| DSM 4.0 Section 2 (Project Structure) | Phase 0, S1 | 3 | 4.3 | Feedback file location inconsistent |
+| DSM 4.0 Section 3 (Development Protocol) | S1, S2, S3 | 4 | 3.5 | Missing pre-generation brief, explicit approval |
+| Section 2.5.6 (Blog Process) | Phase 0, S1 | 2 | 5.0 | None |
+| Section 6.4 (Checkpoint Protocol) | S1, S2, S3 | 3 | 4.5 | Missing sprint boundary checklist |
+| Section 6.5 (Gateway Reviews) | S2 | 1 | 5.0 | None |
+| Custom Instructions Template | S2, S3 | 2 | 3.5 | Explicit approval wording needed |
+| Cross-Project Alignment (new) | S3 | 1 | 5.0 | Should be formalized in DSM |
 
-**Observations:**
-_Add observations during Phase 4_
+### Entry 1: DSM 4.0 Section 2 (Project Structure Patterns)
+- **Date:** 2026-01-31 | **Sprint:** Phase 0 | **Type:** Success
+- **Context:** Setting up project repository structure following DSM 4.0 pattern
+- **Finding:** Clear distinction between DSM 1.0 vs DSM 4.0 patterns; easy to follow. In-repo `docs/` structure worked well.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 5 (Avg: 4.75)
+- **Recommendation:** None — this section worked well.
+
+### Entry 2: Section 2.5.6 (Blog/Communication Process)
+- **Date:** 2026-01-31 | **Sprint:** Phase 0 | **Type:** Success
+- **Context:** Preparing blog materials before implementation
+- **Finding:** Materials template provided structure upfront; prevented technical debt. Journal capture during sprints produced rich material.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
+- **Recommendation:** None — this section worked excellently.
+
+### Entry 3: DSM 4.0 Section 3 (Development Protocol) — Pre-generation Brief Gap
+- **Date:** 2026-02-01 | **Sprint:** S1 | **Type:** Gap
+- **Context:** Starting TDD implementation. Agent generated test fixture + full test suite without explanation.
+- **Finding:** The TDD workflow says "write tests first" but doesn't address the collaboration pattern where the human needs to understand and approve what will be created before the AI generates it.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 3 (Avg: 3.0)
+- **Recommendation:** Add "Pre-generation brief" step: explain what, why, contents before generating. See `backlogs.md`.
+
+### Entry 4: DSM 4.0 Section 2 — Feedback File Location Inconsistency
+- **Date:** 2026-02-01 | **Sprint:** S1 | **Type:** Pain Point
+- **Context:** Feedback files initially created at `docs/dsm-feedback-*.md` per handoff instructions
+- **Finding:** DSM specifies loose files but all other document types use subfolders (`docs/handoffs/`, `docs/decisions/`, etc.). Had to manually move files to `docs/feedback/` mid-project.
+- **Scores:** Clarity 3, Applicability 4, Completeness 3, Efficiency 2 (Avg: 3.0)
+- **Recommendation:** Standardize on `docs/feedback/` subfolder. See `backlogs.md`.
+
+### Entry 5: Section 6.4 (Checkpoint and Feedback Protocol)
+- **Date:** 2026-02-01 | **Sprint:** S1 | **Type:** Success
+- **Context:** Creating milestone checkpoints at sprint boundaries
+- **Finding:** Three-file feedback system worked well; checkpoint template captured all state needed for session continuity.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 5 (Avg: 4.75)
+- **Recommendation:** Add sprint boundary checklist to ensure nothing is missed. See `backlogs.md`.
+
+### Entry 6: Section 6.5 (Gateway Reviews)
+- **Date:** 2026-02-01 | **Sprint:** S2 | **Type:** Success
+- **Context:** Gateway 2 alignment review after Sprint 1
+- **Finding:** Caught missing `@` reference in Custom Instructions template; systematic quality gates work.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
+- **Recommendation:** None — first use, format effective.
+
+### Entry 7: Custom Instructions Template — Pre-generation Brief Wording
+- **Date:** 2026-02-02 | **Sprint:** S3 | **Type:** Gap (Recurrence)
+- **Context:** CLI implementation. Agent provided pre-generation brief, user said "ready" (sprint start), agent generated files without per-file approval.
+- **Finding:** Same class of error as Entry 3. Protocol says "explain before generating" but doesn't specify agent must receive **explicit approval**. A simple "ready" in different context was misinterpreted.
+- **Scores:** Clarity 2, Applicability 3, Completeness 2, Efficiency 2 (Avg: 2.25)
+- **Reasoning:** Recurrence of Entry 3 error proves wording is insufficient.
+- **Recommendation:** Strengthen to: "(1) Explain, (2) Wait for explicit approval, (3) Generate." See `backlogs.md`.
+
+### Entry 8: Cross-Project Alignment Document (TRANSFER-4)
+- **Date:** 2026-02-03 | **Sprint:** S3 | **Type:** Success
+- **Context:** Applied sprint boundary checklist from sql-query-agent alignment document
+- **Finding:** Four transfer items (feedback protocol, blog workflow, development protocol, sprint checklist) all applicable and useful. Checklist ensured all documentation completed.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
+- **Recommendation:** Formalize cross-project alignment document as standard DSM artifact. See `backlogs.md`.
+
+### Entry 9: Real-World Validation Run
+- **Date:** 2026-02-03 | **Sprint:** S3 | **Type:** Success + Gap
+- **Context:** Ran CLI against real DSM repository (122 files)
+- **Finding:** Tool validated its purpose: 448 broken refs found. However, `KNOWN_DSM_IDS` was incomplete (5 entries); 152 warnings revealed short forms (DSM 1 vs DSM 1.0) and additional docs (DSM 0.1, 2.1, 3). Expanded to 11 entries → 0 warnings.
+- **Scores:** Clarity 4, Applicability 5, Completeness 3, Efficiency 4 (Avg: 4.0)
+- **Reasoning:** Design decisions need validation against real data. Initial assumptions were incomplete.
+- **Recommendation:** Real-world testing essential before declaring MVP complete.
 
 ---
 
-## Overall Effectiveness Summary
+## 5. Methodology Observations for DSM
 
-**To be completed at project end:**
-
-### Most Helpful Sections
-_List top 3-5 DSM sections that were most valuable_
-
-### Least Helpful Sections
-_List sections that were referenced but not useful_
-
-### Average Effectiveness Score
-_Calculate average score across all sections referenced_
-
-### Key Insights
-_Big-picture observations about DSM 4.0 for software engineering projects_
-
-### Recommended Improvements
-_Synthesis of all improvement suggestions_
+1. **Pre-generation brief is critical** — The "explain before generating" principle needs explicit approval step (violated twice: S1 and S3).
+2. **Short sprint cadence works better** — 4 short sprints produced more feedback than one large sprint would have.
+3. **Research-first grounding validates approach** — Phase 0.5 research confirmed regex approach fills a real gap.
+4. **Cross-project learning compounds** — Patterns from sql-agent (TRANSFER-1 to TRANSFER-4) applied directly here.
+5. **Real data validates design decisions** — KNOWN_DSM_IDS seemed complete until real-world run revealed gaps.
+6. **Dog-fooding surfaces gaps faster** — Two concurrent projects found the same Validation Tracker/Feedback overlap issue.
 
 ---
 
-**Last Updated:** 2026-02-01
-**Sections Referenced So Far:** 12
-**Average Score So Far:** 4.8
+## 6. Plan vs Reality
+
+| Aspect | Planned | Actual | Delta |
+|--------|---------|--------|-------|
+| Sprints | 4 | 3 complete | On track |
+| Parser tests | 80%+ coverage | 98% coverage | Exceeded |
+| Validation tests | 80%+ coverage | 99% coverage | Exceeded |
+| CLI tests | 80%+ coverage | 98% coverage | Exceeded |
+| DSM errors found | Unknown | 448 | Validated tool purpose |
+| Blog draft | Sprint 4 | Pending | On track |
+
+---
+
+**Last Updated:** 2026-02-03
+**Entries So Far:** 9
+**Average Score:** 4.1

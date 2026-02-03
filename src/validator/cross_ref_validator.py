@@ -37,7 +37,20 @@ class ValidationResult:
 
 # Known DSM document identifiers. References to DSM versions not in this
 # list produce a WARNING (they may be valid but cannot be verified).
-KNOWN_DSM_IDS: list[str] = ["0", "1.0", "1.1", "2.0", "4.0"]
+# Includes both short forms (DSM 1) and long forms (DSM 1.0).
+KNOWN_DSM_IDS: list[str] = [
+    "0",      # START_HERE guide
+    "0.1",    # File naming quick reference
+    "1",      # DSM 1 (short form)
+    "1.0",    # DSM 1.0 methodology
+    "1.1",    # DSM 1.1 methodology update
+    "2",      # DSM 2 (short form)
+    "2.0",    # DSM 2.0 PM guidelines
+    "2.1",    # DSM 2.1 PM supplement
+    "3",      # DSM 3 multi-agent collaboration
+    "4",      # DSM 4 (short form)
+    "4.0",    # DSM 4.0 software engineering adaptation
+]
 
 
 def build_section_index(
