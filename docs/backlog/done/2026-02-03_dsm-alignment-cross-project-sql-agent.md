@@ -147,9 +147,11 @@ This document captures collaboration patterns refined during the sql-query-agent
 | # | Action | Priority | Status |
 |---|--------|----------|--------|
 | 1 | CLAUDE.md updated with Development Protocol | High | DONE (2026-02-03) |
-| 2 | Create `docs/blog/images/` folder when needed | Low | Pending |
-| 3 | Apply blog workflow for Sprint 2 content | Medium | Pending |
-| 4 | Use sprint boundary checklist at Sprint 2 completion | Medium | Pending |
+| 2 | Create `docs/blog/images/` folder when needed | Low | Process guidance (create when needed) |
+| 3 | Apply blog workflow for Sprint 2 content | Medium | Process guidance (ongoing) |
+| 4 | Use sprint boundary checklist at Sprint 2 completion | Medium | Process guidance (apply at boundaries) |
+
+**Resolution:** All actionable items complete. Items 2-4 are process guidance now embedded in workflow.
 
 ---
 

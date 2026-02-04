@@ -117,13 +117,13 @@ Good material for the "dog-fooding" narrative:
 
 ## Action Items for Graph Explorer
 
-| # | Action | Priority | Sprint |
-|---|--------|----------|--------|
-| 1 | Mark `2026-02-04_parser-trailing-period-fix.md` as resolved | High | Now |
-| 2 | Implement `--exclude` flag | High | Sprint 4 |
-| 3 | Add default exclusion config for DSM repos | Medium | Sprint 4 |
-| 4 | Update epoch-2-plan.md with validated exclusion list | Medium | Sprint 4 |
-| 5 | Add fixture validation lesson to blog journal | Low | Sprint 4 |
+| # | Action | Priority | Sprint | Status |
+|---|--------|----------|--------|--------|
+| 1 | Mark `2026-02-04_parser-trailing-period-fix.md` as resolved | High | Now | **DONE** (moved to done/) |
+| 2 | Implement `--exclude` flag | High | Sprint 4 | Pending |
+| 3 | Add default exclusion config for DSM repos | Medium | Sprint 4 | Pending |
+| 4 | Update epoch-2-plan.md with validated exclusion list | Medium | Sprint 4 | Pending |
+| 5 | Add fixture validation lesson to blog journal | Low | Sprint 4 | Pending |
 
 ---
 
