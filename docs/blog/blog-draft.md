@@ -50,7 +50,7 @@ DSM Graph Explorer follows the compiler pattern through four stages.
 
 **Stage 4: Validation and reporting.** Check each extracted reference against the section index. If the target exists, valid. If not, broken. The validator distinguishes severity levels — errors for broken section references, warnings for unknown document identifiers.
 
-The pipeline processes 122 files in under a second. The separation of concerns makes each stage testable in isolation — 145 tests, 98% coverage by the end.
+The pipeline processes 122 files in under a second. The separation of concerns makes each stage testable in isolation — 150 tests, 98% coverage by the end.
 
 ## The Real-World Run
 
@@ -85,6 +85,8 @@ The path wasn't straight.
 
 **The regex edge cases.** DSM identifiers use both underscore (`DSM_4.0`) and space (`DSM 4.0`). Appendix headings follow two formats: `# Appendix A: Title` at the top level vs `## A.1 Subsection` for nested sections. Code blocks contain example references that shouldn't be validated. Each discovery refined the patterns. Real files are always messier than test fixtures.
 
+**The trailing period surprise.** The parser worked perfectly on test fixtures — until I ran it against real DSM files. 448 errors seemed alarming until I noticed something odd: references to sections that clearly existed weren't resolving. The culprit? DSM uses trailing periods in section numbers (`### 2.3.7. Title`) but my fixture used no trailing period (`### 2.3.7 Title`). I'd written the fixture from assumption, not observation. A two-character regex fix (`\.?` to allow an optional period) reduced 448 errors to 6. **Lesson:** Before writing tests against synthetic fixtures, verify the fixture format matches actual production data.
+
 ## Now What?
 
 Finding errors is only useful if you can act on them. Here's how I'm thinking about the 448:
@@ -99,14 +101,14 @@ Finding errors is only useful if you can act on them. Here's how I'm thinking ab
 
 ## The Numbers
 
-| Metric                 | Result     |
-| ---------------------- | ---------- |
-| Files scanned          | 122        |
-| Cross-reference errors | 448        |
-| Tests written          | 145        |
-| Coverage               | 98%        |
-| Regex patterns         | 6          |
-| Implementation         | ~400 lines |
+| Metric                 | Result              |
+| ---------------------- | ------------------- |
+| Files scanned          | 122                 |
+| Cross-reference errors | 448 → 6 (after fix) |
+| Tests written          | 150                 |
+| Coverage               | 98%                 |
+| Regex patterns         | 6                   |
+| Implementation         | ~400 lines          |
 
 ## What's Next
 
@@ -129,6 +131,8 @@ This embeddings approach builds on prior work. In [tfidf-to-transformers-with-di
 **Real data validates design decisions.** The identifier list seemed complete until real-world testing showed 152 warnings. Design → Test → Real-world → Fix is a necessary loop.
 
 **Analogies accelerate design.** The compiler analogy didn't just explain the architecture — it shaped it. Recognizing documentation validation as a solved problem in another domain saved weeks of exploration.
+
+**Fixtures encode assumptions.** Test fixtures work great for TDD — until you discover real data looks different. The trailing period bug (448 false positives) would have been caught by opening one real file before creating the fixture. Before writing tests against synthetic fixtures, verify the fixture format matches actual production data.
 
 ---
 

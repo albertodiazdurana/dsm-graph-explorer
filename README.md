@@ -53,7 +53,7 @@ dsm-graph-explorer/
 │   ├── validator/        # Cross-reference and version validators (Sprint 2)
 │   └── reporter/         # Report generator (Sprint 2)
 ├── tests/
-│   ├── test_parser.py    # 52 unit tests for parser modules
+│   ├── test_parser.py    # 57 unit tests for parser modules
 │   ├── test_validator.py # 51 tests for validators
 │   ├── test_reporter.py  # 23 tests for reporter + integration
 │   ├── test_cli.py       # 19 tests for CLI
@@ -171,7 +171,7 @@ For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) a
 - [x] **Phase 0.5:** Research & Grounding — validated approach against published best practices ([research](docs/research/handoff_graph_explorer_research.md))
 - [x] **Sprint 1:** Parser MVP — markdown parser, cross-reference extractor, 52 tests at 98% coverage ([DEC-001](docs/decisions/DEC-001_parser_library_choice.md))
 - [x] **Sprint 2:** Validation Engine — cross-ref validator, version checker, report generator, 126 tests at 99% coverage
-- [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 145 tests at 98% coverage, first DSM integrity report (448 broken references found)
+- [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 150 tests at 98% coverage, first DSM integrity report (448 → 6 errors after trailing period fix)
 
 ### Up Next
 - [ ] **Sprint 4:** Documentation & Publication — CI/CD, blog draft, error remediation ([DEC-003](docs/decisions/DEC-003_error_remediation_strategy.md))
@@ -204,5 +204,5 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 ---
 
 **Last Updated:** 2026-02-04
-**Current Sprint:** Sprint 3 Complete — 448 broken references identified in DSM repository
-**Tests:** 145 passed, 98% coverage
+**Current Sprint:** Sprint 3 Complete — 6 genuine broken references remain (Section 2.6)
+**Tests:** 150 passed, 98% coverage

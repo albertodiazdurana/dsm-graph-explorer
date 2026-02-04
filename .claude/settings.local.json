@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd @ reference to Custom Instructions template \\(Gateway 2 ACTION-1\\)\n\nAdd DSM_Custom_Instructions_v1.1.md reference as first line of\nCLAUDE.md per Gateway 2 alignment review. Remove duplicate\nCollaboration Protocol section \\(now inherited from template\\). Add\nAgent File Creation override for Claude Code environment. Restructure\nCLAUDE.md to follow template''s Project-Specific Instructions format.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(python -m pytest:*)",
+      "Bash(gh repo view:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(git status:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
