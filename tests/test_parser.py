@@ -98,6 +98,48 @@ class TestSectionNumberExtraction:
         assert no_number[0].number is None
 
 
+class TestTrailingPeriodFormat:
+    """Test extraction of sections with trailing period format (e.g., '6.1.' instead of '6.1').
+
+    DSM documentation uses trailing periods in section numbers like '### 2.3.7. Title'.
+    The parser must handle both formats.
+    """
+
+    def test_numbered_section_with_trailing_period(self):
+        """Parser should extract '## 6.1. Title' as section 6.1."""
+        result = parse_markdown_file(SAMPLE_DSM)
+        numbers = [s.number for s in result.sections]
+        assert "6.1" in numbers
+
+    def test_nested_section_with_trailing_period(self):
+        """Parser should extract '### 6.1.1. Title' as section 6.1.1."""
+        result = parse_markdown_file(SAMPLE_DSM)
+        numbers = [s.number for s in result.sections]
+        assert "6.1.1" in numbers
+
+    def test_appendix_with_trailing_period(self):
+        """Parser should extract '## E.1. Title' as section E.1."""
+        result = parse_markdown_file(SAMPLE_DSM)
+        numbers = [s.number for s in result.sections]
+        assert "E.1" in numbers
+
+    def test_trailing_period_title_extraction(self):
+        """Title should be extracted correctly without the trailing period."""
+        result = parse_markdown_file(SAMPLE_DSM)
+        section = next((s for s in result.sections if s.number == "6.1"), None)
+        assert section is not None
+        assert section.title == "Trailing Period Format"
+
+    def test_backward_compatible_without_trailing_period(self):
+        """Parser should still work with sections without trailing periods."""
+        result = parse_markdown_file(SAMPLE_DSM)
+        numbers = [s.number for s in result.sections]
+        # These are existing sections without trailing periods
+        assert "1.1" in numbers
+        assert "2.1.1" in numbers
+        assert "A.1" in numbers
+
+
 class TestSectionTitleExtraction:
     """Test extraction of section titles from headings."""
 

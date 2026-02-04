@@ -116,6 +116,18 @@ See DSM 4.0 Section 14 for repository setup.
 
 This heading has no section number.
 
+## 6.1. Trailing Period Format
+
+DSM uses trailing periods in section numbers.
+
+### 6.1.1. Nested Trailing Period
+
+This tests nested sections with trailing periods.
+
+## E.1. Appendix Trailing Period
+
+Appendix sections can also have trailing periods.
+
 ## 5.1 Orphan Subsection
 
 This subsection has no parent section 5.

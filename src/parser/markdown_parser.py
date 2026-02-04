@@ -29,9 +29,10 @@ class ParsedDocument:
 
 
 # Regex patterns for heading content parsing
-_NUMBERED_HEADING = re.compile(r"^(\d+(?:\.\d+)*)\s+(.+)$")
+# Note: \.? allows optional trailing period (DSM uses "### 2.3.7. Title" format)
+_NUMBERED_HEADING = re.compile(r"^(\d+(?:\.\d+)*)\.?\s+(.+)$")
 _APPENDIX_HEADING = re.compile(r"^Appendix\s+([A-E]):\s*(.+)$")
-_APPENDIX_SUBSECTION = re.compile(r"^([A-E](?:\.\d+)+)\s+(.+)$")
+_APPENDIX_SUBSECTION = re.compile(r"^([A-E](?:\.\d+)+)\.?\s+(.+)$")
 
 
 def parse_markdown_file(path: Path | str) -> ParsedDocument:
