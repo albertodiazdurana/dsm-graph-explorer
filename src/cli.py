@@ -10,6 +10,8 @@ from pathlib import Path
 
 import click
 
+from config.config_loader import ConfigError, load_config, merge_config_with_cli
+from filter.file_filter import filter_files
 from parser.cross_ref_extractor import extract_cross_references
 from parser.markdown_parser import parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
@@ -42,7 +44,7 @@ def collect_markdown_files(
 
 
 @click.command()
-@click.version_option(version="0.1.0", prog_name="dsm-validate")
+@click.version_option(version="0.2.0", prog_name="dsm-validate")
 @click.argument("paths", nargs=-1, type=click.Path())
 @click.option(
     "-o",
@@ -55,7 +57,7 @@ def collect_markdown_files(
     "--strict",
     is_flag=True,
     default=False,
-    help="Exit with code 1 if any errors are found (for CI).",
+    help="Exit with code 1 if any ERROR-level issues are found (for CI).",
 )
 @click.option(
     "--glob",
@@ -70,12 +72,29 @@ def collect_markdown_files(
     type=click.Path(exists=True),
     help="Files to check for version consistency (repeatable).",
 )
+@click.option(
+    "-e",
+    "--exclude",
+    "exclude_patterns",
+    multiple=True,
+    help="Exclude files matching pattern (repeatable). E.g., --exclude 'plan/*'",
+)
+@click.option(
+    "-c",
+    "--config",
+    "config_path",
+    type=click.Path(exists=True),
+    default=None,
+    help="Path to config file. Default: searches for .dsm-graph-explorer.yml",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
     strict: bool,
     glob_pattern: str,
     version_files: tuple[str, ...],
+    exclude_patterns: tuple[str, ...],
+    config_path: str | None,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -83,9 +102,33 @@ def main(
     recursively for *.md files (customisable with --glob).
 
     If no PATHS are given, validates the current directory.
+
+    \b
+    Examples:
+      dsm-validate .                           # Validate current directory
+      dsm-validate docs/ --strict              # Strict mode for CI
+      dsm-validate . --exclude 'plan/*'        # Exclude plan folder
+      dsm-validate . -c myconfig.yml           # Use custom config file
     """
     if not paths:
         paths = (".",)
+
+    # Load configuration
+    try:
+        base_config = load_config(
+            config_path=config_path,
+            start_path=Path(paths[0]) if paths else None,
+        )
+    except ConfigError as e:
+        click.echo(f"Configuration error: {e}", err=True)
+        sys.exit(2)
+
+    # Merge CLI options with config (CLI wins)
+    config = merge_config_with_cli(
+        base_config,
+        cli_exclude=exclude_patterns,
+        cli_strict=strict if strict else None,
+    )
 
     # Collect files
     try:
@@ -96,6 +139,16 @@ def main(
 
     if not md_files:
         click.echo("No markdown files found.", err=True)
+        sys.exit(2)
+
+    # Apply exclusion filters
+    base_path = Path(paths[0]).resolve() if paths else Path.cwd()
+    original_count = len(md_files)
+    md_files = filter_files(md_files, config.exclude, base_path)
+    excluded_count = original_count - len(md_files)
+
+    if not md_files:
+        click.echo("All files excluded by patterns. Nothing to validate.", err=True)
         sys.exit(2)
 
     # Parse and extract
@@ -128,11 +181,19 @@ def main(
     # Summary line
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
-    click.echo(
-        f"\nScanned {len(md_files)} file(s) in {elapsed:.2f}s. "
+
+    summary_parts = [
+        f"Scanned {len(md_files)} file(s)",
+    ]
+    if excluded_count > 0:
+        summary_parts.append(f"({excluded_count} excluded)")
+    summary_parts.append(f"in {elapsed:.2f}s.")
+    summary_parts.append(
         f"Found {len(errors)} error(s), {len(warnings)} warning(s), "
         f"{len(version_results)} version mismatch(es)."
     )
+
+    click.echo(f"\n{' '.join(summary_parts)}")
 
     # Write markdown report if requested
     if output:
@@ -141,6 +202,6 @@ def main(
         )
         click.echo(f"Report written to {output}")
 
-    # Exit code
-    if strict and errors:
+    # Exit code based on strict mode and severity
+    if config.strict and errors:
         sys.exit(1)

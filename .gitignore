@@ -80,3 +80,6 @@ outputs/reports/*.md
 *.tmp
 *.bak
 *.log
+
+# references
+docs/_references
