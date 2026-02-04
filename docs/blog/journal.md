@@ -189,6 +189,46 @@ This project is a direct example of DSM dog-fooding: we're applying DSM 4.0 Soft
 
 ---
 
+## Post-Sprint 3: Trailing Period Bug Fix
+
+**Date:** 2026-02-04
+
+### Work Completed
+- Discovered parser bug: DSM uses trailing periods in section numbers (`### 2.3.7.`) but parser expected no trailing period (`### 2.3.7`)
+- Fixed regex patterns in `markdown_parser.py` with `\.?` for optional trailing period
+- Added 5 new tests for trailing period format
+- Re-ran validation: 448 errors → 6 errors
+
+### The Discovery Story
+When I tried to start remediating the 448 "broken references", I noticed something odd. References like "Section 2.3.7" pointed to sections that clearly existed in the file — I could see `### 2.3.7. Data Leakage Prevention` right there. The parser just wasn't finding them.
+
+Grepping the DSM files revealed the pattern: DSM uses trailing periods (`2.3.7.`) but my test fixture used no trailing period (`2.3.7`). The regex `^(\d+(?:\.\d+)*)\s+` requires whitespace immediately after the number — a trailing period breaks that match.
+
+242 sections were invisible to the parser. Most of the 448 "errors" were false positives.
+
+### Why This Bug Happened
+The test fixture was created from assumption, not observation. I wrote `### 2.3.7 Title` because that's how I thought headings looked — never actually checked a real DSM file first.
+
+**Lesson:** Before writing tests against synthetic fixtures, verify the fixture format matches actual production data. Run at least one capability experiment on real data in Sprint 1 to validate assumptions.
+
+If I had opened `DSM_1.0_Data_Science_Collaboration_Methodology_v1.1.md` and searched for a heading pattern before creating the fixture, I would have seen `### 2.3.7. Title` immediately.
+
+### Aha Moment
+**Test fixtures don't capture real-world formatting quirks.** I wrote the fixture based on my assumption of how headings look. Real DSM files had a different convention. This is the third time real-world testing revealed design assumption gaps (first: KNOWN_DSM_IDS, second: DSM short forms, third: trailing periods).
+
+### Metrics
+- **Errors:** 448 → 6 (98.7% reduction)
+- **Tests:** 145 → 150
+- **Coverage:** 98%
+
+### Blog Material
+This is great material for the "A Few Wrong Turns" section:
+- Designed for one format, reality had another
+- Real data is the ultimate test
+- The satisfying moment when 448 becomes 6
+
+---
+
 ## Sprint 4: Documentation & Publication
 
 **Date:** _TBD_

@@ -15,11 +15,21 @@
 - **Proposed Solution:** Add a step between planning and implementation: "**Pre-generation brief** — Before creating each artifact, provide a brief explanation of: (1) what the file is, (2) why it's needed, (3) what it contains at a high level. Get user acknowledgment before proceeding."
 - **Evidence:** AI agent generated test fixture + full test suite without the user understanding the rationale or structure. User had to reject and request explanation. This breaks the collaborative flow.
 
-### Strengthen pre-generation brief to require explicit approval
+### Strengthen pre-generation brief to require explicit approval (STOP protocol)
 - **DSM Section:** DSM_Custom_Instructions_v1.1.md + DSM 4.0 Section 3
 - **Problem:** The pre-generation brief protocol (added after Sprint 1 feedback) says "explain before generating" but does not specify that the agent must receive an **explicit acknowledgment** before proceeding. A simple "ready" from the user in a different context (e.g., starting a sprint) can be misinterpreted as blanket file-creation approval.
-- **Proposed Solution:** Strengthen the protocol to explicitly require: "(1) Agent explains what it will create, (2) **Agent waits for explicit user approval** (e.g., 'go ahead', 'approved', 'yes'), (3) Agent generates the artifact." The word "approval" or "acknowledgment" must appear in the protocol.
-- **Evidence:** In Sprint 3, the agent provided a pre-generation brief for the CLI module. User said "ready" (signaling sprint start). Agent generated both test_cli.py and cli.py without waiting for per-file approval. Same class of error as Sprint 1 — the protocol wording is insufficient to prevent recurrence.
+- **Proposed Solution:** Add a "STOP — Protocol Reminder" section to project CLAUDE.md files with explicit steps:
+  ```
+  BEFORE modifying ANY file:
+  1. Explain the change (what file, what modification, why)
+  2. Wait for explicit approval ("go ahead", "approved", "yes", "proceed")
+  3. Only then execute
+
+  This applies to ALL file modifications — including bug fixes, backlog items,
+  and "obvious" changes. No exceptions.
+  ```
+  The word "STOP" and numbered steps make the protocol unambiguous. Include violation history to reinforce importance.
+- **Evidence:** Three violations in dsm-graph-explorer: Sprint 1 (test generation), Sprint 3 (CLI generation), Post-Sprint 3 (trailing period fix). Same class of error repeated three times despite feedback after each occurrence. The protocol wording was insufficient — an explicit STOP reminder with numbered steps is needed.
 
 ### Add short sprint cadence guidance to DSM project management
 - **DSM Section:** DSM 4.0 Section 3 + DSM 2.0 (Project Management Guidelines)
@@ -80,6 +90,12 @@
 - **Proposed Solution:** Formalize "Cross-Project Alignment Report" as a standard DSM artifact. Template: Transfer Items (what pattern, source, status), Observations, Action Items. Location: `docs/backlog/dsm-alignment-*.md`.
 - **Evidence:** Applied alignment document from sql-query-agent to dsm-graph-explorer successfully. Four transfer items (TRANSFER-1 to TRANSFER-4) all proved applicable.
 
+### Add fixture validation against production data to TDD workflow
+- **DSM Section:** DSM 4.0 Section 3 (Development Protocol) or Section 4.4 (Tests vs Capability Experiments)
+- **Problem:** TDD creates synthetic test fixtures before implementation, but those fixtures encode assumptions about data format. If the assumptions are wrong, the entire test suite validates the wrong thing. The trailing period bug (448 false positives reduced to 6 after fix) happened because the fixture used `### 2.3.7 Title` when real DSM files use `### 2.3.7. Title`.
+- **Proposed Solution:** Add to DSM 4.0: "Before writing tests against synthetic fixtures, verify the fixture format matches actual production data. Run at least one capability experiment on real data in Sprint 1 to validate assumptions. If the project parses or processes external data, inspect representative samples of that data before creating test fixtures."
+- **Evidence:** Three assumption gaps in dsm-graph-explorer all stemmed from not checking real data early: (1) KNOWN_DSM_IDS incomplete, (2) DSM short forms missed, (3) trailing period format missed. All would have been caught by opening one real DSM file in Sprint 1.
+
 ---
 
 ## Low Priority
@@ -88,5 +104,5 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-02-03
-**Total Proposals:** 9
+**Last Updated:** 2026-02-04
+**Total Proposals:** 10

@@ -151,6 +151,14 @@
 - **Reasoning:** DSM 4.0 Section 2 lists folder names but does not adequately explain: (a) the **purpose** of each subfolder, (b) what **files** belong in each, (c) the **format** expected for each file type, (d) the **relationship** between folders (e.g., feedback/ is for DSM methodology feedback, backlog/ is for cross-project alignment). The agent needed an external reference project (sql-agent) to understand the structure — this should be self-contained in DSM.
 - **Recommendation:** Create a standardized "docs/ Folder Structure Reference" document in DSM 4.0. For each subfolder, specify: (1) Purpose, (2) Files it contains, (3) Format/template for each file, (4) When files are created/updated. Include a complete reference implementation or link to one. See `backlogs.md`.
 
+### Entry 11: Trailing Period Bug — Fixture vs Production Data Mismatch
+- **Date:** 2026-02-04 | **Sprint:** Post-S3 | **Type:** Gap
+- **Context:** Parser bug discovered during DSM remediation attempt. 448 errors were mostly false positives because parser couldn't find sections with trailing periods in their numbers (DSM uses `### 2.3.7. Title`, fixture used `### 2.3.7 Title`).
+- **Finding:** Test fixture was created from assumption, not observation. Never verified fixture format against actual DSM files before writing tests. The same pattern occurred three times: (1) KNOWN_DSM_IDS incomplete, (2) DSM short forms missed, (3) trailing period format missed. All three would have been caught by a single real-data capability experiment in Sprint 1.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 2 (Avg: 2.75)
+- **Reasoning:** DSM 4.0 Section 4.4 distinguishes tests from capability experiments but doesn't emphasize validating synthetic fixtures against real data early. TDD works with fixtures, but fixtures encode assumptions. Those assumptions need validation against production data before building an entire test suite on them.
+- **Recommendation:** Add to DSM 4.0 Section 3 or 4.4: "Before writing tests against synthetic fixtures, verify the fixture format matches actual production data. Run at least one capability experiment on real data in Sprint 1 to validate assumptions." See `backlogs.md`.
+
 ---
 
 ## 5. Methodology Observations for DSM
@@ -162,6 +170,7 @@
 5. **Real data validates design decisions** — KNOWN_DSM_IDS seemed complete until real-world run revealed gaps.
 6. **Dog-fooding surfaces gaps faster** — Two concurrent projects found the same Validation Tracker/Feedback overlap issue.
 7. **docs/ folder structure needs explicit documentation** — AI agents cannot infer folder purposes from names alone. The agent required 6 corrections and external references (sql-agent) to understand where files belong. Folder names are not self-documenting; purpose, contents, format, and relationships must be explicit.
+8. **Validate fixtures against real data early** — Synthetic test fixtures encode assumptions. The trailing period bug (448 false positives) would have been caught by opening one real DSM file before writing the fixture. Capability experiments on real data should happen in Sprint 1, not Sprint 3.
 
 ---
 
@@ -173,11 +182,11 @@
 | Parser tests | 80%+ coverage | 98% coverage | Exceeded |
 | Validation tests | 80%+ coverage | 99% coverage | Exceeded |
 | CLI tests | 80%+ coverage | 98% coverage | Exceeded |
-| DSM errors found | Unknown | 448 | Validated tool purpose |
+| DSM errors found | Unknown | 448 → 6 (after fix) | Validated tool purpose |
 | Blog draft | Sprint 4 | Pending | On track |
 
 ---
 
-**Last Updated:** 2026-02-03
-**Entries So Far:** 10
-**Average Score:** 3.85
+**Last Updated:** 2026-02-04
+**Entries So Far:** 11
+**Average Score:** 3.74

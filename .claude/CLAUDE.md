@@ -65,6 +65,19 @@ This project uses Claude Code to write files directly. User reviews in IDE.
 
 **Collaboration workflow:** (1) Agent explains what and why, (2) Human reviews and approves, (3) Agent executes.
 
+### STOP — Protocol Reminder
+
+**BEFORE modifying ANY file:**
+1. Explain the change (what file, what modification, why)
+2. Wait for explicit approval ("go ahead", "approved", "yes", "proceed")
+3. Only then execute
+
+This applies to ALL file modifications — including bug fixes, backlog items, and "obvious" changes. No exceptions.
+
+**Violation history:** Sprint 1 (test generation), Sprint 3 (CLI generation), Post-Sprint 3 (trailing period fix). Three violations of the same protocol. This reminder exists because the protocol was violated repeatedly.
+
+### Protocol Details
+
 - Explain **what** and **why** before creating or modifying each file — describe the purpose, the specific changes, and how they fit the current task. Wait for approval before executing.
 - For approval prompts, use `AskUserQuestion` tool with Yes/No options instead of plain text "Should I proceed?" questions.
 - Write files directly using Claude Code tools
