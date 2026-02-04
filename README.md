@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.1.0 (Alpha)
-**Status:** In Development — Sprint 3 Complete
+**Status:** Epoch 1 Complete — Epoch 2 Planning Done
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -166,15 +166,18 @@ For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) a
 
 ## Project Status
 
-### Completed
+### Epoch 1: Parser MVP & Validator (Complete)
 - [x] **Phase 0:** Environment Setup — repository, venv, pyproject.toml, docs structure
-- [x] **Phase 0.5:** Research & Grounding — validated approach against published best practices ([research](docs/research/handoff_graph_explorer_research.md))
+- [x] **Phase 0.5:** Research & Grounding — validated approach against published best practices ([research](docs/research/e1_handoff_graph_explorer_research.md))
 - [x] **Sprint 1:** Parser MVP — markdown parser, cross-reference extractor, 52 tests at 98% coverage ([DEC-001](docs/decisions/DEC-001_parser_library_choice.md))
 - [x] **Sprint 2:** Validation Engine — cross-ref validator, version checker, report generator, 126 tests at 99% coverage
 - [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 150 tests at 98% coverage, first DSM integrity report (448 → 6 errors after trailing period fix)
 
-### Up Next
-- [ ] **Sprint 4:** Documentation & Publication — CI/CD, blog draft, error remediation ([DEC-003](docs/decisions/DEC-003_error_remediation_strategy.md))
+### Epoch 2: Productionization & Graph (Planning Complete)
+- [ ] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels
+- [ ] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, remediation docs
+- [ ] **Sprint 6:** Semantic Validation — TF-IDF similarity, drift detection ([research](docs/research/e2_handoff_graph_explorer_research.md))
+- [ ] **Sprint 7:** Graph Prototype — NetworkX graph builder, queries, GraphML export
 
 ---
 
@@ -204,5 +207,6 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 ---
 
 **Last Updated:** 2026-02-04
-**Current Sprint:** Sprint 3 Complete — 6 genuine broken references remain (Section 2.6)
+**Current Status:** Epoch 1 complete, Epoch 2 planning done — ready for Sprint 4
 **Tests:** 150 passed, 98% coverage
+**DSM Validation:** 6 genuine broken references remain (all reference non-existent Section 2.6)

@@ -4,9 +4,10 @@ Literature review, state-of-art research, and experiment design documents.
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `handoff_graph_explorer_research.md` | State-of-art survey: markdown validation, coreference resolution, static analysis |
+| File                                    | Purpose                                                                           |
+| --------------------------------------- | --------------------------------------------------------------------------------- |
+| `e1_handoff_graph_explorer_research.md` | Epoch 1: State-of-art survey, markdown validation, coreference resolution |
+| `e2_handoff_graph_explorer_research.md` | Epoch 2: Click CLI, Pydantic config, fnmatch, TF-IDF, NetworkX, GitHub Actions |
 
 ## Usage
 

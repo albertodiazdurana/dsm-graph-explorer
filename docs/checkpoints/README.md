@@ -1,15 +1,21 @@
 # docs/checkpoints/
 
-Milestone snapshots capturing progress, metrics, and state for session continuity.
+Milestone snapshots capturing progress, metrics, and state for session continuity, organized by epoch.
 
-## Files
+## Structure
 
-| File | Milestone |
-|------|-----------|
-| `2026-02-01_sprint1-complete.md` | Sprint 1 Parser MVP complete |
-| `2026-02-01_sprint2-complete.md` | Sprint 2 Validation Engine complete |
-| `2026-02-02_sprint3-progress.md` | Sprint 3 mid-sprint checkpoint |
-| `2026-02-03_sprint3-complete.md` | Sprint 3 CLI & Real-World Run complete |
+```
+docs/checkpoints/
+├── epoch-1/           # Parser MVP & Validator (Sprints 1-3)
+│   ├── 2026-02-01_sprint1-complete.md
+│   ├── 2026-02-01_sprint2-complete.md
+│   ├── 2026-02-02_sprint3-progress.md
+│   ├── 2026-02-03_sprint3-complete.md
+│   ├── 2026-02-03_sprint3-closure-and-docs.md
+│   └── 2026-02-04_trailing-period-fix.md
+└── epoch-2/           # Productionization & Graph (Sprints 4-7)
+    └── 2026-02-04_epoch2-planning-complete.md
+```
 
 ## Naming Convention
 

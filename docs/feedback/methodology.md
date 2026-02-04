@@ -185,8 +185,22 @@
 | DSM errors found | Unknown | 448 → 6 (after fix) | Validated tool purpose |
 | Blog draft | Sprint 4 | Pending | On track |
 
+### Entry 12: Epoch 2 Planning Session — Research-First Approach
+- **Date:** 2026-02-04 | **Sprint:** Epoch 2 Planning | **Type:** Success
+- **Context:** Starting Epoch 2 with research phase before implementation planning.
+- **Finding:** Conducting technical research on all key areas (Click multiple options, Pydantic config, fnmatch exclusions, TF-IDF, NetworkX) before detailed sprint planning produced a comprehensive, grounded plan. The research document serves as a reference during implementation.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
+- **Recommendation:** Research-first planning should be standard for new epochs/phases.
+
+### Entry 13: Backlog Organization — done/ Folder Pattern
+- **Date:** 2026-02-04 | **Sprint:** Epoch 2 Planning | **Type:** Success
+- **Context:** Organizing backlog items as done vs active.
+- **Finding:** Creating a `done/` subfolder within `docs/backlog/` for resolved items keeps the backlog actionable. Active items are immediately visible; completed items are preserved for reference.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
+- **Recommendation:** Add `done/` subfolder pattern to DSM docs folder structure guidance.
+
 ---
 
 **Last Updated:** 2026-02-04
-**Entries So Far:** 11
-**Average Score:** 3.74
+**Entries So Far:** 13
+**Average Score:** 3.87
