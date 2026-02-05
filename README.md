@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
-**Version:** 0.1.0 (Alpha)
-**Status:** Epoch 1 Complete — Epoch 2 Planning Done
+**Version:** 0.2.0
+**Status:** Epoch 2 In Progress (Sprint 4)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -50,13 +50,17 @@ dsm-graph-explorer/
 ├── .claude/               # Claude configuration
 ├── src/
 │   ├── parser/           # Markdown parser and cross-ref extractor
-│   ├── validator/        # Cross-reference and version validators (Sprint 2)
-│   └── reporter/         # Report generator (Sprint 2)
+│   ├── validator/        # Cross-reference and version validators
+│   ├── reporter/         # Report generator
+│   ├── config/           # YAML config loader (Epoch 2)
+│   └── filter/           # File exclusion logic (Epoch 2)
 ├── tests/
-│   ├── test_parser.py    # 57 unit tests for parser modules
-│   ├── test_validator.py # 51 tests for validators
-│   ├── test_reporter.py  # 23 tests for reporter + integration
-│   ├── test_cli.py       # 19 tests for CLI
+│   ├── test_parser.py    # Parser module tests
+│   ├── test_validator.py # Validator tests
+│   ├── test_reporter.py  # Reporter + integration tests
+│   ├── test_cli.py       # CLI tests
+│   ├── test_config.py    # Config loader tests (Epoch 2)
+│   ├── test_filter.py    # File filter tests (Epoch 2)
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── docs/
 │   ├── plan/             # Sprint plan
@@ -75,9 +79,9 @@ dsm-graph-explorer/
 
 ## Requirements
 
-- Python 3.12+
+- Python 3.10+ (developed on 3.10, tested on 3.12)
 - Git (for repository operations)
-- Virtual environment (recommended)
+- Linux/WSL2 (recommended) or macOS/Windows
 
 ---
 
@@ -89,12 +93,14 @@ git clone https://github.com/albertodiazdurana/dsm-graph-explorer.git
 cd dsm-graph-explorer
 
 # Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate
 
 # Install in development mode
 pip install -e ".[dev]"
 ```
+
+**Note:** Development is done on Linux (WSL2). Python 3.10+ required.
 
 ---
 
@@ -173,8 +179,8 @@ For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) a
 - [x] **Sprint 2:** Validation Engine — cross-ref validator, version checker, report generator, 126 tests at 99% coverage
 - [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 150 tests at 98% coverage, first DSM integrity report (448 → 6 errors after trailing period fix)
 
-### Epoch 2: Productionization & Graph (Planning Complete)
-- [ ] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels
+### Epoch 2: Productionization & Graph (In Progress)
+- [ ] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels *(current)*
 - [ ] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, remediation docs
 - [ ] **Sprint 6:** Semantic Validation — TF-IDF similarity, drift detection ([research](docs/research/e2_handoff_graph_explorer_research.md))
 - [ ] **Sprint 7:** Graph Prototype — NetworkX graph builder, queries, GraphML export
@@ -206,7 +212,13 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-04
-**Current Status:** Epoch 1 complete, Epoch 2 planning done — ready for Sprint 4
-**Tests:** 150 passed, 98% coverage
-**DSM Validation:** 6 genuine broken references remain (all reference non-existent Section 2.6)
+## Blog
+
+- [Validating 7,400 Lines of Documentation with Compiler Architecture](https://www.linkedin.com/posts/albertodiazdurana_technicalwriting-docsascode-documentation-activity-7425203346304835585-9fZJ) — How compiler architecture (parser → symbol table → resolver → reporter) applies to documentation validation.
+
+---
+
+**Last Updated:** 2026-02-05
+**Current Status:** Epoch 2 in progress (Sprint 4)
+**Tests:** 202 passed, 94% coverage
+**DSM Validation:** 8 broken references (all reference non-existent Section 2.6)

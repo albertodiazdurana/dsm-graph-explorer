@@ -1,26 +1,26 @@
-# What 448 Broken References Taught Me About Documentation at Scale
+# Validating 7,400 Lines of Documentation with Compiler Architecture
 
-**By Alberto Diaz Durana | February 2026**
+**Date:** 2026-02-05
+**Author:** Alberto Diaz Durana
+**Status:** Published
+**Platform:** LinkedIn Article / GitHub
+**URL:** https://www.linkedin.com/posts/albertodiazdurana_technicalwriting-docsascode-documentation-activity-7425203346304835585-9fZJ
 
 ---
 
-This post is about what happens when documentation grows faster than your ability to maintain it.
+When documentation grows faster than your ability to maintain it, you need tooling. Compilers have solved reference validation for decades. I borrowed their architecture to build a documentation validator.
 
-I built a tool to validate cross-references in markdown files. When I ran it against my own documentation — 7,400 lines across 6 files — it found 448 broken references. My first reaction was alarm. Had things really drifted that badly?
+The [Agentic AI Data Science Methodology (DSM)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) grew from 300 lines to 7,400+ lines over five months. With that growth came hundreds of cross-references: "See Section 2.4.8", "Reference Appendix D.2.7", "Per DSM 4.0 guidelines". When I renamed a section, how would I find every reference that now pointed to nothing?
 
-Then I looked closer. Most of those "errors" weren't bugs. They were evidence that the documentation had evolved.
+Existing tools like **markdown-link-check** validate URLs. But "Section 2.4.8" isn't a URL, it's a semantic reference to a heading. I needed something different.
 
-## The Problem
+The insight: compilers solve exactly this problem. They parse source, build symbol tables, resolve references, and report diagnostics. Documentation is just another domain for the same pattern.
 
-It started with growth. The [Agentic AI Data Science Methodology (DSM)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) began as a single document — a workflow framework for data science projects: 3 documents and 300+ lines. Real-world use added feedback: templates, checklists, appendices, domain adaptations. After 5 months and multiple projects, it grew to 7,400+ lines with over 100 cross-references between sections.
+## Why Not Existing Tools?
 
-Then I noticed something uncomfortable. When Section 2.4.8 mentions "See Appendix D.2.7," how do I know that appendix still exists? When I rename a section during a refactor, how do I find all the places that reference it?
+I tried **markdown-link-check** [1] and **mlc** [2], they validate URLs and file paths but can't handle semantic references. I looked at **coreference resolution** in NLP [3], closer, but designed for sentence-level analysis in prose, not structured documentation.
 
-I tried existing tools. **markdown-link-check** [1] and **mlc** [2] validate URLs and file paths — but DSM uses semantic references. "Section 2.4.8" isn't a URL. It's a pointer to a heading that might have been renamed or removed. These tools couldn't help.
-
-I looked at **coreference resolution** in NLP [3] — the task of identifying when different expressions refer to the same entity. Closer, but designed for sentence-level analysis in prose, not structured documentation.
-
-Then I found the analogy that changed everything.
+The gap: no tool validates that "Section 2.4.8" actually exists as a heading in your documentation. That's what I built.
 
 ## The Compiler Connection
 
@@ -50,30 +50,24 @@ DSM Graph Explorer follows the compiler pattern through four stages.
 
 **Stage 4: Validation and reporting.** Check each extracted reference against the section index. If the target exists, valid. If not, broken. The validator distinguishes severity levels — errors for broken section references, warnings for unknown document identifiers.
 
-The pipeline processes 122 files in under a second. The separation of concerns makes each stage testable in isolation — 150 tests, 98% coverage by the end.
+The pipeline processes 125 files in under a second. The separation of concerns makes each stage testable in isolation, 202 tests, 94% coverage by the end.
 
 ## The Real-World Run
 
-With the tool built, I ran it against the actual DSM repository.
+With the tool built, I ran it against the DSM repository: 125 markdown files, 7,400+ lines.
 
 ```
-Scanning 122 files...
-Found 448 errors, 0 warnings
+Scanning 125 files...
+Found 6 errors, 0 warnings
 ```
 
-448 errors. That's a lot.
-
-But when I examined the report, a pattern emerged:
+Six genuine broken references, all pointing to **Section 2.6**, which doesn't exist in the documentation. The tool found real issues.
 
 ![Broken reference examples from the integrity report](images/broken-refs-example.png)
 
-*Sample broken references from the integrity report. Most appear in CHANGELOG.md and checkpoint files — historical documents that reference sections as they existed at the time of writing.*
+*The integrity report shows exactly where broken references occur: file, line number, and the target that couldn't be resolved.*
 
-Most errors came from CHANGELOG and checkpoint files — **historical references that were valid when written**. Section 2.4.11 existed in version 1.2.3. It was renamed in version 1.3.0. The CHANGELOG entry documenting that change now references a section that no longer exists.
-
-That's not a bug. It's evidence that the documentation evolved.
-
-This distinction matters. A broken reference in current documentation is actionable — it should be fixed. A broken reference in a historical changelog is informational — it documents the evolution. The tool reports both. The human interprets which category each error falls into.
+Beyond the errors, running the validator revealed something interesting about how documentation evolves. Historical files (changelogs, checkpoints) contain references that were valid when written but now point to renamed or removed sections. That's not a bug, it's evidence of evolution. The tool reports both; the human interprets which need fixing.
 
 ## A Few Wrong Turns
 
@@ -103,12 +97,13 @@ Finding errors is only useful if you can act on them. Here's how I'm thinking ab
 
 | Metric                 | Result              |
 | ---------------------- | ------------------- |
-| Files scanned          | 122                 |
-| Cross-reference errors | 448 → 6 (after fix) |
-| Tests written          | 150                 |
-| Coverage               | 98%                 |
+| Files scanned          | 125                 |
+| Broken references found| 6                   |
+| Tests written          | 202                 |
+| Coverage               | 94%                 |
 | Regex patterns         | 6                   |
-| Implementation         | ~400 lines          |
+| Implementation         | ~500 lines          |
+| Scan time              | <1 second           |
 
 ## What's Next
 
@@ -124,15 +119,13 @@ This embeddings approach builds on prior work. In [tfidf-to-transformers-with-di
 
 ## What I Learned
 
-**Documentation can be validated like code.** The same patterns compilers use — parse, build symbol table, resolve, report — apply to structured documentation. If your docs have semantic cross-references, you can build tooling to validate them.
+**Analogies accelerate design.** The compiler analogy didn't just explain the architecture, it shaped it. Recognizing documentation validation as a solved problem in another domain (compilers have done this for decades) saved weeks of exploration. Parse → symbol table → resolve → report. The pattern transferred directly.
 
-**"Errors" require interpretation.** 448 broken references sounds like failure. Most are historical drift — evidence of evolution, not bugs. The tool reports; the human interprets.
+**Documentation can be validated like code.** If your docs have semantic cross-references, you can build tooling to validate them. The same patterns that catch undefined variables in code catch broken section references in documentation.
 
-**Real data validates design decisions.** The identifier list seemed complete until real-world testing showed 152 warnings. Design → Test → Real-world → Fix is a necessary loop.
+**"Errors" require interpretation.** The 6 broken references are all to Section 2.6, which doesn't exist. Are they bugs to fix, or historical references to a section that was removed? The tool reports; the human interprets.
 
-**Analogies accelerate design.** The compiler analogy didn't just explain the architecture — it shaped it. Recognizing documentation validation as a solved problem in another domain saved weeks of exploration.
-
-**Fixtures encode assumptions.** Test fixtures work great for TDD — until you discover real data looks different. The trailing period bug (448 false positives) would have been caught by opening one real file before creating the fixture. Before writing tests against synthetic fixtures, verify the fixture format matches actual production data.
+**Real data validates assumptions.** The identifier list seemed complete until real-world testing showed 152 warnings for "unknown" identifiers (short forms like "DSM 1" vs "DSM 1.0"). Similarly, test fixtures encode assumptions about data format. Running against real files early catches gaps that unit tests miss.
 
 ---
 

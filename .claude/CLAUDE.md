@@ -1,4 +1,4 @@
-@D:/data-science/agentic-ai-data-science-methodology/DSM_Custom_Instructions_v1.1.md
+@~/dsm-agentic-ai-data-science-methodology/DSM_Custom_Instructions_v1.1.md
 
 # Project: DSM Graph Explorer
 
@@ -42,9 +42,9 @@ dsm-graph-explorer/
 
 ## Environment
 
-- **Platform**: Windows
-- **Project path**: `D:\data-science\dsm-graph-explorer\`
-- **DSM repository**: `D:\data-science\agentic-ai-data-science-methodology\`
+- **Platform**: Linux (WSL2)
+- **Project path**: `~/dsm-graph-explorer/`
+- **DSM repository**: `~/dsm-agentic-ai-data-science-methodology/`
 
 ## Key References
 
@@ -91,3 +91,9 @@ Following Section 2.5.6 (Blog/Communication Deliverable Process):
 - **Materials**: `docs/blog/materials.md`
 - **Journal**: `docs/blog/journal.md` (daily observations)
 - **Steps**: Preparation → Scoping → Capture → Drafting → Review → Publication
+
+## Punctuation
+Use "," instead of "—" for connecting phrases in any language.
+The comma (,) is a punctuation mark used to separate elements in a list, set off introductory phrases, clarify meaning, or indicate a pause in a sentence.
+Semicolons (;) are used to connect closely related independent clauses—complete sentences that could stand alone—without using a coordinating conjunction like and or but.  They create a stronger pause than a comma but a softer break than a period. 
+Colon (:) is a punctuation mark used to introduce a list, explanation, quotation, or elaboration.  It appears after a complete independent clause to signal that what follows will clarify, expand on, or list related information.

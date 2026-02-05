@@ -63,36 +63,40 @@ git commit -m "Pre-WSL migration checkpoint"
 git push origin master
 ```
 
-### Step 2: Create WSL Directory Structure
+### Step 2: Choose WSL Directory Structure
+
+Projects can be placed either at home root (`~/project-name`) or in a subdirectory (`~/data-science/project-name`). The DSM ecosystem uses home root for primary projects:
 
 ```bash
 # In WSL terminal
+# Projects at home root (recommended for DSM ecosystem)
+cd ~
+
+# Or create subdirectory if preferred
 mkdir -p ~/data-science
-cd ~/data-science
 ```
 
 ### Step 3: Copy Projects
 
 **Option A: Copy from Windows mount (preserves local changes)**
 ```bash
-# Copy entire project folder
-cp -r /mnt/d/data-science/your-project ~/data-science/
+# Copy entire project folder to home root
+cp -r /mnt/d/data-science/your-project ~/your-project
 
-# For multiple projects
-cp -r /mnt/d/data-science/project-a ~/data-science/
-cp -r /mnt/d/data-science/project-b ~/data-science/
+# Or to subdirectory
+cp -r /mnt/d/data-science/your-project ~/data-science/your-project
 ```
 
 **Option B: Fresh clone (clean start)**
 ```bash
 # Clone from remote
-git clone https://github.com/your-org/your-project.git ~/data-science/your-project
+git clone https://github.com/your-org/your-project.git ~/your-project
 ```
 
 ### Step 4: Set Up Python Environment
 
 ```bash
-cd ~/data-science/your-project
+cd ~/your-project
 
 # Remove Windows venv if copied
 rm -rf .venv venv __pycache__
@@ -160,16 +164,20 @@ Or from Windows: `File > Open Folder > \\wsl$\Ubuntu\home\<username>\data-scienc
 
 ### DSM Graph Explorer
 ```bash
+cd ~/dsm-graph-explorer
+
 # Dependencies
 pip install -e ".[dev]"
 
 # Verify
 pytest tests/  # Expect 202 tests
-dsm-validate ~/data-science/agentic-ai-data-science-methodology
+dsm-validate ~/dsm-agentic-ai-data-science-methodology
 ```
 
 ### DSM Methodology Repository
 ```bash
+cd ~/dsm-agentic-ai-data-science-methodology
+
 # No Python dependencies, just markdown files
 # Verify git status
 git status
@@ -215,7 +223,7 @@ Always work in the WSL filesystem (`~/`), not in `/mnt/d/`. File operations are 
 
 ## Post-Migration Checklist
 
-- [ ] All projects copied to `~/data-science/`
+- [ ] All projects copied to WSL home directory (`~/project-name` or `~/data-science/project-name`)
 - [ ] Virtual environments recreated (not copied)
 - [ ] Tests pass for each project
 - [ ] Git remotes configured
@@ -223,6 +231,14 @@ Always work in the WSL filesystem (`~/`), not in `/mnt/d/`. File operations are 
 - [ ] VSCode connects via Remote-WSL
 - [ ] Claude Code sessions work in WSL terminal
 - [ ] Windows copies retained as backup (optional)
+
+### DSM Ecosystem Path Mappings
+
+| Project | WSL Path |
+|---------|----------|
+| DSM Methodology | `~/dsm-agentic-ai-data-science-methodology` |
+| DSM Graph Explorer | `~/dsm-graph-explorer` |
+| sql-query-agent | `~/sql-query-agent-ollama` (or as preferred) |
 
 ---
 
@@ -243,6 +259,6 @@ If migration fails, your Windows copies remain intact:
 
 ---
 
-**Guide version:** 1.0
-**Last updated:** 2026-02-04
+**Guide version:** 1.1
+**Last updated:** 2026-02-05
 **Author:** Alberto Diaz Durana (with AI assistance)

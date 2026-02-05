@@ -80,4 +80,57 @@
 
 ---
 
-**Last Updated:** 2026-02-04
+## Session: 2026-02-05 — WSL Migration Verification
+
+### What Happened
+
+1. **Environment migration** — Completed migration from Windows to WSL2 following DEC-004:
+   - DSM Central: `D:\data-science\agentic-ai-data-science-methodology` → `~/dsm-agentic-ai-data-science-methodology`
+   - Graph Explorer: `D:\data-science\dsm-graph-explorer` → `~/dsm-graph-explorer`
+
+2. **Path updates** — Updated documentation across both repositories:
+   - Graph Explorer CLAUDE.md (environment section, @ reference)
+   - WSL migration guide (v1.1, new path structure)
+   - DSM Central checkpoint (path mappings, diagram)
+
+3. **Environment verification** — Confirmed all systems operational:
+   - pytest: 202 tests passed (94% coverage, 1.05s)
+   - dsm-validate: Scanned 125 files in 0.08s, found 8 Section 2.6 errors
+
+4. **Stale venv fix** — Discovered copied venv had hardcoded Windows paths in shebangs. Resolution: delete and recreate.
+
+### Aha Moments
+
+1. **Venv portability trap** — Copying a Python venv across environments doesn't work; the shebang paths are hardcoded at creation time. Always recreate, never copy.
+
+2. **Documentation as infrastructure** — Migrating development environments requires updating multiple documentation files. A checklist helps ensure nothing is missed (CLAUDE.md, guides, checkpoints).
+
+3. **Hub-and-spoke in practice** — Updating DSM Central and Graph Explorer together demonstrated how the hub-and-spoke model handles cross-project changes. Changes propagate through file references, not copied content.
+
+4. **Folder naming matters** — Renaming `agentic-ai-data-science-methodology` to `dsm-agentic-ai-data-science-methodology` (adding prefix) makes `ls ~/dsm-*` show all related projects together.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| Files updated | 3 (CLAUDE.md, migration guide, DSM checkpoint) |
+| Tests verified | 202 passed |
+| Validation run | 125 files, 0.08s |
+| Venv recreated | Yes (stale path issue) |
+
+### Blog Material
+
+**Title options for WSL migration post:**
+1. "From Windows to WSL: Migrating a Documentation Validation Ecosystem"
+2. "Environment Standardization: Why We Moved Our AI-Assisted Projects to Linux"
+3. "The Venv Portability Trap and Other Migration Lessons"
+
+**Key narrative threads:**
+- Decision-driven migration (DEC-004 as structured approach)
+- Environment parity: dev matches CI/CD
+- Practical pitfalls: venv shebangs, path updates
+- Hub-and-spoke coordination across projects
+
+---
+
+**Last Updated:** 2026-02-05

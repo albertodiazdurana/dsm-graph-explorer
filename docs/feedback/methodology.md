@@ -199,8 +199,16 @@
 - **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
 - **Recommendation:** Add `done/` subfolder pattern to DSM docs folder structure guidance.
 
+### Entry 14: Blog Post Dating — Missing Standard
+- **Date:** 2026-02-05 | **Sprint:** Epoch 2 (Pre-Sprint 4) | **Type:** Gap
+- **Context:** Writing blog post about WSL migration. Initial draft had informal date format.
+- **Finding:** Section 2.5.6-2.5.8 (Blog/Communication Deliverable Process) specifies the overall process but does not include a standard format for blog post metadata. Posts should have consistent fields: Date, Author, Status (Draft/Published), Target Platform.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 3 (Avg: 3.0)
+- **Reasoning:** Blog posts are deliverables that persist. Without standard metadata, posts lack context for readers and future reference.
+- **Recommendation:** Add blog post metadata template to Section 2.5.6: `**Date:** YYYY-MM-DD`, `**Author:**`, `**Status:** Draft|Review|Published`, `**Platform:** LinkedIn|Blog|etc`. See `backlogs.md`.
+
 ---
 
-**Last Updated:** 2026-02-04
-**Entries So Far:** 13
-**Average Score:** 3.87
+**Last Updated:** 2026-02-05
+**Entries So Far:** 14
+**Average Score:** 3.81

@@ -96,6 +96,19 @@
 - **Proposed Solution:** Add to DSM 4.0: "Before writing tests against synthetic fixtures, verify the fixture format matches actual production data. Run at least one capability experiment on real data in Sprint 1 to validate assumptions. If the project parses or processes external data, inspect representative samples of that data before creating test fixtures."
 - **Evidence:** Three assumption gaps in dsm-graph-explorer all stemmed from not checking real data early: (1) KNOWN_DSM_IDS incomplete, (2) DSM short forms missed, (3) trailing period format missed. All would have been caught by opening one real DSM file in Sprint 1.
 
+### Add blog post metadata template to Section 2.5.6
+- **DSM Section:** Section 2.5.6 (Blog/Communication Deliverable Process)
+- **Problem:** The blog process specifies preparation, scoping, drafting, and publication steps but does not include a standard metadata format for blog posts themselves. Posts lack consistent fields for date, author, status, and platform.
+- **Proposed Solution:** Add to Section 2.5.6 a blog post metadata template:
+  ```markdown
+  **Date:** YYYY-MM-DD
+  **Author:** [Name]
+  **Status:** Draft | Review | Published
+  **Platform:** LinkedIn | Blog | GitHub | etc
+  ```
+  All blog posts should include this header for consistency and future reference.
+- **Evidence:** Writing WSL migration blog post; initial draft used informal date format. Standardizing ensures posts are properly dated and trackable.
+
 ---
 
 ## Low Priority
@@ -104,5 +117,5 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-02-04
-**Total Proposals:** 10
+**Last Updated:** 2026-02-05
+**Total Proposals:** 11
