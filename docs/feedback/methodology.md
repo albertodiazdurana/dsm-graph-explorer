@@ -207,8 +207,16 @@
 - **Reasoning:** Blog posts are deliverables that persist. Without standard metadata, posts lack context for readers and future reference.
 - **Recommendation:** Add blog post metadata template to Section 2.5.6: `**Date:** YYYY-MM-DD`, `**Author:**`, `**Status:** Draft|Review|Published`, `**Platform:** LinkedIn|Blog|etc`. See `backlogs.md`.
 
+### Entry 15: Mermaid Diagrams for Blog Posts — Effective Workflow
+- **Date:** 2026-02-05 | **Sprint:** Epoch 2 (Pre-Sprint 4) | **Type:** Success
+- **Context:** Creating architecture diagram for Epoch 1 LinkedIn blog post. Needed a visual showing the compiler-inspired pipeline (Parser → Symbol Table → Resolver → Validator).
+- **Finding:** Mermaid syntax + mermaid.live provides an efficient diagram workflow for blog posts. The AI assistant generates Mermaid code, user iterates on layout in text, then renders once at mermaid.live for PNG export. Text-based source is version-controllable. Vertical layouts (`flowchart TB`) with horizontal subgraphs work well for LinkedIn's feed format.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
+- **Reasoning:** Mermaid is already supported in GitHub markdown, making source files self-documenting. The workflow (generate → iterate → export) is faster than visual diagramming tools.
+- **Recommendation:** Add Mermaid diagram recommendation to Section 2.5.6. See `backlogs.md`.
+
 ---
 
 **Last Updated:** 2026-02-05
-**Entries So Far:** 14
-**Average Score:** 3.81
+**Entries So Far:** 15
+**Average Score:** 3.89

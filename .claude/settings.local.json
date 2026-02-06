@@ -7,7 +7,13 @@
       "Bash(gh repo view:*)",
       "WebFetch(domain:github.com)",
       "Bash(git status:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(source:*)",
+      "Bash(pytest:*)",
+      "Bash(.venv/Scripts/activate.bat)",
+      "Bash(wsl -e bash -c \"cd ~/data-science/dsm-graph-explorer && source .venv/bin/activate && python --version && pytest tests/ -v --tb=short 2>&1 | head -150\":*)",
+      "Bash(wsl -e bash -c \"cd ~/data-science/dsm-graph-explorer && source .venv/bin/activate && pip install -e ''.[dev]'' 2>&1 | tail -20\")",
+      "Bash(wsl -e bash -c \"cd ~/data-science/dsm-graph-explorer && source .venv/bin/activate && pytest tests/ -v --tb=short 2>&1\":*)"
     ]
   }
 }

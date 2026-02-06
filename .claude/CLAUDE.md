@@ -1,4 +1,4 @@
-@~/dsm-agentic-ai-data-science-methodology/DSM_Custom_Instructions_v1.1.md
+@~/dsm-agentic-ai-data-science-methodology/DSM_0.2_Custom_Instructions_v1.1.md
 
 # Project: DSM Graph Explorer
 

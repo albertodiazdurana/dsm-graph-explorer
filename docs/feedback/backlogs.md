@@ -109,6 +109,19 @@
   All blog posts should include this header for consistency and future reference.
 - **Evidence:** Writing WSL migration blog post; initial draft used informal date format. Standardizing ensures posts are properly dated and trackable.
 
+### Add Mermaid diagram recommendation to blog deliverable process
+- **DSM Section:** Section 2.5.6-2.5.8 (Blog/Communication Deliverable Process)
+- **Problem:** Blog posts benefit from visual diagrams (architecture, workflows, pipelines), but DSM does not recommend specific tools or workflows for creating them. Authors may spend time evaluating options or creating diagrams in inconsistent formats.
+- **Proposed Solution:** Add to Section 2.5.6 a recommendation for diagram creation:
+  ```markdown
+  **Diagrams:** Use Mermaid syntax for architecture and flow diagrams.
+  - Render at mermaid.live for PNG/SVG export
+  - Store source in docs/blog/<epoch>/images/ as .mmd files
+  - Vertical layouts (flowchart TB) work better for LinkedIn feed
+  ```
+  Mermaid is text-based (version-controllable), renders in GitHub markdown, and exports cleanly for social media.
+- **Evidence:** Created architecture diagram for Epoch 1 blog post using Mermaid. The AI assistant generated the diagram code, user rendered at mermaid.live, exported PNG for LinkedIn. Workflow was efficient: text-based iteration, then single export step.
+
 ---
 
 ## Low Priority
@@ -118,4 +131,4 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-02-05
-**Total Proposals:** 11
+**Total Proposals:** 12
