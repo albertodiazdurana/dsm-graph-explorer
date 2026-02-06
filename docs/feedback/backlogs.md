@@ -128,6 +128,15 @@
 - **Proposed Solution:** Add to Section 2.5.6: "Name blog post files with date prefix: `YYYY-MM-DD-title.md` (e.g., `2026-02-05-compiler-architecture.md`). Use the publication date. This matches static site generator conventions (Jekyll, Hugo) and enables chronological sorting in directory listings."
 - **Evidence:** Renamed three blog files in dsm-graph-explorer from generic names to date-prefixed names. Immediately improved discoverability.
 
+### Clarify journal.md vs materials.md roles in blog deliverable process
+- **DSM Section:** Section 2.5.6 (Blog/Communication Deliverable Process)
+- **Problem:** Section 2.5.6 specifies "Materials" and "Journal" as separate blog deliverables, but their roles overlap in practice. Three issues: (1) journal.md accumulates "Blog Material" subsections that duplicate what materials.md is for, (2) materials.md is per-epoch but blog posts are per-topic, so one materials.md per epoch is insufficient when multiple posts exist, (3) maintaining two overlapping files adds overhead without clear benefit.
+- **Proposed Solution:** Two options:
+  - **Option A (Separate):** Clarify that journal = session-scoped observations only (no draft content), and materials = one file per blog post (not per epoch), named `YYYY-MM-DD-title-materials.md`.
+  - **Option B (Merge):** Replace both with a single `YYYY-MM-DD-title-materials.md` per blog post that includes both capture notes and draft structure. The journal becomes unnecessary as a standalone file; observations live inside the post's materials file.
+  Either option should specify: (a) exactly what goes in each file, (b) when each file is created/updated, (c) how to handle multiple posts per epoch.
+- **Evidence:** In dsm-graph-explorer Epoch 2, materials.md covers only the WSL migration post, while journal.md contains blog material for both WSL and Sprint 4. The journal's "Blog Material" sections are the actual preparation content; materials.md is a one-time pre-draft that wasn't maintained as the epoch progressed.
+
 ---
 
 ## Low Priority
@@ -136,5 +145,5 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-02-05
-**Total Proposals:** 13
+**Last Updated:** 2026-02-06
+**Total Proposals:** 14

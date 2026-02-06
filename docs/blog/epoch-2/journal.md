@@ -1,8 +1,8 @@
 # Epoch 2 Blog Journal
 
+**Date:** 2026-02-04 (started)
 **Project:** DSM Graph Explorer
 **Epoch:** 2 (Exclusion, Semantic Validation, Graph Prototype)
-**Started:** 2026-02-04
 
 ---
 
@@ -133,4 +133,50 @@
 
 ---
 
-**Last Updated:** 2026-02-05
+## Session: 2026-02-06 — Sprint 4: Exclusion & Severity
+
+### What Happened
+
+1. **Phase 4.1: Config Infrastructure** (previous session) — Built Pydantic config models (`Config`, `SeverityMapping`), YAML loading, config file discovery, CLI merge logic. 36 tests.
+
+2. **Phase 4.2: Exclusion Logic** (previous session) — Implemented `file_filter.py` with fnmatch-based patterns, `--exclude` and `--config` CLI options. EXP-001 validated. 18 tests.
+
+3. **Phase 4.3: Severity Levels** — Added INFO to Severity enum, created `assign_severity()` and `apply_severity_overrides()` functions. Post-validation override pattern: validator assigns base severity, then config patterns remap it. Wired through CLI and updated reporter for three-level output. EXP-002 validated. 19 new tests.
+
+4. **Real-world validation** — Ran against DSM repo: 125 files, 10 errors (Section 2.6), 0 warnings, 0 info. Added `"0.2"` to KNOWN_DSM_IDS (was causing 44 warnings).
+
+5. **Sprint boundary documentation** — Updated methodology.md (Entry 17), checkpoint document, epoch-2-plan.md (all Sprint 4 tasks marked complete), CLAUDE.md (full Sprint Boundary Checklist from DSM 2.0 Template 8), README.
+
+### Aha Moments
+
+1. **Post-validation override is clean** — Instead of embedding severity logic in the validator, applying overrides after validation keeps the core logic simple. `dataclasses.replace()` creates new results without mutation.
+
+2. **Research-first planning pays off** — The research phase (Session 2026-02-04) grounded the fnmatch and Pydantic choices. Sprint 4 implementation had no surprises; every design decision was pre-validated.
+
+3. **EXP-002 test matrix as specification** — Writing the test matrix in the plan document, then implementing it as tests, made the specification executable. The tests ARE the specification.
+
+4. **Three-phase sprint structure works** — Splitting Sprint 4 into Config → Exclusion → Severity kept each phase focused and testable. Natural dependency order.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| Tests added | 73 |
+| Total tests | 218 |
+| Coverage | 95% |
+| New source files | 2 (`config_loader.py`, `file_filter.py`) |
+| Modified source files | 3 (`cli.py`, `cross_ref_validator.py`, `report_generator.py`) |
+| EXP-001 cases | 4/4 passed |
+| EXP-002 cases | 7/7 passed |
+
+### Blog Material
+
+**Sprint 4 narrative thread:**
+- From 448 errors to 10: the journey of making error reports actionable
+- Config files as documentation: `.dsm-graph-explorer.yml` tells you what to exclude and why
+- Severity levels let teams triage: ERROR for core docs, INFO for drafts, WARNING as default
+- Post-validation override: a clean pattern for separating "what's wrong" from "how bad is it"
+
+---
+
+**Last Updated:** 2026-02-06

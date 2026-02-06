@@ -1,5 +1,6 @@
 # Blog Materials Document - DSM Graph Explorer Project
 
+**Date:** 2026-01-31
 **Project:** DSM Graph Explorer (dsm-graph-explorer)
 **Blog Status:** Preparation phase
 **Target Platform:** LinkedIn Article + GitHub README

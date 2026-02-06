@@ -82,14 +82,20 @@ This project uses Claude Code to write files directly. User reviews in IDE.
 ## DSM Alignment
 
 - Check `docs/backlog/` at session start for any DSM alignment reports
-- Update `docs/feedback/` files (backlogs.md, methodology.md, blog.md) at sprint boundaries
-- Follow the sprint boundary checklist: checkpoint, feedback files, decision log, blog entry
+- At sprint boundaries, follow the Sprint Boundary Checklist (DSM 2.0 Template 8):
+  - [ ] Checkpoint document created (`docs/checkpoints/`)
+  - [ ] Feedback files updated (`docs/feedback/backlogs.md`, `docs/feedback/methodology.md`)
+  - [ ] Decision log updated with sprint decisions (`docs/decisions/`)
+  - [ ] Blog journal entry written (`docs/blog/<epoch>/journal.md`)
+  - [ ] Repository README updated (status, results, structure)
+- At phase boundaries (intra-sprint): update blog materials if insights worth sharing
 
 ## Blog Integration
 
 Following Section 2.5.6 (Blog/Communication Deliverable Process):
-- **Materials**: `docs/blog/materials.md`
-- **Journal**: `docs/blog/journal.md` (daily observations)
+- **Materials**: `docs/blog/<epoch>/materials.md`
+- **Journal**: `docs/blog/<epoch>/journal.md` (daily observations)
+- **File naming**: `YYYY-MM-DD-title.md` for blog posts
 - **Steps**: Preparation → Scoping → Capture → Drafting → Review → Publication
 
 ## Punctuation

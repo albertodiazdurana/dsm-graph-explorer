@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.2.0
-**Status:** Epoch 2 In Progress (Sprint 4)
+**Status:** Epoch 2 In Progress (Sprint 4 complete)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -28,6 +28,13 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 
 **Implemented (Sprint 3 — CLI):**
 - CLI interface (`dsm-validate`) — accepts files or directories, recursive scanning, `--strict` for CI, `--output` for saved reports
+
+**Implemented (Sprint 4 — Exclusion & Severity):**
+- YAML configuration file (`.dsm-graph-explorer.yml`) with Pydantic validation
+- File exclusion patterns (`--exclude` flag, repeatable, supports fnmatch globs)
+- Severity levels (ERROR/WARNING/INFO) with config-based overrides by file pattern
+- `--strict` respects severity (only fails on ERROR)
+- Config file discovery (walks up directory tree)
 
 **Future (SHOULD scope):**
 - Pre-commit hook integration
@@ -119,6 +126,12 @@ dsm-validate /path/to/dsm-repo --output report.md
 # Strict mode for CI (exit code 1 if errors found)
 dsm-validate /path/to/dsm-repo --strict
 
+# Exclude files by pattern (repeatable)
+dsm-validate /path/to/dsm-repo --exclude 'plan/*' --exclude 'CHANGELOG.md'
+
+# Use a config file
+dsm-validate /path/to/dsm-repo --config .dsm-graph-explorer.yml
+
 # Check version consistency across files
 dsm-validate docs/ --version-files DSM_0.md --version-files README.md
 
@@ -180,8 +193,8 @@ For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) a
 - [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 150 tests at 98% coverage, first DSM integrity report (448 → 6 errors after trailing period fix)
 
 ### Epoch 2: Productionization & Graph (In Progress)
-- [ ] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels *(current)*
-- [ ] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, remediation docs
+- [x] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels (218 tests, 95% coverage)
+- [ ] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, remediation docs *(next)*
 - [ ] **Sprint 6:** Semantic Validation — TF-IDF similarity, drift detection ([research](docs/research/e2_handoff_graph_explorer_research.md))
 - [ ] **Sprint 7:** Graph Prototype — NetworkX graph builder, queries, GraphML export
 
@@ -218,7 +231,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-05
-**Current Status:** Epoch 2 in progress (Sprint 4)
-**Tests:** 202 passed, 94% coverage
-**DSM Validation:** 8 broken references (all reference non-existent Section 2.6)
+**Last Updated:** 2026-02-06
+**Current Status:** Epoch 2 in progress (Sprint 4 complete, Sprint 5 next)
+**Tests:** 218 passed, 95% coverage
+**DSM Validation:** 10 errors (all reference non-existent Section 2.6), 0 warnings, 0 info

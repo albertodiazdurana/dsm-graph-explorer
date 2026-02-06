@@ -1,5 +1,6 @@
 # Epoch 2 Blog Materials — WSL Migration
 
+**Date:** 2026-02-05
 **Project:** DSM Graph Explorer + DSM Central
 **Topic:** Environment Migration (Windows → WSL2)
 **Status:** Draft materials

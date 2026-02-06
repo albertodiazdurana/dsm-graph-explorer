@@ -21,10 +21,10 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 ### Scope (MoSCoW)
 
 **MUST (Epoch 2 Core):**
-- [ ] File exclusion patterns (`--exclude` flag)
-- [ ] YAML configuration file (`.dsm-graph-explorer.yml`)
-- [ ] Severity levels by file pattern (ERROR/WARNING/INFO)
-- [ ] `--strict` respects severity (only fails on ERROR)
+- [x] File exclusion patterns (`--exclude` flag)
+- [x] YAML configuration file (`.dsm-graph-explorer.yml`)
+- [x] Severity levels by file pattern (ERROR/WARNING/INFO)
+- [x] `--strict` respects severity (only fails on ERROR)
 - [ ] CI workflow template for GitHub Actions
 - [ ] Remediation documentation
 
@@ -44,16 +44,16 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 ### Success Criteria
 
 **Technical:**
-- [ ] Exclusion patterns reduce 6 → 0 actionable errors on DSM repo
+- [x] Exclusion patterns reduce 6 → 0 actionable errors on DSM repo
 - [ ] CI workflow passes on clean core docs
 - [ ] Semantic validation detects renamed sections (TF-IDF)
 - [ ] Graph prototype enables navigation queries
 
 **Process:**
-- [ ] Each sprint produces working increment
-- [ ] Feedback files updated at sprint boundaries
-- [ ] Blog material captured for Epoch 2 writeup
-- [ ] Experiments documented with results
+- [x] Each sprint produces working increment
+- [x] Feedback files updated at sprint boundaries
+- [x] Blog material captured for Epoch 2 writeup
+- [x] Experiments documented with results
 
 **Deliverable:**
 - [ ] Production-ready CLI with exclusion and CI support
@@ -132,69 +132,71 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 
 ## Sprint Structure
 
-### Sprint 4: Exclusion & Severity
+### Sprint 4: Exclusion & Severity ✅
 
 **Duration:** 1-2 sessions
 **Objective:** Implement file exclusion and severity classification to focus validation on actionable errors.
+**Status:** COMPLETE (2026-02-06)
 
 #### Phase 4.1: Config Infrastructure
 
 **Tasks:**
-1. [ ] Add `pydantic>=2.0` and `pyyaml>=6.0` to dependencies
-2. [ ] Create `src/config/config_loader.py`:
-   - [ ] `Config` Pydantic model (exclude, severity, strict)
-   - [ ] `SeverityMapping` model (pattern, level)
-   - [ ] `load_config()` function (YAML → Config)
-   - [ ] Config file discovery (`.dsm-graph-explorer.yml`)
-3. [ ] Write `tests/test_config.py`:
-   - [ ] Valid config parsing
-   - [ ] Missing file (returns defaults)
-   - [ ] Invalid YAML (clear error)
-   - [ ] Invalid patterns (validation error)
+1. [x] Add `pydantic>=2.0` and `pyyaml>=6.0` to dependencies
+2. [x] Create `src/config/config_loader.py`:
+   - [x] `Config` Pydantic model (exclude, severity, strict)
+   - [x] `SeverityMapping` model (pattern, level)
+   - [x] `load_config()` function (YAML → Config)
+   - [x] Config file discovery (`.dsm-graph-explorer.yml`)
+3. [x] Write `tests/test_config.py`:
+   - [x] Valid config parsing
+   - [x] Missing file (returns defaults)
+   - [x] Invalid YAML (clear error)
+   - [x] Invalid patterns (validation error)
 
-**Tests:** Run EXP-001 pattern tests
+**Tests:** EXP-001 pattern tests PASSED
 
 #### Phase 4.2: Exclusion Logic
 
 **Tasks:**
-1. [ ] Update `src/cli.py`:
-   - [ ] Add `--exclude` option (`multiple=True`)
-   - [ ] Add `--config` option for config file path
-   - [ ] Merge CLI options with config file (CLI wins)
-2. [ ] Create `src/filter/file_filter.py`:
-   - [ ] `should_exclude(filepath, patterns)` using fnmatch
-   - [ ] Handle relative paths correctly
-3. [ ] Update `collect_markdown_files()` to apply exclusions
-4. [ ] Write tests for exclusion logic
+1. [x] Update `src/cli.py`:
+   - [x] Add `--exclude` option (`multiple=True`)
+   - [x] Add `--config` option for config file path
+   - [x] Merge CLI options with config file (CLI wins)
+2. [x] Create `src/filter/file_filter.py`:
+   - [x] `should_exclude(filepath, patterns)` using fnmatch
+   - [x] Handle relative paths correctly
+3. [x] Update `collect_markdown_files()` to apply exclusions
+4. [x] Write tests for exclusion logic
 
-**Validation:** Run against DSM repo with `--exclude plan/*` should reduce errors.
+**Validation:** DSM repo with exclusions reduces to actionable errors only.
 
 #### Phase 4.3: Severity Levels
 
 **Tasks:**
-1. [ ] Update `src/validator/cross_ref_validator.py`:
-   - [ ] `Severity` enum already exists (ERROR, WARNING)
-   - [ ] Add INFO level
-   - [ ] `assign_severity(filepath, mappings)` function
-2. [ ] Update `--strict` to only fail on ERROR
-3. [ ] Update reporter to group by severity
-4. [ ] Write tests for severity assignment
+1. [x] Update `src/validator/cross_ref_validator.py`:
+   - [x] `Severity` enum already exists (ERROR, WARNING)
+   - [x] Add INFO level
+   - [x] `assign_severity(filepath, mappings)` function
+2. [x] Update `--strict` to only fail on ERROR
+3. [x] Update reporter to group by severity
+4. [x] Write tests for severity assignment
 
-**Tests:** Run EXP-002 severity tests
+**Tests:** EXP-002 severity tests PASSED
 
 #### Sprint 4 Deliverables
 
-- [ ] `--exclude` CLI flag working
-- [ ] `.dsm-graph-explorer.yml` config file support
-- [ ] Severity levels (ERROR/WARNING/INFO)
-- [ ] `--strict` respects severity
-- [ ] 20+ new tests for config and exclusion
+- [x] `--exclude` CLI flag working
+- [x] `.dsm-graph-explorer.yml` config file support
+- [x] Severity levels (ERROR/WARNING/INFO)
+- [x] `--strict` respects severity
+- [x] 73 new tests for config, exclusion, and severity (218 total)
 
 **Sprint boundary:**
-- [ ] DSM feedback update
-- [ ] Decision document (DEC-004: Exclusion and Severity Design)
-- [ ] Checkpoint document
-- [ ] Blog journal entry
+- [x] DSM feedback update (methodology.md Entry 17)
+- [ ] Decision document (DEC-005: Exclusion and Severity Design)
+- [x] Checkpoint document (2026-02-06_sprint4-complete)
+- [x] Blog journal entry
+- [x] README updated
 
 ---
 
@@ -573,7 +575,7 @@ Updated at every sprint boundary:
 
 ---
 
-**Plan Status:** Ready for Sprint 4
-**Last Updated:** 2026-02-04
+**Plan Status:** Sprint 4 complete, ready for Sprint 5
+**Last Updated:** 2026-02-06
 **Previous:** [epoch-1-plan.md](epoch-1-plan.md)
 **Research:** [e2_handoff_graph_explorer_research.md](../research/e2_handoff_graph_explorer_research.md)

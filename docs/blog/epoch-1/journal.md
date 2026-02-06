@@ -1,7 +1,7 @@
 # Blog Journal - DSM Graph Explorer Implementation
 
+**Date:** 2026-01-31 (started)
 **Purpose:** Capture daily observations, design decisions, and "aha moments" during implementation for blog drafting.
-
 **Reference:** Section 2.5.6 (Blog/Communication Deliverable Process) — Step 3: Capture
 
 ---

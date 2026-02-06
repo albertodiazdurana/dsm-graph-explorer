@@ -4,7 +4,7 @@
 **Author:** Alberto Diaz Durana
 **DSM Version Used:** DSM 4.0 v1.0, DSM 1.0 v1.1
 **Date:** 2026-01-31 (started)
-**Duration:** Sprint 1-3 complete
+**Duration:** Sprint 1-4 complete
 
 ---
 
@@ -12,10 +12,10 @@
 
 | Item | Planned | Actual |
 |------|---------|--------|
-| **Objective** | Repository integrity validator for DSM cross-references | Complete — CLI tool validates 122 files, finds 448 broken refs |
-| **Language** | Python 3.12+ | Active — pytest, Click, Rich |
-| **Timeline** | 4 sprints (Parser → Validation → CLI → Documentation) | Sprint 3 complete |
-| **Deliverables** | CLI tool + integrity reports + blog | CLI done, first report generated |
+| **Objective** | Repository integrity validator for DSM cross-references | Complete — CLI tool validates 125 files with config-based severity |
+| **Language** | Python 3.12+ | Active — pytest, Click, Rich, Pydantic, PyYAML |
+| **Timeline** | 7 sprints (Parser → Validation → CLI → Config → CI → Semantic → Graph) | Sprint 4 complete |
+| **Deliverables** | CLI tool + integrity reports + blog | CLI with exclusions, config, severity levels |
 
 ---
 
@@ -45,6 +45,16 @@
 - First real-world run: 122 files, 448 errors, 0 warnings (after fix)
 - DEC-002: CLI design choices documented
 
+### Sprint 4: Exclusion & Severity (Epoch 2)
+- `src/config/config_loader.py` — Pydantic config models, YAML loading, config discovery
+- `src/filter/file_filter.py` — fnmatch-based exclusion patterns
+- `src/validator/cross_ref_validator.py` — INFO severity, `assign_severity()`, `apply_severity_overrides()`
+- `src/reporter/report_generator.py` — INFO sections in markdown and Rich output
+- `src/cli.py` — `--exclude`, `--config`, severity wiring, info count in summary
+- 73 new tests (218 total), 95% coverage
+- EXP-001 (Exclusion Patterns) and EXP-002 (Severity Classification) validated
+- Real-world run: 125 files, 10 errors (Section 2.6), 0 warnings, 0 info
+
 ---
 
 ## 3. Libraries & Tools
@@ -53,6 +63,8 @@
 |---------|---------|---------|
 | click | 8.1+ | CLI framework |
 | rich | 13.0+ | Console output formatting |
+| pydantic | 2.0+ | Config validation (Sprint 4) |
+| pyyaml | 6.0+ | YAML config parsing (Sprint 4) |
 | pytest | 7.4+ | Testing framework |
 | pytest-cov | 4.1+ | Coverage reporting |
 
@@ -65,12 +77,13 @@
 | DSM Section | Sprint | Times Used | Avg Score | Top Issue |
 |-------------|--------|------------|-----------|-----------|
 | DSM 4.0 Section 2 (Project Structure) | Phase 0, S1, S3 | 4 | 3.3 | docs/ folder structure unclear for agents |
-| DSM 4.0 Section 3 (Development Protocol) | S1, S2, S3 | 4 | 3.5 | Missing pre-generation brief, explicit approval |
-| Section 2.5.6 (Blog Process) | Phase 0, S1 | 2 | 5.0 | None |
-| Section 6.4 (Checkpoint Protocol) | S1, S2, S3 | 3 | 4.5 | Missing sprint boundary checklist |
+| DSM 4.0 Section 3 (Development Protocol) | S1, S2, S3, S4 | 5 | 3.7 | Missing pre-generation brief, explicit approval |
+| Section 2.5.6 (Blog Process) | Phase 0, S1, S4 | 3 | 4.5 | Date prefix and metadata missing |
+| Section 6.4 (Checkpoint Protocol) | S1, S2, S3, S4 | 4 | 4.5 | Missing sprint boundary checklist |
 | Section 6.5 (Gateway Reviews) | S2 | 1 | 5.0 | None |
 | Custom Instructions Template | S2, S3 | 2 | 3.5 | Explicit approval wording needed |
 | Cross-Project Alignment (new) | S3 | 1 | 5.0 | Should be formalized in DSM |
+| Research-First Planning (new) | S4 | 1 | 4.5 | Effective; should be standard |
 
 ### Entry 1: DSM 4.0 Section 2 (Project Structure Patterns)
 - **Date:** 2026-01-31 | **Sprint:** Phase 0 | **Type:** Success
@@ -178,12 +191,13 @@
 
 | Aspect | Planned | Actual | Delta |
 |--------|---------|--------|-------|
-| Sprints | 4 | 3 complete | On track |
+| Sprints | 7 (Epoch 2 plan) | 4 complete | On track |
 | Parser tests | 80%+ coverage | 98% coverage | Exceeded |
 | Validation tests | 80%+ coverage | 99% coverage | Exceeded |
 | CLI tests | 80%+ coverage | 98% coverage | Exceeded |
-| DSM errors found | Unknown | 448 → 6 (after fix) | Validated tool purpose |
-| Blog draft | Sprint 4 | Pending | On track |
+| Config/Filter tests | 80%+ coverage | 95% coverage | Exceeded |
+| DSM errors found | Unknown | 448 → 6 → 10 (after severity) | Validated tool purpose |
+| Blog posts | 1 per epoch | 2 published (Epoch 1 + WSL) | Ahead |
 
 ### Entry 12: Epoch 2 Planning Session — Research-First Approach
 - **Date:** 2026-02-04 | **Sprint:** Epoch 2 Planning | **Type:** Success
@@ -223,8 +237,24 @@
 - **Reasoning:** Standard in static site generators (Jekyll, Hugo). Simple to adopt, immediately useful as post count grows.
 - **Recommendation:** Add to Section 2.5.6: "Name blog files with date prefix: `YYYY-MM-DD-title.md`". See `backlogs.md`.
 
+### Entry 17: Sprint 4 — Post-Validation Severity Override Pattern
+- **Date:** 2026-02-06 | **Sprint:** Sprint 4 | **Type:** Success
+- **Context:** Implementing Phase 4.3 (Severity Levels). Needed to wire config-based severity mappings (`DSM_*.md: ERROR`, `plan/*: INFO`) into the validation pipeline without complicating the core validator.
+- **Finding:** Post-validation override pattern worked well: the validator assigns base severity (ERROR for broken refs, WARNING for unknown DSM), then `apply_severity_overrides()` remaps using config patterns. This keeps the validator logic clean and the override explicit. TDD with EXP-002 test matrix drove the implementation; all 7 EXP-002 tests passed on first run. The research phase (Entry 12) grounded the fnmatch and Pydantic choices, so implementation was straightforward.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 4 (Avg: 4.5)
+- **Reasoning:** Clean separation of concerns. Research-first planning (Entry 12) paid off; no surprises during implementation. 73 new tests brought total to 218. Real-world validation confirmed correct behavior: 10 errors (all Section 2.6), 0 warnings, 0 info.
+- **Recommendation:** None; this sprint went smoothly. The research-first approach and phased implementation (4.1→4.2→4.3) kept complexity manageable.
+
+### Entry 18: Blog File Roles — journal.md vs materials.md Overlap
+- **Date:** 2026-02-06 | **Sprint:** Sprint 4 (boundary) | **Type:** Gap
+- **Context:** Reviewing `docs/blog/<epoch>/` folder contents during sprint boundary checklist. Two files exist per epoch: `journal.md` (capture) and `materials.md` (preparation/scoping). The intended distinction: journal is chronological session notes, materials is a structured blog post blueprint.
+- **Finding:** Section 2.5.6 specifies "Materials" and "Journal" as separate deliverables, but their roles overlap in practice. Three issues: (1) journal.md contains "Blog Material" subsections that duplicate materials.md's purpose, (2) materials.md is per-epoch but blog posts are per-topic; when an epoch has multiple posts (e.g., Epoch 2 has WSL migration + Sprint 4-5 productionization), one materials.md is insufficient, (3) neither file name indicates its role clearly to an AI agent encountering the structure for the first time.
+- **Scores:** Clarity 2, Applicability 3, Completeness 2, Efficiency 2 (Avg: 2.25)
+- **Reasoning:** The two-file pattern adds overhead without clear value separation. In practice, journal entries accumulate "Blog Material" subsections that are the real preparation, while materials.md becomes a one-time pre-draft that isn't maintained. A single file per blog post (with both observations and draft structure) would be simpler.
+- **Recommendation:** Clarify in Section 2.5.6 whether journal and materials are distinct deliverables or can be merged. If distinct, specify: (a) journal = session-scoped observations only, no draft content, (b) materials = one per blog post, not per epoch. If merged, use a single `YYYY-MM-DD-title-materials.md` per post with both capture and draft sections. See `backlogs.md`.
+
 ---
 
 **Last Updated:** 2026-02-06
-**Entries So Far:** 16
-**Average Score:** 3.87
+**Entries So Far:** 18
+**Average Score:** 3.82
