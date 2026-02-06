@@ -15,7 +15,11 @@ from filter.file_filter import filter_files
 from parser.cross_ref_extractor import extract_cross_references
 from parser.markdown_parser import parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
-from validator.cross_ref_validator import Severity, validate_cross_references
+from validator.cross_ref_validator import (
+    Severity,
+    apply_severity_overrides,
+    validate_cross_references,
+)
 from validator.version_validator import validate_version_consistency
 
 
@@ -166,6 +170,11 @@ def main(
     # Validate cross-references
     cross_ref_results = validate_cross_references(documents, references)
 
+    # Apply severity overrides from config
+    cross_ref_results = apply_severity_overrides(
+        cross_ref_results, config.severity, config.default_severity
+    )
+
     # Validate version consistency
     version_results = []
     if version_files:
@@ -181,6 +190,7 @@ def main(
     # Summary line
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
+    infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
 
     summary_parts = [
         f"Scanned {len(md_files)} file(s)",
@@ -190,7 +200,7 @@ def main(
     summary_parts.append(f"in {elapsed:.2f}s.")
     summary_parts.append(
         f"Found {len(errors)} error(s), {len(warnings)} warning(s), "
-        f"{len(version_results)} version mismatch(es)."
+        f"{len(infos)} info(s), {len(version_results)} version mismatch(es)."
     )
 
     click.echo(f"\n{' '.join(summary_parts)}")

@@ -9,11 +9,14 @@ import pytest
 
 from parser.markdown_parser import ParsedDocument, Section, parse_markdown_file
 from parser.cross_ref_extractor import CrossReference, extract_cross_references
+from config.config_loader import SeverityMapping
 from validator.cross_ref_validator import (
     Severity,
     ValidationResult,
     build_section_index,
     validate_cross_references,
+    assign_severity,
+    apply_severity_overrides,
     KNOWN_DSM_IDS,
 )
 from validator.version_validator import (
@@ -257,6 +260,9 @@ class TestSeverityEnum:
     def test_warning_value(self):
         assert Severity.WARNING.value == "warning"
 
+    def test_info_value(self):
+        assert Severity.INFO.value == "info"
+
 
 class TestValidationResultDataclass:
     """Test ValidationResult dataclass structure."""
@@ -333,6 +339,126 @@ class TestFixtureValidation:
         errors = [r for r in results if r.severity == Severity.ERROR]
         # 2.4.8 (x2), 3.5, 4.4, 14, C.1.3 = at least 6 errors
         assert len(errors) >= 6
+
+
+# ===========================================================================
+# Severity Assignment Tests (EXP-002)
+# ===========================================================================
+
+
+class TestAssignSeverity:
+    """EXP-002: Severity Classification.
+
+    Test matrix from epoch-2-plan:
+    | File | Config Pattern | Expected Severity |
+    |------|----------------|-------------------|
+    | DSM_1.0.md | DSM_*.md: ERROR | ERROR |
+    | plan/draft.md | plan/*: INFO | INFO |
+    | docs/guide.md | (no match, default) | WARNING |
+    | plan/DSM_draft.md | Both patterns match | First match wins |
+    """
+
+    MAPPINGS = [
+        SeverityMapping(pattern="DSM_*.md", level="ERROR"),
+        SeverityMapping(pattern="plan/*", level="INFO"),
+        SeverityMapping(pattern="*.md", level="WARNING"),
+    ]
+
+    def test_dsm_file_matches_error(self):
+        """DSM_1.0.md matches DSM_*.md: ERROR."""
+        result = assign_severity("DSM_1.0.md", self.MAPPINGS)
+        assert result == Severity.ERROR
+
+    def test_plan_file_matches_info(self):
+        """plan/draft.md matches plan/*: INFO."""
+        result = assign_severity("plan/draft.md", self.MAPPINGS)
+        assert result == Severity.INFO
+
+    def test_unmatched_file_uses_default(self):
+        """docs/guide.md matches *.md fallback: WARNING."""
+        result = assign_severity("docs/guide.md", self.MAPPINGS)
+        assert result == Severity.WARNING
+
+    def test_first_match_wins(self):
+        """plan/DSM_draft.md: DSM_*.md matches filename first."""
+        # DSM_*.md matches the filename "DSM_draft.md"
+        result = assign_severity("plan/DSM_draft.md", self.MAPPINGS)
+        assert result == Severity.ERROR
+
+    def test_empty_mappings_uses_default(self):
+        """No mappings returns default severity."""
+        result = assign_severity("any_file.md", [])
+        assert result == Severity.WARNING
+
+    def test_custom_default_severity(self):
+        """Custom default severity is respected."""
+        result = assign_severity("any_file.md", [], default_severity="INFO")
+        assert result == Severity.INFO
+
+    def test_no_match_uses_default(self):
+        """File not matching any pattern uses default."""
+        mappings = [SeverityMapping(pattern="DSM_*.md", level="ERROR")]
+        result = assign_severity("README.md", mappings)
+        assert result == Severity.WARNING
+
+
+class TestApplySeverityOverrides:
+    """Tests for apply_severity_overrides function."""
+
+    def _make_result(self, source_file, severity=Severity.ERROR):
+        return ValidationResult(
+            severity=severity,
+            source_file=source_file,
+            line=1,
+            ref_type="section",
+            target="2.6",
+            message="Broken reference",
+            context="See Section 2.6",
+        )
+
+    def test_overrides_severity_based_on_file(self):
+        """Results have severity overridden by file pattern."""
+        mappings = [SeverityMapping(pattern="plan/*", level="INFO")]
+        results = [self._make_result("plan/draft.md")]
+
+        overridden = apply_severity_overrides(results, mappings)
+
+        assert overridden[0].severity == Severity.INFO
+
+    def test_no_mappings_returns_unchanged(self):
+        """Empty mappings return results unchanged."""
+        results = [self._make_result("DSM_1.0.md")]
+
+        overridden = apply_severity_overrides(results, [])
+
+        assert overridden[0].severity == Severity.ERROR
+
+    def test_mixed_files_get_different_severities(self):
+        """Different files get different severity overrides."""
+        mappings = [
+            SeverityMapping(pattern="DSM_*.md", level="ERROR"),
+            SeverityMapping(pattern="plan/*", level="INFO"),
+        ]
+        results = [
+            self._make_result("DSM_1.0.md"),
+            self._make_result("plan/draft.md"),
+        ]
+
+        overridden = apply_severity_overrides(results, mappings)
+
+        assert overridden[0].severity == Severity.ERROR
+        assert overridden[1].severity == Severity.INFO
+
+    def test_preserves_other_fields(self):
+        """Override only changes severity, not other fields."""
+        mappings = [SeverityMapping(pattern="plan/*", level="INFO")]
+        results = [self._make_result("plan/draft.md")]
+
+        overridden = apply_severity_overrides(results, mappings)
+
+        assert overridden[0].source_file == "plan/draft.md"
+        assert overridden[0].target == "2.6"
+        assert overridden[0].message == "Broken reference"
 
 
 # ===========================================================================

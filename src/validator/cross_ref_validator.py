@@ -6,11 +6,15 @@ found in markdown files point to actual sections defined in parsed documents.
 Uses severity levels:
 - ERROR: Section or appendix reference not found in any parsed document.
 - WARNING: DSM document reference not in the known identifiers list.
+- INFO: Issue in a file classified as informational by config.
 """
 
-from dataclasses import dataclass
+import fnmatch
+from dataclasses import dataclass, replace
 from enum import Enum
+from pathlib import Path
 
+from config.config_loader import SeverityMapping
 from parser.cross_ref_extractor import CrossReference
 from parser.markdown_parser import ParsedDocument
 
@@ -20,6 +24,7 @@ class Severity(Enum):
 
     ERROR = "error"
     WARNING = "warning"
+    INFO = "info"
 
 
 @dataclass
@@ -40,7 +45,8 @@ class ValidationResult:
 # Includes both short forms (DSM 1) and long forms (DSM 1.0).
 KNOWN_DSM_IDS: list[str] = [
     "0",      # START_HERE guide
-    "0.1",    # File naming quick reference
+    "0.1",    # File naming quick reference (deprecated)
+    "0.2",    # Custom instructions
     "1",      # DSM 1 (short form)
     "1.0",    # DSM 1.0 methodology
     "1.1",    # DSM 1.1 methodology update
@@ -130,3 +136,72 @@ def validate_cross_references(
                     )
 
     return results
+
+
+_SEVERITY_MAP: dict[str, Severity] = {
+    "ERROR": Severity.ERROR,
+    "WARNING": Severity.WARNING,
+    "INFO": Severity.INFO,
+}
+
+
+def assign_severity(
+    filepath: str | Path,
+    severity_mappings: list[SeverityMapping],
+    default_severity: str = "WARNING",
+) -> Severity:
+    """Assign severity to a file based on config pattern matching.
+
+    First matching pattern wins. Falls back to default_severity.
+
+    Args:
+        filepath: Path to the file being validated.
+        severity_mappings: Ordered list of pattern → severity mappings.
+        default_severity: Severity level when no pattern matches.
+
+    Returns:
+        The assigned Severity enum value.
+    """
+    filename = Path(filepath).name
+    normalized = str(filepath).replace("\\", "/")
+
+    for mapping in severity_mappings:
+        pattern = mapping.pattern.replace("\\", "/")
+        # Match against filename (for patterns without path separator)
+        if "/" not in pattern and fnmatch.fnmatch(filename, pattern):
+            return _SEVERITY_MAP[mapping.level]
+        # Match against full relative path
+        if fnmatch.fnmatch(normalized, pattern):
+            return _SEVERITY_MAP[mapping.level]
+
+    return _SEVERITY_MAP[default_severity]
+
+
+def apply_severity_overrides(
+    results: list[ValidationResult],
+    severity_mappings: list[SeverityMapping],
+    default_severity: str = "WARNING",
+) -> list[ValidationResult]:
+    """Override result severities based on config file patterns.
+
+    Args:
+        results: Validation results with base severities.
+        severity_mappings: Ordered list of pattern → severity mappings.
+        default_severity: Severity level when no pattern matches.
+
+    Returns:
+        New list with severities overridden by config patterns.
+        If no mappings, returns results unchanged.
+    """
+    if not severity_mappings:
+        return results
+
+    return [
+        replace(
+            r,
+            severity=assign_severity(
+                r.source_file, severity_mappings, default_severity
+            ),
+        )
+        for r in results
+    ]

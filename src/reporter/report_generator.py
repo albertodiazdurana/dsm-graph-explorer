@@ -29,6 +29,7 @@ def generate_markdown_report(
     """
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
+    infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
 
     lines: list[str] = []
     lines.append("# DSM Integrity Report")
@@ -37,10 +38,11 @@ def generate_markdown_report(
     lines.append("")
     lines.append(f"- **Errors:** {len(errors)}")
     lines.append(f"- **Warnings:** {len(warnings)}")
+    lines.append(f"- **Info:** {len(infos)}")
     lines.append(f"- **Version mismatches:** {len(version_results)}")
     lines.append("")
 
-    if not errors and not warnings and not version_results:
+    if not errors and not warnings and not infos and not version_results:
         lines.append("No issues found. All cross-references and versions are consistent.")
         lines.append("")
     else:
@@ -64,6 +66,19 @@ def generate_markdown_report(
             lines.append("| File | Line | Type | Target | Message |")
             lines.append("|------|------|------|--------|---------|")
             for r in warnings:
+                lines.append(
+                    f"| {r.source_file} | {r.line} | {r.ref_type} | "
+                    f"{r.target} | {r.message} |"
+                )
+            lines.append("")
+
+        # Info section
+        if infos:
+            lines.append("## Info")
+            lines.append("")
+            lines.append("| File | Line | Type | Target | Message |")
+            lines.append("|------|------|------|--------|---------|")
+            for r in infos:
                 lines.append(
                     f"| {r.source_file} | {r.line} | {r.ref_type} | "
                     f"{r.target} | {r.message} |"
@@ -107,6 +122,7 @@ def print_rich_report(
 
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
+    infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
 
     # Header
     console.print()
@@ -116,14 +132,16 @@ def print_rich_report(
     # Summary
     error_style = "red bold" if errors else "green"
     warn_style = "yellow" if warnings else "green"
+    info_style = "blue" if infos else "green"
     version_style = "red bold" if version_results else "green"
 
     console.print(f"  Errors:             [{error_style}]{len(errors)}[/{error_style}]")
     console.print(f"  Warnings:           [{warn_style}]{len(warnings)}[/{warn_style}]")
+    console.print(f"  Info:               [{info_style}]{len(infos)}[/{info_style}]")
     console.print(f"  Version mismatches: [{version_style}]{len(version_results)}[/{version_style}]")
     console.print()
 
-    if not errors and not warnings and not version_results:
+    if not errors and not warnings and not infos and not version_results:
         console.print("[green]No issues found.[/green]")
         console.print()
         return
@@ -153,6 +171,21 @@ def print_rich_report(
         table.add_column("Message")
 
         for r in warnings:
+            table.add_row(r.source_file, str(r.line), r.ref_type, r.target, r.message)
+
+        console.print(table)
+        console.print()
+
+    # Info table
+    if infos:
+        table = Table(title="Info", title_style="blue")
+        table.add_column("File", style="cyan")
+        table.add_column("Line", justify="right")
+        table.add_column("Type")
+        table.add_column("Target", style="bold")
+        table.add_column("Message")
+
+        for r in infos:
             table.add_row(r.source_file, str(r.line), r.ref_type, r.target, r.message)
 
         console.print(table)

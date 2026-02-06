@@ -215,8 +215,16 @@
 - **Reasoning:** Mermaid is already supported in GitHub markdown, making source files self-documenting. The workflow (generate → iterate → export) is faster than visual diagramming tools.
 - **Recommendation:** Add Mermaid diagram recommendation to Section 2.5.6. See `backlogs.md`.
 
+### Entry 16: Blog File Naming — Date Prefix Convention
+- **Date:** 2026-02-06 | **Sprint:** Epoch 2 (Pre-Sprint 4) | **Type:** Gap
+- **Context:** Multiple blog posts accumulating in `docs/blog/<epoch>/` folders. Files named generically (`blog-draft.md`, `linkedin-post.md`) don't sort chronologically.
+- **Finding:** Section 2.5.6 does not specify a file naming convention for blog posts. Adding a date prefix (`YYYY-MM-DD-title.md`) enables chronological ordering in file listings and makes publication date visible without opening the file.
+- **Scores:** Clarity 3, Applicability 5, Completeness 2, Efficiency 4 (Avg: 3.5)
+- **Reasoning:** Standard in static site generators (Jekyll, Hugo). Simple to adopt, immediately useful as post count grows.
+- **Recommendation:** Add to Section 2.5.6: "Name blog files with date prefix: `YYYY-MM-DD-title.md`". See `backlogs.md`.
+
 ---
 
-**Last Updated:** 2026-02-05
-**Entries So Far:** 15
-**Average Score:** 3.89
+**Last Updated:** 2026-02-06
+**Entries So Far:** 16
+**Average Score:** 3.87

@@ -58,6 +58,23 @@ def make_warning(
     )
 
 
+def make_info(
+    target: str = "2.6",
+    source_file: str = "plan/draft.md",
+    line: int = 15,
+) -> ValidationResult:
+    """Create a sample INFO ValidationResult."""
+    return ValidationResult(
+        severity=Severity.INFO,
+        source_file=source_file,
+        line=line,
+        ref_type="section",
+        target=target,
+        message=f"Broken section reference: {target} not found",
+        context=f"See Section {target}",
+    )
+
+
 def make_version_mismatch() -> VersionMismatch:
     """Create a sample VersionMismatch."""
     return VersionMismatch(
@@ -128,6 +145,24 @@ class TestMarkdownReportContent:
         assert "error" in report.lower()
         assert "warning" in report.lower()
 
+    def test_includes_info_section(self):
+        infos = [make_info()]
+        report = generate_markdown_report(infos, [])
+        assert "## Info" in report
+        assert "plan/draft.md" in report
+
+    def test_includes_info_count_in_summary(self):
+        infos = [make_info(), make_info(target="3.1")]
+        report = generate_markdown_report(infos, [])
+        assert "**Info:** 2" in report
+
+    def test_all_three_severities(self):
+        results = [make_error(), make_warning(), make_info()]
+        report = generate_markdown_report(results, [])
+        assert "## Errors" in report
+        assert "## Warnings" in report
+        assert "## Info" in report
+
 
 class TestMarkdownReportFile:
     """Test writing markdown reports to files."""
@@ -190,6 +225,12 @@ class TestRichReport:
         print_rich_report([], [mismatch])
         captured = capsys.readouterr()
         assert "1.3.19" in captured.out or "version" in captured.out.lower()
+
+    def test_prints_infos(self, capsys):
+        infos = [make_info(target="2.6")]
+        print_rich_report(infos, [])
+        captured = capsys.readouterr()
+        assert "2.6" in captured.out
 
     def test_clean_report_message(self, capsys):
         print_rich_report([], [])

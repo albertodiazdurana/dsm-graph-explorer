@@ -43,7 +43,7 @@ Link in comments.
 
 ## Comment (with blog link)
 
-Full write-up: https://github.com/albertodiazdurana/dsm-graph-explorer/blob/main/docs/blog/epoch-1/blog-draft.md
+Full write-up: https://github.com/albertodiazdurana/dsm-graph-explorer/blob/main/docs/blog/epoch-1/2026-02-05-blog-draft.md
 
 The architecture: parser → symbol table → resolver → reporter. If you've worked with compilers, you'll recognize the pattern. If not, the blog explains how it maps to documentation validation.
 

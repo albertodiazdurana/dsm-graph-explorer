@@ -122,6 +122,12 @@
   Mermaid is text-based (version-controllable), renders in GitHub markdown, and exports cleanly for social media.
 - **Evidence:** Created architecture diagram for Epoch 1 blog post using Mermaid. The AI assistant generated the diagram code, user rendered at mermaid.live, exported PNG for LinkedIn. Workflow was efficient: text-based iteration, then single export step.
 
+### Add date-prefix naming convention for blog files
+- **DSM Section:** Section 2.5.6 (Blog/Communication Deliverable Process)
+- **Problem:** Blog files named generically (`blog-draft.md`, `linkedin-post.md`) don't sort chronologically in file listings. As post count grows, finding posts by date requires opening each file.
+- **Proposed Solution:** Add to Section 2.5.6: "Name blog post files with date prefix: `YYYY-MM-DD-title.md` (e.g., `2026-02-05-compiler-architecture.md`). Use the publication date. This matches static site generator conventions (Jekyll, Hugo) and enables chronological sorting in directory listings."
+- **Evidence:** Renamed three blog files in dsm-graph-explorer from generic names to date-prefixed names. Immediately improved discoverability.
+
 ---
 
 ## Low Priority
@@ -131,4 +137,4 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-02-05
-**Total Proposals:** 12
+**Total Proposals:** 13
