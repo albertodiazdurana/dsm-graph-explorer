@@ -5,6 +5,7 @@
 **Type:** Software Engineering (DSM 4.0 Track)
 **Author:** Alberto Diaz Durana
 **Domain:** Repository Integrity Validation / Graph Database Exploration
+**Project Type:** Application (has `src/`, `tests/`, no `notebooks/`). Following DSM 4.0 accordingly.
 
 ---
 
@@ -71,6 +72,16 @@ This project uses Claude Code to write files directly. User reviews in IDE.
 - Build modules incrementally — one module at a time, tests alongside
 - Run `pytest tests/` after each module to verify before proceeding
 - Keep changes focused: one logical unit per step
+
+## Pre-Generation Brief Protocol (reinforces inherited protocol)
+
+Before creating any artifact (code file, test file, configuration), explain:
+1. **What:** Brief description of the artifact
+2. **Why:** How it fits the current task or sprint goal
+3. **Key decisions:** Design choices being made
+4. **Structure:** High-level outline of contents
+
+Wait for approval before generating. Trivial artifacts (`.gitkeep`, minor config) need only a single-sentence brief.
 
 ## Development Approach
 
