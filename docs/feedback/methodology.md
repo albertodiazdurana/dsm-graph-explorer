@@ -285,8 +285,24 @@
 - **Reasoning:** Every other wrap-up artifact is backward-looking (what was done, what was decided, what was observed). A forward-looking summary is the natural complement, connecting the completed sprint to the upcoming one. The information already exists in the epoch plan; the wrap-up just needs to surface it.
 - **Recommendation:** Add "Next steps summary" to the Sprint Boundary Checklist: a brief paragraph describing the next sprint's goal and key deliverables, referencing the relevant plan section. See `backlogs.md` Proposal #19.
 
+### Entry 23: Visible Reasoning Blocks Do Not Replace Pre-Generation Briefs
+- **Date:** 2026-02-10 | **Sprint:** Post-Sprint 5 | **Type:** Gap (Recurrence)
+- **Context:** User asked to send feedback to DSM Central. Agent wrote implementation plan inside a Visible Reasoning block ("I should write an inbox entry to DSM Central"), then immediately started tool calls (Glob, Read) without explaining the plan to the user. User had to reject a tool call and ask why no explanation was given.
+- **Finding:** The Visible Reasoning Protocol and the Pre-Generation Brief Protocol serve different purposes. Visible Reasoning shows *decision process* (why this approach over alternatives). Pre-Generation Brief shows *intent to the user* (what will be created, why, and waits for approval). Writing "I should write to the inbox" inside thinking delimiters is reasoning-to-self, not a brief-to-user. The agent treated the thinking block as a substitute for the brief, skipping the explain-wait-approve cycle.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 2 (Avg: 2.75)
+- **Reasoning:** Fourth iteration of the brief-skipping pattern (S1, S3, S5, now post-S5). Each recurrence has a different surface cause but the same root: the agent finds a reason to skip the explicit explain-wait-approve step. This time the reasoning block created a false sense of having communicated.
+- **Recommendation:** Add clarification to DSM_0.2: "Visible Reasoning blocks supplement but do not replace the Pre-Generation Brief. Thinking blocks show decision reasoning; briefs show intent and require explicit approval before acting."
+
+### Entry 24: Simultaneous Local + Hub Feedback Push
+- **Date:** 2026-02-10 | **Sprint:** Post-Sprint 5 | **Type:** Methodology Observation
+- **Context:** After logging Entry 23 locally, the question arose of when to push it to DSM Central's inbox. DSM_0.2 says "at session end or sprint boundaries, review docs/feedback/ for ripe entries." User determined this introduces unnecessary delay.
+- **Finding:** Waiting for session end to push ripe feedback creates two problems: (1) the entry may be forgotten if the session ends abruptly, (2) it adds a redundant "review for ripeness" step when the entry was already judged ripe at creation time. Pushing to both destinations simultaneously (local feedback file + DSM Central inbox) eliminates both issues. The entry is already structured and actionable at the moment it's written; delaying the push adds no value.
+- **Scores:** Clarity 4, Applicability 5, Completeness 4, Efficiency 5 (Avg: 4.5)
+- **Reasoning:** The original session-end push was designed for entries that accumulate incrementally and need review before sending. But methodology entries and backlog proposals are written in final form. They're ripe on creation. The simultaneous push pattern respects this.
+- **Recommendation:** Update DSM_0.2 Session-End Inbox Push: when a methodology or feedback entry is written in final form (structured, actionable), push to both local feedback file and DSM Central inbox simultaneously. Reserve session-end review for entries that were captured as rough notes during the session.
+
 ---
 
 **Last Updated:** 2026-02-10
-**Entries So Far:** 22
-**Average Score:** 3.64
+**Entries So Far:** 24
+**Average Score:** 3.57
