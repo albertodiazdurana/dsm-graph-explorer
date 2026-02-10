@@ -180,6 +180,12 @@
 - **Proposed Solution:** Rename `docs/feedback/` to `docs/feedback-to-dsm/` in the DSM 4.0 Section 2 project structure template. The directional name makes the folder's purpose self-documenting: it contains observations and proposals flowing from the project back to the DSM methodology. No change to file contents or the three-file feedback system itself.
 - **Evidence:** In dsm-graph-explorer, the AI agent confused `docs/feedback/` with `docs/backlog/` on multiple occasions (see also Entry 5 in methodology.md). The naming collision between the folder `docs/backlog/` and the file `docs/feedback/backlogs.md` compounds the ambiguity. See `methodology.md` Entry 21.
 
+### Add next-steps summary to Sprint Boundary Checklist
+- **DSM Section:** Section 6.4 (Checkpoint and Feedback Protocol) + DSM 2.0 Template 8
+- **Problem:** The Sprint Boundary Checklist is entirely backward-looking: checkpoint, feedback, decisions, journal, README. It captures what was done but not what comes next. The next session starts without immediate orientation and must re-read the epoch plan to determine the upcoming sprint's goal and deliverables.
+- **Proposed Solution:** Add a "Next steps summary" item to the Sprint Boundary Checklist: a brief paragraph (3-5 sentences) describing the next sprint's goal, key deliverables, and relevant plan reference. Example: "Sprint 6 implements semantic validation: TF-IDF keyword similarity and drift detection (EXP-003). Key deliverables: `src/validator/semantic_validator.py`, capability experiment results. See epoch-2-plan.md Phase 6." This item should be written into the checkpoint document and/or MEMORY.md so the next session can orient immediately.
+- **Evidence:** Sprint 5 wrap-up in dsm-graph-explorer completed all checklist items (checkpoint, journal, feedback, README) but omitted any forward-looking summary. The next session had to re-read the epoch plan to understand what Sprint 6 involves. A single paragraph at wrap-up would have saved that orientation step. See `methodology.md` Entry 22.
+
 ---
 
 ## Low Priority
@@ -189,4 +195,4 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-02-10
-**Total Proposals:** 18
+**Total Proposals:** 19

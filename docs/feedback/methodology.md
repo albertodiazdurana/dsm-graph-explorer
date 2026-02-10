@@ -277,8 +277,16 @@
 - **Reasoning:** DSM's three-file feedback system (methodology.md, backlogs.md, validation tracker) is specifically for feeding observations back to the methodology itself. Renaming `feedback/` to `feedback-to-dsm/` would make this directionality explicit and eliminate the naming collision with `backlog/`.
 - **Recommendation:** Rename `docs/feedback/` to `docs/feedback-to-dsm/` in DSM 4.0 Section 2. See `backlogs.md`.
 
+### Entry 22: Session Wrap-Up Missing Next-Steps Description
+- **Date:** 2026-02-10 | **Sprint:** Sprint 5 (boundary) | **Type:** Gap
+- **Context:** Starting a new session after Sprint 5 wrap-up. The wrap-up produced a checkpoint document and journal entry but did not include a short description of what comes next according to the epoch plan. The next session had to re-read the epoch plan to orient.
+- **Finding:** The Sprint Boundary Checklist (DSM 2.0 Template 8, reinforced in CLAUDE.md) includes checkpoint, feedback, decisions, journal, and README updates, but does not include a "next steps" item. Without it, the wrap-up captures where the project *is* but not where it's *going*. This forces the next session to re-derive context from the plan document, adding orientation overhead that a single paragraph could eliminate.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 3 (Avg: 3.0)
+- **Reasoning:** Every other wrap-up artifact is backward-looking (what was done, what was decided, what was observed). A forward-looking summary is the natural complement, connecting the completed sprint to the upcoming one. The information already exists in the epoch plan; the wrap-up just needs to surface it.
+- **Recommendation:** Add "Next steps summary" to the Sprint Boundary Checklist: a brief paragraph describing the next sprint's goal and key deliverables, referencing the relevant plan section. See `backlogs.md` Proposal #19.
+
 ---
 
 **Last Updated:** 2026-02-10
-**Entries So Far:** 21
-**Average Score:** 3.67
+**Entries So Far:** 22
+**Average Score:** 3.64
