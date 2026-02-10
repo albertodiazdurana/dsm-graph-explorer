@@ -179,4 +179,59 @@
 
 ---
 
-**Last Updated:** 2026-02-06
+## Session: 2026-02-09/10 — Sprint 5: CI & Documentation
+
+### What Happened
+
+1. **Phase 5.1: CI Workflow & Config** — Created `.github/workflows/dsm-validate.yml` (GitHub Actions, triggered on push/PR to markdown or config changes) and `.dsm-graph-explorer.yml` (self-validation config demonstrating the spoke-repo pattern).
+
+2. **Phase 5.2: Pre-commit Hook** — Created `scripts/pre-commit-hook.sh`. Validates staged `.md` files, gracefully skips if `dsm-validate` is not installed. Supports both manual installation and pre-commit framework integration.
+
+3. **Phase 5.3: User Guides** — Two new documents in `docs/guides/`:
+   - `remediation-guide.md` — How to read output, fix each error type, manage cross-repo references, CI integration patterns.
+   - `config-reference.md` — Complete field reference for `.dsm-graph-explorer.yml` with pattern matching rules, CLI interaction, hub vs spoke examples.
+
+4. **DSM Feedback** — Three new methodology entries and four backlog proposals:
+   - Entry 19 / Proposal #15: File-by-file approval loop mechanics (collaboration protocol)
+   - Entry 20 / Proposal #17: `docs/guides/` subfolder for user-facing documentation
+   - Entry 21 / Proposal #18: `feedback/` → `feedback-to-dsm/` rename for explicit directionality
+   - Proposal #16: Convention linting mode (from DSM central audit)
+
+5. **Test fix** — `test_errors_with_strict_exits_one` was affected by config auto-discovery: the repo's `.dsm-graph-explorer.yml` downgraded severity, changing the expected exit code. Fixed by passing an empty config file to isolate the test.
+
+6. **README update** — Added Sprint 5 features, updated project structure (`.github/`, `scripts/`, `docs/guides/`, `docs/backlog/`), updated status line and footer.
+
+### Aha Moments
+
+1. **Spoke-repo config pattern** — When a project references DSM sections defined in another repository, those references will always appear as broken. The solution is a config pattern: set `docs/**/*.md` to INFO severity. The findings stay visible (useful for reference) but don't block CI. This is the first reusable configuration pattern to emerge from the project.
+
+2. **docs/guides/ as a category** — DSM's `docs/` subfolders are all project-management artifacts (checkpoints, decisions, feedback). User-facing documentation (guides, references, how-tos) didn't have a home. Creating `docs/guides/` immediately clarified the structure. This became Entry 20, a concrete gap in DSM 4.0 Section 2.
+
+3. **Config auto-discovery affects tests** — Adding `.dsm-graph-explorer.yml` to the repo root meant the config loader finds it during test runs, not just during manual validation. Tests that depend on default severity behavior need to explicitly pass an empty config. A subtle interaction between production config and test isolation.
+
+4. **Collaboration loop, third iteration** — The Pre-Generation Brief Protocol has been strengthened three times (Sprint 1, Sprint 3, Sprint 5). Each iteration made the mechanics more explicit: from "explain first" to "STOP and wait" to a numbered file-by-file loop with plain text approvals. The pattern suggests that protocol refinement converges through practice, not through specification alone.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| New files created | 5 (workflow, config, hook, 2 guides) |
+| Files modified | 5 (README, backlogs, methodology, epoch-2-plan, test_cli) |
+| DSM methodology entries added | 3 (Entries 19-21) |
+| DSM backlog proposals added | 4 (Proposals 15-18) |
+| Tests added | 0 (no new application code) |
+| Tests fixed | 1 (config auto-discovery isolation) |
+| Total tests | 218 |
+| Coverage | 95% |
+
+### Blog Material
+
+**Sprint 5 narrative threads:**
+- From tool to pipeline: adding CI, pre-commit, and docs turns a CLI tool into a deployable validation system
+- The spoke-repo problem: what happens when your tool validates references to documents it can't see
+- Documentation as product: user guides vs project-management docs, and why they need different homes
+- Collaboration protocol convergence: three iterations of the same problem, each making the mechanics more explicit
+
+---
+
+**Last Updated:** 2026-02-10
