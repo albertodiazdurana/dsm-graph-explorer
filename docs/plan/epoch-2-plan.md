@@ -226,11 +226,11 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 #### Phase 5.3: Documentation
 
 **Tasks:**
-1. [ ] Create `docs/remediation-guide.md`:
+1. [ ] Create `docs/guides/remediation-guide.md`:
    - [ ] Common error types and fixes
    - [ ] How to use exclusions
    - [ ] Best practices for cross-references
-2. [ ] Create `docs/config-reference.md`:
+2. [ ] Create `docs/guides/config-reference.md`:
    - [ ] All config options documented
    - [ ] Example configurations
 3. [ ] Update README with new features
@@ -239,8 +239,8 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 
 - [ ] `.github/workflows/dsm-validate.yml`
 - [ ] Pre-commit hook script
-- [ ] `docs/remediation-guide.md`
-- [ ] `docs/config-reference.md`
+- [ ] `docs/guides/remediation-guide.md`
+- [ ] `docs/guides/config-reference.md`
 - [ ] Updated README
 
 **Sprint boundary:**
@@ -471,8 +471,9 @@ dsm-graph-explorer/
 │   └── fixtures/
 │       └── sample_config.yml      # NEW
 ├── docs/
-│   ├── remediation-guide.md       # NEW (Sprint 5)
-│   ├── config-reference.md        # NEW (Sprint 5)
+│   ├── guides/
+│   │   ├── remediation-guide.md   # NEW (Sprint 5)
+│   │   └── config-reference.md    # NEW (Sprint 5)
 │   └── research/
 │       └── e2_handoff_graph_explorer_research.md  # NEW
 ├── .github/

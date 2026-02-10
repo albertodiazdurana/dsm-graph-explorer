@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.2.0
-**Status:** Epoch 2 In Progress (Sprint 4 complete)
+**Status:** Epoch 2 In Progress (Sprint 5 in progress)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -36,9 +36,13 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - `--strict` respects severity (only fails on ERROR)
 - Config file discovery (walks up directory tree)
 
+**Implemented (Sprint 5 — CI & Documentation):**
+- GitHub Actions workflow (`.github/workflows/dsm-validate.yml`) for automated validation on push/PR
+- Pre-commit hook (`scripts/pre-commit-hook.sh`) for local validation of staged markdown files
+- User guides: [remediation guide](docs/guides/remediation-guide.md) and [config reference](docs/guides/config-reference.md)
+- Cross-repo reference handling: spoke repositories that reference DSM sections defined elsewhere can set those files to INFO severity, keeping findings visible without blocking CI (see [config reference](docs/guides/config-reference.md))
+
 **Future (SHOULD scope):**
-- Pre-commit hook integration
-- CI/CD workflow (GitHub Actions)
 - Semantic cross-reference validation — TF-IDF keyword similarity to detect meaning drift when sections are rewritten
 
 **Future (COULD scope):**
@@ -55,6 +59,8 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 ```
 dsm-graph-explorer/
 ├── .claude/               # Claude configuration
+├── .github/workflows/     # CI workflow (dsm-validate.yml)
+├── scripts/               # Pre-commit hook
 ├── src/
 │   ├── parser/           # Markdown parser and cross-ref extractor
 │   ├── validator/        # Cross-reference and version validators
@@ -75,9 +81,12 @@ dsm-graph-explorer/
 │   ├── handoffs/         # Session handoffs
 │   ├── decisions/        # Decision logs (DEC-001, ...)
 │   ├── checkpoints/      # Sprint checkpoints
+│   ├── backlog/          # Cross-project DSM alignment reports
 │   ├── blog/             # Blog materials and journal
-│   └── feedback/          # Three-file DSM feedback system
+│   ├── feedback/         # Three-file DSM feedback system
+│   └── guides/           # User-facing docs (remediation, config reference)
 ├── outputs/reports/       # Generated integrity reports
+├── .dsm-graph-explorer.yml # Validation config
 ├── pyproject.toml         # Project configuration
 └── README.md
 ```
@@ -194,7 +203,7 @@ For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) a
 
 ### Epoch 2: Productionization & Graph (In Progress)
 - [x] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels (218 tests, 95% coverage)
-- [ ] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, remediation docs *(next)*
+- [ ] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, user guides *(in progress)*
 - [ ] **Sprint 6:** Semantic Validation — TF-IDF similarity, drift detection ([research](docs/research/e2_handoff_graph_explorer_research.md))
 - [ ] **Sprint 7:** Graph Prototype — NetworkX graph builder, queries, GraphML export
 
@@ -231,7 +240,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-06
-**Current Status:** Epoch 2 in progress (Sprint 4 complete, Sprint 5 next)
+**Last Updated:** 2026-02-10
+**Current Status:** Epoch 2 in progress (Sprint 5 in progress)
 **Tests:** 218 passed, 95% coverage
 **DSM Validation:** 10 errors (all reference non-existent Section 2.6), 0 warnings, 0 info

@@ -113,8 +113,10 @@ class TestCliExitCodes:
         result = runner.invoke(main, [str(SAMPLE_DSM)])
         assert result.exit_code == 0
 
-    def test_errors_with_strict_exits_one(self, runner):
-        result = runner.invoke(main, [str(SAMPLE_DSM), "--strict"])
+    def test_errors_with_strict_exits_one(self, runner, tmp_path):
+        empty_config = tmp_path / ".dsm-graph-explorer.yml"
+        empty_config.write_text("")
+        result = runner.invoke(main, [str(SAMPLE_DSM), "--strict", "--config", str(empty_config)])
         assert result.exit_code == 1
 
     def test_strict_clean_exits_zero(self, runner, tmp_path):

@@ -128,6 +128,22 @@
 - **Proposed Solution:** Add to Section 2.5.6: "Name blog post files with date prefix: `YYYY-MM-DD-title.md` (e.g., `2026-02-05-compiler-architecture.md`). Use the publication date. This matches static site generator conventions (Jekyll, Hugo) and enables chronological sorting in directory listings."
 - **Evidence:** Renamed three blog files in dsm-graph-explorer from generic names to date-prefixed names. Immediately improved discoverability.
 
+### Define file-by-file approval loop in Development Protocol
+- **DSM Section:** DSM 4.0 Section 3 (Development Protocol) + Custom Instructions
+- **Problem:** The Pre-Generation Brief Protocol says "explain before generating, wait for approval," but does not define the mechanical loop for multi-file tasks. Without step-by-step instructions, the agent defaults to batch generation (creating multiple files before stopping for review). Additionally, modal approval dialogs (e.g., AskUserQuestion in Claude Code) darken the background and block the IDE content the user needs to read, making review impractical.
+- **Proposed Solution:** Add a numbered "File-by-File Approval Loop" to DSM 4.0 Section 3:
+  ```
+  FILE-BY-FILE APPROVAL LOOP (multi-file tasks):
+  1. Display progress list with current item marked
+  2. Show description of next file (what, why, key decisions) — STOP
+  3. Wait for short Y/N approval from user — STOP
+  4. If Y: create file, wait for user to review via diff — STOP
+  5. Display progress list with completed item crossed out, next item marked
+  6. Repeat from step 2
+  ```
+  Approvals must use plain text (not modal dialogs) so the user can read the explanation and the generated file simultaneously. The agent must not proceed to the next file until the current one is approved.
+- **Evidence:** Three occurrences of the same problem across dsm-graph-explorer: Sprint 1 (batch test generation), Sprint 3 (batch CLI generation), Sprint 5 (batch docs generation). Each time the protocol was strengthened in CLAUDE.md, but the behavior recurred because the loop mechanics were not specified. See `methodology.md` Entry 19.
+
 ### Clarify journal.md vs materials.md roles in blog deliverable process
 - **DSM Section:** Section 2.5.6 (Blog/Communication Deliverable Process)
 - **Problem:** Section 2.5.6 specifies "Materials" and "Journal" as separate blog deliverables, but their roles overlap in practice. Three issues: (1) journal.md accumulates "Blog Material" subsections that duplicate what materials.md is for, (2) materials.md is per-epoch but blog posts are per-topic, so one materials.md per epoch is insufficient when multiple posts exist, (3) maintaining two overlapping files adds overhead without clear benefit.
@@ -139,11 +155,38 @@
 
 ---
 
+### Add convention linting mode to complement cross-reference validation
+- **DSM Section:** DSM_0.2 (Custom Instructions, text conventions) + DSM_3 Section 3 (Document Standards)
+- **Problem:** Graph Explorer validates structural cross-references (Section X.Y, Appendix B.2, Template N) but does not check surface-level document conventions: emoji/symbol usage, TOC presence, em-dash punctuation, CRLF line endings, mojibake encoding artifacts, and backlog metadata fields. These conventions are defined in DSM_0.2 and DSM_3 but can only be verified manually. A full manual audit (BACKLOG-076) found 34 emoji violations, 3 TOC violations, 4 em-dashes, and mojibake encoding in 6 files.
+- **Proposed Solution:** Add a `--lint` mode (or separate `lint_conventions.py` script) that checks:
+  1. **Emoji/symbol usage:** Flag checkmarks, cross marks, warning symbols, chart symbols (should use WARNING:/OK:/ERROR: text)
+  2. **TOC presence:** Flag `## Table of Contents` or similar headings (DSM uses self-documenting hierarchical numbering)
+  3. **Em-dash punctuation:** Flag `—` characters (should use commas or semicolons)
+  4. **CRLF line endings:** Flag files with `\r\n` (should be `\n`)
+  5. **Mojibake encoding:** Flag common double-encoded UTF-8 patterns (e.g., `âœ—`, `âœ"`, `âš`)
+  6. **Backlog metadata:** Validate required fields (Status, Priority, Date Created, Origin, Author) in BACKLOG-### files
+  Combined with existing cross-reference validation, this would provide a complete DSM compliance pipeline triggered at version bumps.
+- **Evidence:** BACKLOG-076 self-compliance audit required two manual passes (conventions + cross-references) across 8 files. The cross-reference pass maps naturally to Graph Explorer's existing capability. The convention pass is a new capability that would eliminate the manual effort and prevent convention drift between audits.
+
+### Add docs/guides/ subfolder for user-facing documentation
+- **DSM Section:** DSM 4.0 Section 2 (Project Structure Patterns)
+- **Problem:** All existing `docs/` subfolders serve project-management purposes: `checkpoints/`, `decisions/`, `handoffs/`, `feedback/`, `blog/`, `backlog/`, `plan/`. User-facing documentation (installation guides, configuration references, how-tos) has no prescribed location. Projects either place guides in an ad-hoc subfolder or mix them with PM artifacts, blurring the folder structure's intent.
+- **Proposed Solution:** Add `docs/guides/` to the DSM 4.0 Section 2 project structure template as a standard subfolder for user-facing documentation. Contents would include installation guides, configuration references, API documentation, and how-to guides. This keeps the existing PM subfolders focused on their original purpose while giving user-facing content a clear home.
+- **Evidence:** In dsm-graph-explorer Sprint 5, a remediation guide and a configuration reference needed a location. No existing subfolder fit, so `docs/guides/` was created ad-hoc. The separation immediately clarified the folder structure: PM artifacts in their respective subfolders, user-facing docs in `guides/`. See `methodology.md` Entry 20.
+
+### Rename docs/feedback/ to docs/feedback-to-dsm/ for explicit directionality
+- **DSM Section:** DSM 4.0 Section 2 (Project Structure Patterns)
+- **Problem:** The folder name `docs/feedback/` does not convey that its contents are feedback *to DSM* (methodology observations and improvement proposals). The generic name is easily confused with `docs/backlog/` (cross-project alignment reports), especially since `feedback/` contains a file called `backlogs.md`, making the word "backlog" appear in both contexts with different meanings. A new contributor or AI agent cannot distinguish the two folders by name alone.
+- **Proposed Solution:** Rename `docs/feedback/` to `docs/feedback-to-dsm/` in the DSM 4.0 Section 2 project structure template. The directional name makes the folder's purpose self-documenting: it contains observations and proposals flowing from the project back to the DSM methodology. No change to file contents or the three-file feedback system itself.
+- **Evidence:** In dsm-graph-explorer, the AI agent confused `docs/feedback/` with `docs/backlog/` on multiple occasions (see also Entry 5 in methodology.md). The naming collision between the folder `docs/backlog/` and the file `docs/feedback/backlogs.md` compounds the ambiguity. See `methodology.md` Entry 21.
+
+---
+
 ## Low Priority
 
 _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-02-06
-**Total Proposals:** 14
+**Last Updated:** 2026-02-10
+**Total Proposals:** 18

@@ -253,8 +253,32 @@
 - **Reasoning:** The two-file pattern adds overhead without clear value separation. In practice, journal entries accumulate "Blog Material" subsections that are the real preparation, while materials.md becomes a one-time pre-draft that isn't maintained. A single file per blog post (with both observations and draft structure) would be simpler.
 - **Recommendation:** Clarify in Section 2.5.6 whether journal and materials are distinct deliverables or can be merged. If distinct, specify: (a) journal = session-scoped observations only, no draft content, (b) materials = one per blog post, not per epoch. If merged, use a single `YYYY-MM-DD-title-materials.md` per post with both capture and draft sections. See `backlogs.md`.
 
+### Entry 19: AI Collaboration Loop — File-by-File Approval Rhythm
+- **Date:** 2026-02-09 | **Sprint:** Sprint 5 | **Type:** Gap
+- **Context:** Sprint 5 implementation (CI + docs). Agent generated 4 files (workflow, config, hook, remediation guide) in sequence without stopping between each for review. Then used AskUserQuestion modal for approval, which darkened the background and blocked the space needed to read the explanation.
+- **Finding:** The Pre-Generation Brief Protocol (added after Sprint 1 and reinforced in Sprint 3) says "explain before generating, wait for approval," but does not define the **mechanical loop** for multi-file tasks. Without a prescribed rhythm, the agent defaults to batch generation. Additionally, modal approval dialogs obstruct the IDE content the user needs to review. The approval mechanism must not block the reading space.
+- **Scores:** Clarity 2, Applicability 3, Completeness 1, Efficiency 2 (Avg: 2.0)
+- **Reasoning:** Third iteration of the same class of problem (Sprint 1: batch test generation, Sprint 3: batch CLI generation, Sprint 5: batch docs generation). The protocol wording improves each time but the behavior recurs because the loop mechanics are not specified step-by-step.
+- **Recommendation:** Define a numbered file-by-file loop in DSM 4.0 Section 3: (1) show progress list with current item marked, (2) show description of next file, STOP, (3) wait for short Y/N approval, STOP, (4) if Y, create file and wait for diff review, STOP, (5) show progress list with completed item crossed out and next item marked, (6) repeat from step 2. Approval should use plain text, not modal dialogs. See `backlogs.md` Proposal #15.
+
+### Entry 20: User-Facing Documentation — No Prescribed Location in docs/
+- **Date:** 2026-02-10 | **Sprint:** Sprint 5 | **Type:** Gap
+- **Context:** Sprint 5 produced a remediation guide (`docs/guides/remediation-guide.md`) and a configuration reference is planned next. Neither artifact fits any existing `docs/` subfolder.
+- **Finding:** DSM 4.0 Section 2 defines `docs/` subfolders exclusively for project-management artifacts: `checkpoints/`, `decisions/`, `handoffs/`, `feedback/`, `blog/`, `backlog/`, `plan/`. User-facing documentation (installation guides, configuration references, how-tos) has no prescribed location. During Sprint 5, we created `docs/guides/` ad-hoc to separate user-facing content from PM artifacts. The separation proved immediately useful: the remediation guide is for tool users, not for tracking project progress, and placing it alongside checkpoints or decisions would be confusing.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 4 (Avg: 3.25)
+- **Reasoning:** Every existing subfolder has a clear PM purpose. Adding user-facing docs to any of them would blur that purpose. A dedicated `docs/guides/` subfolder maintains the clean separation DSM already establishes for other artifact types.
+- **Recommendation:** Add `docs/guides/` as a standard subfolder in DSM 4.0 Section 2 for user-facing documentation. See `backlogs.md`.
+
+### Entry 21: Folder Naming Ambiguity — feedback/ vs backlog/
+- **Date:** 2026-02-10 | **Sprint:** Sprint 5 | **Type:** Gap
+- **Context:** Reviewing `docs/` folder structure after adding Entry 20. Two subfolders use overlapping terminology: `docs/feedback/` contains `backlogs.md` (DSM improvement proposals) and `methodology.md` (DSM methodology observations), while `docs/backlog/` contains cross-project alignment reports.
+- **Finding:** The name `feedback/` does not convey directionality. Its contents are specifically feedback *to DSM* (proposals for improving the methodology), but the folder name reads as generic project feedback. Meanwhile, the word "backlog" appears in both contexts with different meanings: `docs/backlog/` holds alignment reports, `docs/feedback/backlogs.md` holds DSM improvement proposals. A new contributor or AI agent encountering both folders would struggle to determine which is which without opening files.
+- **Scores:** Clarity 2, Applicability 4, Completeness 3, Efficiency 3 (Avg: 3.0)
+- **Reasoning:** DSM's three-file feedback system (methodology.md, backlogs.md, validation tracker) is specifically for feeding observations back to the methodology itself. Renaming `feedback/` to `feedback-to-dsm/` would make this directionality explicit and eliminate the naming collision with `backlog/`.
+- **Recommendation:** Rename `docs/feedback/` to `docs/feedback-to-dsm/` in DSM 4.0 Section 2. See `backlogs.md`.
+
 ---
 
-**Last Updated:** 2026-02-06
-**Entries So Far:** 18
-**Average Score:** 3.82
+**Last Updated:** 2026-02-10
+**Entries So Far:** 21
+**Average Score:** 3.67

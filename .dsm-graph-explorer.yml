@@ -1,0 +1,42 @@
+# DSM Graph Explorer - Self-Validation Configuration
+# See docs/guides/config-reference.md for all options
+#
+# Note: This repo's docs/ files reference DSM section numbers (e.g., "Section 2.5.6")
+# that live in the DSM central repository, not here. These cross-repo references
+# are expected to show as unresolved. We set docs/ to INFO severity so they
+# don't block CI. README.md also references DSM sections, so it's set to WARNING.
+
+# Exclude files where cross-references are not meaningful
+exclude:
+  - docs/_references/*
+  - htmlcov/*
+  - outputs/*
+
+# Severity by file pattern (first match wins)
+severity:
+  - pattern: "README.md"
+    level: WARNING
+  - pattern: "docs/plan/*.md"
+    level: INFO
+  - pattern: "docs/feedback/*.md"
+    level: INFO
+  - pattern: "docs/checkpoints/*.md"
+    level: INFO
+  - pattern: "docs/blog/**/*.md"
+    level: INFO
+  - pattern: "docs/decisions/*.md"
+    level: INFO
+  - pattern: "docs/handoffs/*.md"
+    level: INFO
+  - pattern: "docs/research/*.md"
+    level: INFO
+  - pattern: "docs/**/*.md"
+    level: INFO
+  - pattern: "*.md"
+    level: WARNING
+
+# Default severity for unmatched files
+default_severity: WARNING
+
+# Strict mode off for local use; CI passes --strict flag
+strict: false
