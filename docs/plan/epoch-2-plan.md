@@ -33,6 +33,7 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 - [ ] NetworkX graph prototype (before Neo4j)
 - [ ] Section rename tracking (`section-renames.yml`)
 - [ ] Pre-commit hook script
+- [ ] Convention linting mode (`--lint` flag) — emoji, TOC, em-dash, CRLF, mojibake, backlog metadata checks
 
 **COULD (Future Epoch 3+):**
 - Neo4j graph database integration
@@ -253,25 +254,55 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 
 **Duration:** 1-2 sessions
 **Objective:** Detect meaning drift when sections are rewritten but keep their numbers.
+**Design source:** DSM Central inbox entry ([2026-02-10_dsm-central-tfidf-context-design.md](../inbox/done/2026-02-10_dsm-central-tfidf-context-design.md))
+
+#### Design: Context Extraction Approach (Option B + C)
+
+The original plan compared `CrossReference.context` (single line) vs `Section.title`.
+DSM Central's structural analysis of 937 H2+H3 sections showed many titles are too
+short or generic ("Expected Outcomes" x4, "Deliverables" x2) for reliable TF-IDF
+matching. The revised approach enriches both sides:
+
+- **Target side:** `Section.title` + `Section.context_excerpt` (first ~50 words of prose after heading)
+- **Reference side:** `CrossReference.context` + `context_before` + `context_after` (3-line window)
+
+Robustness measures:
+- Strip section numbers (`\d+\.\d+`) before vectorization (no semantic value)
+- Corpus-scoped IDF weighting (build vocabulary from all sections, not pairwise)
+- Minimum token gate (~3 tokens after stopwords; below this, flag "insufficient context")
 
 #### Phase 6.0: Experiment (Pre-implementation)
 
 **Tasks:**
 1. [ ] Run EXP-003: TF-IDF Threshold Tuning
-2. [ ] Document results in decision document
+2. [ ] Document results in decision document (DEC-005)
 3. [ ] Confirm approach before implementation
 
-#### Phase 6.1: TF-IDF Implementation
+#### Phase 6.1: Parser Context Extraction
+
+**Tasks:**
+1. [ ] Add `context_excerpt` field to `Section` dataclass (first ~50 words of prose)
+2. [ ] Implement prose extraction with fallback chain:
+   - First: prose paragraph (skip headings, tables, code fences, lists)
+   - Fallback: first list item text (strip `- ` prefix)
+   - Last resort: title-only, flag lower confidence
+3. [ ] Add `context_before` / `context_after` fields to `CrossReference` dataclass
+4. [ ] Update parser to populate new fields during extraction
+5. [ ] Write tests for context extraction (prose, list, table-first, empty sections)
+
+#### Phase 6.2: TF-IDF Implementation
 
 **Tasks:**
 1. [ ] Add `scikit-learn>=1.3.0` to optional dependencies (`[semantic]`)
 2. [ ] Create `src/semantic/similarity.py`:
-   - [ ] `compute_similarity(text1, text2)` using TfidfVectorizer
-   - [ ] `extract_context(reference, document)` — 1-2 sentences around ref
-   - [ ] `get_section_text(section)` — title + first paragraph
-3. [ ] Write tests with synthetic examples
+   - [ ] `preprocess_text(text)` — strip section numbers, normalize
+   - [ ] `build_corpus_vectorizer(sections)` — fit TF-IDF on all section texts
+   - [ ] `compute_similarity(ref_text, target_text, vectorizer)` — cosine similarity
+   - [ ] Minimum token gate: skip comparison if <3 meaningful tokens
+3. [ ] Make excerpt word count a config parameter (default: 50)
+4. [ ] Write tests with synthetic examples (aligned, drifted, insufficient context)
 
-#### Phase 6.2: Integration
+#### Phase 6.3: Integration
 
 **Tasks:**
 1. [ ] Add `--semantic` flag to CLI (opt-in)
@@ -282,8 +313,9 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 
 #### Sprint 6 Deliverables
 
-- [ ] TF-IDF similarity computation
-- [ ] Configurable similarity threshold
+- [ ] Parser context extraction (`Section.context_excerpt`, `CrossReference.context_before/after`)
+- [ ] TF-IDF similarity computation with corpus-scoped IDF
+- [ ] Configurable similarity threshold and excerpt word count
 - [ ] WARNING for low-similarity references
 - [ ] Tests with synthetic drift examples
 - [ ] Graceful degradation without scikit-learn
@@ -297,6 +329,7 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 - [ ] References to renamed sections flagged with low similarity
 - [ ] False positive rate <10%
 - [ ] Performance acceptable for 100+ file repositories
+- [ ] Insufficient-context sections flagged rather than producing unreliable scores
 
 ---
 
@@ -356,6 +389,47 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 - [ ] Can identify most-referenced sections
 - [ ] Can identify unreferenced sections
 - [ ] Export works with Gephi
+
+---
+
+### Sprint 8: Convention Linting (`--lint`)
+
+**Duration:** 1-2 sessions
+**Objective:** Add convention linting mode that checks surface-level DSM style violations without running the cross-reference pipeline.
+**Source:** DSM Central inbox entry ([2026-02-09_dsm-central-feedback-convention-linting.md](../inbox/done/2026-02-09_dsm-central-feedback-convention-linting.md))
+
+#### Checks
+
+| Rule | Severity | Description |
+|------|----------|-------------|
+| E001 | ERROR | Emoji/symbol usage (should be WARNING:/OK:/ERROR: text) |
+| E002 | ERROR | TOC headings (DSM uses hierarchical numbering) |
+| W001 | WARNING | Em-dash punctuation (use commas/semicolons) |
+| W002 | WARNING | CRLF line endings (use Unix LF) |
+| E003 | ERROR | Mojibake encoding (double-encoded UTF-8) |
+| W003 | WARNING | Backlog metadata validation (required fields) |
+
+#### Architecture
+
+- New module: `src/linter/` with per-check submodules
+- Reuse existing `collect_markdown_files()` and `filter_files()`
+- New `LintResult` dataclass, `lint_reporter.py`
+- Extend `.dsm-graph-explorer.yml` with `lint:` config section
+- `--lint` flag runs independently from `--strict`
+
+#### Sprint 8 Deliverables
+
+- [ ] `src/linter/` module with 6 checks
+- [ ] `--lint` CLI flag
+- [ ] Config section for lint rule overrides
+- [ ] Tests for each check
+- [ ] README updated with lint mode
+
+**Sprint boundary:**
+- [ ] Checkpoint document
+- [ ] Feedback files updated
+
+**Full spec:** See source inbox entry for implementation order and architecture guidance.
 
 ---
 
@@ -576,7 +650,7 @@ Updated at every sprint boundary:
 
 ---
 
-**Plan Status:** Sprint 4 complete, ready for Sprint 5
-**Last Updated:** 2026-02-06
+**Plan Status:** Sprint 5 complete, ready for Sprint 6
+**Last Updated:** 2026-02-10
 **Previous:** [epoch-1-plan.md](epoch-1-plan.md)
 **Research:** [e2_handoff_graph_explorer_research.md](../research/e2_handoff_graph_explorer_research.md)
