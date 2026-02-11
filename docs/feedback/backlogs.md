@@ -186,6 +186,18 @@
 - **Proposed Solution:** Add a "Next steps summary" item to the Sprint Boundary Checklist: a brief paragraph (3-5 sentences) describing the next sprint's goal, key deliverables, and relevant plan reference. Example: "Sprint 6 implements semantic validation: TF-IDF keyword similarity and drift detection (EXP-003). Key deliverables: `src/validator/semantic_validator.py`, capability experiment results. See epoch-2-plan.md Phase 6." This item should be written into the checkpoint document and/or MEMORY.md so the next session can orient immediately.
 - **Evidence:** Sprint 5 wrap-up in dsm-graph-explorer completed all checklist items (checkpoint, journal, feedback, README) but omitted any forward-looking summary. The next session had to re-read the epoch plan to understand what Sprint 6 involves. A single paragraph at wrap-up would have saved that orientation step. See `methodology.md` Entry 22.
 
+### Add append-only rule to Session Transcript Protocol
+- **DSM Section:** DSM_0.2 Session Transcript Protocol
+- **Problem:** The protocol specifies "two appends per turn" but does not state that the transcript is append-only. An agent that misses an append naturally tries to backfill or edit past entries, corrupting the real-time log the user monitors.
+- **Proposed Solution:** Add to the Session Transcript Protocol rules: "The transcript is append-only. Never modify or backfill past entries. Each entry reflects reasoning at the moment it was written. If a past entry was missed, note the gap in the next entry rather than editing history."
+- **Evidence:** In dsm-graph-explorer Sprint 6, the agent created the transcript file with backfilled entries, then later attempted to edit a past block to add a missed output summary. The user rejected the edit. See `methodology.md` Entry 25.
+
+### Document three-file feedback as atomic operation
+- **DSM Section:** DSM_0.2 Session-End Inbox Push + DSM 4.0 Section 6
+- **Problem:** The three-file feedback system (methodology.md + backlogs.md + DSM Central inbox) is documented across multiple sections but never stated as an indivisible operation. An agent can write to one destination while forgetting the others, creating incomplete records.
+- **Proposed Solution:** Add to DSM_0.2: "Every feedback item must be written to all three destinations as a single operation: (1) `docs/feedback/methodology.md` numbered entry with scores, (2) `docs/feedback/backlogs.md` numbered proposal, (3) DSM Central `docs/inbox/{project}.md` inbox entry. Partial writes are incomplete."
+- **Evidence:** In dsm-graph-explorer Sprint 6, the agent sent the "session transcript append-only" feedback only to DSM Central's inbox, skipping both local feedback files. The user caught the omission. See `methodology.md` Entry 26.
+
 ---
 
 ## Low Priority
@@ -194,5 +206,5 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-02-10
-**Total Proposals:** 19
+**Last Updated:** 2026-02-11
+**Total Proposals:** 21

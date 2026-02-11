@@ -301,8 +301,24 @@
 - **Reasoning:** The original session-end push was designed for entries that accumulate incrementally and need review before sending. But methodology entries and backlog proposals are written in final form. They're ripe on creation. The simultaneous push pattern respects this.
 - **Recommendation:** Update DSM_0.2 Session-End Inbox Push: when a methodology or feedback entry is written in final form (structured, actionable), push to both local feedback file and DSM Central inbox simultaneously. Reserve session-end review for entries that were captured as rough notes during the session.
 
+### Entry 25: Session Transcript Is Append-Only, Never Retroactively Edited
+- **Date:** 2026-02-11 | **Sprint:** Sprint 6 | **Type:** Gap
+- **Context:** After creating `.claude/session-transcript.md` per the Session Transcript Protocol (DSM_0.2 v1.3.11), the agent attempted to backfill past turns and edit a previously written transcript block to add an output summary that was missed.
+- **Finding:** The Session Transcript Protocol says "two appends per turn: thinking before work, output after work" but does not explicitly state that the transcript is append-only. The agent interpreted the two-append rule as allowing retroactive corrections, which defeats the purpose of a real-time reasoning log. Past entries reflect what was known at the time; editing them erases the historical record and misleads the user who monitors the file in real time.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 3 (Avg: 3.0)
+- **Reasoning:** The protocol describes *when* to append (before and after acting) but not *what not to do* (edit past entries). Without an explicit append-only rule, an agent that misses an entry will naturally try to fix the gap by editing, which corrupts the log's integrity.
+- **Recommendation:** Add to Session Transcript Protocol: "The transcript is append-only. Never modify or backfill past entries. Each entry reflects reasoning at the moment it was written. If a past entry was missed, note the gap in the next entry rather than editing history." See `backlogs.md` Proposal #20.
+
+### Entry 26: Three-File Feedback Protocol Not Documented as Atomic Operation
+- **Date:** 2026-02-11 | **Sprint:** Sprint 6 | **Type:** Gap
+- **Context:** When sending feedback about the session transcript issue, the agent wrote only to DSM Central's inbox, skipping the local feedback files (`docs/feedback/methodology.md` and `docs/feedback/backlogs.md`). The user caught the omission.
+- **Finding:** The three-file feedback system (methodology entry + backlog proposal + DSM Central inbox) is documented across multiple DSM sections but never stated as an atomic operation. The simultaneous push pattern (Entry 24) specifies *when* to push but not *what constitutes a complete push*. An agent can satisfy one destination while forgetting the others.
+- **Scores:** Clarity 2, Applicability 5, Completeness 2, Efficiency 3 (Avg: 3.0)
+- **Reasoning:** Each feedback destination serves a different purpose: methodology.md captures the observation with scores, backlogs.md captures the actionable proposal, and DSM Central receives the cross-project notification. Skipping any one creates an incomplete record.
+- **Recommendation:** Add to DSM_0.2: "Every feedback item must be written to all three destinations as a single operation: (1) `docs/feedback/methodology.md` numbered entry with scores, (2) `docs/feedback/backlogs.md` numbered proposal, (3) DSM Central `docs/inbox/{project}.md` inbox entry. Partial writes are incomplete." See `backlogs.md` Proposal #21.
+
 ---
 
-**Last Updated:** 2026-02-10
-**Entries So Far:** 24
-**Average Score:** 3.57
+**Last Updated:** 2026-02-11
+**Entries So Far:** 26
+**Average Score:** 3.54
