@@ -83,3 +83,4 @@ outputs/reports/*.md
 
 # references
 docs/_references
+.claude/session-baseline.txt

@@ -403,3 +403,88 @@ class TestCrossReferenceDataclass:
         valid_types = {"section", "appendix", "dsm"}
         for ref in result:
             assert ref.type in valid_types
+
+
+# ---------------------------------------------------------------------------
+# context_excerpt tests (Phase 6.1)
+# ---------------------------------------------------------------------------
+
+
+class TestContextExcerpt:
+    """Test Section.context_excerpt extraction across content types."""
+
+    def _find_section(self, title: str) -> Section:
+        result = parse_markdown_file(SAMPLE_DSM)
+        matches = [s for s in result.sections if s.title == title]
+        assert len(matches) == 1, f"Expected 1 section titled '{title}', found {len(matches)}"
+        return matches[0]
+
+    def test_prose_section_has_excerpt(self):
+        section = self._find_section("Overview & Purpose")
+        assert section.context_excerpt.startswith("This methodology provides")
+
+    def test_list_only_falls_back_to_first_item(self):
+        section = self._find_section("List Only Section")
+        assert section.context_excerpt == "First list item about data loading"
+
+    def test_table_first_skips_to_prose(self):
+        section = self._find_section("Table First Section")
+        assert section.context_excerpt.startswith("After the table comes")
+
+    def test_empty_section_returns_empty(self):
+        section = self._find_section("Empty Section")
+        assert section.context_excerpt == ""
+
+    def test_code_block_only_returns_empty(self):
+        section = self._find_section("Code Block Only Section")
+        assert section.context_excerpt == ""
+
+    def test_bold_lead_in_captured_as_prose(self):
+        section = self._find_section("Bold Lead-In Section")
+        assert "Key principle" in section.context_excerpt
+
+    def test_blockquote_captured_as_prose(self):
+        section = self._find_section("Blockquote Section")
+        assert "blockquote" in section.context_excerpt
+
+    def test_context_excerpt_is_string_for_all_sections(self):
+        result = parse_markdown_file(SAMPLE_DSM)
+        for section in result.sections:
+            assert isinstance(section.context_excerpt, str)
+
+
+# ---------------------------------------------------------------------------
+# context_before / context_after tests (Phase 6.1)
+# ---------------------------------------------------------------------------
+
+
+class TestCrossRefContextWindow:
+    """Test CrossReference.context_before and context_after fields."""
+
+    def test_context_before_is_string(self):
+        result = extract_cross_references(SAMPLE_DSM)
+        for ref in result:
+            assert isinstance(ref.context_before, str)
+
+    def test_context_after_is_string(self):
+        result = extract_cross_references(SAMPLE_DSM)
+        for ref in result:
+            assert isinstance(ref.context_after, str)
+
+    def test_mid_file_ref_has_context_before(self):
+        """References not at the start of the file should have context_before."""
+        result = extract_cross_references(SAMPLE_DSM)
+        mid_refs = [r for r in result if r.line > 5]
+        assert len(mid_refs) > 0
+        for ref in mid_refs:
+            assert len(ref.context_before) > 0
+
+    def test_context_window_excludes_code_block_content(self):
+        """Reference after code block should not include code lines in context."""
+        result = extract_cross_references(SAMPLE_DSM)
+        # "Section 3.1 references should resume" is right after a code block
+        ref_31 = [r for r in result if r.type == "section" and r.target == "3.1"]
+        assert len(ref_31) >= 1
+        post_code_ref = ref_31[0]
+        assert "result = parse" not in post_code_ref.context_before
+        assert "Section 99.99" not in post_code_ref.context_before

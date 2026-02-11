@@ -138,3 +138,36 @@ Extra whitespace in the heading.
 
 Section 2.4.8 appears twice: once here and once in Section 1.1 above.
 DSM_4.0 and DSM 1.0 are both referenced on this line.
+
+# Context Extraction Test Cases
+
+## List Only Section
+
+- First list item about data loading
+- Second list item about validation
+- Third list item about reporting
+
+## Table First Section
+
+| Column A | Column B |
+|----------|----------|
+| value1   | value2   |
+
+After the table comes this prose paragraph for excerpt extraction.
+
+## Empty Section
+
+## Code Block Only Section
+
+```python
+x = 1 + 2
+print(x)
+```
+
+## Bold Lead-In Section
+
+**Key principle:** Always validate inputs before processing data through the pipeline.
+
+## Blockquote Section
+
+> This is a blockquote that serves as the section content for testing purposes.
