@@ -51,6 +51,14 @@ class Config(BaseModel):
         default="WARNING",
         description="Default severity for files not matching any pattern",
     )
+    semantic_threshold: float = Field(
+        default=0.10,
+        description="Minimum TF-IDF cosine similarity for semantic alignment (DEC-005)",
+    )
+    semantic_min_tokens: int = Field(
+        default=3,
+        description="Minimum meaningful tokens required for semantic comparison",
+    )
 
     @field_validator("exclude")
     @classmethod
@@ -181,4 +189,6 @@ def merge_config_with_cli(
         severity=config.severity,
         strict=strict,
         default_severity=config.default_severity,
+        semantic_threshold=config.semantic_threshold,
+        semantic_min_tokens=config.semantic_min_tokens,
     )

@@ -15,9 +15,11 @@ from filter.file_filter import filter_files
 from parser.cross_ref_extractor import extract_cross_references
 from parser.markdown_parser import parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
+from semantic.similarity import SKLEARN_AVAILABLE, SemanticResult
 from validator.cross_ref_validator import (
     Severity,
     apply_severity_overrides,
+    build_section_lookup,
     validate_cross_references,
 )
 from validator.version_validator import validate_version_consistency
@@ -91,6 +93,12 @@ def collect_markdown_files(
     default=None,
     help="Path to config file. Default: searches for .dsm-graph-explorer.yml",
 )
+@click.option(
+    "--semantic",
+    is_flag=True,
+    default=False,
+    help="Enable TF-IDF semantic drift detection for cross-references.",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -99,6 +107,7 @@ def main(
     version_files: tuple[str, ...],
     exclude_patterns: tuple[str, ...],
     config_path: str | None,
+    semantic: bool,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -175,6 +184,44 @@ def main(
         cross_ref_results, config.severity, config.default_severity
     )
 
+    # Semantic validation (opt-in)
+    semantic_results: list[tuple[str, int, str, SemanticResult]] = []
+    if semantic:
+        if not SKLEARN_AVAILABLE:
+            click.echo(
+                "Error: --semantic requires scikit-learn. "
+                "Install with: pip install dsm-graph-explorer[semantic]",
+                err=True,
+            )
+            sys.exit(2)
+
+        from semantic.similarity import (
+            build_corpus_vectorizer,
+            check_semantic_alignment,
+        )
+
+        # Build corpus from all sections
+        all_sections = [s for doc in documents for s in doc.sections]
+        if all_sections:
+            vectorizer = build_corpus_vectorizer(all_sections)
+            section_lookup = build_section_lookup(documents)
+
+            for file_path, refs in references.items():
+                for ref in refs:
+                    if ref.type in ("section", "appendix"):
+                        target_section = section_lookup.get(ref.target)
+                        if target_section is not None:
+                            result = check_semantic_alignment(
+                                ref,
+                                target_section,
+                                vectorizer,
+                                threshold=config.semantic_threshold,
+                                min_tokens=config.semantic_min_tokens,
+                            )
+                            semantic_results.append(
+                                (file_path, ref.line, ref.target, result)
+                            )
+
     # Validate version consistency
     version_results = []
     if version_files:
@@ -185,12 +232,22 @@ def main(
     elapsed = time.perf_counter() - start
 
     # Report
-    print_rich_report(cross_ref_results, version_results)
+    print_rich_report(cross_ref_results, version_results, semantic_results)
 
     # Summary line
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
     infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
+
+    # Semantic summary counts
+    drift_warnings = [
+        (f, l, t, r) for f, l, t, r in semantic_results
+        if r.sufficient_context and not r.match
+    ]
+    insufficient_context = [
+        (f, l, t, r) for f, l, t, r in semantic_results
+        if not r.sufficient_context
+    ]
 
     summary_parts = [
         f"Scanned {len(md_files)} file(s)",
@@ -202,13 +259,20 @@ def main(
         f"Found {len(errors)} error(s), {len(warnings)} warning(s), "
         f"{len(infos)} info(s), {len(version_results)} version mismatch(es)."
     )
+    if semantic:
+        summary_parts.append(
+            f"Semantic: {len(drift_warnings)} drift warning(s), "
+            f"{len(insufficient_context)} insufficient context."
+        )
 
     click.echo(f"\n{' '.join(summary_parts)}")
 
     # Write markdown report if requested
     if output:
         generate_markdown_report(
-            cross_ref_results, version_results, output_path=output
+            cross_ref_results, version_results,
+            semantic_results=semantic_results,
+            output_path=output,
         )
         click.echo(f"Report written to {output}")
 

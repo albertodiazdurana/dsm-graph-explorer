@@ -325,8 +325,16 @@
 - **Reasoning:** Spoke structure scaffolding assumes a clean project or consistent naming. When a project already has a folder serving the same purpose under a slightly different name, the template creates a duplicate rather than adopting the existing folder. This is the same class of problem as Entry 21 (naming ambiguity across folders).
 - **Recommendation:** Standardize on a single canonical name for each spoke folder in the DSM template (either `plan/` or `plans/`, not both). Add a scaffolding pre-check: before creating a template folder, verify no existing folder serves the same purpose. See `backlogs.md` Proposal #22.
 
+### Entry 28: experiments/ Folder Not in DSM 4.0 Project Structure
+- **Date:** 2026-02-11 | **Sprint:** Sprint 6 | **Type:** Gap
+- **Context:** Running EXP-003b (real data validation of semantic drift threshold) against the DSM methodology repository. The experiment script lives in `experiments/exp003b_real_data_validation.py`. DSM 4.0 Section 4.4 distinguishes tests from capability experiments conceptually, but DSM 4.0 Section 2 (Project Structure) does not list `experiments/` as a standard subfolder.
+- **Finding:** Capability experiments (EXP-xxx) are a first-class DSM concept per Section 4.4, yet they have no prescribed home in the project structure. This project naturally created `experiments/` to hold experiment scripts, but the folder was never formally standardized. New projects following DSM 4.0 would not know to create it.
+- **Scores:** Clarity 4, Applicability 4, Completeness 2, Efficiency 3 (Avg: 3.25)
+- **Reasoning:** Tests have `tests/`, source code has `src/`, decisions have `docs/decisions/`, but experiments, despite being a distinct artifact type with their own naming convention (EXP-xxx), lack a designated folder. This creates inconsistency in the project structure template.
+- **Recommendation:** Add `experiments/` to DSM 4.0 Section 2 (Project Structure Patterns) as a standard subfolder for capability experiment scripts. See `backlogs.md` Proposal #23.
+
 ---
 
 **Last Updated:** 2026-02-11
-**Entries So Far:** 27
-**Average Score:** 3.52
+**Entries So Far:** 28
+**Average Score:** 3.50

@@ -204,6 +204,12 @@
 - **Proposed Solution:** (1) Standardize on a single canonical name for each spoke folder (either singular or plural, applied consistently across all templates). (2) Add a scaffolding pre-check step: before creating a template folder, search for existing folders with similar names (singular/plural variants, common abbreviations). If a match exists, adopt the existing folder rather than creating a duplicate.
 - **Evidence:** In dsm-graph-explorer, `docs/plan/` was created in Epoch 1 with epoch-1-plan.md. Commit `87eff49` later scaffolded `docs/plans/` (plural) per BACKLOG-083. The duplicate went unnoticed until the user spotted it during Sprint 6. See `methodology.md` Entry 27.
 
+### Add experiments/ to DSM 4.0 project structure template
+- **DSM Section:** DSM 4.0 Section 2 (Project Structure Patterns)
+- **Problem:** Capability experiments (EXP-xxx) are a first-class concept in DSM 4.0 Section 4.4, but the project structure template in Section 2 does not include an `experiments/` folder. Projects create this folder organically but it is not standardized.
+- **Proposed Solution:** Add `experiments/` to the project structure template in DSM 4.0 Section 2, alongside `src/`, `tests/`, and `docs/`. Include a brief note: "Capability experiment scripts (EXP-xxx). See Section 4.4 for the distinction between tests and experiments."
+- **Evidence:** In dsm-graph-explorer, `experiments/` was created to hold `exp003_tfidf_threshold.py` and `exp003b_real_data_validation.py`. The folder was created organically without template guidance. See `methodology.md` Entry 28.
+
 ---
 
 ## Low Priority
@@ -213,4 +219,4 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-02-11
-**Total Proposals:** 22
+**Total Proposals:** 23

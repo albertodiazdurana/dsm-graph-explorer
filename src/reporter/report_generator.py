@@ -8,13 +8,18 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
+from semantic.similarity import SemanticResult
 from validator.cross_ref_validator import Severity, ValidationResult
 from validator.version_validator import VersionMismatch
+
+# Type alias for semantic results passed from CLI
+SemanticEntry = tuple[str, int, str, SemanticResult]
 
 
 def generate_markdown_report(
     cross_ref_results: list[ValidationResult],
     version_results: list[VersionMismatch],
+    semantic_results: list[SemanticEntry] | None = None,
     output_path: Path | str | None = None,
 ) -> str:
     """Generate a markdown integrity report.
@@ -22,11 +27,14 @@ def generate_markdown_report(
     Args:
         cross_ref_results: Validation findings from cross-reference checks.
         version_results: Version mismatch findings.
+        semantic_results: Optional semantic similarity results from --semantic.
         output_path: Optional path to write the report file.
 
     Returns:
         The report as a markdown string.
     """
+    if semantic_results is None:
+        semantic_results = []
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
     infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
@@ -98,6 +106,34 @@ def generate_markdown_report(
                     lines.append(f"| {v.file} | {v.version} | {v.line} |")
                 lines.append("")
 
+    # Semantic drift warnings
+    drift = [
+        (f, l, t, r) for f, l, t, r in semantic_results
+        if r.sufficient_context and not r.match
+    ]
+    if drift:
+        lines.append("## Semantic Drift Warnings")
+        lines.append("")
+        lines.append("| File | Line | Target | Score | Threshold |")
+        lines.append("|------|------|--------|-------|-----------|")
+        for f, l, t, r in drift:
+            lines.append(f"| {f} | {l} | {t} | {r.score:.3f} | {r.threshold:.2f} |")
+        lines.append("")
+
+    # Insufficient context
+    insufficient = [
+        (f, l, t, r) for f, l, t, r in semantic_results
+        if not r.sufficient_context
+    ]
+    if insufficient:
+        lines.append("## Insufficient Context")
+        lines.append("")
+        lines.append("| File | Line | Target | Ref Tokens | Target Tokens |")
+        lines.append("|------|------|--------|------------|---------------|")
+        for f, l, t, r in insufficient:
+            lines.append(f"| {f} | {l} | {t} | {r.ref_tokens} | {r.target_tokens} |")
+        lines.append("")
+
     report = "\n".join(lines)
 
     if output_path is not None:
@@ -111,13 +147,17 @@ def generate_markdown_report(
 def print_rich_report(
     cross_ref_results: list[ValidationResult],
     version_results: list[VersionMismatch],
+    semantic_results: list[SemanticEntry] | None = None,
 ) -> None:
     """Print a Rich-formatted report to the console.
 
     Args:
         cross_ref_results: Validation findings from cross-reference checks.
         version_results: Version mismatch findings.
+        semantic_results: Optional semantic similarity results from --semantic.
     """
+    if semantic_results is None:
+        semantic_results = []
     console = Console()
 
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
@@ -139,9 +179,26 @@ def print_rich_report(
     console.print(f"  Warnings:           [{warn_style}]{len(warnings)}[/{warn_style}]")
     console.print(f"  Info:               [{info_style}]{len(infos)}[/{info_style}]")
     console.print(f"  Version mismatches: [{version_style}]{len(version_results)}[/{version_style}]")
+
+    # Semantic summary counts
+    drift = [
+        (f, l, t, r) for f, l, t, r in semantic_results
+        if r.sufficient_context and not r.match
+    ]
+    insufficient = [
+        (f, l, t, r) for f, l, t, r in semantic_results
+        if not r.sufficient_context
+    ]
+    if semantic_results:
+        drift_style = "yellow" if drift else "green"
+        insuf_style = "dim" if insufficient else "green"
+        console.print(f"  Semantic drift:     [{drift_style}]{len(drift)}[/{drift_style}]")
+        console.print(f"  Insufficient ctx:   [{insuf_style}]{len(insufficient)}[/{insuf_style}]")
+
     console.print()
 
-    if not errors and not warnings and not infos and not version_results:
+    has_issues = errors or warnings or infos or version_results or drift or insufficient
+    if not has_issues:
         console.print("[green]No issues found.[/green]")
         console.print()
         return
@@ -204,3 +261,33 @@ def print_rich_report(
 
             console.print(table)
             console.print()
+
+    # Semantic drift warnings
+    if drift:
+        table = Table(title="Semantic Drift Warnings", title_style="yellow")
+        table.add_column("File", style="cyan")
+        table.add_column("Line", justify="right")
+        table.add_column("Target", style="bold")
+        table.add_column("Score", justify="right")
+        table.add_column("Threshold", justify="right")
+
+        for f, l, t, r in drift:
+            table.add_row(f, str(l), t, f"{r.score:.3f}", f"{r.threshold:.2f}")
+
+        console.print(table)
+        console.print()
+
+    # Insufficient context
+    if insufficient:
+        table = Table(title="Insufficient Context", title_style="dim")
+        table.add_column("File", style="cyan")
+        table.add_column("Line", justify="right")
+        table.add_column("Target", style="bold")
+        table.add_column("Ref Tokens", justify="right")
+        table.add_column("Target Tokens", justify="right")
+
+        for f, l, t, r in insufficient:
+            table.add_row(f, str(l), t, str(r.ref_tokens), str(r.target_tokens))
+
+        console.print(table)
+        console.print()

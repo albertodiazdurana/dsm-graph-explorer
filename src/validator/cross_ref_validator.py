@@ -16,7 +16,7 @@ from pathlib import Path
 
 from config.config_loader import SeverityMapping
 from parser.cross_ref_extractor import CrossReference
-from parser.markdown_parser import ParsedDocument
+from parser.markdown_parser import ParsedDocument, Section
 
 
 class Severity(Enum):
@@ -76,6 +76,28 @@ def build_section_index(
             if section.number is not None:
                 index.setdefault(section.number, []).append(doc.file)
     return index
+
+
+def build_section_lookup(
+    documents: list[ParsedDocument],
+) -> dict[str, Section]:
+    """Build a lookup mapping section numbers to Section objects.
+
+    When multiple documents define the same section number, the first
+    one encountered wins (consistent with build_section_index behavior).
+
+    Args:
+        documents: Parsed documents with section definitions.
+
+    Returns:
+        Dict mapping section number to the Section object.
+    """
+    lookup: dict[str, Section] = {}
+    for doc in documents:
+        for section in doc.sections:
+            if section.number is not None and section.number not in lookup:
+                lookup[section.number] = section
+    return lookup
 
 
 def validate_cross_references(
