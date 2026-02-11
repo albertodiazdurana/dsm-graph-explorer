@@ -317,8 +317,16 @@
 - **Reasoning:** Each feedback destination serves a different purpose: methodology.md captures the observation with scores, backlogs.md captures the actionable proposal, and DSM Central receives the cross-project notification. Skipping any one creates an incomplete record.
 - **Recommendation:** Add to DSM_0.2: "Every feedback item must be written to all three destinations as a single operation: (1) `docs/feedback/methodology.md` numbered entry with scores, (2) `docs/feedback/backlogs.md` numbered proposal, (3) DSM Central `docs/inbox/{project}.md` inbox entry. Partial writes are incomplete." See `backlogs.md` Proposal #21.
 
+### Entry 27: Spoke Structure Scaffolding Creates Duplicate Folders
+- **Date:** 2026-02-11 | **Sprint:** Sprint 6 | **Type:** Gap
+- **Context:** User noticed two similar folders in `docs/`: `plan/` (containing epoch-1-plan.md and epoch-2-plan.md) and `plans/` (containing only `.gitkeep`). Git history shows `plans/` was created by commit `87eff49` ("Add docs/plans/ to align with DSM spoke structure, BACKLOG-083") while `plan/` already existed with actual documents.
+- **Finding:** The DSM spoke structure template prescribes `docs/plans/` as a standard subfolder, but this project had already established `docs/plan/` (singular) with real content. The scaffolding task created the template folder without checking for an existing equivalent, leaving a dead duplicate. The singular/plural naming inconsistency (`plan/` vs `plans/`) means an automated or AI-driven scaffolding step cannot detect the collision by exact name match.
+- **Scores:** Clarity 3, Applicability 4, Completeness 2, Efficiency 3 (Avg: 3.0)
+- **Reasoning:** Spoke structure scaffolding assumes a clean project or consistent naming. When a project already has a folder serving the same purpose under a slightly different name, the template creates a duplicate rather than adopting the existing folder. This is the same class of problem as Entry 21 (naming ambiguity across folders).
+- **Recommendation:** Standardize on a single canonical name for each spoke folder in the DSM template (either `plan/` or `plans/`, not both). Add a scaffolding pre-check: before creating a template folder, verify no existing folder serves the same purpose. See `backlogs.md` Proposal #22.
+
 ---
 
 **Last Updated:** 2026-02-11
-**Entries So Far:** 26
-**Average Score:** 3.54
+**Entries So Far:** 27
+**Average Score:** 3.52

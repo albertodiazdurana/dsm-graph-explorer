@@ -511,6 +511,7 @@ severity:
 
 - spaCy NER for entity extraction (tool names, section titles in prose)
 - Sentence transformer embeddings for deep semantic alignment
+- Lightweight LLM second-pass: confirm TF-IDF-flagged references via contextual reasoning (tiered: TF-IDF filters, LLM confirms)
 - Reference: [tfidf-to-transformers-with-disaster-tweets](https://github.com/albertodiazdurana/tfidf-to-transformers-with-disaster-tweets)
 
 ---

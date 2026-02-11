@@ -198,6 +198,12 @@
 - **Proposed Solution:** Add to DSM_0.2: "Every feedback item must be written to all three destinations as a single operation: (1) `docs/feedback/methodology.md` numbered entry with scores, (2) `docs/feedback/backlogs.md` numbered proposal, (3) DSM Central `docs/inbox/{project}.md` inbox entry. Partial writes are incomplete."
 - **Evidence:** In dsm-graph-explorer Sprint 6, the agent sent the "session transcript append-only" feedback only to DSM Central's inbox, skipping both local feedback files. The user caught the omission. See `methodology.md` Entry 26.
 
+### Standardize spoke folder names and add scaffolding pre-check
+- **DSM Section:** DSM spoke structure template (referenced by BACKLOG-083)
+- **Problem:** The DSM spoke structure template prescribes `docs/plans/` (plural), but dsm-graph-explorer already used `docs/plan/` (singular) with actual epoch plans. The scaffolding task (BACKLOG-083) created `docs/plans/` with `.gitkeep` alongside the existing `docs/plan/`, leaving a dead duplicate folder. The singular/plural naming inconsistency prevents automated detection of the collision.
+- **Proposed Solution:** (1) Standardize on a single canonical name for each spoke folder (either singular or plural, applied consistently across all templates). (2) Add a scaffolding pre-check step: before creating a template folder, search for existing folders with similar names (singular/plural variants, common abbreviations). If a match exists, adopt the existing folder rather than creating a duplicate.
+- **Evidence:** In dsm-graph-explorer, `docs/plan/` was created in Epoch 1 with epoch-1-plan.md. Commit `87eff49` later scaffolded `docs/plans/` (plural) per BACKLOG-083. The duplicate went unnoticed until the user spotted it during Sprint 6. See `methodology.md` Entry 27.
+
 ---
 
 ## Low Priority
@@ -207,4 +213,4 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-02-11
-**Total Proposals:** 21
+**Total Proposals:** 22
