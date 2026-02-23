@@ -22,7 +22,7 @@ except ImportError:
 from parser.cross_ref_extractor import CrossReference
 from parser.markdown_parser import Section
 
-_DEFAULT_THRESHOLD = 0.10
+_DEFAULT_THRESHOLD = 0.08
 _DEFAULT_MIN_TOKENS = 3
 _SECTION_NUMBER_RE = re.compile(r"\b[A-Z]?\d+(?:\.\d+)+\.?\b")
 

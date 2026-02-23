@@ -96,6 +96,38 @@ DSM repository data during Phase 6.2 integration testing.
 
 ## References
 
-- Experiment script: `experiments/exp003_tfidf_threshold.py`
-- Design source: `docs/inbox/done/2026-02-10_dsm-central-tfidf-context-design.md`
-- Sprint plan: `docs/plan/epoch-2-plan.md` (Sprint 6)
+- Experiment script: `data/experiments/exp003_tfidf_threshold.py`
+- Design source: `_inbox/done/2026-02-10_dsm-central-tfidf-context-design.md`
+- Sprint plan: `docs/plans/epoch-2-plan.md` (Sprint 6)
+
+---
+
+## Amendment: Threshold Lowered to 0.08 (EXP-003b)
+
+**Date:** 2026-02-23
+**Experiment:** EXP-003b (Real Data Validation)
+
+EXP-003b validated the 0.10 threshold against 1,191 real cross-references from the
+DSM methodology repository (128 manually labeled in the near-threshold zone 0.08-0.12).
+
+### Results
+
+| Metric | EXP-003 (synthetic, 25 cases) | EXP-003b (real, 128 cases) |
+|--------|-------------------------------|---------------------------|
+| Precision | 1.000 | 1.000 |
+| Recall | 0.800 | 0.496 |
+| F1 | 0.889 | 0.663 |
+
+The 0.10 threshold produces 63 false negatives (auto=drift, manual=match), all with
+scores between 0.08 and 0.10. Root causes: empty target excerpts (3-4 tokens),
+vocabulary mismatch in backlog proposals, and short generic section titles.
+
+### Updated Parameter
+
+| Parameter | Previous | Updated | Rationale |
+|-----------|----------|---------|-----------|
+| Default threshold | 0.10 | **0.08** | Recovers false negatives while maintaining perfect precision (0 false positives at 0.08) |
+
+All 63 false negatives have scores >= 0.08 and were confirmed as genuine matches by
+human review. Lowering the threshold to 0.08 recovers these cases without introducing
+false positives.

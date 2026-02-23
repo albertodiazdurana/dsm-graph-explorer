@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.2.0
-**Status:** Epoch 2 In Progress (Sprint 5 in progress)
+**Status:** Epoch 2 In Progress (Sprint 6 complete, EXP-003b validated)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -42,15 +42,29 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - User guides: [remediation guide](docs/guides/remediation-guide.md) and [config reference](docs/guides/config-reference.md)
 - Cross-repo reference handling: spoke repositories that reference DSM sections defined elsewhere can set those files to INFO severity, keeping findings visible without blocking CI (see [config reference](docs/guides/config-reference.md))
 
-**Future (SHOULD scope):**
-- Semantic cross-reference validation — TF-IDF keyword similarity to detect meaning drift when sections are rewritten
+**Implemented (Sprint 6 — Semantic Validation):**
+- TF-IDF cosine similarity for detecting semantic drift in cross-references (`--semantic` flag)
+- Context extraction: section excerpts (~50 words) and cross-reference context windows (3 lines before/after)
+- Corpus-scoped IDF weighting across all sections for proper vocabulary downweighting
+- Minimum token gate (3 tokens after stopword removal) to flag insufficient context rather than producing unreliable scores
+- Section number stripping before vectorization to avoid artificial similarity inflation
+- Configurable threshold (default 0.08, per [DEC-005](docs/decisions/DEC-005-semantic-validation-approach.md)) and min tokens via `.dsm-graph-explorer.yml`
+- Graceful fallback: `--semantic` without scikit-learn prints a clear error and exits with code 2
+- Rich console output with drift warning (yellow) and insufficient context (dim) tables
+- EXP-003b real data validation: 1,191 cross-references analyzed, 128 labeled, threshold amended to 0.08 (Precision=1.000, Recall=0.496→recovered at 0.08)
 
-**Future (COULD scope):**
-- Neo4j graph database mapping DSM structure (prototype with NetworkX first)
+**Next (Sprint 7 — Graph Prototype):**
+- NetworkX graph builder mapping reference networks
+- Graph queries: most-referenced sections, orphan sections, reference chains
+- GraphML export for visualization in Gephi/yEd
+
+**Future (Epoch 3+):**
+- Neo4j graph database integration
 - Cypher query library for navigation
 - Web visualization using Neo4j Browser
+- Convention linting mode (`--lint` flag) for DSM style checks
 - spaCy NER for advanced reference extraction
-- Sentence transformer embeddings for deep semantic cross-reference alignment
+- LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
 
 ---
 
@@ -64,24 +78,27 @@ dsm-graph-explorer/
 ├── src/
 │   ├── parser/           # Markdown parser and cross-ref extractor
 │   ├── validator/        # Cross-reference and version validators
-│   ├── reporter/         # Report generator
-│   ├── config/           # YAML config loader (Epoch 2)
-│   └── filter/           # File exclusion logic (Epoch 2)
+│   ├── reporter/         # Report generator (Rich + markdown)
+│   ├── config/           # YAML config loader
+│   ├── filter/           # File exclusion logic
+│   └── semantic/         # TF-IDF similarity (Sprint 6)
 ├── tests/
 │   ├── test_parser.py    # Parser module tests
 │   ├── test_validator.py # Validator tests
 │   ├── test_reporter.py  # Reporter + integration tests
 │   ├── test_cli.py       # CLI tests
-│   ├── test_config.py    # Config loader tests (Epoch 2)
-│   ├── test_filter.py    # File filter tests (Epoch 2)
+│   ├── test_cli_semantic.py # Semantic CLI integration tests
+│   ├── test_config.py    # Config loader tests
+│   ├── test_filter.py    # File filter tests
+│   ├── test_semantic.py  # TF-IDF similarity tests
 │   └── fixtures/         # Test data (sample DSM markdown)
+├── data/experiments/      # Capability experiments (EXP-xxx)
+├── _inbox/               # Hub-spoke communication
 ├── docs/
-│   ├── plan/             # Sprint plan
+│   ├── plans/            # Sprint and epoch plans
 │   ├── research/         # State-of-the-art review
-│   ├── handoffs/         # Session handoffs
 │   ├── decisions/        # Decision logs (DEC-001, ...)
 │   ├── checkpoints/      # Sprint checkpoints
-│   ├── backlog/          # Cross-project DSM alignment reports
 │   ├── blog/             # Blog materials and journal
 │   ├── feedback/         # Three-file DSM feedback system
 │   └── guides/           # User-facing docs (remediation, config reference)
@@ -114,6 +131,9 @@ source .venv/bin/activate
 
 # Install in development mode
 pip install -e ".[dev]"
+
+# Optional: install semantic validation support
+pip install -e ".[dev,semantic]"
 ```
 
 **Note:** Development is done on Linux (WSL2). Python 3.10+ required.
@@ -146,6 +166,12 @@ dsm-validate docs/ --version-files DSM_0.md --version-files README.md
 
 # Custom glob pattern
 dsm-validate /path/to/repo --glob "docs/**/*.md"
+
+# Semantic drift detection (requires scikit-learn)
+dsm-validate /path/to/dsm-repo --semantic
+
+# Combine semantic with other options
+dsm-validate /path/to/dsm-repo --semantic --strict --output report.md
 ```
 
 ---
@@ -188,7 +214,7 @@ This project is built using the [Agentic AI Data Science Methodology (DSM)](http
 
 The three-file feedback system (`docs/feedback/`) tracks methodology effectiveness as the project progresses, generating actionable improvements back into the DSM itself.
 
-For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) and [epoch-2-plan.md](docs/plan/epoch-2-plan.md) (upcoming) in this repository.
+For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (completed) and [epoch-2-plan.md](docs/plans/epoch-2-plan.md) (in progress) in this repository.
 
 ---
 
@@ -203,9 +229,15 @@ For more details, see [epoch-1-plan.md](docs/plan/epoch-1-plan.md) (completed) a
 
 ### Epoch 2: Productionization & Graph (In Progress)
 - [x] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels (218 tests, 95% coverage)
-- [ ] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, user guides *(in progress)*
-- [ ] **Sprint 6:** Semantic Validation — TF-IDF similarity, drift detection ([research](docs/research/e2_handoff_graph_explorer_research.md))
+- [x] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, user guides (232 tests, 95% coverage)
+- [x] **Sprint 6:** Semantic Validation — TF-IDF cosine similarity, `--semantic` flag, drift detection, EXP-003b real data validation (250 tests, 95% coverage)
+  - Phase 6.0: EXP-003 threshold tuning → [DEC-005](docs/decisions/DEC-005-semantic-validation-approach.md) (threshold 0.10→0.08, min 3 tokens)
+  - Phase 6.1: Parser context extraction (`Section.context_excerpt`, `CrossReference.context_before/after`)
+  - Phase 6.2: TF-IDF implementation (`src/semantic/similarity.py`, corpus-scoped IDF)
+  - Phase 6.3: CLI integration (`--semantic`, graceful fallback, Rich + markdown reports)
+  - EXP-003b: 1,191 real cross-references validated, threshold amended to 0.08
 - [ ] **Sprint 7:** Graph Prototype — NetworkX graph builder, queries, GraphML export
+- [ ] **Sprint 8:** Convention Linting — `--lint` flag, 6 style checks
 
 ---
 
@@ -240,7 +272,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-10
-**Current Status:** Epoch 2 in progress (Sprint 5 in progress)
-**Tests:** 218 passed, 95% coverage
-**DSM Validation:** 10 errors (all reference non-existent Section 2.6), 0 warnings, 0 info
+**Last Updated:** 2026-02-12
+**Current Status:** Epoch 2 in progress (Sprint 6 complete, EXP-003b validated)
+**Tests:** 250 passed, 95% coverage
+**DSM Feedback:** 28 methodology entries, 23 improvement proposals

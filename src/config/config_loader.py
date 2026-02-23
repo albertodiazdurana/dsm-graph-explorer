@@ -52,7 +52,7 @@ class Config(BaseModel):
         description="Default severity for files not matching any pattern",
     )
     semantic_threshold: float = Field(
-        default=0.10,
+        default=0.08,
         description="Minimum TF-IDF cosine similarity for semantic alignment (DEC-005)",
     )
     semantic_min_tokens: int = Field(
