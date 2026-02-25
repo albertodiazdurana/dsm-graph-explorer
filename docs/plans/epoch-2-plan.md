@@ -25,14 +25,14 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 - [x] YAML configuration file (`.dsm-graph-explorer.yml`)
 - [x] Severity levels by file pattern (ERROR/WARNING/INFO)
 - [x] `--strict` respects severity (only fails on ERROR)
-- [ ] CI workflow template for GitHub Actions
-- [ ] Remediation documentation
+- [x] CI workflow template for GitHub Actions
+- [x] Remediation documentation
 
 **SHOULD (Epoch 2 Enhancements):**
-- [ ] Semantic cross-reference validation (TF-IDF keyword similarity)
+- [x] Semantic cross-reference validation (TF-IDF keyword similarity)
 - [ ] NetworkX graph prototype (before Neo4j)
 - [ ] Section rename tracking (`section-renames.yml`)
-- [ ] Pre-commit hook script
+- [x] Pre-commit hook script
 - [ ] Convention linting mode (`--lint` flag) — emoji, TOC, em-dash, CRLF, mojibake, backlog metadata checks
 
 **COULD (Future Epoch 3+):**
@@ -46,8 +46,8 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 
 **Technical:**
 - [x] Exclusion patterns reduce 6 → 0 actionable errors on DSM repo
-- [ ] CI workflow passes on clean core docs
-- [ ] Semantic validation detects renamed sections (TF-IDF)
+- [x] CI workflow passes on clean core docs
+- [x] Semantic validation detects renamed sections (TF-IDF)
 - [ ] Graph prototype enables navigation queries
 
 **Process:**
@@ -57,8 +57,8 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 - [x] Experiments documented with results
 
 **Deliverable:**
-- [ ] Production-ready CLI with exclusion and CI support
-- [ ] Remediation guide for DSM maintainers
+- [x] Production-ready CLI with exclusion and CI support
+- [x] Remediation guide for DSM maintainers
 - [ ] Graph prototype demonstrating future potential
 
 ---
@@ -201,59 +201,61 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 
 ---
 
-### Sprint 5: CI Integration & Remediation Docs
+### Sprint 5: CI Integration & Remediation Docs ✅
 
 **Duration:** 1 session
 **Objective:** Provide ready-to-use CI workflow and documentation for fixing broken references.
+**Status:** COMPLETE (2026-02-10)
 
 #### Phase 5.1: GitHub Actions Workflow
 
 **Tasks:**
-1. [ ] Create `.github/workflows/dsm-validate.yml`:
-   - [ ] Trigger on `**/*.md` changes (PR and push)
-   - [ ] Setup Python 3.12
-   - [ ] Install dsm-graph-explorer
-   - [ ] Run with `--strict --config`
-2. [ ] Create example config for DSM repository
+1. [x] Create `.github/workflows/dsm-validate.yml`:
+   - [x] Trigger on `**/*.md` changes (PR and push)
+   - [x] Setup Python 3.12
+   - [x] Install dsm-graph-explorer
+   - [x] Run with `--strict --config`
+2. [x] Create example config for DSM repository
 3. [ ] Test workflow locally with `act` (optional)
 
 #### Phase 5.2: Pre-commit Hook
 
 **Tasks:**
-1. [ ] Create `scripts/pre-commit-hook.sh`
-2. [ ] Document pre-commit framework integration
-3. [ ] Add installation instructions to README
+1. [x] Create `scripts/pre-commit-hook.sh`
+2. [x] Document pre-commit framework integration
+3. [x] Add installation instructions to README
 
 #### Phase 5.3: Documentation
 
 **Tasks:**
-1. [ ] Create `docs/guides/remediation-guide.md`:
-   - [ ] Common error types and fixes
-   - [ ] How to use exclusions
-   - [ ] Best practices for cross-references
-2. [ ] Create `docs/guides/config-reference.md`:
-   - [ ] All config options documented
-   - [ ] Example configurations
-3. [ ] Update README with new features
+1. [x] Create `docs/guides/remediation-guide.md`:
+   - [x] Common error types and fixes
+   - [x] How to use exclusions
+   - [x] Best practices for cross-references
+2. [x] Create `docs/guides/config-reference.md`:
+   - [x] All config options documented
+   - [x] Example configurations
+3. [x] Update README with new features
 
 #### Sprint 5 Deliverables
 
-- [ ] `.github/workflows/dsm-validate.yml`
-- [ ] Pre-commit hook script
-- [ ] `docs/guides/remediation-guide.md`
-- [ ] `docs/guides/config-reference.md`
-- [ ] Updated README
+- [x] `.github/workflows/dsm-validate.yml`
+- [x] Pre-commit hook script
+- [x] `docs/guides/remediation-guide.md`
+- [x] `docs/guides/config-reference.md`
+- [x] Updated README
 
 **Sprint boundary:**
-- [ ] Blog entry (CI integration story)
-- [ ] Checkpoint document
+- [x] Blog entry (CI integration story)
+- [x] Checkpoint document
 
 ---
 
-### Sprint 6: Semantic Validation (TF-IDF)
+### Sprint 6: Semantic Validation (TF-IDF) ✅
 
-**Duration:** 1-2 sessions
+**Duration:** 1-2 sessions (actual: 5 sessions)
 **Objective:** Detect meaning drift when sections are rewritten but keep their numbers.
+**Status:** COMPLETE (2026-02-23)
 **Design source:** DSM Central inbox entry ([2026-02-10_dsm-central-tfidf-context-design.md](../inbox/done/2026-02-10_dsm-central-tfidf-context-design.md))
 
 #### Design: Context Extraction Approach (Option B + C)
@@ -274,62 +276,62 @@ Robustness measures:
 #### Phase 6.0: Experiment (Pre-implementation)
 
 **Tasks:**
-1. [ ] Run EXP-003: TF-IDF Threshold Tuning
-2. [ ] Document results in decision document (DEC-005)
-3. [ ] Confirm approach before implementation
+1. [x] Run EXP-003: TF-IDF Threshold Tuning
+2. [x] Document results in decision document (DEC-005)
+3. [x] Confirm approach before implementation
 
 #### Phase 6.1: Parser Context Extraction
 
 **Tasks:**
-1. [ ] Add `context_excerpt` field to `Section` dataclass (first ~50 words of prose)
-2. [ ] Implement prose extraction with fallback chain:
+1. [x] Add `context_excerpt` field to `Section` dataclass (first ~50 words of prose)
+2. [x] Implement prose extraction with fallback chain:
    - First: prose paragraph (skip headings, tables, code fences, lists)
    - Fallback: first list item text (strip `- ` prefix)
    - Last resort: title-only, flag lower confidence
-3. [ ] Add `context_before` / `context_after` fields to `CrossReference` dataclass
-4. [ ] Update parser to populate new fields during extraction
-5. [ ] Write tests for context extraction (prose, list, table-first, empty sections)
+3. [x] Add `context_before` / `context_after` fields to `CrossReference` dataclass
+4. [x] Update parser to populate new fields during extraction
+5. [x] Write tests for context extraction (prose, list, table-first, empty sections)
 
 #### Phase 6.2: TF-IDF Implementation
 
 **Tasks:**
-1. [ ] Add `scikit-learn>=1.3.0` to optional dependencies (`[semantic]`)
-2. [ ] Create `src/semantic/similarity.py`:
-   - [ ] `preprocess_text(text)` — strip section numbers, normalize
-   - [ ] `build_corpus_vectorizer(sections)` — fit TF-IDF on all section texts
-   - [ ] `compute_similarity(ref_text, target_text, vectorizer)` — cosine similarity
-   - [ ] Minimum token gate: skip comparison if <3 meaningful tokens
-3. [ ] Make excerpt word count a config parameter (default: 50)
-4. [ ] Write tests with synthetic examples (aligned, drifted, insufficient context)
+1. [x] Add `scikit-learn>=1.3.0` to optional dependencies (`[semantic]`)
+2. [x] Create `src/semantic/similarity.py`:
+   - [x] `preprocess_text(text)` — strip section numbers, normalize
+   - [x] `build_corpus_vectorizer(sections)` — fit TF-IDF on all section texts
+   - [x] `compute_similarity(ref_text, target_text, vectorizer)` — cosine similarity
+   - [x] Minimum token gate: skip comparison if <3 meaningful tokens
+3. [x] Make excerpt word count a config parameter (default: 50)
+4. [x] Write tests with synthetic examples (aligned, drifted, insufficient context)
 
 #### Phase 6.3: Integration
 
 **Tasks:**
-1. [ ] Add `--semantic` flag to CLI (opt-in)
-2. [ ] Update validator to compute similarity for each reference
-3. [ ] Add WARNING for low-similarity references (below threshold)
-4. [ ] Update reporter to show similarity scores
-5. [ ] Graceful fallback when scikit-learn not installed
+1. [x] Add `--semantic` flag to CLI (opt-in)
+2. [x] Update validator to compute similarity for each reference
+3. [x] Add WARNING for low-similarity references (below threshold)
+4. [x] Update reporter to show similarity scores
+5. [x] Graceful fallback when scikit-learn not installed
 
 #### Sprint 6 Deliverables
 
-- [ ] Parser context extraction (`Section.context_excerpt`, `CrossReference.context_before/after`)
-- [ ] TF-IDF similarity computation with corpus-scoped IDF
-- [ ] Configurable similarity threshold and excerpt word count
-- [ ] WARNING for low-similarity references
-- [ ] Tests with synthetic drift examples
-- [ ] Graceful degradation without scikit-learn
+- [x] Parser context extraction (`Section.context_excerpt`, `CrossReference.context_before/after`)
+- [x] TF-IDF similarity computation with corpus-scoped IDF
+- [x] Configurable similarity threshold and excerpt word count
+- [x] WARNING for low-similarity references
+- [x] Tests with synthetic drift examples
+- [x] Graceful degradation without scikit-learn
 
 **Sprint boundary:**
-- [ ] Decision document (DEC-005: Semantic Validation Approach)
-- [ ] Checkpoint document
-- [ ] EXP-003 results documented
+- [x] Decision document (DEC-005: Semantic Validation Approach)
+- [x] Checkpoint document
+- [x] EXP-003 results documented
 
 **Acceptance criteria:**
-- [ ] References to renamed sections flagged with low similarity
-- [ ] False positive rate <10%
-- [ ] Performance acceptable for 100+ file repositories
-- [ ] Insufficient-context sections flagged rather than producing unreliable scores
+- [x] References to renamed sections flagged with low similarity
+- [x] False positive rate <10% (0% in EXP-003b)
+- [x] Performance acceptable for 100+ file repositories
+- [x] Insufficient-context sections flagged rather than producing unreliable scores
 
 ---
 
@@ -651,7 +653,7 @@ Updated at every sprint boundary:
 
 ---
 
-**Plan Status:** Sprint 5 complete, ready for Sprint 6
-**Last Updated:** 2026-02-10
+**Plan Status:** Sprint 6 complete, ready for Sprint 7
+**Last Updated:** 2026-02-25
 **Previous:** [epoch-1-plan.md](epoch-1-plan.md)
 **Research:** [e2_handoff_graph_explorer_research.md](../research/e2_handoff_graph_explorer_research.md)

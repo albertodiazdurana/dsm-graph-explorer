@@ -210,6 +210,27 @@
 - **Proposed Solution:** Add `experiments/` to the project structure template in DSM 4.0 Section 2, alongside `src/`, `tests/`, and `docs/`. Include a brief note: "Capability experiment scripts (EXP-xxx). See Section 4.4 for the distinction between tests and experiments."
 - **Evidence:** In dsm-graph-explorer, `experiments/` was created to hold `exp003_tfidf_threshold.py` and `exp003b_real_data_validation.py`. The folder was created organically without template guidance. See `methodology.md` Entry 28.
 
+### Add two-gate approval model to Pre-Generation Brief Protocol
+- **DSM Section:** DSM_0.2 (Custom Instructions) + DSM 4.0 Section 3 (Development Protocol)
+- **Problem:** The Pre-Generation Brief Protocol defines a single "approval" gate: explain what/why, wait for approval, then generate. In practice, the agent treats this single gate as blanket permission to both write and execute the artifact. The user never gets to review the actual implementation (code, configuration, documentation) before it is used. This conflation has caused five recurrences of the same class of violation across Sprints 1, 3, 5, post-5, and 7, each with a different surface cause but identical root: a single gate cannot distinguish concept approval from implementation approval.
+- **Proposed Solution:** Replace the single-gate protocol with a three-gate model:
+  ```
+  GATE 1 — Concept Approval:
+  1. Explain: what artifact, why needed, key design decisions
+  2. STOP — wait for explicit "y" from user
+
+  GATE 2 — Implementation Approval:
+  3. Write the file (user sees diff in IDE)
+  4. STOP — wait for explicit "y" from user
+
+  GATE 3 — Run Approval (when applicable):
+  5. Explain what will be executed (command, target, expected behavior)
+  6. STOP — wait for explicit "y" from user
+  7. Execute and report results
+  ```
+  Gates 1 and 2 are mandatory for every file. Gate 3 applies when the artifact needs to be run (tests, scripts, benchmarks, CI triggers). Gate 1 validates intent; Gate 2 validates implementation; Gate 3 validates execution scope. This applies to all artifacts: code, tests, configuration, documentation, experiment scripts.
+- **Evidence:** In dsm-graph-explorer Session 16, the agent presented EXP-004's brief (Gate 1), received "y", then immediately wrote 270 lines and ran the script against an external repository without presenting the code for review (skipped Gate 2). The user caught the violation. This is the fifth recurrence; see `methodology.md` Entries 19, 23, 29 for the pattern history.
+
 ---
 
 ## Low Priority
@@ -218,6 +239,6 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-02-23
-**Total Proposals:** 23
-**Pushed:** 2026-02-23 (all 23 proposals; content delivered via inbox round-trips in Sessions 3-14, retroactively stamped)
+**Last Updated:** 2026-02-25
+**Total Proposals:** 24
+**Pushed:** 2026-02-25 (Proposal #24 pushed simultaneously with creation)

@@ -4,7 +4,7 @@
 **Author:** Alberto Diaz Durana
 **DSM Version Used:** DSM 4.0 v1.0, DSM 1.0 v1.1
 **Date:** 2026-01-31 (started)
-**Duration:** Sprint 1-4 complete
+**Duration:** Sprint 1-6 complete
 
 ---
 
@@ -14,8 +14,8 @@
 |------|---------|--------|
 | **Objective** | Repository integrity validator for DSM cross-references | Complete — CLI tool validates 125 files with config-based severity |
 | **Language** | Python 3.12+ | Active — pytest, Click, Rich, Pydantic, PyYAML |
-| **Timeline** | 7 sprints (Parser → Validation → CLI → Config → CI → Semantic → Graph) | Sprint 4 complete |
-| **Deliverables** | CLI tool + integrity reports + blog | CLI with exclusions, config, severity levels |
+| **Timeline** | 7 sprints (Parser → Validation → CLI → Config → CI → Semantic → Graph) | Sprint 6 complete |
+| **Deliverables** | CLI tool + integrity reports + blog | CLI with exclusions, config, severity, semantic drift detection |
 
 ---
 
@@ -333,9 +333,18 @@
 - **Reasoning:** Tests have `tests/`, source code has `src/`, decisions have `docs/decisions/`, but experiments, despite being a distinct artifact type with their own naming convention (EXP-xxx), lack a designated folder. This creates inconsistency in the project structure template.
 - **Recommendation:** Add `experiments/` to DSM 4.0 Section 2 (Project Structure Patterns) as a standard subfolder for capability experiment scripts. See `backlogs.md` Proposal #23.
 
+### Entry 29: Concept Approval ≠ Implementation Approval
+- **Date:** 2026-02-25 | **Sprint:** Sprint 7 | **Type:** Gap (Recurrence)
+- **Context:** Phase 7.0 (EXP-004 performance benchmark). Agent presented a Pre-Generation Brief for `exp004_graph_performance.py`, user approved the concept with "y". Agent then wrote the 270-line script AND executed it against the DSM repository without stopping for code review.
+- **Finding:** The Pre-Generation Brief Protocol specifies "explain before generating, wait for approval," but the agent treated conceptual approval of the brief as blanket permission to write and run the code. The protocol requires a second gate: after writing the file, present it for review (diff visible in IDE) and wait for explicit approval before executing. Concept approval validates the *what and why*; implementation approval validates the *how*. Skipping the second gate means the user never reviewed 270 lines of code that imports project modules, builds graph structures, and runs against external data.
+- **Scores:** Clarity 2, Applicability 3, Completeness 1, Efficiency 1 (Avg: 1.75)
+- **Reasoning:** Fifth recurrence of the brief-skipping pattern (S1: batch test generation, S3: batch CLI generation, S5: batch docs generation, post-S5: reasoning block as substitute, S16: concept approval as blanket permission). Each instance has a different surface cause but the same root: the agent finds a justification to skip the explicit file review step. The pattern persists because the protocol describes a single "approval" gate rather than distinguishing the two gates (concept vs implementation).
+- **Recommendation:** Split the Pre-Generation Brief Protocol into three explicit gates: (1) **Concept gate:** explain what, why, and key decisions, wait for approval. (2) **Implementation gate:** write the file, present for review (user reads diff in IDE), wait for approval. (3) **Run gate:** when the file needs to be executed (tests, scripts, benchmarks), explain what will be run and wait for approval before executing. All gates require explicit "y" from the user. See `backlogs.md` Proposal #24.
+- **Pushed:** 2026-02-25
+
 ---
 
-**Last Updated:** 2026-02-23
-**Entries So Far:** 28
-**Average Score:** 3.50
-**Pushed:** 2026-02-23 (all 28 entries; content delivered via inbox round-trips in Sessions 3-14, retroactively stamped)
+**Last Updated:** 2026-02-25
+**Entries So Far:** 29
+**Average Score:** 3.44
+**Pushed:** 2026-02-25 (Entry 29 pushed simultaneously with creation)

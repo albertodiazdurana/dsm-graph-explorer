@@ -99,6 +99,19 @@ def collect_markdown_files(
     default=False,
     help="Enable TF-IDF semantic drift detection for cross-references.",
 )
+@click.option(
+    "--graph-export",
+    "graph_export_path",
+    type=click.Path(),
+    default=None,
+    help="Build reference graph and export to GraphML file.",
+)
+@click.option(
+    "--graph-stats",
+    is_flag=True,
+    default=False,
+    help="Build reference graph and print summary statistics.",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -108,6 +121,8 @@ def main(
     exclude_patterns: tuple[str, ...],
     config_path: str | None,
     semantic: bool,
+    graph_export_path: str | None,
+    graph_stats: bool,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -266,6 +281,55 @@ def main(
         )
 
     click.echo(f"\n{' '.join(summary_parts)}")
+
+    # Graph operations (opt-in)
+    if graph_export_path or graph_stats:
+        try:
+            import networkx as nx  # noqa: F401
+        except ImportError:
+            click.echo(
+                "Error: --graph-export/--graph-stats require networkx. "
+                "Install with: pip install dsm-graph-explorer[graph]",
+                err=True,
+            )
+            sys.exit(2)
+
+        from graph.graph_builder import build_reference_graph
+        from graph.graph_export import export_graphml
+        from graph.graph_queries import most_referenced_sections, orphan_sections
+
+        section_lookup_for_graph = build_section_lookup(documents)
+        G = build_reference_graph(documents, references, section_lookup_for_graph)
+
+        if graph_stats:
+            file_nodes = sum(
+                1 for _, d in G.nodes(data=True) if d.get("type") == "FILE"
+            )
+            section_nodes = sum(
+                1 for _, d in G.nodes(data=True) if d.get("type") == "SECTION"
+            )
+            contains_edges = sum(
+                1 for _, _, d in G.edges(data=True) if d.get("type") == "CONTAINS"
+            )
+            ref_edges = sum(
+                1 for _, _, d in G.edges(data=True) if d.get("type") == "REFERENCES"
+            )
+            orphans = orphan_sections(G)
+            top_refs = most_referenced_sections(G, n=5)
+
+            click.echo("\nGraph Statistics:")
+            click.echo(f"  Nodes: {G.number_of_nodes()} ({file_nodes} files, {section_nodes} sections)")
+            click.echo(f"  Edges: {G.number_of_edges()} ({contains_edges} contains, {ref_edges} references)")
+            click.echo(f"  Orphan sections: {len(orphans)} of {section_nodes}")
+            if top_refs:
+                click.echo("  Most referenced:")
+                for node_id, count in top_refs:
+                    data = G.nodes[node_id]
+                    click.echo(f"    [{count}x] Section {data.get('number', '?')}: {data.get('title', '?')}")
+
+        if graph_export_path:
+            export_graphml(G, graph_export_path)
+            click.echo(f"Graph exported to {graph_export_path}")
 
     # Write markdown report if requested
     if output:

@@ -188,3 +188,64 @@ class TestCliGlob:
         (tmp_path / "exclude.md").write_text("# 2 Other\n")
         result = runner.invoke(main, [str(tmp_path), "--glob", "include*.md"])
         assert result.exit_code == 0
+
+
+# ===========================================================================
+# Graph Export & Stats Tests (Phase 7.3)
+# ===========================================================================
+
+
+class TestCliGraphExport:
+    """Test --graph-export and --graph-stats CLI options."""
+
+    def test_graph_export_creates_file(self, runner, tmp_path):
+        md = tmp_path / "doc.md"
+        md.write_text("# 1 Intro\nSee Section 2.1.\n## 2.1 Details\nContent.\n")
+        output = tmp_path / "graph.graphml"
+        result = runner.invoke(
+            main, [str(md), "--graph-export", str(output)]
+        )
+        assert result.exit_code == 0
+        assert output.exists()
+        assert output.stat().st_size > 0
+
+    def test_graph_export_mentions_path(self, runner, tmp_path):
+        md = tmp_path / "doc.md"
+        md.write_text("# 1 Intro\n")
+        output = tmp_path / "graph.graphml"
+        result = runner.invoke(
+            main, [str(md), "--graph-export", str(output)]
+        )
+        assert result.exit_code == 0
+        assert "graph.graphml" in result.output or "Graph exported" in result.output
+
+    def test_graph_stats_shows_summary(self, runner, tmp_path):
+        md = tmp_path / "doc.md"
+        md.write_text("# 1 Intro\nSee Section 2.1.\n## 2.1 Details\nContent.\n")
+        result = runner.invoke(main, [str(md), "--graph-stats"])
+        assert result.exit_code == 0
+        assert "node" in result.output.lower() or "Node" in result.output
+        assert "edge" in result.output.lower() or "Edge" in result.output
+
+    def test_graph_stats_shows_orphans(self, runner, tmp_path):
+        md = tmp_path / "doc.md"
+        md.write_text("# 1 Intro\n## 2.1 Details\nContent.\n")
+        result = runner.invoke(main, [str(md), "--graph-stats"])
+        assert result.exit_code == 0
+        assert "orphan" in result.output.lower() or "Orphan" in result.output
+
+    def test_graph_export_and_stats_combined(self, runner, tmp_path):
+        md = tmp_path / "doc.md"
+        md.write_text("# 1 Intro\nSee Section 2.1.\n## 2.1 Details\nContent.\n")
+        output = tmp_path / "graph.graphml"
+        result = runner.invoke(
+            main, [str(md), "--graph-export", str(output), "--graph-stats"]
+        )
+        assert result.exit_code == 0
+        assert output.exists()
+        assert "node" in result.output.lower() or "Node" in result.output
+
+    def test_help_shows_graph_options(self, runner):
+        result = runner.invoke(main, ["--help"])
+        assert "--graph-export" in result.output
+        assert "--graph-stats" in result.output

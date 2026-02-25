@@ -272,7 +272,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-12
+**Last Updated:** 2026-02-25
 **Current Status:** Epoch 2 in progress (Sprint 6 complete, EXP-003b validated)
 **Tests:** 250 passed, 95% coverage
 **DSM Feedback:** 28 methodology entries, 23 improvement proposals

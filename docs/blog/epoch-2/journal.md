@@ -234,4 +234,64 @@
 
 ---
 
-**Last Updated:** 2026-02-10
+## Sessions: 2026-02-10 through 2026-02-23 — Sprint 6: Semantic Validation
+
+### What Happened
+
+1. **Phase 6.0: EXP-003 Threshold Tuning** — Designed and ran a capability experiment with 25 synthetic test cases (10 match, 10 drift, 5 ambiguous with generic titles). Evaluated title-only vs title+excerpt modes across thresholds 0.05-0.30. Key finding: title-only cannot disambiguate generic titles like "Expected Outcomes" or "Deliverables" (gap = -0.033), while title+excerpt creates a 0.264 separation gap. Documented as [DEC-005](../../decisions/DEC-005-semantic-validation-approach.md): threshold 0.10, min 3 tokens, corpus-scoped IDF, section number stripping.
+
+2. **Phase 6.1: Parser Context Extraction** — Extended the parser models with `Section.context_excerpt` (~50 words of prose after each heading) and `CrossReference.context_before`/`context_after` (3 lines surrounding each reference). These fields feed the TF-IDF comparison. 12 new tests (8 excerpt, 4 context window).
+
+3. **Phase 6.2: TF-IDF Similarity Module** — Built `src/semantic/similarity.py` with corpus-scoped TF-IDF vectorization, stopword removal, section number stripping, and a minimum token gate. The module is self-contained with scikit-learn as an optional dependency. 14 new tests.
+
+4. **Phase 6.3: CLI Integration** — Wired semantic validation into the CLI with a `--semantic` flag. Added `semantic_threshold` and `semantic_min_tokens` to the config loader. Built `build_section_lookup()` in the cross-ref validator for efficient section resolution. Extended the report generator with drift warning (yellow) and insufficient context (dim) tables in both Rich and markdown output. Graceful fallback when scikit-learn is absent (clear error, exit code 2). 6 new CLI integration tests.
+
+5. **EXP-003b: Real Data Validation** — The pivotal experiment. Generated 1,191 cross-reference rows from the actual DSM methodology repository. Used agent-assisted labeling on 128 near-threshold rows (scores 0.08-0.12): the agent proposed labels based on context fields, the user validated in batches. Results: Precision=1.000, Recall=0.496, F1=0.663 at threshold 0.10. All 63 disagreements were false negatives (auto=drift, manual=match), with scores between 0.08 and 0.10. Root causes: empty target excerpts, vocabulary mismatch in backlog proposals, short generic section titles. DEC-005 amended to lower threshold from 0.10 to 0.08.
+
+6. **Session 15 Housekeeping** — Migrated `docs/inbox/` → `_inbox/` (DSM v1.3.52 compliance), `experiments/` → `data/experiments/` (Proposal #23 accepted), retroactively stamped all 50 feedback entries as Pushed, analyzed a research paper on contrastive decoding (informational, pushed to DSM Central).
+
+### Aha Moments
+
+1. **Synthetic vs real data gap** — EXP-003 (synthetic) achieved F1=0.889 with recall=0.800. EXP-003b (real) dropped to F1=0.663 with recall=0.496 at the same threshold. The synthetic test cases were too clean: they had rich excerpts and distinct vocabulary. Real-world DSM content has empty excerpts, short titles, and vocabulary overlap between backlog proposals and section content. This validated the EXP-003 limitations section, which explicitly called out the synthetic data risk.
+
+2. **Agent-assisted labeling** — Labeling 128 rows manually would take hours. The agent read context fields, proposed labels with reasoning, and presented them in grouped batches for human validation. The user validated ~130 rows in ~15 minutes. This is a reusable pattern: agent proposes, human validates, both contribute complementary strengths. Captured as methodology Entry 23 / Proposal #20.
+
+3. **Perfect precision, imperfect recall** — The tool never says "match" when it shouldn't (0 false positives), but it misses half the actual matches (63 false negatives). This is the right failure mode for a validation tool: conservative is better than permissive. Users can lower the threshold to recover more matches, accepting the trade-off explicitly.
+
+4. **Empty excerpts as recall killer** — ~50% of false negatives had `(none)` as the target excerpt, leaving TF-IDF with only 3-5 tokens from the section title. This is not a bug in the algorithm; it is a content gap in the documentation. The finding creates a feedback loop: improving section content (adding introductory sentences) would directly improve semantic validation accuracy.
+
+5. **Experiments as first-class artifacts** — Sprint 6 produced two experiment scripts (`exp003_tfidf_threshold.py`, `exp003b_real_data_validation.py`) that are as important as the source code. They are the evidence base for DEC-005. Moving them to `data/experiments/` (Proposal #23) gave them proper status in the project structure.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| New source files | 1 (`src/semantic/similarity.py`) |
+| Modified source files | 4 (parser, config_loader, cross_ref_validator, report_generator) |
+| New test files | 1 (`test_cli_semantic.py`) |
+| Tests added | 32 (12 parser + 14 semantic + 6 CLI) |
+| Total tests | 250 |
+| Coverage | 95% |
+| Experiments run | 2 (EXP-003, EXP-003b) |
+| Decisions created | 1 (DEC-005, later amended) |
+| Methodology entries added | 7 (Entries 22-28) |
+| Backlog proposals added | 5 (Proposals 19-23) |
+| Sessions | 5 (Sessions 11-15) |
+
+### Blog Material
+
+**Sprint 6 narrative threads:**
+- When synthetic tests lie: how 25 hand-crafted cases produced F1=0.889 but real data revealed F1=0.663
+- The precision-recall trade-off in documentation tools: why conservative is correct
+- Agent-assisted labeling: a human-AI collaboration pattern for ground truth creation
+- Empty excerpts as a content quality signal: when your tool's weakness reveals your documentation's weakness
+- From experiment to amendment: how EXP-003b changed a decision that EXP-003 established
+
+**Title options for Sprint 6 blog:**
+1. "When Your Synthetic Tests Are Too Optimistic: Validating NLP Thresholds Against Real Data"
+2. "Perfect Precision, Imperfect Recall: The Right Failure Mode for Documentation Tools"
+3. "1,191 Cross-References Later: What Real-World Data Teaches You About TF-IDF Thresholds"
+
+---
+
+**Last Updated:** 2026-02-25
