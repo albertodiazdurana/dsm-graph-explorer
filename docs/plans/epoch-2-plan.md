@@ -30,7 +30,7 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 
 **SHOULD (Epoch 2 Enhancements):**
 - [x] Semantic cross-reference validation (TF-IDF keyword similarity)
-- [ ] NetworkX graph prototype (before Neo4j)
+- [x] NetworkX graph prototype (before Neo4j)
 - [ ] Section rename tracking (`section-renames.yml`)
 - [x] Pre-commit hook script
 - [ ] Convention linting mode (`--lint` flag) — emoji, TOC, em-dash, CRLF, mojibake, backlog metadata checks
@@ -48,7 +48,7 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 - [x] Exclusion patterns reduce 6 → 0 actionable errors on DSM repo
 - [x] CI workflow passes on clean core docs
 - [x] Semantic validation detects renamed sections (TF-IDF)
-- [ ] Graph prototype enables navigation queries
+- [x] Graph prototype enables navigation queries
 
 **Process:**
 - [x] Each sprint produces working increment
@@ -59,7 +59,7 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 **Deliverable:**
 - [x] Production-ready CLI with exclusion and CI support
 - [x] Remediation guide for DSM maintainers
-- [ ] Graph prototype demonstrating future potential
+- [x] Graph prototype demonstrating future potential
 
 ---
 
@@ -335,62 +335,63 @@ Robustness measures:
 
 ---
 
-### Sprint 7: Graph Prototype (NetworkX)
+### Sprint 7: Graph Prototype (NetworkX) ✅
 
-**Duration:** 1-2 sessions
+**Duration:** 1 session (actual)
 **Objective:** Build a graph representation of the reference network for analysis.
+**Status:** COMPLETE (2026-02-25)
 
 #### Phase 7.0: Experiment (Pre-implementation)
 
 **Tasks:**
-1. [ ] Run EXP-004: Graph Query Performance
-2. [ ] Verify memory/performance targets achievable
+1. [x] Run EXP-004: Graph Query Performance
+2. [x] Verify memory/performance targets achievable
 
 #### Phase 7.1: Graph Construction
 
 **Tasks:**
-1. [ ] Add `networkx>=3.2.0` to optional dependencies (`[graph]`)
-2. [ ] Create `src/graph/graph_builder.py`:
-   - [ ] `build_reference_graph(documents, references)` → DiGraph
-   - [ ] Node types: FILE, SECTION
-   - [ ] Edge types: CONTAINS, REFERENCES
-   - [ ] Node attributes: type, title, file, line
-3. [ ] Write tests for graph construction
+1. [x] Add `networkx>=3.2.0` to optional dependencies (`[graph]`)
+2. [x] Create `src/graph/graph_builder.py`:
+   - [x] `build_reference_graph(documents, references)` → DiGraph
+   - [x] Node types: FILE, SECTION
+   - [x] Edge types: CONTAINS, REFERENCES
+   - [x] Node attributes: type, title, file, line, number, level, context_excerpt
+3. [x] Write tests for graph construction
 
 #### Phase 7.2: Graph Queries
 
 **Tasks:**
-1. [ ] Create `src/graph/graph_queries.py`:
-   - [ ] `most_referenced_sections(G, n=10)`
-   - [ ] `orphan_sections(G)` — never referenced
-   - [ ] `reference_chain(G, section)` — what references this?
-2. [ ] Write tests for each query
+1. [x] Create `src/graph/graph_queries.py`:
+   - [x] `most_referenced_sections(G, n=10)`
+   - [x] `orphan_sections(G)` — never referenced
+   - [x] `reference_chain(G, section)` — what references this?
+2. [x] Write tests for each query
 
 #### Phase 7.3: Export & CLI
 
 **Tasks:**
-1. [ ] Add `--graph-export PATH` CLI option
-2. [ ] Export to GraphML format
-3. [ ] Add `--graph-stats` flag for summary output
-4. [ ] Document visualization with Gephi/yEd
+1. [x] Add `--graph-export PATH` CLI option
+2. [x] Export to GraphML format
+3. [x] Add `--graph-stats` flag for summary output
+4. [x] Document visualization with Gephi/yEd
 
 #### Sprint 7 Deliverables
 
-- [ ] NetworkX graph builder
-- [ ] Basic graph queries (most-referenced, orphans)
-- [ ] Export to GraphML for visualization
-- [ ] Graceful degradation without networkx
+- [x] NetworkX graph builder
+- [x] Basic graph queries (most-referenced, orphans)
+- [x] Export to GraphML for visualization
+- [x] Graceful degradation without networkx
 
 **Sprint boundary:**
-- [ ] Blog entry (graph visualization story)
-- [ ] Checkpoint document
-- [ ] EXP-004 results documented
+- [x] Blog entry (graph visualization story)
+- [x] Checkpoint document
+- [x] EXP-004 results documented
 
 **Acceptance criteria:**
-- [ ] Graph accurately represents DSM reference structure
-- [ ] Can identify most-referenced sections
-- [ ] Can identify unreferenced sections
-- [ ] Export works with Gephi
+- [x] Graph accurately represents DSM reference structure
+- [x] Can identify most-referenced sections
+- [x] Can identify unreferenced sections
+- [x] Export works with Gephi
 
 ---
 
@@ -508,6 +509,9 @@ severity:
 - Cypher query library for navigation
 - Web visualization using Neo4j Browser
 - Relationship mapping (REFERENCES, CONTAINS, PARENT_OF)
+- **Git ref parameter for temporal compilation:** accept a commit/tag to compile the graph at a historical point, enabling diff-based graph queries ("what changed between v1.3.0 and v1.3.25?"). Git as event store; compilation pipeline as projection function.
+- **Entity inventory format:** each repo publishes an inventory of referenceable entities (sections, protocols, backlog items). Design the format now so multi-repo extension is additive. DSM's existing cross-repo mechanisms (inbox, @ imports, Ecosystem Path Registry) map to typed cross-repo edges.
+- **Typed cross-repo edges:** formalize inbox notifications, @ imports, and ecosystem path references as edge types in the graph.
 
 ### Advanced NLP (Epoch 4)
 
@@ -515,6 +519,10 @@ severity:
 - Sentence transformer embeddings for deep semantic alignment
 - Lightweight LLM second-pass: confirm TF-IDF-flagged references via contextual reasoning (tiered: TF-IDF filters, LLM confirms)
 - Reference: [tfidf-to-transformers-with-disaster-tweets](https://github.com/albertodiazdurana/tfidf-to-transformers-with-disaster-tweets)
+- **Bi-temporal model:** adopt event time (when authored) vs transaction time (when compiled) for temporal queries. Reference: Graphiti's bi-temporal approach, adapted for human-authored markdown.
+- **Graphiti differentiation:** Graph Explorer is human-centric (deterministic compilation from authored markdown with git provenance), not agent-centric (LLM extraction from conversation). This positioning informs architecture choices.
+
+**Source:** Literate CQRS Knowledge Architecture research (5 threads, 25+ sources). Full research at `~/dsm-agentic-ai-data-science-methodology/docs/research/Literate-CQRS-Knowledge/`. Acknowledged in Session 18 from DSM Central inbox.
 
 ---
 
@@ -653,7 +661,7 @@ Updated at every sprint boundary:
 
 ---
 
-**Plan Status:** Sprint 6 complete, ready for Sprint 7
-**Last Updated:** 2026-02-25
+**Plan Status:** Sprint 7 complete, ready for Sprint 8
+**Last Updated:** 2026-02-28
 **Previous:** [epoch-1-plan.md](epoch-1-plan.md)
 **Research:** [e2_handoff_graph_explorer_research.md](../research/e2_handoff_graph_explorer_research.md)

@@ -4,7 +4,7 @@
 **Author:** Alberto Diaz Durana
 **DSM Version Used:** DSM 4.0 v1.0, DSM 1.0 v1.1
 **Date:** 2026-01-31 (started)
-**Duration:** Sprint 1-6 complete
+**Duration:** Sprint 1-7 complete
 
 ---
 
@@ -14,8 +14,8 @@
 |------|---------|--------|
 | **Objective** | Repository integrity validator for DSM cross-references | Complete — CLI tool validates 125 files with config-based severity |
 | **Language** | Python 3.12+ | Active — pytest, Click, Rich, Pydantic, PyYAML |
-| **Timeline** | 7 sprints (Parser → Validation → CLI → Config → CI → Semantic → Graph) | Sprint 6 complete |
-| **Deliverables** | CLI tool + integrity reports + blog | CLI with exclusions, config, severity, semantic drift detection |
+| **Timeline** | 8 sprints (Parser → Validation → CLI → Config → CI → Semantic → Graph → Linting) | Sprint 7 complete |
+| **Deliverables** | CLI tool + integrity reports + blog | CLI with exclusions, config, severity, semantic drift detection, graph prototype |
 
 ---
 

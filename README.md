@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.2.0
-**Status:** Epoch 2 In Progress (Sprint 6 complete, EXP-003b validated)
+**Status:** Epoch 2 In Progress (Sprint 7 complete, graph prototype delivered)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -53,16 +53,22 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - Rich console output with drift warning (yellow) and insufficient context (dim) tables
 - EXP-003b real data validation: 1,191 cross-references analyzed, 128 labeled, threshold amended to 0.08 (Precision=1.000, Recall=0.496→recovered at 0.08)
 
-**Next (Sprint 7 — Graph Prototype):**
-- NetworkX graph builder mapping reference networks
+**Implemented (Sprint 7 — Graph Prototype):**
+- NetworkX graph builder mapping reference networks (FILE and SECTION nodes, CONTAINS and REFERENCES edges)
 - Graph queries: most-referenced sections, orphan sections, reference chains
-- GraphML export for visualization in Gephi/yEd
+- GraphML export (`--graph-export PATH`) for visualization in Gephi/yEd
+- Graph statistics summary (`--graph-stats`) showing node/edge counts and top-referenced sections
+- Graceful fallback: `--graph-export`/`--graph-stats` without networkx prints a clear error and exits with code 2
+- EXP-004 performance validation: 104ms build, 12.7MB memory on DSM repository (all 5 targets PASS)
+
+**Next (Sprint 8 — Convention Linting):**
+- Convention linting mode (`--lint` flag) for DSM style checks
+- 6 checks: emoji usage (E001), TOC headings (E002), mojibake (E003), em-dash punctuation (W001), CRLF line endings (W002), backlog metadata (W003)
 
 **Future (Epoch 3+):**
 - Neo4j graph database integration
 - Cypher query library for navigation
 - Web visualization using Neo4j Browser
-- Convention linting mode (`--lint` flag) for DSM style checks
 - spaCy NER for advanced reference extraction
 - LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
 
@@ -81,16 +87,19 @@ dsm-graph-explorer/
 │   ├── reporter/         # Report generator (Rich + markdown)
 │   ├── config/           # YAML config loader
 │   ├── filter/           # File exclusion logic
-│   └── semantic/         # TF-IDF similarity (Sprint 6)
+│   ├── semantic/         # TF-IDF similarity (Sprint 6)
+│   └── graph/            # Graph builder, queries, export (Sprint 7)
 ├── tests/
 │   ├── test_parser.py    # Parser module tests
 │   ├── test_validator.py # Validator tests
 │   ├── test_reporter.py  # Reporter + integration tests
 │   ├── test_cli.py       # CLI tests
 │   ├── test_cli_semantic.py # Semantic CLI integration tests
+│   ├── test_cli_graph.py # Graph CLI integration tests
 │   ├── test_config.py    # Config loader tests
 │   ├── test_filter.py    # File filter tests
 │   ├── test_semantic.py  # TF-IDF similarity tests
+│   ├── test_graph.py     # Graph builder and query tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
 ├── _inbox/               # Hub-spoke communication
@@ -170,6 +179,12 @@ dsm-validate /path/to/repo --glob "docs/**/*.md"
 # Semantic drift detection (requires scikit-learn)
 dsm-validate /path/to/dsm-repo --semantic
 
+# Graph statistics (requires networkx)
+dsm-validate /path/to/dsm-repo --graph-stats
+
+# Export reference graph to GraphML (for Gephi/yEd visualization)
+dsm-validate /path/to/dsm-repo --graph-export graph.graphml
+
 # Combine semantic with other options
 dsm-validate /path/to/dsm-repo --semantic --strict --output report.md
 ```
@@ -236,7 +251,11 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (completed) 
   - Phase 6.2: TF-IDF implementation (`src/semantic/similarity.py`, corpus-scoped IDF)
   - Phase 6.3: CLI integration (`--semantic`, graceful fallback, Rich + markdown reports)
   - EXP-003b: 1,191 real cross-references validated, threshold amended to 0.08
-- [ ] **Sprint 7:** Graph Prototype — NetworkX graph builder, queries, GraphML export
+- [x] **Sprint 7:** Graph Prototype — NetworkX graph builder, queries, GraphML export (284 tests, 95% coverage)
+  - Phase 7.0: EXP-004 graph performance (all 5 targets PASS: 104ms build, 12.7MB memory)
+  - Phase 7.1: Graph construction (`src/graph/graph_builder.py`, FILE/SECTION nodes, CONTAINS/REFERENCES edges)
+  - Phase 7.2: Graph queries (`src/graph/graph_queries.py`, most-referenced, orphans, reference chains)
+  - Phase 7.3: Export & CLI (`--graph-export`, `--graph-stats`, GraphML format, graceful fallback)
 - [ ] **Sprint 8:** Convention Linting — `--lint` flag, 6 style checks
 
 ---
@@ -272,7 +291,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-25
-**Current Status:** Epoch 2 in progress (Sprint 6 complete, EXP-003b validated)
-**Tests:** 250 passed, 95% coverage
-**DSM Feedback:** 28 methodology entries, 23 improvement proposals
+**Last Updated:** 2026-02-28
+**Current Status:** Epoch 2 in progress (Sprint 7 complete, graph prototype delivered)
+**Tests:** 284 passed, 95% coverage
+**DSM Feedback:** 29 methodology entries, 24 improvement proposals
