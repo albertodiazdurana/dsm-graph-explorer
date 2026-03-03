@@ -249,3 +249,65 @@ class TestCliGraphExport:
         result = runner.invoke(main, ["--help"])
         assert "--graph-export" in result.output
         assert "--graph-stats" in result.output
+
+
+# ===========================================================================
+# Lint Mode Tests
+# ===========================================================================
+
+
+class TestCliLint:
+    """Test --lint flag for convention linting."""
+
+    def test_lint_clean_file(self, runner, tmp_path):
+        md = tmp_path / "clean.md"
+        md.write_text("# 1 Introduction\n\nAll good here.\n")
+        result = runner.invoke(main, ["--lint", str(md)])
+        assert result.exit_code == 0
+        assert "Lint Report" in result.output
+        assert "0" in result.output  # 0 errors
+
+    def test_lint_detects_emdash(self, runner, tmp_path):
+        md = tmp_path / "emdash.md"
+        md.write_text("# 1 Title\n\nThis \u2014 has em-dash.\n")
+        result = runner.invoke(main, ["--lint", str(md)])
+        assert result.exit_code == 0
+        assert "W001" in result.output
+
+    def test_lint_detects_emoji(self, runner, tmp_path):
+        md = tmp_path / "emoji.md"
+        md.write_text("# 1 Title\n\n\u2705 Done\n")
+        result = runner.invoke(main, ["--lint", str(md)])
+        assert result.exit_code == 0
+        assert "E001" in result.output
+
+    def test_lint_strict_exits_one_on_error(self, runner, tmp_path):
+        md = tmp_path / "emoji.md"
+        md.write_text("# 1 Title\n\n\u2705 Done\n")
+        config = tmp_path / ".dsm-graph-explorer.yml"
+        config.write_text("strict: true\n")
+        result = runner.invoke(main, ["--lint", "--strict", "--config", str(config), str(md)])
+        assert result.exit_code == 1
+
+    def test_lint_output_file(self, runner, tmp_path):
+        md = tmp_path / "test.md"
+        md.write_text("# 1 Title\n\nText \u2014 here.\n")
+        out = tmp_path / "lint-report.md"
+        result = runner.invoke(main, ["--lint", "-o", str(out), str(md)])
+        assert result.exit_code == 0
+        assert out.exists()
+        content = out.read_text()
+        assert "Lint Report" in content
+        assert "W001" in content
+
+    def test_lint_with_severity_override(self, runner, tmp_path):
+        md = tmp_path / "test.md"
+        md.write_text("# 1 Title\n\nText \u2014 here.\n")
+        config = tmp_path / ".dsm-graph-explorer.yml"
+        config.write_text("lint:\n  severity_overrides:\n    W001: ERROR\nstrict: true\n")
+        result = runner.invoke(main, ["--lint", "--strict", "--config", str(config), str(md)])
+        assert result.exit_code == 1  # W001 upgraded to ERROR triggers strict
+
+    def test_help_shows_lint_option(self, runner):
+        result = runner.invoke(main, ["--help"])
+        assert "--lint" in result.output

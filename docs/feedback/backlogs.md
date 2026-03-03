@@ -233,12 +233,43 @@
 
 ---
 
+### Add behavioral activation step to lightweight session skills
+- **DSM Section:** DSM_0.2 (Custom Instructions), Session Transcript Protocol
+- **Problem:** `/dsm-light-go` and `/dsm-light-wrap-up` are missing the explicit behavioral activation for the Session Transcript Protocol that `/dsm-go` provides at step 7. `/dsm-light-go` has a passive note ("Session Transcript Protocol remains active") in the Notes section, but this does not trigger transcript logging in a fresh conversation thread. Result: Session 20 completed an entire Sprint 8 implementation (7 files, 47 tests) with zero transcript entries.
+- **Proposed Solution:** Add a numbered step to `/dsm-light-go` (after the report step) with the same imperative language used in `/dsm-go`:
+  ```
+  Step 7 (or 7.5): **Behavioral activation (Session Transcript Protocol):**
+  From this point forward, follow the Session Transcript Protocol (DSM_0.2):
+  append thinking to `.claude/session-transcript.md` as the first tool call
+  of every turn, before any other work. Append output summary as the last
+  tool call after completing work. This behavior remains active for the
+  remainder of this session.
+  ```
+  Remove or update the passive note in the Notes section to avoid duplication. Apply the same pattern to `/dsm-light-wrap-up` if its steps also need transcript logging during wrap-up work.
+- **Evidence:** Session 20 (dsm-graph-explorer, 2026-03-03). Boundary marker appended at lines 191-201, but no subsequent entries. Full `/dsm-go` step 7 (line 69) has explicit activation; `/dsm-light-go` line 55 has passive note only. See `methodology.md` Entry 30.
+
+### Add portfolio path to CLAUDE.md project template
+- **DSM Section:** DSM_0.2 (Custom Instructions), CLAUDE.md Environment section
+- **Problem:** DSM spoke projects list the project path and DSM Central repository path in CLAUDE.md but not the portfolio path. Without it, agents cannot send progress notifications to the portfolio, breaking the three-target notification loop (DSM Central, portfolio, local feedback). In dsm-graph-explorer, Session 19 reported "Portfolio unavailable" and Session 20 required manual user intervention to provide the path.
+- **Proposed Solution:** Add a `Portfolio` field to the CLAUDE.md Environment section template:
+  ```
+  ## Environment
+  - **Platform**: Linux (WSL2)
+  - **Project path**: `~/project-name/`
+  - **DSM repository**: `~/dsm-agentic-ai-data-science-methodology/`
+  - **Portfolio**: `~/dsm-data-science-portfolio-working-folder/`
+  ```
+  This should be part of the standard CLAUDE.md scaffolding that `/dsm-align` or project setup generates. If no portfolio exists, the field can be omitted or set to "N/A".
+- **Evidence:** dsm-graph-explorer Sessions 19-20 (2026-03-02 to 2026-03-03). Session 19 logged "Portfolio unavailable" during ecosystem path validation. Session 20 required the user to manually provide the portfolio path. See `methodology.md` Entry 31.
+
+---
+
 ## Low Priority
 
 _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-02-25
-**Total Proposals:** 24
-**Pushed:** 2026-02-25 (Proposal #24 pushed simultaneously with creation)
+**Last Updated:** 2026-03-03
+**Total Proposals:** 26
+**Pushed:** 2026-03-03 (Proposal #26 pushed simultaneously with creation)

@@ -46,6 +46,7 @@ dsm-graph-explorer/
 - **Platform**: Linux (WSL2)
 - **Project path**: `~/dsm-graph-explorer/`
 - **DSM repository**: `~/dsm-agentic-ai-data-science-methodology/`
+- **Portfolio**: `~/dsm-data-science-portfolio-working-folder/`
 
 ## Key References
 

@@ -1,3 +1,5 @@
+**Consumed at:** Session 20 start (2026-03-03)
+
 # Sprint 5 Complete Checkpoint
 
 **Date:** 2026-02-10

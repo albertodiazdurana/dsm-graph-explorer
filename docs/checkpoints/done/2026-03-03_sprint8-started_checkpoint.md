@@ -1,3 +1,5 @@
+**Consumed at:** Session 20 start (2026-03-03)
+
 # Checkpoint: Sprint 8 Started (Convention Linting)
 
 **Date:** 2026-03-03

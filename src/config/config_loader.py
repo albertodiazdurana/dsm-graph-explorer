@@ -32,6 +32,25 @@ class SeverityMapping(BaseModel):
         return v
 
 
+class LintConfig(BaseModel):
+    """Configuration for convention linting rules."""
+
+    severity_overrides: dict[str, SeverityLevel] = Field(
+        default_factory=dict,
+        description="Per-rule severity overrides, e.g. {'W001': 'ERROR'}",
+    )
+
+    @field_validator("severity_overrides")
+    @classmethod
+    def validate_rule_keys(cls, v: dict[str, SeverityLevel]) -> dict[str, SeverityLevel]:
+        """Ensure rule keys look like valid lint rule codes."""
+        valid_prefixes = ("E", "W")
+        for key in v:
+            if not (len(key) == 4 and key[0] in valid_prefixes and key[1:].isdigit()):
+                raise ValueError(f"Invalid lint rule code: {key}")
+        return v
+
+
 class Config(BaseModel):
     """Configuration for DSM Graph Explorer validation."""
 
@@ -58,6 +77,10 @@ class Config(BaseModel):
     semantic_min_tokens: int = Field(
         default=3,
         description="Minimum meaningful tokens required for semantic comparison",
+    )
+    lint: LintConfig = Field(
+        default_factory=LintConfig,
+        description="Convention linting configuration",
     )
 
     @field_validator("exclude")
@@ -191,4 +214,5 @@ def merge_config_with_cli(
         default_severity=config.default_severity,
         semantic_threshold=config.semantic_threshold,
         semantic_min_tokens=config.semantic_min_tokens,
+        lint=config.lint,
     )

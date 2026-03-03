@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.2.0
-**Status:** Epoch 2 In Progress (Sprint 7 complete, graph prototype delivered)
+**Status:** Epoch 2 In Progress (Sprint 8 complete, convention linting delivered)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -61,9 +61,12 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - Graceful fallback: `--graph-export`/`--graph-stats` without networkx prints a clear error and exits with code 2
 - EXP-004 performance validation: 104ms build, 12.7MB memory on DSM repository (all 5 targets PASS)
 
-**Next (Sprint 8 — Convention Linting):**
-- Convention linting mode (`--lint` flag) for DSM style checks
-- 6 checks: emoji usage (E001), TOC headings (E002), mojibake (E003), em-dash punctuation (W001), CRLF line endings (W002), backlog metadata (W003)
+**Implemented (Sprint 8 — Convention Linting):**
+- Convention linting mode (`--lint` flag), independent from validation pipeline
+- 6 checks: emoji usage (E001), TOC headings (E002), mojibake encoding (E003), em-dash punctuation (W001), CRLF line endings (W002), backlog metadata (W003)
+- Configurable severity overrides per rule via `lint:` section in `.dsm-graph-explorer.yml`
+- Rich console output and markdown report (`--lint -o report.md`)
+- `--strict` support: exit code 1 if any ERROR-level lint findings
 
 **Future (Epoch 3+):**
 - Neo4j graph database integration
@@ -88,7 +91,8 @@ dsm-graph-explorer/
 │   ├── config/           # YAML config loader
 │   ├── filter/           # File exclusion logic
 │   ├── semantic/         # TF-IDF similarity (Sprint 6)
-│   └── graph/            # Graph builder, queries, export (Sprint 7)
+│   ├── graph/            # Graph builder, queries, export (Sprint 7)
+│   └── linter/           # Convention linting checks (Sprint 8)
 ├── tests/
 │   ├── test_parser.py    # Parser module tests
 │   ├── test_validator.py # Validator tests
@@ -100,6 +104,7 @@ dsm-graph-explorer/
 │   ├── test_filter.py    # File filter tests
 │   ├── test_semantic.py  # TF-IDF similarity tests
 │   ├── test_graph.py     # Graph builder and query tests
+│   ├── test_linter.py    # Convention linting tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
 ├── _inbox/               # Hub-spoke communication
@@ -185,6 +190,12 @@ dsm-validate /path/to/dsm-repo --graph-stats
 # Export reference graph to GraphML (for Gephi/yEd visualization)
 dsm-validate /path/to/dsm-repo --graph-export graph.graphml
 
+# Convention linting (emoji, TOC, mojibake, em-dash, CRLF, backlog metadata)
+dsm-validate /path/to/dsm-repo --lint
+
+# Lint with strict mode and markdown output
+dsm-validate /path/to/dsm-repo --lint --strict --output lint-report.md
+
 # Combine semantic with other options
 dsm-validate /path/to/dsm-repo --semantic --strict --output report.md
 ```
@@ -256,7 +267,10 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (completed) 
   - Phase 7.1: Graph construction (`src/graph/graph_builder.py`, FILE/SECTION nodes, CONTAINS/REFERENCES edges)
   - Phase 7.2: Graph queries (`src/graph/graph_queries.py`, most-referenced, orphans, reference chains)
   - Phase 7.3: Export & CLI (`--graph-export`, `--graph-stats`, GraphML format, graceful fallback)
-- [ ] **Sprint 8:** Convention Linting — `--lint` flag, 6 style checks
+- [x] **Sprint 8:** Convention Linting — `--lint` flag, 6 style checks (331 tests, 96% coverage)
+  - `src/linter/checks.py`: 6 checks (E001-E003, W001-W003) + `run_all_checks` orchestrator
+  - `src/linter/lint_reporter.py`: Rich console + markdown report output
+  - CLI `--lint` flag, config `lint:` section with per-rule severity overrides
 
 ---
 
@@ -291,7 +305,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-02-28
-**Current Status:** Epoch 2 in progress (Sprint 7 complete, graph prototype delivered)
-**Tests:** 284 passed, 95% coverage
+**Last Updated:** 2026-03-03
+**Current Status:** Epoch 2 in progress (Sprint 8 complete, convention linting delivered)
+**Tests:** 331 passed, 96% coverage
 **DSM Feedback:** 29 methodology entries, 24 improvement proposals

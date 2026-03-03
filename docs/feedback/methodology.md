@@ -4,7 +4,7 @@
 **Author:** Alberto Diaz Durana
 **DSM Version Used:** DSM 4.0 v1.0, DSM 1.0 v1.1
 **Date:** 2026-01-31 (started)
-**Duration:** Sprint 1-7 complete
+**Duration:** Sprint 1-8 complete
 
 ---
 
@@ -344,7 +344,27 @@
 
 ---
 
-**Last Updated:** 2026-02-25
-**Entries So Far:** 29
-**Average Score:** 3.44
-**Pushed:** 2026-02-25 (Entry 29 pushed simultaneously with creation)
+### Entry 30: Lightweight Session Start Missing Transcript Behavioral Activation
+- **Date:** 2026-03-03 | **Sprint:** Sprint 8 | **Type:** Gap (Bug)
+- **Context:** Session 20 was started via `/dsm-light-go`. The skill correctly appended a boundary marker to the session transcript (lines 191-201), but no thinking/output entries were appended during the entire work session (7 files created/edited, 47 new tests). The full `/dsm-go` skill has an explicit behavioral activation at step 7 that commands: "From this point forward, follow the Session Transcript Protocol..." `/dsm-light-go` only has a passive note in the Notes section: "Session Transcript Protocol remains active."
+- **Finding:** The word "remains active" assumes behavioral context carries over from a prior session. But each `/dsm-light-go` invocation starts a fresh conversation thread with no prior activation to "remain." A note in the Notes section does not trigger as an action step. The result: an entire session of Sprint 8 work (checks.py, lint_reporter.py, test_linter.py, CLI integration, config, README) went unlogged in the transcript.
+- **Scores:** Clarity 4, Applicability 4, Completeness 3, Efficiency 2 (Avg: 3.25)
+- **Reasoning:** The full `/dsm-go` skill embeds behavioral activation as part of step 7, using imperative language ("From this point forward...") tied to the transcript file creation. `/dsm-light-go` defers this to a note, breaking the activation chain. This is a design oversight, not a recurrence of a prior pattern.
+- **Recommendation:** Add an explicit behavioral activation step to `/dsm-light-go` (and `/dsm-light-wrap-up` if applicable), mirroring `/dsm-go` step 7's language. Position it as a numbered step after the report, not a note. See `backlogs.md` Proposal #25.
+- **Pushed:** 2026-03-03
+
+### Entry 31: CLAUDE.md Should Include Portfolio Path
+- **Date:** 2026-03-03 | **Sprint:** Sprint 8 | **Type:** Gap
+- **Context:** During Session 20, the agent needed to notify the portfolio project about Sprint 8 completion. The portfolio path (`~/dsm-data-science-portfolio-working-folder/`) was not in CLAUDE.md or MEMORY.md. Session 19 had also reported "Portfolio unavailable" at startup because it could not resolve the path.
+- **Finding:** The DSM ecosystem has three notification targets: DSM Central, portfolio, and local feedback files. The CLAUDE.md Environment section listed the project path and DSM repository path but not the portfolio path. Without it, spoke projects cannot reliably send progress updates to the portfolio, breaking the hub-spoke notification loop.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 4 (Avg: 4.50)
+- **Reasoning:** Every DSM spoke project should be able to reach all three notification targets without manual discovery. The portfolio path is as fundamental as the DSM Central path. Adding it to the CLAUDE.md template ensures it is available from the first session.
+- **Recommendation:** Add a `Portfolio` entry to the Environment section in the CLAUDE.md project template (DSM_0.2 or DSM 4.0). Format: `- **Portfolio**: ~/path-to-portfolio/`. See `backlogs.md` Proposal #26.
+- **Pushed:** 2026-03-03
+
+---
+
+**Last Updated:** 2026-03-03
+**Entries So Far:** 31
+**Average Score:** 3.47
+**Pushed:** 2026-03-03 (Entry 31 pushed simultaneously with creation)

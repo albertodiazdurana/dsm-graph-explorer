@@ -12,6 +12,9 @@ import click
 
 from config.config_loader import ConfigError, load_config, merge_config_with_cli
 from filter.file_filter import filter_files
+from linter.checks import run_all_checks
+from linter.lint_reporter import format_lint_markdown, print_lint_results
+from linter.models import LintRule
 from parser.cross_ref_extractor import extract_cross_references
 from parser.markdown_parser import parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
@@ -112,6 +115,12 @@ def collect_markdown_files(
     default=False,
     help="Build reference graph and print summary statistics.",
 )
+@click.option(
+    "--lint",
+    is_flag=True,
+    default=False,
+    help="Run convention linting checks (emoji, TOC, mojibake, em-dash, CRLF, backlog metadata).",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -123,6 +132,7 @@ def main(
     semantic: bool,
     graph_export_path: str | None,
     graph_stats: bool,
+    lint: bool,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -178,6 +188,44 @@ def main(
     if not md_files:
         click.echo("All files excluded by patterns. Nothing to validate.", err=True)
         sys.exit(2)
+
+    # Lint mode (independent from validation pipeline)
+    if lint:
+        start = time.perf_counter()
+
+        # Build severity overrides from config
+        lint_overrides: dict[LintRule, Severity] | None = None
+        if config.lint.severity_overrides:
+            lint_overrides = {}
+            for rule_code, sev_str in config.lint.severity_overrides.items():
+                lint_overrides[LintRule(rule_code)] = Severity(sev_str.lower())
+
+        all_lint_results = []
+        for f in md_files:
+            raw = f.read_text(encoding="utf-8")
+            results = run_all_checks(str(f), raw, lint_overrides)
+            all_lint_results.extend(results)
+
+        elapsed = time.perf_counter() - start
+
+        print_lint_results(all_lint_results)
+
+        lint_errors = [r for r in all_lint_results if r.severity == Severity.ERROR]
+        lint_warnings = [r for r in all_lint_results if r.severity == Severity.WARNING]
+        click.echo(
+            f"\nScanned {len(md_files)} file(s) in {elapsed:.2f}s. "
+            f"Found {len(lint_errors)} error(s), {len(lint_warnings)} warning(s)."
+        )
+
+        if output:
+            report = format_lint_markdown(all_lint_results)
+            Path(output).parent.mkdir(parents=True, exist_ok=True)
+            Path(output).write_text(report, encoding="utf-8")
+            click.echo(f"Lint report written to {output}")
+
+        if config.strict and lint_errors:
+            sys.exit(1)
+        return
 
     # Parse and extract
     start = time.perf_counter()

@@ -6,6 +6,7 @@ from pathlib import Path
 from config.config_loader import (
     Config,
     ConfigError,
+    LintConfig,
     SeverityMapping,
     find_config_file,
     load_config,
@@ -336,3 +337,34 @@ default_severity: WARNING
         assert len(config.severity) == 4
         assert config.strict is True
         assert config.default_severity == "WARNING"
+
+
+class TestLintConfig:
+    """Tests for LintConfig model."""
+
+    def test_default_lint_config(self):
+        config = Config()
+        assert config.lint.severity_overrides == {}
+
+    def test_lint_severity_overrides(self):
+        lc = LintConfig(severity_overrides={"W001": "ERROR", "E001": "WARNING"})
+        assert lc.severity_overrides["W001"] == "ERROR"
+        assert lc.severity_overrides["E001"] == "WARNING"
+
+    def test_invalid_rule_code_rejected(self):
+        with pytest.raises(Exception):
+            LintConfig(severity_overrides={"INVALID": "ERROR"})
+
+    def test_lint_config_from_yaml(self, tmp_path):
+        config_file = tmp_path / CONFIG_FILENAME
+        config_file.write_text(
+            "lint:\n  severity_overrides:\n    W001: ERROR\n    E003: INFO\n"
+        )
+        config = load_config(config_file)
+        assert config.lint.severity_overrides == {"W001": "ERROR", "E003": "INFO"}
+
+    def test_merge_preserves_lint_config(self):
+        lc = LintConfig(severity_overrides={"W001": "ERROR"})
+        config = Config(lint=lc)
+        merged = merge_config_with_cli(config, cli_strict=True)
+        assert merged.lint.severity_overrides == {"W001": "ERROR"}

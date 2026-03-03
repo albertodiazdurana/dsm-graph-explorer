@@ -1,204 +1,201 @@
-# Session 18 Transcript
-**Started:** 2026-02-28T20:11:58+01:00
+# Session 19 Transcript
+**Started:** 2026-03-02T09:33:39+01:00
 **Project:** DSM Graph Explorer
 
 ---
-
 **User:** /dsm-go (session start)
 
-<------------Start Thinking / 20:12------------>
+<------------Start Thinking / 09:33------------>
 
-Session 18 startup. Last session was 17 (2026-02-25, research session).
+Session 19 startup. Last session was 18 (2026-02-28, governance session).
 
 **Project type:** Application (src/, tests/, no notebooks/), DSM 4.0 Track.
 
 **Ecosystem paths:** No `.claude/dsm-ecosystem.md` found. Using fallback: dsm-central from @ reference (`~/dsm-agentic-ai-data-science-methodology/`). Portfolio unavailable.
 
-**Inbox check:** `_inbox/` contains `dsm-central.md`, a notification from DSM Central about Literate CQRS Knowledge research (5 threads, 3,279 lines, 25+ sources). HIGH relevance, confirms Graph Explorer's deterministic parsing approach, provides architectural inputs for Epoch 4+ (git as event store, multi-repo federation, temporal queries). Sprint 7 recommendation is already complete. Key actionable items: entity inventory format design, git ref parameter for historical compilation, typed cross-repo edges. All are Epoch 3-4 scope.
+**Inbox check:** `_inbox/` is empty (only README.md + done/). No pending items.
 
-**DSM version:** v1.3.52, same as last session (17). No changes.
+**DSM version:** v1.3.52, same as last session (18). No changes.
 
-**Handoffs:** No unconsumed handoffs (only README.md and done/ in docs/handoffs/).
+**Handoffs:** No unconsumed handoffs.
 
-**Archived transcript:** Session 17 transcript archived to `.claude/transcripts/2026-02-25T07:51-ST.md`. Session 17 ended with "STAA recommended: no" (lightweight research session). No STAA reminder needed.
+**Checkpoint:** Read `2026-02-28_sprint7-complete_checkpoint.md`. Sprint 7 fully complete, all deliverables checked off. Next steps: Sprint 8 convention linting.
+
+**Archived transcript:** Session 18 transcript archived to `.claude/transcripts/2026-02-28T20:11-ST.md`. No STAA recommendation detected in previous transcript.
 
 **Uncommitted changes:**
-- `.claude/session-transcript.md` modified (now reset for Session 18)
 - `.claude/settings.local.json` modified
-- 3 files deleted under `experiments/` (leftover from migration to `data/experiments/` in Session 15)
-- `_inbox/dsm-central.md` untracked (new inbox entry)
-- `.claude/transcripts/2026-02-25T07:51-ST.md` untracked (archived transcript)
+- 3 experiment files deleted (`experiments/exp003_*.py`, `experiments/exp003b_*.csv`), leftover from migration to `data/experiments/`
 
-**Bandwidth:** ~206 MiB today across sessions, moderate usage.
+**Bandwidth:** ~10 MiB today (light session start).
 
-**Pending work from MEMORY.md:**
-1. Sprint 7 boundary checklist (checkpoint, feedback, decisions, journal, README)
-2. Sprint 8: Convention linting (--lint flag, 6 checks: E001-E003, W001-W003)
-3. Epoch 4 roadmap: LLM second-pass
+**Pending from MEMORY.md:**
+1. Sprint 8: Convention linting (--lint flag, 6 checks: E001-E003, W001-W003)
+2. Epoch 4 roadmap: LLM second-pass (deferred)
 
 <------------End Thinking------------>
 
-**User:** reference the message in the plan for future action
+**User:** let's continue where we left
 
-<------------Start Thinking / 20:18------------>
+<------------Start Thinking / 09:35------------>
 
-User wants the Literate CQRS research insights referenced in the epoch plan. The best location is the "Future Epochs" section of `docs/plans/epoch-2-plan.md`, where Epoch 3 (Neo4j) and Epoch 4 (Advanced NLP) are outlined. I'll enrich those sections with the specific architectural inputs from the DSM Central notification:
+User wants to continue development. From MEMORY.md, the next item is Sprint 8: Convention linting (--lint flag, 6 checks: E001-E003, W001-W003). Sprint 7 boundary checklist was completed in Session 18, so we're clear to start Sprint 8.
 
-1. Epoch 3: git ref parameter for temporal compilation, entity inventory format for multi-repo federation, typed cross-repo edges
-2. Epoch 4: bi-temporal model (event time vs transaction time), LLM second-pass validated by research, Graphiti differentiation as positioning reference
-
-Also update the plan status to reflect Sprint 7 complete.
-
-<------------End Thinking------------>
-
-**Output:** Inbox entry acknowledged and moved to `_inbox/done/`. Updated `docs/plans/epoch-2-plan.md`:
-- Epoch 3 section: added git ref temporal compilation, entity inventory format, typed cross-repo edges
-- Epoch 4 section: added bi-temporal model, Graphiti differentiation
-- Source attribution to Literate CQRS Knowledge research
-- Plan status updated to "Sprint 7 complete, ready for Sprint 8"
-
-**User:** Let's continue the development
-
-<------------Start Thinking / 20:22------------>
-
-User wants to continue development. From MEMORY.md, the pending items are:
-
-1. **Sprint 7 boundary checklist** (checkpoint, feedback, decisions, journal, README), still pending
-2. **Sprint 8:** Convention linting (--lint flag, 6 checks: E001-E003, W001-W003)
-3. Epoch 4 roadmap: LLM second-pass (deferred)
-
-The Sprint 7 boundary checklist is the next logical step before starting Sprint 8. The checklist items are:
-- [ ] Checkpoint document created (`docs/checkpoints/`)
-- [ ] Feedback files updated (`docs/feedback/backlogs.md`, `docs/feedback/methodology.md`)
-- [ ] Decision log updated with sprint decisions (`docs/decisions/`)
-- [ ] Blog journal entry written (`docs/blog/epoch-2/journal.md`)
-- [ ] Repository README updated (status, results, structure)
-
-However, given that Sprint 7 was completed in Session 16 and we're now in Session 18, the user might prefer to jump straight into Sprint 8 development. Let me present both options.
-
-Actually, looking at Session 16 commit message: "Sprint 7 graph prototype + Sprint 6 boundary checklist", this implies Sprint 6 boundary was done in Session 16 but Sprint 7 boundary was NOT done. MEMORY.md confirms: "Sprint 7 boundary checklist" is in the NEXT section.
-
-I should present the situation: Sprint 7 boundary checklist is pending, and Sprint 8 is the next development sprint. The boundary checklist is a governance requirement before starting a new sprint.
-
-<------------End Thinking------------>
-
-**User:** Yes, align with the epoch-2-plan
-
-<------------Start Thinking / 20:24------------>
-
-User confirms: Sprint 7 boundary checklist first, then Sprint 8. Let me plan the boundary checklist work. I need to check what already exists and what needs to be created.
-
-Sprint 7 boundary checklist (from CLAUDE.md):
-1. Checkpoint document (`docs/checkpoints/`)
-2. Feedback files updated (`docs/feedback/backlogs.md`, `docs/feedback/methodology.md`)
-3. Decision log updated (`docs/decisions/`)
-4. Blog journal entry (`docs/blog/epoch-2/journal.md`)
-5. README updated
-
-Sprint 7 summary from MEMORY.md:
-- Phase 7.0: EXP-004 graph performance (all PASS)
-- Phase 7.1: graph_builder.py (build_reference_graph, 97% coverage)
-- Phase 7.2: graph_queries.py (100% coverage)
-- Phase 7.3: graph_export.py + CLI (--graph-export, --graph-stats)
-- Protocol violation: Entry 29 (concept ≠ implementation approval)
-- 34 new tests
-
-Let me read existing files to understand what needs updating vs creating.
+Let me read the epoch-2-plan to understand Sprint 8 scope and requirements before proposing a plan.
 
 <------------End Thinking------------>
 
 
-<------------Start Thinking / 20:14------------>
+<------------Start Thinking / 09:36------------>
 
-User wants to read the inbox entry directly. I already read and summarized it in the session report. The user may want to review it themselves before deciding how to proceed. I'll present the content, it was already read during startup. No additional tool call needed, I can reference the content I already loaded.
+Read epoch-2-plan Sprint 8 section and the full spec from `_inbox/done/2026-02-09_dsm-central-feedback-convention-linting.md`.
 
-<------------End Thinking------------>
+Sprint 8 scope is well-defined:
+- 6 lint checks: E001 (emoji), E002 (TOC), E003 (mojibake), W001 (em-dash), W002 (CRLF), W003 (backlog metadata)
+- New `src/linter/` module with LintResult dataclass
+- `--lint` CLI flag, runs independently from cross-ref validation
+- Reuses existing file collection/filtering
+- TDD: one check at a time with tests
 
-**User:** Let's handle this with your recommendations
+No `src/linter/` exists yet, this is greenfield work within the existing project structure.
 
-<------------Start Thinking / 20:16------------>
+Implementation order from spec:
+1. Module structure + LintResult dataclass
+2. E001 (emoji) + tests
+3. E002 (TOC) + tests
+4. W001 (em-dash) + tests
+5. W002 (CRLF) + tests
+6. E003 (mojibake) + tests
+7. W003 (backlog metadata) + tests
+8. CLI integration (--lint flag)
+9. Config section for lint rule overrides
+10. README update
 
-User approves my recommendation: acknowledge the inbox entry, move it to `_inbox/done/`, and note the architecture inputs. Two actions:
-
-1. Move `_inbox/dsm-central.md` to `_inbox/done/dsm-central.md` with acknowledgment header
-2. The insights are Epoch 3-4 scope; the moved file itself serves as the reference when we reach epoch planning
-
-<------------End Thinking------------>
-
-**User:** y (approved Sprint 7 checkpoint document)
-
-<------------Start Thinking / 20:27------------>
-
-Creating Sprint 7 checkpoint document. Following the Sprint 6 checkpoint pattern. Need to gather the Sprint 7 details from MEMORY.md and the epoch-2-plan.
-
-<------------End Thinking------------>
-
-**Output:** Created `docs/checkpoints/2026-02-28_sprint7-complete_checkpoint.md`.
-
-**User:** y (approved feedback files update)
-
-<------------Start Thinking / 20:30------------>
-
-Updating methodology.md header fields: Duration Sprint 1-6 → 1-7, Timeline actual Sprint 6 → Sprint 7, Deliverables adds graph prototype. backlogs.md already has Proposal #24, no structural changes needed.
+This is a multi-phase sprint. Following the three-gate model (Entry 29): present concept first, then implementation details per file, then run.
 
 <------------End Thinking------------>
 
-**Output:** Updated `docs/feedback/methodology.md` header: Duration → Sprint 1-7, Timeline → Sprint 7 complete, Deliverables → adds graph prototype. Decision log: no new DEC needed (noted in checkpoint).
+**User:** yes (approve Sprint 8 start)
 
-**User:** y (approved blog journal entry)
+<------------Start Thinking / 09:38------------>
 
-<------------Start Thinking / 20:33------------>
+User approved starting Sprint 8. Following the spec's implementation order (TDD):
 
-Appending Sprint 7 journal entry to `docs/blog/epoch-2/journal.md`. Following same structure as previous entries: What Happened, Aha Moments, Metrics, Blog Material.
+1. Create `src/linter/` module structure with `LintResult` dataclass
+2. E001 (emoji) + tests
+3. E002 (TOC) + tests
+4. W001 (em-dash) + tests
+5. W002 (CRLF) + tests
+6. E003 (mojibake) + tests
+7. W003 (backlog metadata) + tests
+8. CLI integration (--lint flag)
+9. Config section for lint rule overrides
+10. README update
 
-<------------End Thinking------------>
+Session Delivery Budget check: ~10 files (6 check modules + dataclass + reporter + CLI update + tests + config + README). That's at the upper edge. Let me split this into phases:
+- Phase 8.1: Module structure + LintResult + first 3 checks (E001, E002, W001) + tests
+- Phase 8.2: Remaining checks (W002, E003, W003) + tests
+- Phase 8.3: CLI integration + config + README
 
-**Output:** Appended Sprint 7 journal entry to `docs/blog/epoch-2/journal.md`.
+Actually, following the file creation loop: one file at a time with approval. Let me estimate file count:
+- src/linter/__init__.py (trivial)
+- src/linter/models.py (LintResult dataclass)
+- src/linter/checks.py (all 6 checks in one module, or per-check submodules)
+- src/linter/lint_reporter.py
+- tests/test_linter.py
+- CLI update (existing file edit)
+- Config update (existing file edit)
+- README update (existing file edit)
 
-**User:** y (approved README update)
-
-<------------Start Thinking / 20:36------------>
-
-Updating README.md: status line, Sprint 7 features section, project structure (src/graph/, test files), Project Status (check Sprint 7), usage examples (--graph-export, --graph-stats), footer (tests 284, entries 29, proposals 24).
-
-<------------End Thinking------------>
-
-**Output:** README updated (status, features, structure, usage, Project Status, footer). Epoch-2-plan Sprint 7 tasks all checked off, SHOULD and success criteria updated.
-
-**Sprint 7 boundary checklist complete.** All 5 items done.
-
-**User:** how are we handling processed transcripts?
-
-<------------Start Thinking / 20:40------------>
-
-User is asking about the lifecycle of session transcripts after they've been archived. Let me check what currently exists in the transcripts directory and how they're managed.
-
-The current flow:
-1. At session start, `/dsm-go` archives the previous transcript to `.claude/transcripts/{timestamp}-ST.md`
-2. A fresh transcript is started for the new session
-3. At session end, `/dsm-wrap-up` can recommend STAA analysis
-
-But what happens to the archived transcripts over time? They accumulate in `.claude/transcripts/`. There's no cleanup or lifecycle policy. Let me check what's there.
+That's ~5 new files + 3 edits = 8 artifacts. Right at the budget edge. Let me read existing patterns to inform architecture.
 
 <------------End Thinking------------>
 
-**User:** My concern was just to keep it tidy. We can wrap up now, 15% context left.
 
-<------------Start Thinking / 20:44------------>
+<------------Start Thinking / 09:39------------>
 
-Wrap-up sequence starting. Context is low (15%), need to be efficient.
+Reviewed existing patterns:
+- `ValidationResult` dataclass: severity, source_file, line, ref_type, target, message, context
+- `Severity` enum: ERROR, WARNING, INFO
+- `Config` Pydantic model in config_loader.py
+- `report_generator.py`: print_rich_report + generate_markdown_report
+- `cli.py`: collect_markdown_files, filter_files, pipeline wiring
 
-Steps to execute:
-0. Reasoning lessons (no file exists, skip)
-1. README check
-2. Bandwidth
-3. MEMORY.md update
-4. Backup refresh
-5. Contributor profile (skip if no file)
-6. Handoff (skip if MEMORY sufficient)
-7. Feedback push (check for unpushed entries)
-8. Governance storage (no contributions-docs path, skip)
-9. Git commit + push
+For the linter, the spec says:
+- New `LintResult` dataclass with: file, line, column, rule, severity, message, context
+- Separate from ValidationResult (different pipeline)
+- Reuse `Severity` from validator (same enum)
+
+Architecture decision: the spec says "per-check submodules" but also mentions "src/linter/" generally. Given the checks are small (each ~10-20 lines), I'll put all checks in a single `checks.py` module rather than 6 separate files. Each check is a function that returns `list[LintResult]`. This keeps the file count reasonable.
+
+File plan:
+1. `src/linter/__init__.py` (trivial, exports)
+2. `src/linter/models.py` (LintResult dataclass, LintRule enum)
+3. `src/linter/checks.py` (6 check functions)
+4. `src/linter/lint_reporter.py` (Rich + markdown output)
+5. `tests/test_linter.py` (tests for all checks)
+6. Edit: `src/cli.py` (add --lint flag)
+7. Edit: `src/config/config_loader.py` (add lint config section)
+8. Edit: `README.md` (document lint mode)
+
+That's 5 new files + 3 edits = 8 artifacts. Within session budget.
+
+First artifact: `src/linter/__init__.py` + `src/linter/models.py` (module structure + LintResult).
+
+Following the file creation loop: describe first, wait for Y/N.
 
 <------------End Thinking------------>
 
+**User:** y (approve __init__.py)
+
+<------------Start Thinking / 09:40------------>
+
+User approved Gate 1 for `src/linter/__init__.py`. Creating the trivial init file. It will export the public API once the other modules exist. For now, just a docstring and placeholder.
+
+<------------End Thinking------------>
+
+**User:** y (approve models.py)
+
+<------------Start Thinking / 09:41------------>
+
+Gate 1 approved for models.py. Creating the file now (Gate 2).
+
+Design:
+- LintRule enum with 6 members, each storing code + description
+- LintResult dataclass with 7 fields
+- DEFAULT_SEVERITY dict mapping rule -> Severity
+- Import Severity from validator (reuse, no duplication)
+
+<------------End Thinking------------>
+
+**User:** /dsm-light-wrap-up (session ending, work continues)
+
+<------------Start Thinking / 09:43------------>
+
+User wants a lightweight wrap-up. Sprint 8 work has just started: __init__.py and models.py created, checks.py was approved at Gate 1 but not yet written. Need to preserve state for continuation.
+
+Steps:
+1. Minimal MEMORY.md update
+2. Minimal checkpoint
+3. Baseline mode marker
+4. Git commit + push
+
+<------------End Thinking------------>
+
+
+**Output:** Lightweight wrap-up complete. Committed 8aba07b, pushed. Checkpoint created, baseline marked as light mode. Next session: /dsm-light-go to continue Sprint 8 checks.py.
+
+
+---
+
+## Session 20 (lightweight continuation)
+**Started:** 2026-03-03
+**Previous session artifacts:**
+- Checkpoint: 2026-03-03_sprint8-started_checkpoint.md
+- MEMORY.md updated: yes
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: 2026-03-03_sprint8-started_checkpoint.md
+
+---
