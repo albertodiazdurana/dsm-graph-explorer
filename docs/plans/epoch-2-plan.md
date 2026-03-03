@@ -2,7 +2,7 @@
 
 **Project Type:** Software Engineering (DSM 4.0 Track)
 **Start Date:** 2026-02-04
-**Status:** IN PROGRESS
+**Status:** COMPLETE (2026-03-03)
 **Prerequisite:** Epoch 1 Complete ([epoch-1-plan.md](epoch-1-plan.md))
 **Project Lead:** Alberto Diaz Durana (with AI assistance)
 
@@ -33,7 +33,7 @@ Epoch 1 delivered a working CLI validator that found 448 broken cross-references
 - [x] NetworkX graph prototype (before Neo4j)
 - [ ] Section rename tracking (`section-renames.yml`)
 - [x] Pre-commit hook script
-- [ ] Convention linting mode (`--lint` flag) — emoji, TOC, em-dash, CRLF, mojibake, backlog metadata checks
+- [x] Convention linting mode (`--lint` flag) — emoji, TOC, em-dash, CRLF, mojibake, backlog metadata checks
 
 **COULD (Future Epoch 3+):**
 - Neo4j graph database integration
@@ -395,10 +395,11 @@ Robustness measures:
 
 ---
 
-### Sprint 8: Convention Linting (`--lint`)
+### Sprint 8: Convention Linting (`--lint`) ✅
 
-**Duration:** 1-2 sessions
+**Duration:** 2 sessions (actual)
 **Objective:** Add convention linting mode that checks surface-level DSM style violations without running the cross-reference pipeline.
+**Status:** COMPLETE (2026-03-03)
 **Source:** DSM Central inbox entry ([2026-02-09_dsm-central-feedback-convention-linting.md](../inbox/done/2026-02-09_dsm-central-feedback-convention-linting.md))
 
 #### Checks
@@ -422,15 +423,15 @@ Robustness measures:
 
 #### Sprint 8 Deliverables
 
-- [ ] `src/linter/` module with 6 checks
-- [ ] `--lint` CLI flag
-- [ ] Config section for lint rule overrides
-- [ ] Tests for each check
-- [ ] README updated with lint mode
+- [x] `src/linter/` module with 6 checks
+- [x] `--lint` CLI flag
+- [x] Config section for lint rule overrides
+- [x] Tests for each check (47 new: 35 linter + 7 CLI + 5 config)
+- [x] README updated with lint mode
 
 **Sprint boundary:**
-- [ ] Checkpoint document
-- [ ] Feedback files updated
+- [x] Checkpoint document
+- [x] Feedback files updated (Entries 29-31, Proposals 24-26)
 
 **Full spec:** See source inbox entry for implementation order and architecture guidance.
 
@@ -661,7 +662,7 @@ Updated at every sprint boundary:
 
 ---
 
-**Plan Status:** Sprint 7 complete, ready for Sprint 8
-**Last Updated:** 2026-02-28
+**Plan Status:** EPOCH 2 COMPLETE (all 5 sprints delivered)
+**Last Updated:** 2026-03-03
 **Previous:** [epoch-1-plan.md](epoch-1-plan.md)
 **Research:** [e2_handoff_graph_explorer_research.md](../research/e2_handoff_graph_explorer_research.md)

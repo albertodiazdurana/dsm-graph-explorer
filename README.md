@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.2.0
-**Status:** Epoch 2 In Progress (Sprint 8 complete, convention linting delivered)
+**Status:** Epoch 2 Complete (5 sprints delivered)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
 
@@ -253,7 +253,7 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (completed) 
 - [x] **Sprint 2:** Validation Engine — cross-ref validator, version checker, report generator, 126 tests at 99% coverage
 - [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 150 tests at 98% coverage, first DSM integrity report (448 → 6 errors after trailing period fix)
 
-### Epoch 2: Productionization & Graph (In Progress)
+### Epoch 2: Productionization & Graph (Complete)
 - [x] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels (218 tests, 95% coverage)
 - [x] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, user guides (232 tests, 95% coverage)
 - [x] **Sprint 6:** Semantic Validation — TF-IDF cosine similarity, `--semantic` flag, drift detection, EXP-003b real data validation (250 tests, 95% coverage)
@@ -306,6 +306,6 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 ---
 
 **Last Updated:** 2026-03-03
-**Current Status:** Epoch 2 in progress (Sprint 8 complete, convention linting delivered)
+**Current Status:** Epoch 2 complete (5 sprints delivered: exclusion, CI, semantic, graph, linting)
 **Tests:** 331 passed, 96% coverage
-**DSM Feedback:** 29 methodology entries, 24 improvement proposals
+**DSM Feedback:** 31 methodology entries, 26 improvement proposals

@@ -348,4 +348,143 @@
 
 ---
 
-**Last Updated:** 2026-02-28
+## Sessions: 2026-03-02/03 — Sprint 8: Convention Linting
+
+### What Happened
+
+1. **Module scaffolding (Session 19)** — Built `src/linter/` module from scratch: `models.py` (LintRule enum, LintResult dataclass), `checks.py` (6 check functions + `run_all_checks` orchestrator), `lint_reporter.py` (Rich console + markdown output). Extended `config_loader.py` with `LintConfig` model and `lint:` YAML section. Added `--lint` flag to CLI, independent from the validation pipeline.
+
+2. **Six convention checks (Sessions 19-20):**
+   - **E001 (emoji usage):** Detects raw emoji/symbol characters that should use DSM text conventions (WARNING:/OK:/ERROR:)
+   - **E002 (TOC headings):** Flags "Table of Contents" headings; DSM uses hierarchical numbering instead
+   - **E003 (mojibake encoding):** Catches double-encoded UTF-8 artifacts (Ã©, â€", etc.)
+   - **W001 (em-dash punctuation):** Flags em-dashes (—) where commas or semicolons should be used
+   - **W002 (CRLF line endings):** Detects Windows-style line endings
+   - **W003 (backlog metadata):** Validates required fields in backlog proposal entries
+
+3. **Test coverage (Sessions 19-20):** 47 new tests across three files: 35 in `test_linter.py` (all checks + orchestrator + overrides), 7 lint CLI integration tests in `test_cli.py`, 5 lint config tests in `test_config.py`. Total: 331 tests, 96% coverage.
+
+4. **Transcript protocol bug (Session 20):** Discovered that `/dsm-light-go` was missing a behavioral activation step, meaning the session transcript wasn't being appended to during lightweight continuations. Filed as methodology Entry 30 and reported to DSM Central.
+
+5. **DSM feedback (Session 20):** Entry 30 (transcript bug), Entry 31 (portfolio path standardization), Proposals 25-26. Pushed to DSM Central inbox and portfolio inbox.
+
+### Aha Moments
+
+1. **Linting as independent pipeline** — The `--lint` flag runs a completely separate pipeline from `--strict` validation. This was the right call: convention checks operate on raw text patterns, while cross-reference validation requires parsing and section resolution. Different concerns, different entry points, shared infrastructure (file collection, config, reporting).
+
+2. **Per-rule severity overrides via config** — The `lint:` section in `.dsm-graph-explorer.yml` lets users downgrade E001 to WARNING or upgrade W001 to ERROR. This mirrors the validation pipeline's severity override pattern (Sprint 4), creating a consistent user experience across both modes.
+
+3. **Transcript as living artifact** — The transcript protocol bug revealed that the session transcript is not just a log; it is a coordination mechanism between sessions. When it stops being written to, the lightweight continuation chain breaks. This is an example of a process artifact becoming load-bearing infrastructure.
+
+4. **Convention checks as documentation standards** — Each lint rule encodes a DSM convention that was previously only in prose. E001 says "use text labels, not emoji." W001 says "use commas, not em-dashes." Making conventions executable turns style guidelines into enforceable rules.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| New source files | 3 (`checks.py`, `lint_reporter.py`, `models.py`) |
+| Modified source files | 2 (`cli.py`, `config_loader.py`) |
+| Tests added | 47 (35 linter + 7 CLI + 5 config) |
+| Total tests | 331 |
+| Coverage | 96% |
+| Lint checks implemented | 6 (E001-E003, W001-W003) |
+| Methodology entries added | 3 (Entries 29-31) |
+| Backlog proposals added | 3 (Proposals 24-26) |
+| Sessions | 2 (Sessions 19-20) |
+
+### Blog Material
+
+**Sprint 8 narrative threads:**
+- Convention linting as executable style guides: turning prose rules into automated checks
+- Independent pipelines: why `--lint` and `--strict` are separate entry points with shared infrastructure
+- The transcript protocol bug: when a process artifact becomes load-bearing infrastructure
+- Per-rule severity overrides: giving users control over what matters in their context
+
+**Title options for Sprint 8 blog:**
+1. "Making Style Guides Executable: Convention Linting for Documentation Repositories"
+2. "Six Checks, One Flag: Adding Convention Linting to a Documentation Validator"
+3. "When Your Session Log Becomes Load-Bearing: Process Artifacts in AI-Assisted Development"
+
+---
+
+## Epoch 2 Retrospective
+
+**Duration:** 2026-02-04 to 2026-03-03 (28 days)
+**Sprints:** 5 (Sprints 4-8)
+**Sessions:** ~14 (Sessions 7-20)
+
+### What Was Delivered
+
+| Sprint | Feature | Tests Added | Key Artifact |
+|--------|---------|-------------|--------------|
+| 4 | Exclusion & Severity | 73 | `.dsm-graph-explorer.yml` config |
+| 5 | CI & Documentation | 0 (infra) | GitHub Actions workflow, 2 user guides |
+| 6 | Semantic Validation | 32 | `src/semantic/similarity.py`, DEC-005 |
+| 7 | Graph Prototype | 34 | `src/graph/` (builder, queries, export) |
+| 8 | Convention Linting | 47 | `src/linter/` (6 checks) |
+
+**Cumulative:**
+- Tests: 150 (Epoch 1 end) → 331 (Epoch 2 end), +181 tests
+- Coverage: 98% → 96% (slight dip from infrastructure code in CLI/config)
+- Source modules: 4 → 10 (config, filter, semantic, graph, linter + submodules)
+- Experiments: 4 (EXP-001 through EXP-004, plus EXP-003b real data validation)
+- Decisions: 2 new (DEC-004 WSL migration, DEC-005 semantic validation approach)
+- DSM feedback: 31 methodology entries, 26 backlog proposals (from 16/13 at Epoch 1 end)
+
+### What Went Well
+
+1. **Research-first planning** — The Epoch 2 planning session (2026-02-04) grounded every sprint in technical research before implementation. EXP-003's threshold tuning and EXP-004's performance benchmarking eliminated guesswork. No sprint required mid-course design changes.
+
+2. **Experiment-driven decisions** — EXP-003b was the standout: synthetic data (F1=0.889) vs real data (F1=0.663) revealed the gap between test fixtures and production. The threshold amendment from 0.10 to 0.08 was evidence-based, not a guess. This pattern (experiment → decision → amendment) should carry forward.
+
+3. **Independent pipelines with shared infrastructure** — Each major feature (`--semantic`, `--graph-stats`, `--lint`) runs as an independent pipeline sharing file collection, config loading, and reporting. This kept the CLI architecture clean despite growing scope.
+
+4. **Graceful degradation** — Optional dependencies (scikit-learn, networkx) degrade with clear error messages and exit code 2. Users see what they need to install, not a stack trace.
+
+5. **Hub-and-spoke feedback loop** — The three-file feedback system generated 15 new methodology entries and 13 new proposals during Epoch 2. Several were accepted by DSM Central (inbox folder migration, experiments folder, convention linting spec). The spoke project is actively shaping the hub methodology.
+
+### What Could Improve
+
+1. **Sprint duration estimates** — Sprint 6 was planned as "1-2 sessions" and took 5. The semantic validation pipeline had hidden complexity: context extraction, corpus-scoped IDF, real data labeling. Better estimation would break "TF-IDF implementation" into its actual phases before committing to a sprint duration.
+
+2. **Collaboration protocol recurrence** — The brief-skipping pattern appeared 5 times across Epoch 2 (Entries 19, 22, 25, 29). Each fix was more structured than the last (from "explain first" to the three-gate model), but the pattern still recurs. The root cause may be that the protocol relies on agent self-enforcement rather than structural gates.
+
+3. **Blog materials lag** — `materials.md` only has WSL migration content. Sprint-by-sprint materials were captured in `journal.md` instead. The two files should either be consolidated or their roles clarified (journal = raw notes, materials = publication-ready drafts).
+
+4. **Section rename tracking** — The one SHOULD item not delivered. Deferred because cross-reference validation and linting were higher value. Should be reconsidered for Epoch 3 as part of temporal/git-ref features.
+
+### Key Themes
+
+1. **From tool to platform** — Epoch 1 built a CLI tool. Epoch 2 turned it into a validation platform: config files, CI integration, pre-commit hooks, user guides, semantic analysis, graph queries, convention linting. The surface area grew 3x while the architecture remained coherent.
+
+2. **Experiments as first-class artifacts** — Four experiments produced evidence for every non-trivial design decision. Moving them to `data/experiments/` (Proposal #23) gave them proper status. The pattern: experiment → results → decision document → implementation.
+
+3. **Feedback as product** — 31 methodology entries and 26 backlog proposals are not just process overhead; they are a deliverable that improves DSM itself. The spoke project's findings (user guides gap, inbox location, convention linting need) became methodology changes.
+
+4. **Protocol evolution through practice** — The collaboration protocol was refined 5 times, each iteration more explicit. The three-gate model (concept → implementation → run) emerged from Sprint 7's protocol violation. Protocols improve through failure, not through specification.
+
+### Deferred to Epoch 3+
+
+- **Section rename tracking** (`section-renames.yml`): SHOULD item from Epoch 2 MoSCoW
+- **Neo4j integration:** Graph database migration from NetworkX prototype
+- **Git ref parameter:** Temporal compilation at a specific commit/tag
+- **Entity inventory format:** Cross-repo referenceable entities
+- **Typed cross-repo edges:** Formalize inbox, @ imports, ecosystem paths as graph edges
+- **LLM second-pass:** Tiered approach where TF-IDF filters, LLM confirms borderline cases
+- **Bi-temporal model:** Event time vs transaction time for temporal queries
+
+### Epoch 2 Blog Narrative
+
+The overarching Epoch 2 story is **productionization**: taking a working prototype (448 errors found, 6 real) and turning it into a deployable validation platform. Each sprint added a layer:
+
+1. **Sprint 4:** Made errors actionable (exclusion, severity, config)
+2. **Sprint 5:** Made validation automatic (CI, pre-commit, docs)
+3. **Sprint 6:** Made validation semantic (TF-IDF, drift detection)
+4. **Sprint 7:** Made structure queryable (graph builder, queries, export)
+5. **Sprint 8:** Made conventions enforceable (linting, 6 style checks)
+
+The compiler architecture from Epoch 1 (parser → symbol table → resolver → reporter) was extended without being replaced. Each new capability plugged into the existing pipeline or ran alongside it. This is the strength of the architecture: new features compose rather than conflict.
+
+---
+
+**Last Updated:** 2026-03-03

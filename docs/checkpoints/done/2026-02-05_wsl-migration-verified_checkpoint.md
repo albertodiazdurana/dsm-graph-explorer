@@ -1,3 +1,5 @@
+**Consumed at:** Session 21 start (2026-03-03)
+
 # WSL Migration Verified Checkpoint
 
 **Date:** 2026-02-05

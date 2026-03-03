@@ -199,3 +199,49 @@ Steps:
 - Checkpoint: 2026-03-03_sprint8-started_checkpoint.md
 
 ---
+
+---
+
+## Session 21 (lightweight continuation)
+**Started:** 2026-03-03
+**Previous session artifacts:**
+- Checkpoint: 2026-03-03_sprint8-complete_checkpoint.md
+- MEMORY.md updated: yes (Session 20)
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: 2026-03-03_sprint8-complete_checkpoint.md
+
+---
+
+**User:** Continue where we left. Make sure to append to the session-transcript this time.
+
+<------------Start Thinking / Session 21------------>
+
+Resuming from checkpoint. Two main blocks of work:
+1. Sprint 8 boundary checklist (journal, epoch-2-plan tasks, README footer)
+2. Epoch 2 boundary (retrospective, blog materials, epoch-2-plan marked complete)
+
+Need to read: epoch-2-plan, journal, README, blog materials to understand current state.
+
+<------------End Thinking / Session 21------------>
+
+<------------Start Output / Session 21------------>
+
+**Sprint 8 journal entry** added to docs/blog/epoch-2/journal.md.
+Covers: 6 convention checks, 47 new tests, transcript bug, aha moments, metrics, blog material threads.
+
+<------------End Output / Session 21------------>
+
+<------------Start Output / Session 21------------>
+
+**epoch-2-plan.md** updated: Sprint 8 deliverables/boundary checked, status → COMPLETE (2026-03-03), all sprint headers marked ✅.
+**README.md** updated: status → "Epoch 2 Complete," feedback counts → 31 entries / 26 proposals.
+
+<------------End Output / Session 21------------>
+
+<------------Start Output / Session 21------------>
+
+**Epoch 2 retrospective** added to journal.md. Covers: delivery table (5 sprints, 181 tests added), what went well (5 items), what could improve (4 items), key themes (4), deferred items (7), and epoch narrative arc (productionization).
+
+<------------End Output / Session 21------------>
