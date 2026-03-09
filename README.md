@@ -3,13 +3,13 @@
 **Version:** 0.2.0
 **Status:** Epoch 2 Complete (5 sprints delivered)
 
-Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) framework.
+Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
 
 ---
 
 ## Overview
 
-The [DSM framework](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology) is a structured methodology for human-AI collaboration in data science and software engineering projects. As the framework grows, its documentation accumulates hundreds of cross-references between sections, appendices, and versioned documents. Keeping these references consistent manually becomes error-prone.
+The [DSM framework](https://github.com/albertodiazdurana/take-ai-bite) is a structured methodology for human-AI collaboration in data science and software engineering projects. As the framework grows, its documentation accumulates hundreds of cross-references between sections, appendices, and versioned documents. Keeping these references consistent manually becomes error-prone.
 
 DSM Graph Explorer automates this integrity checking: it parses DSM markdown files, extracts cross-references, validates them against actual section headings, and reports broken links and version mismatches. The project itself is built using DSM 4.0 (Software Engineering Adaptation), making it a dog-fooding exercise — using the methodology to build tooling that validates the methodology.
 
@@ -230,7 +230,7 @@ ruff check src/ tests/
 
 ## Methodology
 
-This project is built using the [Agentic AI Data Science Methodology (DSM)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology). The DSM provides structured guidance for human-AI collaborative projects, covering everything from sprint cadence to feedback tracking. This project follows:
+This project is built using the [Agentic AI Data Science Methodology (DSM)](https://github.com/albertodiazdurana/take-ai-bite). The DSM provides structured guidance for human-AI collaborative projects, covering everything from sprint cadence to feedback tracking. This project follows:
 
 - **DSM 4.0:** Software Engineering Adaptation — the track for building software with AI collaboration
 - **Section 3:** Development Protocol — TDD approach with pre-generation briefs
