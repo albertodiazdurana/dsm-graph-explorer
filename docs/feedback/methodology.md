@@ -362,9 +362,27 @@
 - **Recommendation:** Add a `Portfolio` entry to the Environment section in the CLAUDE.md project template (DSM_0.2 or DSM 4.0). Format: `- **Portfolio**: ~/path-to-portfolio/`. See `backlogs.md` Proposal #26.
 - **Pushed:** 2026-03-03
 
+### Entry 32: Research-Before-Planning Should Be a Standard Protocol Step
+- **Date:** 2026-03-09 | **Sprint:** Epoch 3 pre-planning | **Type:** Gap / Pattern
+- **Context:** Before Epoch 3 planning, the user requested a formal research phase on Neo4j development practices. This mirrors the Epoch 2 research session (2026-02-04) that grounded all five sprints. In both cases, research-first planning produced grounded, actionable plans with no mid-course design changes. The Epoch 2 retrospective explicitly noted this as a success factor.
+- **Finding:** DSM does not prescribe research as a mandatory step before planning at any scale. In practice, the most successful planning outcomes in this project followed a four-step sequence: preliminary plan (idea) -> research -> plan -> action. This pattern held across epochs (Epoch 2 research session grounded Sprints 4-8), sprints (EXP-003 grounded Sprint 6's TF-IDF implementation), and individual features (EXP-004 grounded Sprint 7's NetworkX approach). When research was skipped or implicit, the resulting plans contained assumptions that required mid-course correction.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 5 (Avg: 4.75)
+- **Reasoning:** The pattern is scale-invariant: it applies to projects, epochs, sprints, and even individual features with non-trivial technical choices. The agent should proactively suggest a research phase when it detects unresolved technical uncertainty in a planning request, rather than waiting for the user to ask. This is not about adding overhead; a research phase for a simple sprint might be a 10-minute web search, while an epoch-level research phase might be a full session. The depth scales with the uncertainty.
+- **Recommendation:** Add a "Research Gate" to the planning protocol at all scales. Before any plan document is drafted, the agent should assess whether there is unresolved technical uncertainty and, if so, suggest a research phase. The workflow becomes: Idea -> Research (if uncertainty exists) -> Plan -> Action. The research output should be a document in `docs/research/` that the plan document references. See `backlogs.md` Proposal #27.
+- **Pushed:** 2026-03-09
+
+### Entry 33: Tiered Research Pattern (Broad Landscape -> Focused Deep-Dive)
+- **Date:** 2026-03-09 | **Sprint:** Epoch 3 pre-planning | **Type:** Pattern
+- **Context:** During Epoch 3 pre-planning, two research phases emerged naturally. First, a broad landscape survey evaluated the graph database ecosystem (Neo4j, FalkorDBLite, Kuzu, Memgraph, DuckPGQ). This produced DEC-006 (FalkorDBLite selected). Second, after the decision was made, significant unknowns remained about FalkorDBLite specifically: Cypher subset coverage, persistence model, multi-graph support, Python API specifics, testing patterns. The user correctly identified that a focused deep-dive was needed before sprint planning could be actionable.
+- **Finding:** Research naturally tiers into two levels when the planning scope involves technology selection: (1) broad landscape research to inform the selection decision, and (2) focused deep-dive research on the selected option to inform implementation planning. The broad research answers "which option?" while the deep-dive answers "how does this option work in our context?" Skipping the deep-dive would produce sprint plans based on assumptions about the selected technology's capabilities, repeating the synthetic-vs-real gap pattern observed in EXP-003/003b.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.00)
+- **Reasoning:** This extends Proposal #27 (Research Gate) with a refinement: when the broad research produces a technology selection, the agent should proactively assess whether the selected option has unresolved implementation-level unknowns. If so, suggest a focused deep-dive before proceeding to sprint planning. The workflow becomes: Idea -> Broad Research (landscape) -> Decision -> Deep-Dive Research (selected option) -> Plan -> Action. This is not two mandatory research phases; it is one research gate with optional depth refinement when the first pass reveals implementation uncertainty in the chosen path.
+- **Recommendation:** Amend Proposal #27 to include tiered research: after a selection decision, the agent should assess remaining unknowns about the selected option and suggest a focused deep-dive if implementation-level uncertainty exists. See `backlogs.md` Proposal #28.
+- **Pushed:** 2026-03-09
+
 ---
 
-**Last Updated:** 2026-03-03
-**Entries So Far:** 31
-**Average Score:** 3.47
-**Pushed:** 2026-03-03 (Entry 31 pushed simultaneously with creation)
+**Last Updated:** 2026-03-09
+**Entries So Far:** 33
+**Average Score:** 3.55
+**Pushed:** 2026-03-09 (Entry 33 pushed simultaneously with creation)

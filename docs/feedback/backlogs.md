@@ -262,6 +262,34 @@
   This should be part of the standard CLAUDE.md scaffolding that `/dsm-align` or project setup generates. If no portfolio exists, the field can be omitted or set to "N/A".
 - **Evidence:** dsm-graph-explorer Sessions 19-20 (2026-03-02 to 2026-03-03). Session 19 logged "Portfolio unavailable" during ecosystem path validation. Session 20 required the user to manually provide the portfolio path. See `methodology.md` Entry 31.
 
+### Proposal #27: Research Gate Before Planning at All Scales
+- **DSM Section:** DSM 2.0 (Project Management), DSM 1.0 Section 2.2 (Research & Context Building), DSM 4.0 Section 3 (Development Protocol)
+- **Problem:** DSM prescribes research as part of the data science workflow (Section 2.2) but does not mandate it as a prerequisite for planning at every scale. In practice, the most successful plans in dsm-graph-explorer followed a four-step sequence: preliminary plan (idea) -> research -> plan -> action. This pattern was validated across:
+  - **Epoch level:** Epoch 2 research session (2026-02-04) grounded all 5 sprints with no mid-course design changes
+  - **Sprint level:** EXP-003 threshold tuning grounded Sprint 6's TF-IDF implementation
+  - **Feature level:** EXP-004 performance benchmarks grounded Sprint 7's NetworkX approach
+  - **Epoch 3 pre-planning:** Neo4j landscape research (2026-03-09) revealed that Neo4j has no embedded Python mode, Kuzu was archived, and FalkorDBLite is a viable alternative, fundamentally changing the planned architecture
+  When research was skipped, plans contained assumptions that required mid-course correction.
+- **Proposed Solution:** Add a "Research Gate" to the DSM planning protocol:
+  1. When the agent receives a planning request (epoch plan, sprint plan, feature design), it first assesses whether there is unresolved technical uncertainty
+  2. If uncertainty exists, the agent suggests a research phase before drafting the plan, explaining what questions need answering
+  3. The research output is a document in `docs/research/` that the plan document explicitly references
+  4. The depth of research scales with uncertainty: a simple sprint might need 10 minutes of web search; an epoch-level technology choice might need a full research session
+  5. The workflow at every scale becomes: **Idea -> Research (if uncertainty) -> Plan -> Action**
+  This should be added to DSM 2.0 (planning protocols) and referenced from DSM 4.0 Section 3 (development protocol). The agent should proactively suggest research rather than waiting for the user to request it.
+- **Evidence:** dsm-graph-explorer Epochs 2-3 (2026-02-04 to 2026-03-09). Epoch 2 retrospective explicitly noted research-first planning as a top success factor. Epoch 3 pre-planning research changed the technology direction before any code was written. See `methodology.md` Entry 32.
+
+### Proposal #28: Tiered Research (Amend #27 with Broad -> Deep-Dive Pattern)
+- **DSM Section:** DSM 2.0 (Project Management), DSM 1.0 Section 2.2 (Research & Context Building)
+- **Problem:** Proposal #27 established the Research Gate (Idea -> Research -> Plan -> Action). In practice, technology selection decisions naturally produce two tiers of uncertainty: (1) "which option?" (landscape-level) and (2) "how does the selected option work in our context?" (implementation-level). A single research pass resolves the first but often leaves the second unaddressed, producing sprint plans based on assumptions about the selected technology's capabilities.
+- **Proposed Solution:** Amend the Research Gate protocol to include tiered research:
+  1. **Broad research** (landscape): Evaluate options, compare trade-offs, produce a selection decision (e.g., DEC-006)
+  2. **Assessment gate:** After the decision, the agent assesses whether the selected option has unresolved implementation-level unknowns (API specifics, feature coverage, persistence model, testing patterns, compatibility with project data model)
+  3. **Deep-dive research** (if uncertainty exists): Focused investigation of the selected option targeting the specific unknowns identified in the assessment gate
+  4. **Plan:** Sprint/epoch plan grounded in both research tiers
+  This is not two mandatory research phases; it is one gate with optional depth refinement. Simple decisions (well-known technology, clear documentation) skip the deep-dive. Complex decisions (new/unfamiliar technology, unclear feature coverage) benefit from it.
+- **Evidence:** dsm-graph-explorer Epoch 3 pre-planning (2026-03-09). Broad research evaluated 7 graph databases, produced DEC-006 (FalkorDBLite). Post-decision, 7 significant unknowns remained: Cypher subset, persistence model, multi-graph support, Python API, data model compatibility, testing patterns, known limitations. Sprint planning without resolving these would produce speculative task breakdowns. See `methodology.md` Entry 33.
+
 ---
 
 ## Low Priority
@@ -270,6 +298,6 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-03-03
-**Total Proposals:** 26
-**Pushed:** 2026-03-03 (Proposal #26 pushed simultaneously with creation)
+**Last Updated:** 2026-03-09
+**Total Proposals:** 28
+**Pushed:** 2026-03-09 (Proposal #28 pushed simultaneously with creation)
