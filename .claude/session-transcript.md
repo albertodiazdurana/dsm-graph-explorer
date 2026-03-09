@@ -1,247 +1,49 @@
-# Session 19 Transcript
-**Started:** 2026-03-02T09:33:39+01:00
+# Session 23 Transcript
+**Started:** 2026-03-09T03:02:17-03:00
 **Project:** DSM Graph Explorer
 
 ---
-**User:** /dsm-go (session start)
 
-<------------Start Thinking / 09:33------------>
+### Turn 1: Session Start (/dsm-go)
 
-Session 19 startup. Last session was 18 (2026-02-28, governance session).
+**Thinking:** Full /dsm-go protocol. Safety gate caught lightweight attempt (no `mode: light` in baseline). Fell back to full start. Project type: Application (DSM 4.0). No ecosystem registry. Inbox empty. No handoffs to consume. Checkpoint from Session 22 consumed and moved to done/. DSM version v1.3.58 (no version mismatch check possible, no prior version recorded in handoff). Previous transcript archived to 2026-03-09T20:00-ST.md. STAA not recommended.
 
-**Project type:** Application (src/, tests/, no notebooks/), DSM 4.0 Track.
+**Key context from checkpoint:**
+- Priority 1: FalkorDBLite deep-dive research
+- Priority 2: Epoch 3 plan
+- Priority 3: Epoch 4 roadmap sketch
 
-**Ecosystem paths:** No `.claude/dsm-ecosystem.md` found. Using fallback: dsm-central from @ reference (`~/dsm-agentic-ai-data-science-methodology/`). Portfolio unavailable.
+**Output:** Session report delivered. Awaiting user direction.
 
-**Inbox check:** `_inbox/` is empty (only README.md + done/). No pending items.
+### Turn 2: Commit Session 22 artifacts + start deep-dive
 
-**DSM version:** v1.3.52, same as last session (18). No changes.
+**Thinking:** User wants to commit and push Session 22's uncommitted work first, then start FalkorDBLite deep-dive. Let me gather git info for the commit.
 
-**Handoffs:** No unconsumed handoffs.
+**Action:** Committed Session 22 artifacts (ee575ab) and pushed. 9 files, 1496 insertions.
 
-**Checkpoint:** Read `2026-02-28_sprint7-complete_checkpoint.md`. Sprint 7 fully complete, all deliverables checked off. Next steps: Sprint 8 convention linting.
+Now starting FalkorDBLite deep-dive research. Need to investigate:
+1. Cypher subset support
+2. Persistence model
+3. Multi-graph support
+4. Python API (creation, queries, lifecycle)
+5. Data model compatibility with our Document/Section/Reference nodes
+6. Testing patterns for pytest
+7. Known limitations vs Neo4j
 
-**Archived transcript:** Session 18 transcript archived to `.claude/transcripts/2026-02-28T20:11-ST.md`. No STAA recommendation detected in previous transcript.
+Will use web research to gather specifics from FalkorDB docs and GitHub.
 
-**Uncommitted changes:**
-- `.claude/settings.local.json` modified
-- 3 experiment files deleted (`experiments/exp003_*.py`, `experiments/exp003b_*.csv`), leftover from migration to `data/experiments/`
+**Research complete.** Key findings from FalkorDBLite deep-dive:
 
-**Bandwidth:** ~10 MiB today (light session start).
+1. **Installation:** `pip install falkordblite`, Python 3.12+ ONLY (critical: our project uses 3.10)
+2. **API:** `from redislite.falkordb_client import FalkorDB`, select_graph(), query(), ro_query(), parameterized queries
+3. **Cypher:** Comprehensive subset (CREATE, MATCH, MERGE, OPTIONAL MATCH, UNWIND, variable-length paths, indexes, constraints, FOREACH, subqueries). Missing: label expressions, regex operator, multi-statement transactions, APOC, UDFs
+4. **Persistence:** File-based RDB snapshots. Data survives restarts when file path provided. In-memory during operation.
+5. **Multi-graph:** Fully supported via select_graph('name'). Graphs are isolated. No cross-graph queries.
+6. **Limitations:** Python 3.12+ only, no Windows (WSL2 required), in-memory only (RAM-bound), Beta status, single-threaded writes
+7. **Testing:** tmp_path fixtures, per-test graph names for isolation, g.delete() for cleanup
 
-**Pending from MEMORY.md:**
-1. Sprint 8: Convention linting (--lint flag, 6 checks: E001-E003, W001-W003)
-2. Epoch 4 roadmap: LLM second-pass (deferred)
+**CRITICAL FINDING:** Python 3.12+ requirement conflicts with our Python 3.10 stack. Need to address in Epoch 3 plan.
 
-<------------End Thinking------------>
+Now writing the deep-dive document.
 
-**User:** let's continue where we left
-
-<------------Start Thinking / 09:35------------>
-
-User wants to continue development. From MEMORY.md, the next item is Sprint 8: Convention linting (--lint flag, 6 checks: E001-E003, W001-W003). Sprint 7 boundary checklist was completed in Session 18, so we're clear to start Sprint 8.
-
-Let me read the epoch-2-plan to understand Sprint 8 scope and requirements before proposing a plan.
-
-<------------End Thinking------------>
-
-
-<------------Start Thinking / 09:36------------>
-
-Read epoch-2-plan Sprint 8 section and the full spec from `_inbox/done/2026-02-09_dsm-central-feedback-convention-linting.md`.
-
-Sprint 8 scope is well-defined:
-- 6 lint checks: E001 (emoji), E002 (TOC), E003 (mojibake), W001 (em-dash), W002 (CRLF), W003 (backlog metadata)
-- New `src/linter/` module with LintResult dataclass
-- `--lint` CLI flag, runs independently from cross-ref validation
-- Reuses existing file collection/filtering
-- TDD: one check at a time with tests
-
-No `src/linter/` exists yet, this is greenfield work within the existing project structure.
-
-Implementation order from spec:
-1. Module structure + LintResult dataclass
-2. E001 (emoji) + tests
-3. E002 (TOC) + tests
-4. W001 (em-dash) + tests
-5. W002 (CRLF) + tests
-6. E003 (mojibake) + tests
-7. W003 (backlog metadata) + tests
-8. CLI integration (--lint flag)
-9. Config section for lint rule overrides
-10. README update
-
-This is a multi-phase sprint. Following the three-gate model (Entry 29): present concept first, then implementation details per file, then run.
-
-<------------End Thinking------------>
-
-**User:** yes (approve Sprint 8 start)
-
-<------------Start Thinking / 09:38------------>
-
-User approved starting Sprint 8. Following the spec's implementation order (TDD):
-
-1. Create `src/linter/` module structure with `LintResult` dataclass
-2. E001 (emoji) + tests
-3. E002 (TOC) + tests
-4. W001 (em-dash) + tests
-5. W002 (CRLF) + tests
-6. E003 (mojibake) + tests
-7. W003 (backlog metadata) + tests
-8. CLI integration (--lint flag)
-9. Config section for lint rule overrides
-10. README update
-
-Session Delivery Budget check: ~10 files (6 check modules + dataclass + reporter + CLI update + tests + config + README). That's at the upper edge. Let me split this into phases:
-- Phase 8.1: Module structure + LintResult + first 3 checks (E001, E002, W001) + tests
-- Phase 8.2: Remaining checks (W002, E003, W003) + tests
-- Phase 8.3: CLI integration + config + README
-
-Actually, following the file creation loop: one file at a time with approval. Let me estimate file count:
-- src/linter/__init__.py (trivial)
-- src/linter/models.py (LintResult dataclass)
-- src/linter/checks.py (all 6 checks in one module, or per-check submodules)
-- src/linter/lint_reporter.py
-- tests/test_linter.py
-- CLI update (existing file edit)
-- Config update (existing file edit)
-- README update (existing file edit)
-
-That's ~5 new files + 3 edits = 8 artifacts. Right at the budget edge. Let me read existing patterns to inform architecture.
-
-<------------End Thinking------------>
-
-
-<------------Start Thinking / 09:39------------>
-
-Reviewed existing patterns:
-- `ValidationResult` dataclass: severity, source_file, line, ref_type, target, message, context
-- `Severity` enum: ERROR, WARNING, INFO
-- `Config` Pydantic model in config_loader.py
-- `report_generator.py`: print_rich_report + generate_markdown_report
-- `cli.py`: collect_markdown_files, filter_files, pipeline wiring
-
-For the linter, the spec says:
-- New `LintResult` dataclass with: file, line, column, rule, severity, message, context
-- Separate from ValidationResult (different pipeline)
-- Reuse `Severity` from validator (same enum)
-
-Architecture decision: the spec says "per-check submodules" but also mentions "src/linter/" generally. Given the checks are small (each ~10-20 lines), I'll put all checks in a single `checks.py` module rather than 6 separate files. Each check is a function that returns `list[LintResult]`. This keeps the file count reasonable.
-
-File plan:
-1. `src/linter/__init__.py` (trivial, exports)
-2. `src/linter/models.py` (LintResult dataclass, LintRule enum)
-3. `src/linter/checks.py` (6 check functions)
-4. `src/linter/lint_reporter.py` (Rich + markdown output)
-5. `tests/test_linter.py` (tests for all checks)
-6. Edit: `src/cli.py` (add --lint flag)
-7. Edit: `src/config/config_loader.py` (add lint config section)
-8. Edit: `README.md` (document lint mode)
-
-That's 5 new files + 3 edits = 8 artifacts. Within session budget.
-
-First artifact: `src/linter/__init__.py` + `src/linter/models.py` (module structure + LintResult).
-
-Following the file creation loop: describe first, wait for Y/N.
-
-<------------End Thinking------------>
-
-**User:** y (approve __init__.py)
-
-<------------Start Thinking / 09:40------------>
-
-User approved Gate 1 for `src/linter/__init__.py`. Creating the trivial init file. It will export the public API once the other modules exist. For now, just a docstring and placeholder.
-
-<------------End Thinking------------>
-
-**User:** y (approve models.py)
-
-<------------Start Thinking / 09:41------------>
-
-Gate 1 approved for models.py. Creating the file now (Gate 2).
-
-Design:
-- LintRule enum with 6 members, each storing code + description
-- LintResult dataclass with 7 fields
-- DEFAULT_SEVERITY dict mapping rule -> Severity
-- Import Severity from validator (reuse, no duplication)
-
-<------------End Thinking------------>
-
-**User:** /dsm-light-wrap-up (session ending, work continues)
-
-<------------Start Thinking / 09:43------------>
-
-User wants a lightweight wrap-up. Sprint 8 work has just started: __init__.py and models.py created, checks.py was approved at Gate 1 but not yet written. Need to preserve state for continuation.
-
-Steps:
-1. Minimal MEMORY.md update
-2. Minimal checkpoint
-3. Baseline mode marker
-4. Git commit + push
-
-<------------End Thinking------------>
-
-
-**Output:** Lightweight wrap-up complete. Committed 8aba07b, pushed. Checkpoint created, baseline marked as light mode. Next session: /dsm-light-go to continue Sprint 8 checks.py.
-
-
----
-
-## Session 20 (lightweight continuation)
-**Started:** 2026-03-03
-**Previous session artifacts:**
-- Checkpoint: 2026-03-03_sprint8-started_checkpoint.md
-- MEMORY.md updated: yes
-
-**Context loaded:**
-- MEMORY.md (latest)
-- Checkpoint: 2026-03-03_sprint8-started_checkpoint.md
-
----
-
----
-
-## Session 21 (lightweight continuation)
-**Started:** 2026-03-03
-**Previous session artifacts:**
-- Checkpoint: 2026-03-03_sprint8-complete_checkpoint.md
-- MEMORY.md updated: yes (Session 20)
-
-**Context loaded:**
-- MEMORY.md (latest)
-- Checkpoint: 2026-03-03_sprint8-complete_checkpoint.md
-
----
-
-**User:** Continue where we left. Make sure to append to the session-transcript this time.
-
-<------------Start Thinking / Session 21------------>
-
-Resuming from checkpoint. Two main blocks of work:
-1. Sprint 8 boundary checklist (journal, epoch-2-plan tasks, README footer)
-2. Epoch 2 boundary (retrospective, blog materials, epoch-2-plan marked complete)
-
-Need to read: epoch-2-plan, journal, README, blog materials to understand current state.
-
-<------------End Thinking / Session 21------------>
-
-<------------Start Output / Session 21------------>
-
-**Sprint 8 journal entry** added to docs/blog/epoch-2/journal.md.
-Covers: 6 convention checks, 47 new tests, transcript bug, aha moments, metrics, blog material threads.
-
-<------------End Output / Session 21------------>
-
-<------------Start Output / Session 21------------>
-
-**epoch-2-plan.md** updated: Sprint 8 deliverables/boundary checked, status → COMPLETE (2026-03-03), all sprint headers marked ✅.
-**README.md** updated: status → "Epoch 2 Complete," feedback counts → 31 entries / 26 proposals.
-
-<------------End Output / Session 21------------>
-
-<------------Start Output / Session 21------------>
-
-**Epoch 2 retrospective** added to journal.md. Covers: delivery table (5 sprints, 181 tests added), what went well (5 items), what could improve (4 items), key themes (4), deferred items (7), and epoch narrative arc (productionization).
-
-<------------End Output / Session 21------------>
+**Output:** Deep-dive document written to `docs/research/epoch-3-falkordblite-deep-dive.md` (10 sections, ~300 lines). Key finding: Python 3.12+ requirement is a blocker, mitigated by Option B (optional dependency with version gate, same pattern as scikit-learn/networkx). Data model is fully compatible. Cypher subset is sufficient for all planned queries.
