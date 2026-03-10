@@ -1,9 +1,9 @@
 [project]
 name = "dsm-graph-explorer"
-version = "0.2.0"
+version = "0.3.0"
 description = "Repository integrity validator and graph explorer for DSM methodology"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [
     { name = "Alberto Diaz Durana", email = "alberto@example.com" }
@@ -13,8 +13,6 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Documentation",
 ]
@@ -37,11 +35,13 @@ semantic = [
     "scikit-learn>=1.3.0",  # TF-IDF (Sprint 6)
 ]
 graph = [
-    "networkx>=3.2.0",      # Graph analysis (Sprint 7)
+    "networkx>=3.2.0",      # In-memory graph compilation (Sprint 7)
+    "falkordblite>=0.9",    # Persistent graph storage (Sprint 9)
 ]
 all = [
     "scikit-learn>=1.3.0",
     "networkx>=3.2.0",
+    "falkordblite>=0.9",
 ]
 
 [project.scripts]
@@ -72,7 +72,7 @@ addopts = [
 
 [tool.black]
 line-length = 88
-target-version = ['py310', 'py311', 'py312']
+target-version = ['py312']
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -86,7 +86,7 @@ exclude = '''
 
 [tool.ruff]
 line-length = 88
-target-version = "py310"
+target-version = "py312"
 select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
