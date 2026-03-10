@@ -1,49 +1,153 @@
-# Session 23 Transcript
-**Started:** 2026-03-09T03:02:17-03:00
+# Session 24 Transcript
+**Started:** 2026-03-10T14:20:30-03:00
 **Project:** DSM Graph Explorer
 
 ---
 
-### Turn 1: Session Start (/dsm-go)
+## Turn 1: Python 3.12 upgrade assessment + Epoch 3 plan direction
 
-**Thinking:** Full /dsm-go protocol. Safety gate caught lightweight attempt (no `mode: light` in baseline). Fell back to full start. Project type: Application (DSM 4.0). No ecosystem registry. Inbox empty. No handoffs to consume. Checkpoint from Session 22 consumed and moved to done/. DSM version v1.3.58 (no version mismatch check possible, no prior version recorded in handoff). Previous transcript archived to 2026-03-09T20:00-ST.md. STAA not recommended.
+User is inclined to upgrade Python to 3.12 to use FalkorDBLite natively. Evaluating this vs optional dependency gate.
 
-**Key context from checkpoint:**
-- Priority 1: FalkorDBLite deep-dive research
-- Priority 2: Epoch 3 plan
-- Priority 3: Epoch 4 roadmap sketch
+Key considerations:
+- FalkorDB is the core feature of Epoch 3, not an optional enhancement (unlike sklearn/networkx which are truly optional)
+- Making it optional would undermine epoch goals
+- Python 3.10 EOL: October 2026 - upgrade is timely
+- Python 3.12 stable since Oct 2023
+- Our stack (Click, Rich, Pydantic, PyYAML) all support 3.12
+- CI (GitHub Actions) trivially supports 3.12 via python-version matrix
+- One pyproject.toml change + CI yaml change covers the upgrade
+- Risk: low - no breaking changes between 3.10 and 3.12 that affect our codebase
 
-**Output:** Session report delivered. Awaiting user direction.
+Recommendation: upgrade to 3.12. Record as ADR (DEC-007).
 
-### Turn 2: Commit Session 22 artifacts + start deep-dive
+## Turn 2: Executing - DEC-007 + Epoch 3 plan
 
-**Thinking:** User wants to commit and push Session 22's uncommitted work first, then start FalkorDBLite deep-dive. Let me gather git info for the commit.
+Steps:
+1. Read existing ADR format + epoch-2 plan for structure reference
+2. Create DEC-007 (Python 3.12 upgrade)
+3. Draft Epoch 3 plan (FalkorDBLite, git-ref temporal, entity inventory, cross-repo edges, BL-156)
 
-**Action:** Committed Session 22 artifacts (ee575ab) and pushed. 9 files, 1496 insertions.
+Reading reference files first.
 
-Now starting FalkorDBLite deep-dive research. Need to investigate:
-1. Cypher subset support
-2. Persistence model
-3. Multi-graph support
-4. Python API (creation, queries, lifecycle)
-5. Data model compatibility with our Document/Section/Reference nodes
-6. Testing patterns for pytest
-7. Known limitations vs Neo4j
+## Turn 2 Output
 
-Will use web research to gather specifics from FalkorDB docs and GitHub.
+Created two artifacts:
+1. `docs/decisions/DEC-007-python-312-upgrade.md` - ADR for Python 3.12 upgrade
+2. `docs/plans/epoch-3-plan.md` - 4-sprint Epoch 3 roadmap
 
-**Research complete.** Key findings from FalkorDBLite deep-dive:
+DEC-007: documents decision to upgrade (not optional gate), covers 5 pyproject.toml changes, zero CI changes (already 3.12), risks table.
 
-1. **Installation:** `pip install falkordblite`, Python 3.12+ ONLY (critical: our project uses 3.10)
-2. **API:** `from redislite.falkordb_client import FalkorDB`, select_graph(), query(), ro_query(), parameterized queries
-3. **Cypher:** Comprehensive subset (CREATE, MATCH, MERGE, OPTIONAL MATCH, UNWIND, variable-length paths, indexes, constraints, FOREACH, subqueries). Missing: label expressions, regex operator, multi-statement transactions, APOC, UDFs
-4. **Persistence:** File-based RDB snapshots. Data survives restarts when file path provided. In-memory during operation.
-5. **Multi-graph:** Fully supported via select_graph('name'). Graphs are isolated. No cross-graph queries.
-6. **Limitations:** Python 3.12+ only, no Windows (WSL2 required), in-memory only (RAM-bound), Beta status, single-threaded writes
-7. **Testing:** tmp_path fixtures, per-test graph names for isolation, g.delete() for cleanup
+Epoch 3 Plan:
+- Sprint 9: Foundation (Python 3.12 upgrade + EXP-005 + graph_store.py + --graph-db CLI)
+- Sprint 10: Git-ref temporal (--git-ref, git_resolver.py subprocess-based, --graph-diff)
+- Sprint 11: Entity inventory (dsm-entity-inventory.yml spec, --inventory, --export-inventory)
+- Sprint 12: Cross-repo edges + BL-156 (bridge graph, --compare-repo, --drift-report)
 
-**CRITICAL FINDING:** Python 3.12+ requirement conflicts with our Python 3.10 stack. Need to address in Epoch 3 plan.
+## Turn 3: Sprint 9 execution begins
 
-Now writing the deep-dive document.
+User said "ready". Starting Phase 9.0: Python 3.12 upgrade.
+Step 1: Check Python version available in environment.
+Step 2: Update pyproject.toml (6 changes).
+Step 3: Run pytest to verify zero regressions.
+Step 4: Commit.
 
-**Output:** Deep-dive document written to `docs/research/epoch-3-falkordblite-deep-dive.md` (10 sections, ~300 lines). Key finding: Python 3.12+ requirement is a blocker, mitigated by Option B (optional dependency with version gate, same pattern as scikit-learn/networkx). Data model is fully compatible. Cypher subset is sufficient for all planned queries.
+## Turn 3 Output
+
+Phase 9.0 complete:
+- Python 3.12.13 installed via deadsnakes PPA (user ran sudo commands)
+- Venv recreated with python3.12 -m venv .venv
+- pyproject.toml: 6 changes (requires-python, version 0.3.0, classifiers, falkordblite added, black/ruff target-version)
+- 331 tests passed, 96% coverage, zero regressions on 3.12
+- Committed: b891182
+
+Phase 9.0 gate: PASSED. Ready for Phase 9.1 (EXP-005).
+
+## Turn 4: Phase 9.1 EXP-005
+
+Creating experiment directory and script.
+Steps:
+1. Install falkordblite (was added to pyproject.toml after venv creation)
+2. Create data/experiments/EXP-005-falkordb-integration/ directory + experiment script
+3. Run experiment against EXP-005 test matrix
+4. Document results
+
+Checking falkordblite install status first.
+
+## Turn 4/5 Output: EXP-005
+
+16/16 checks passed. Notable findings:
+- Import path confirmed: `redislite.falkordb_client` (not `falkordblite`)
+- Subprocess startup + full graph write: 0.119s (well under 2s target)
+- Persistence via del + reopen works correctly in same process (simulated restart)
+- Multi-graph isolation: confirmed, list_graphs() returns both
+- Parameterized ro_query: correct
+- CONTAINS and REFERENCES traversals: correct
+- Index creation: CREATE INDEX FOR (...) ON (...) syntax confirmed
+
+Gate: GO for Phase 9.2 (graph_store.py).
+Committed: 5e03a96
+
+## Turn 6: Experiment structure audit + DSM Central feedback
+
+User raised that experiments need: justification (why), expected results, validation, references.
+Steps:
+1. Read all 5 experiment files to assess structure
+2. Identify gaps per file
+3. Create DSM Central feedback (methodology.md + backlogs.md + _inbox)
+
+## Turn 7: Online research - experiment documentation structure
+
+User wants to validate the four-element framework (justification, expected results, validation, references)
+against established practices. Launching research agent to survey:
+- Scientific method / hypothesis-driven development
+- ML experiment tracking standards (MLflow, DVC, W&B)
+- Software engineering experiment frameworks
+- Reproducibility research (FAIR principles, ACM reproducibility)
+- Data science methodology standards (CRISP-DM, etc.)
+
+## Turn 7 Output: Experiment documentation research + feedback
+
+Research findings:
+- Four-element structure is well-grounded; main strength vs ML tools (MLflow/W&B/Neptune/DVC)
+  is capturing justification and expected results — elements those tools entirely omit
+- Three critical gaps identified consistently across all 6 frameworks:
+  1. No Success Criteria element (GQM, NeurIPS, HDD kill metrics)
+  2. No Environment/Setup (most commonly missing per 2024 reproducibility survey)
+  3. Decision/Conclusion not a named element (HDD pivot/persevere, Wohlin result presentation)
+- Proposed seven-element revised structure
+- EXP-005 assessed: 5/7 elements strong, missing Environment section and "because" in hypotheses
+
+Artifacts created:
+- docs/research/experiment-documentation-standards.md
+- methodology.md Entry 34 (5.00 avg)
+- backlogs.md Proposal #29
+- DSM Central inbox: 2026-03-10_dsm-graph-explorer-experiment-template.md
+- Committed: 048dfc1
+
+Backfill recommendation: do NOT backfill EXP-003/004 (decisions already made). Apply
+seven-element structure to EXP-006 onwards.
+
+## Turn 8: Context assessment
+
+20% context remaining. Assessing realistic scope for remainder of session.
+
+## Turn 9: Phase 9.2 - graph_store.py
+
+Reading existing graph module before writing.
+
+## Turn 9 Output: Phase 9.2 complete
+
+graph_store.py:
+- GraphStore class: write_graph, ro_query, query, graph_exists, list_graphs, close, _create_indexes
+- Import guard: FALKORDB_AVAILABLE (same pattern as networkx/sklearn)
+- git_ref property on all nodes (Sprint 10 temporal foundation)
+- Idempotent write: delete + recreate on double-write
+
+tests/test_graph_store.py:
+- 18 tests, session-scoped FalkorDB fixture, UUID graph names, g.delete() teardown
+- Coverage: availability flag, lifecycle, graph_exists, node counts, properties, traversal,
+  idempotent write, multi-graph isolation, list_graphs, import guard monkeypatch
+
+349 total tests, 95% coverage. Committed: 9f3b6d9.
+
+Phase 9.2 gate: PASSED. Phase 9.3 (CLI --graph-db) deferred to Session 25.
