@@ -1,0 +1,26 @@
+EXP-005: FalkorDBLite Integration Validation
+==============================================================
+Python:  3.12.13
+Package: falkordblite 0.9.0
+
+Passed: 16   Failed: 0   Total: 16
+
+Results:
+  [PASS] Import from redislite.falkordb_client  (import path confirmed)
+  [PASS] Create graph with DSM nodes and edges (<2s)  (0.119s)
+  [PASS] Document node count correct  (3/3)
+  [PASS] Section node count correct  (5/5)
+  [PASS] CONTAINS edge count correct  (5/5)
+  [PASS] Document nodes survive reload  (3/3)
+  [PASS] Section nodes survive reload  (5/5)
+  [PASS] CONTAINS edges survive reload  (5/5)
+  [PASS] Spoke graph contains only its own documents  (1 doc(s) in spoke (expected 1))
+  [PASS] Hub graph unaffected by spoke writes  (3 doc(s) in hub (expected 3))
+  [PASS] Both graphs visible in list_graphs()  (graphs: ['dsm_central', 'dsm_spoke'])
+  [PASS] Parameterized ro_query returns correct results  (got ['DSM_1.0.md', 'DSM_2.0.md', 'DSM_4.0.md'])
+  [PASS] CONTAINS traversal returns correct sections for DSM_4.0.md  (sections: ['Software Engineering Adaptation', 'Test-Driven Development'])
+  [PASS] REFERENCES edges traversable  (2 reference edge(s) (expected 2))
+  [PASS] CREATE INDEX FOR (d:Document) ON (d.path)
+  [PASS] CREATE INDEX FOR (s:Section) ON (s.heading)
+
+Gate: GO for Phase 9.2 (graph_store.py implementation).
