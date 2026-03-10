@@ -290,6 +290,25 @@
   This is not two mandatory research phases; it is one gate with optional depth refinement. Simple decisions (well-known technology, clear documentation) skip the deep-dive. Complex decisions (new/unfamiliar technology, unclear feature coverage) benefit from it.
 - **Evidence:** dsm-graph-explorer Epoch 3 pre-planning (2026-03-09). Broad research evaluated 7 graph databases, produced DEC-006 (FalkorDBLite). Post-decision, 7 significant unknowns remained: Cypher subset, persistence model, multi-graph support, Python API, data model compatibility, testing patterns, known limitations. Sprint planning without resolving these would produce speculative task breakdowns. See `methodology.md` Entry 33.
 
+### Proposal #29: Standard Experiment Documentation Template (Seven Elements)
+- **DSM Section:** DSM 4.0 Section 4 (Tests vs Capability Experiments), DSM 1.0 Section 2.2 (Research & Context Building)
+- **Problem:** DSM 4.0 Section 4 distinguishes tests from capability experiments but does not prescribe the internal documentation structure of an experiment. In practice (five experiments across this project), experiments were written with varying levels of rigor: some had justification but no success criteria; some had results but no explicit decision; none documented their execution environment. An online research session validated the proposed four-element structure (Justification, Expected Results, Validation, References) against six frameworks and identified three gaps present in every framework surveyed: no Success Criteria element, no Environment/Setup element, and no named Decision/Conclusion element. See `docs/research/experiment-documentation-standards.md` and `methodology.md` Entry 34.
+- **Proposed Solution:** Define a seven-element experiment documentation template for DSM 4.0 Section 4:
+
+  | # | Element | When | Description |
+  |---|---------|------|-------------|
+  | 1 | **Justification** | Pre-run | Why this experiment is needed; name the specific decision or gate it unlocks (ADR number, sprint phase) |
+  | 2 | **Hypothesis** | Pre-run | The testable claim: "If [X], then [Y], because [Z]." Include the expected failure mode |
+  | 3 | **Success Criteria** | Pre-run | What is measured, how it is measured, and the explicit pass/fail threshold per criterion |
+  | 4 | **Environment** | Pre-run | Python version, key library versions, OS/hardware, random seeds, configuration flags |
+  | 5 | **Results** | Post-run | Raw outcomes per criterion (actual values, not yet interpreted) |
+  | 6 | **Decision** | Post-run | Pass / Fail / Inconclusive; explicit "expected X, observed Y, conclusion Z" per criterion; gate outcome (GO / NO-GO) |
+  | 7 | **References** | Both | Backward: ADRs, plan sections, inbox entries, prior experiments. Forward: which decision this fed (added post-decision) |
+
+  **Minimal variant** for lighter experiments: keep the four-element structure but add mandatory sub-elements: (a) pass/fail threshold as a required sub-element of "Expected Results," (b) gate outcome (GO/NO-GO) as a required sub-element of "Validation."
+
+- **Evidence:** EXP-003 through EXP-005 in dsm-graph-explorer (2026-02-23 to 2026-03-10). Validated against: scientific method, Wohlin et al. "Experimentation in Software Engineering" (Springer 2024), GQM (Basili, UMD), FAIR principles (Nature 2016), NeurIPS reproducibility checklist, arXiv 2406.14325 (2024 ML reproducibility survey), Hypothesis-Driven Development (Cowan, IBM Garage, IEEE 2019). Full research: `docs/research/experiment-documentation-standards.md`. See `methodology.md` Entry 34.
+
 ---
 
 ## Low Priority
@@ -298,6 +317,6 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-03-09
-**Total Proposals:** 28
-**Pushed:** 2026-03-09 (Proposal #28 pushed simultaneously with creation)
+**Last Updated:** 2026-03-10
+**Total Proposals:** 29
+**Pushed:** 2026-03-10 (Proposal #29 pushed simultaneously with creation)

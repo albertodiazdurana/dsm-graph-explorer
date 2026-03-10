@@ -380,9 +380,18 @@
 - **Recommendation:** Amend Proposal #27 to include tiered research: after a selection decision, the agent should assess remaining unknowns about the selected option and suggest a focused deep-dive if implementation-level uncertainty exists. See `backlogs.md` Proposal #28.
 - **Pushed:** 2026-03-09
 
+### Entry 34: Experiment Documentation Has Four Elements Right But Three Critical Gaps
+- **Date:** 2026-03-10 | **Sprint:** Sprint 9, Phase 9.1 | **Type:** Gap / Pattern (research-validated)
+- **Context:** During Session 24, the user requested a review of the four-element experiment documentation structure (Justification, Expected Results, Validation, References) used in this project. An online research session validated this structure against six independent frameworks: scientific method, ML tracking tools (MLflow, W&B, Neptune, DVC), Wohlin et al. "Experimentation in Software Engineering," GQM, reproducibility standards (FAIR, NeurIPS checklist, arXiv 2406.14325), and Hypothesis-Driven Development (Cowan, IBM Garage, IEEE 2019). Full research at `docs/research/experiment-documentation-standards.md`.
+- **Finding:** The four-element structure is well-grounded: all major frameworks require justification, hypothesis, validation, and references. Its main contribution relative to mainstream ML tooling (MLflow, W&B, Neptune, DVC) is capturing justification and expected results, elements those tools entirely omit. However, three gaps were identified consistently across all six frameworks: (1) no explicit Success Criteria element — every framework distinguishes "what I predict" from "what threshold constitutes pass/fail and how I will measure it"; (2) no Environment/Setup documentation — identified by the 2024 reproducibility survey as the most commonly missing element in ML experiments; (3) Decision/Conclusion is not a named element — HDD and Wohlin both require separating the gate decision from the raw comparison, enabling experiment lists to be audited at a glance. A fourth lower-severity gap: no Learning/Insight capture (what was discovered beyond pass/fail), which HDD and the scientific method both identify as distinct from the comparison step.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.00)
+- **Reasoning:** The gaps are consistent across frameworks with different purposes (academic, industrial, reproducibility, DevOps). This convergence confirms they are genuine structural needs. The Success Criteria gap is highest impact: without explicit pass/fail thresholds documented before running, experiments are vulnerable to post-hoc rationalization. The Environment gap is most common in practice. The Decision gap is most impactful for auditability: a gate experiment without a named Decision element requires reading the full narrative to determine whether the gate passed. A seven-element revised structure is proposed: Justification, Hypothesis, Success Criteria, Environment, Results, Decision, References. As a minimal alternative, the existing four elements are kept but strengthened with mandatory sub-elements: pass/fail threshold in "Expected Results," gate outcome (GO/NO-GO) in "Validation."
+- **Recommendation:** Adopt the seven-element structure for EXP-006 onwards. Do not backfill EXP-003/004 (decisions already made; retroactive documentation adds little value relative to effort). See `backlogs.md` Proposal #29 and `docs/research/experiment-documentation-standards.md`.
+- **Pushed:** 2026-03-10
+
 ---
 
-**Last Updated:** 2026-03-09
-**Entries So Far:** 33
-**Average Score:** 3.55
-**Pushed:** 2026-03-09 (Entry 33 pushed simultaneously with creation)
+**Last Updated:** 2026-03-10
+**Entries So Far:** 34
+**Average Score:** 3.61
+**Pushed:** 2026-03-10 (Entry 34 pushed simultaneously with creation)
