@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
-**Version:** 0.2.0
-**Status:** Epoch 2 Complete (5 sprints delivered)
+**Version:** 0.3.0
+**Status:** Epoch 3 in progress (Sprint 9 complete, Sprint 10 next)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
 
@@ -68,10 +68,19 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - Rich console output and markdown report (`--lint -o report.md`)
 - `--strict` support: exit code 1 if any ERROR-level lint findings
 
+**Implemented (Sprint 9 — FalkorDBLite Integration):**
+- FalkorDBLite persistence layer (`--graph-db PATH`) for storing reference graphs to disk
+- Cache-aware rebuilds: skip persistence if graph already exists, force with `--rebuild`
+- GraphStore API: write_graph, graph_exists, ro_query, Cypher query wrappers
+- Schema: Document and Section nodes with CONTAINS and REFERENCES edges, git_ref on all nodes
+- Python 3.12+ upgrade (DEC-007) to support FalkorDBLite dependency
+- EXP-005: 16/16 FalkorDB API validation checks passed
+- Graceful fallback: `--graph-db` without falkordblite prints a clear error and exits with code 2
+
 **Future (Epoch 3+):**
-- Neo4j graph database integration
+- Git-ref temporal compilation (`--git-ref`, graph diffing across commits)
 - Cypher query library for navigation
-- Web visualization using Neo4j Browser
+- Bridge graph for cross-repo references
 - spaCy NER for advanced reference extraction
 - LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
 
@@ -99,12 +108,14 @@ dsm-graph-explorer/
 │   ├── test_reporter.py  # Reporter + integration tests
 │   ├── test_cli.py       # CLI tests
 │   ├── test_cli_semantic.py # Semantic CLI integration tests
-│   ├── test_cli_graph.py # Graph CLI integration tests
-│   ├── test_config.py    # Config loader tests
+│   ├── test_cli_graph.py    # Graph CLI integration tests
+│   ├── test_cli_graph_db.py # Graph DB CLI integration tests
+│   ├── test_config.py       # Config loader tests
 │   ├── test_filter.py    # File filter tests
 │   ├── test_semantic.py  # TF-IDF similarity tests
-│   ├── test_graph.py     # Graph builder and query tests
-│   ├── test_linter.py    # Convention linting tests
+│   ├── test_graph.py        # Graph builder and query tests
+│   ├── test_graph_store.py  # FalkorDBLite persistence tests
+│   ├── test_linter.py       # Convention linting tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
 ├── _inbox/               # Hub-spoke communication
@@ -126,7 +137,7 @@ dsm-graph-explorer/
 
 ## Requirements
 
-- Python 3.10+ (developed on 3.10, tested on 3.12)
+- Python 3.12+ (required for FalkorDBLite support)
 - Git (for repository operations)
 - Linux/WSL2 (recommended) or macOS/Windows
 
@@ -148,9 +159,15 @@ pip install -e ".[dev]"
 
 # Optional: install semantic validation support
 pip install -e ".[dev,semantic]"
+
+# Optional: install graph database support (networkx + falkordblite)
+pip install -e ".[dev,graph]"
+
+# Install everything
+pip install -e ".[dev,all]"
 ```
 
-**Note:** Development is done on Linux (WSL2). Python 3.10+ required.
+**Note:** Development is done on Linux (WSL2). Python 3.12+ required.
 
 ---
 
@@ -196,6 +213,12 @@ dsm-validate /path/to/dsm-repo --lint
 # Lint with strict mode and markdown output
 dsm-validate /path/to/dsm-repo --lint --strict --output lint-report.md
 
+# Persist reference graph to FalkorDBLite (requires falkordblite)
+dsm-validate /path/to/dsm-repo --graph-db /path/to/db.falkordb
+
+# Force rebuild of cached graph
+dsm-validate /path/to/dsm-repo --graph-db /path/to/db.falkordb --rebuild
+
 # Combine semantic with other options
 dsm-validate /path/to/dsm-repo --semantic --strict --output report.md
 ```
@@ -240,7 +263,7 @@ This project is built using the [Agentic AI Data Science Methodology (DSM)](http
 
 The three-file feedback system (`docs/feedback/`) tracks methodology effectiveness as the project progresses, generating actionable improvements back into the DSM itself.
 
-For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (completed) and [epoch-2-plan.md](docs/plans/epoch-2-plan.md) (in progress) in this repository.
+For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), [epoch-2-plan.md](docs/plans/epoch-2-plan.md) (complete), and [epoch-3-plan.md](docs/plans/epoch-3-plan.md) (in progress) in this repository.
 
 ---
 
@@ -271,6 +294,16 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (completed) 
   - `src/linter/checks.py`: 6 checks (E001-E003, W001-W003) + `run_all_checks` orchestrator
   - `src/linter/lint_reporter.py`: Rich console + markdown report output
   - CLI `--lint` flag, config `lint:` section with per-rule severity overrides
+
+### Epoch 3: Graph Database Integration (In Progress)
+- [x] **Sprint 9:** FalkorDBLite Integration — Python 3.12 upgrade, GraphStore persistence layer, `--graph-db`/`--rebuild` CLI flags, EXP-005 validation (355 tests, 96% coverage)
+  - Phase 9.0: Python 3.12 upgrade (DEC-007)
+  - Phase 9.1: EXP-005 FalkorDBLite API validation (16/16 checks)
+  - Phase 9.2: `src/graph/graph_store.py` persistence layer (18 tests)
+  - Phase 9.3: CLI `--graph-db` integration (6 tests)
+- [ ] **Sprint 10:** Git-Ref Temporal Compilation (`--git-ref`, `git_resolver.py`, `graph_diff.py`, EXP-006)
+- [ ] **Sprint 11:** Bridge Graph (cross-repo reference edges)
+- [ ] **Sprint 12:** Cypher Query Library
 
 ---
 
@@ -305,7 +338,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-03-03
-**Current Status:** Epoch 2 complete (5 sprints delivered: exclusion, CI, semantic, graph, linting)
-**Tests:** 331 passed, 96% coverage
-**DSM Feedback:** 31 methodology entries, 26 improvement proposals
+**Last Updated:** 2026-03-11
+**Current Status:** Epoch 3 in progress (Sprint 9 complete: FalkorDBLite integration)
+**Tests:** 355 passed, 96% coverage
+**DSM Feedback:** 36 methodology entries, 31 improvement proposals
