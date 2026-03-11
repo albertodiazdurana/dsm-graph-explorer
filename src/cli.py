@@ -18,6 +18,8 @@ from linter.models import LintRule
 from parser.cross_ref_extractor import extract_cross_references
 from parser.markdown_parser import parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
+from graph.graph_store import FALKORDB_AVAILABLE
+from graph.graph_store import FALKORDB_AVAILABLE
 from semantic.similarity import SKLEARN_AVAILABLE, SemanticResult
 from validator.cross_ref_validator import (
     Severity,
@@ -121,6 +123,19 @@ def collect_markdown_files(
     default=False,
     help="Run convention linting checks (emoji, TOC, mojibake, em-dash, CRLF, backlog metadata).",
 )
+@click.option(
+    "--graph-db",
+    "graph_db_path",
+    type=click.Path(),
+    default=None,
+    help="Persist reference graph to a FalkorDB database file.",
+)
+@click.option(
+    "--rebuild",
+    is_flag=True,
+    default=False,
+    help="Force graph rebuild even if cached (requires --graph-db).",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -133,6 +148,8 @@ def main(
     graph_export_path: str | None,
     graph_stats: bool,
     lint: bool,
+    graph_db_path: str | None,
+    rebuild: bool,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -331,12 +348,21 @@ def main(
     click.echo(f"\n{' '.join(summary_parts)}")
 
     # Graph operations (opt-in)
-    if graph_export_path or graph_stats:
+    if graph_export_path or graph_stats or graph_db_path:
+        # Check falkordblite availability early if --graph-db requested
+        if graph_db_path and not FALKORDB_AVAILABLE:
+            click.echo(
+                "Error: --graph-db requires falkordblite. "
+                "Install with: pip install dsm-graph-explorer[graph]",
+                err=True,
+            )
+            sys.exit(2)
+
         try:
             import networkx as nx  # noqa: F401
         except ImportError:
             click.echo(
-                "Error: --graph-export/--graph-stats require networkx. "
+                "Error: --graph-export/--graph-stats/--graph-db require networkx. "
                 "Install with: pip install dsm-graph-explorer[graph]",
                 err=True,
             )
@@ -378,6 +404,27 @@ def main(
         if graph_export_path:
             export_graphml(G, graph_export_path)
             click.echo(f"Graph exported to {graph_export_path}")
+
+        # Persist to FalkorDB (opt-in via --graph-db)
+        if graph_db_path:
+            from graph.graph_store import GraphStore
+
+            graph_name = base_path.name
+            store = GraphStore(graph_db_path)
+            try:
+                if store.graph_exists(graph_name) and not rebuild:
+                    click.echo(
+                        f"Using cached graph '{graph_name}' "
+                        f"from {graph_db_path}"
+                    )
+                else:
+                    store.write_graph(G, graph_name=graph_name)
+                    click.echo(
+                        f"Graph persisted to {graph_db_path} "
+                        f"(graph: '{graph_name}')"
+                    )
+            finally:
+                store.close()
 
     # Write markdown report if requested
     if output:

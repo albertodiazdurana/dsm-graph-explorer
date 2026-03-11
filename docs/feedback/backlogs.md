@@ -309,6 +309,46 @@
 
 - **Evidence:** EXP-003 through EXP-005 in dsm-graph-explorer (2026-02-23 to 2026-03-10). Validated against: scientific method, Wohlin et al. "Experimentation in Software Engineering" (Springer 2024), GQM (Basili, UMD), FAIR principles (Nature 2016), NeurIPS reproducibility checklist, arXiv 2406.14325 (2024 ML reproducibility survey), Hypothesis-Driven Development (Cowan, IBM Garage, IEEE 2019). Full research: `docs/research/experiment-documentation-standards.md`. See `methodology.md` Entry 34.
 
+### Proposal #30: "Challenge Myself to Reason" — Composition Challenge for Multi-Item Artifacts
+- **DSM Section:** DSM_0.2 (Custom Instructions / Pre-Generation Brief Protocol), DSM 4.0 Section 3 (Development Protocol)
+- **Problem:** The Pre-Generation Brief Protocol asks for What/Why/Key Decisions/Structure before generating artifacts. For single-item artifacts, this is sufficient. For multi-item artifacts (test suites, module files with multiple functions, multi-section documents), the protocol does not prompt either party to challenge the *composition*: why these N items, not more or fewer? In practice, the agent lists items and describes each one, but the collection as a whole goes unquestioned unless the human intervenes with ad-hoc challenges. This creates two problems: (1) the agent may include redundant items or miss important ones without detecting it; (2) the human must invent their own challenge questions rather than reviewing against a structured format.
+- **Proposed Solution:** Add a "Composition Challenge" step to the Pre-Generation Brief, triggered when the artifact contains multiple items. The step uses an operational adaptation of Sinek's Golden Circle model (Why/What/How), extended with a "When" dimension for sequencing:
+
+  | Dimension | Question | Value |
+  |-----------|----------|-------|
+  | **Why** | What requirement or goal does this collection serve? | Establishes purpose; prevents misaligned items |
+  | **What** | Index of all items (high-level, no explanations) | Enables quick completeness review |
+  | **Why not more or less** | Trace each item to a requirement; identify excluded candidates and reason for exclusion | Catches redundancy and gaps |
+  | **How** | Key decisions, structure, execution approach | Supports standardization and error-proofing |
+  | **When** | Is this the right next step in the sequence? | Catches ordering errors |
+
+  The principle is named **"Challenge Myself to Reason"** and applies collaboratively: the agent uses it to proactively self-challenge before presenting, and the structured format gives the human a clear review framework to validate and approve against. Both parties reason through the same dimensions, replacing ad-hoc questioning with systematic review.
+
+  **Trigger:** Multi-item artifacts only (3+ items). Single-item artifacts retain the existing single-sentence brief.
+
+  **Not a replacement:** This enhances the existing What/Why/Key Decisions/Structure format by adding composition-level reasoning. The existing brief handles artifact-level context; the Composition Challenge handles item-level completeness.
+
+- **Evidence:** dsm-graph-explorer Session 25 (2026-03-11), Sprint 9 Phase 9.3. Agent proposed 6 tests for `--graph-db` CLI integration. Presented per-test descriptions but did not justify the collection. User challenged: "why these 6?" then "why not more or less?" Agent's post-challenge reasoning was sound (traced to 5 checkpoint requirements + 1 real-data concern, identified 5 excluded candidates with reasons). The gap: this reasoning happened reactively after two user prompts, not proactively as part of the brief. See `methodology.md` Entry 35.
+
+### Proposal #31: Edit Explanation Stop Protocol — Intra-File Approval Gates
+- **DSM Section:** DSM_0.2 (Custom Instructions / Collaboration Protocol), DSM 4.0 Section 3 (Development Protocol)
+- **Problem:** The file-by-file collaboration protocol (Proposal #15) and the Three-Gate Model (Proposal #24) define approval gates at the artifact level (before creating a file) and the phase level (concept → implementation → run). Neither addresses the intra-file edit level. When an implementation involves multiple distinct edits, the agent explains all edits and executes them in a single turn. The human sees explanation and diff simultaneously, with no opportunity to ask questions or redirect between edits. This is especially problematic for large edits or edits that involve non-trivial design choices embedded in the code.
+- **Proposed Solution:** Add an **Edit Explanation Stop Protocol** to the collaboration workflow. For each distinct edit during implementation:
+
+  1. **Explain:** Agent describes the edit in plain words: what it does, where it goes (file + location), and why (connection to current task). The explanation should be readable by someone who has not seen the code, not just "Added N lines."
+  2. **Stop:** Agent stops and waits for human response.
+  3. **Approve:** Human reads the explanation, asks questions if needed, approves.
+  4. **Execute:** Agent performs the edit. Human reviews the resulting diff.
+
+  **Grouping rule:** Trivial edits (fixing a typo, adding a single import, updating a version number) may be grouped and explained together. Distinct edits (different logical changes, different locations in the file, different design decisions) get separate cycles.
+
+  **Relationship to existing protocols:**
+  - Extends Proposal #24 (Three-Gate Model) to a finer granularity within the implementation gate
+  - Complements Proposal #30 ("Challenge Myself to Reason"): the explanation pause is the moment where both parties reason about correctness
+  - Replaces the implicit "approve the whole batch" pattern with explicit per-edit approval
+
+- **Evidence:** dsm-graph-explorer Session 25 (2026-03-11), Sprint 9 Phase 9.3. Agent explained a multi-part edit to `cli.py` (expanding a guard condition, adding a dependency check, adding a persistence block) and attempted to execute all three in a single turn. User rejected the edit, noting that the explanation should have been a stopping point: "Stop after each explanation → I read, understand, ask questions, approve → continue → Edit." The agent had to re-approach the implementation one edit at a time. See `methodology.md` Entry 36.
+
 ---
 
 ## Low Priority
@@ -317,6 +357,6 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-03-10
-**Total Proposals:** 29
-**Pushed:** 2026-03-10 (Proposal #29 pushed simultaneously with creation)
+**Last Updated:** 2026-03-11
+**Total Proposals:** 31
+**Pushed:** 2026-03-11 (Proposal #31 pushed simultaneously with creation)

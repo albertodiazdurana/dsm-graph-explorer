@@ -1,3 +1,5 @@
+**Consumed at:** Session 25 start (2026-03-11)
+
 # Checkpoint: Session 24 — Sprint 9 Phases 9.0-9.2
 
 **Date:** 2026-03-10
