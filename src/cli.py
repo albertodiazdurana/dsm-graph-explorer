@@ -19,7 +19,6 @@ from parser.cross_ref_extractor import extract_cross_references
 from parser.markdown_parser import parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
 from graph.graph_store import FALKORDB_AVAILABLE
-from graph.graph_store import FALKORDB_AVAILABLE
 from semantic.similarity import SKLEARN_AVAILABLE, SemanticResult
 from validator.cross_ref_validator import (
     Severity,
