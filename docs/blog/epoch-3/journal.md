@@ -159,4 +159,55 @@
 
 ---
 
+## Session: 2026-03-12 — Sprint 11: Entity Inventory
+
+### What Happened
+
+1. **Phase 11.1: Inventory Spec and Parser** — Defined the `dsm-entity-inventory.yml` schema as Pydantic models: `Entity` (id, type, path, heading, level, stable), `RepoInfo` (name, type, url), and `EntityInventory` (version, repo, entities). Built `src/inventory/inventory_parser.py` with `load_inventory()` for parsing and `discover_inventory()` for automatic detection of inventory files at repo roots. 33 tests with YAML fixture files.
+
+2. **Phase 11.2: Cross-Repo Reference Resolution** — Extended the cross-reference validator to accept optional `EntityInventory` objects from external repos. When a reference cannot be resolved locally, the validator checks external inventories and classifies matches as EXTERNAL (distinct from UNKNOWN). Added `--inventory PATH` CLI option (repeatable) to load external inventories. Updated the reporter to show EXTERNAL references with their source inventory. 17 tests.
+
+3. **Phase 11.3: Inventory Export** — Added `--export-inventory PATH` CLI option that scans the current repo and generates a `dsm-entity-inventory.yml`. Type heuristics classify headings as sections, protocols, or backlog items based on pattern matching (e.g., "Sprint Boundary Checklist" → protocol, "BL-156" → backlog-item). 19 tests.
+
+4. **DSM Feedback** — Entries 38-39 (epoch plan update gap, alignment review gap) with Proposals #33-34. Both pushed to DSM Central inbox. CLAUDE.md Sprint Boundary Checklist updated with 6th item (epoch plan).
+
+### Aha Moments
+
+1. **Entity inventories as the bridge abstraction** — The inventory format is the key enabler for Sprint 12's cross-repo edges. By defining a machine-readable manifest per repository, cross-repo references become inventory lookups rather than file system traversals. The format is deliberately additive: Sprint 12 adds cross-repo edge types without changing the per-repo schema. This is the same strategy as database migrations: the schema evolves, but existing data remains valid.
+
+2. **EXTERNAL vs UNKNOWN as a classification insight** — Before entity inventories, unresolved references were binary: found or not found. With inventories, "not found locally" splits into two cases: found in an external inventory (EXTERNAL, expected) or not found anywhere (UNKNOWN, likely broken). This three-state model (LOCAL, EXTERNAL, UNKNOWN) gives users actionable information: EXTERNAL references are correct cross-repo links, not errors to fix.
+
+3. **Type heuristics for export** — Generating an inventory from scratch requires classifying sections by type (section, protocol, backlog-item). Rather than requiring manual tagging, pattern matching on heading text provides reasonable defaults: numbered sections are "section," known protocol names are "protocol," "BL-" prefixes are "backlog-item." The heuristics are imperfect but produce a usable first draft that users can refine.
+
+4. **Checklist-driven process gaps compound** — Entries 37-39 all follow the same pattern: if a step is not in the checklist, it does not happen. Sprint boundary gate (Entry 37), epoch plan update (Entry 38), alignment review (Entry 39). Three process gaps discovered in one session, all with the same root cause. The checklist is not just a convenience; it is the behavioral specification for the agent.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| New source files | 2 (`inventory_parser.py`, `inventory/__init__.py`) |
+| Modified source files | 3 (`cli.py`, `cross_ref_validator.py`, `reporter.py`) |
+| New test files | 1 (`test_inventory.py`) |
+| Tests added | 69 (33 parser + 17 resolution + 19 export) |
+| Total tests | 471 |
+| Coverage | 95% |
+| DSM feedback entries | 2 (Entries 38-39) |
+| DSM backlog proposals | 2 (Proposals 33-34) |
+| Sessions | 1 (Session 29) |
+
+### Blog Material
+
+**Sprint 11 narrative threads:**
+- Entity inventories as a federation pattern: how per-repo manifests enable multi-repo graph queries without centralized indexing
+- The LOCAL/EXTERNAL/UNKNOWN classification: turning binary validation into actionable cross-repo intelligence
+- Type heuristics: generating machine-readable manifests from human-authored markdown
+- Checklist as behavioral specification: why three process gaps shared one root cause
+
+**Title options for Sprint 11 blog:**
+1. "From Validation to Federation: Entity Inventories for Multi-Repo Documentation Graphs"
+2. "Three States of a Cross-Reference: LOCAL, EXTERNAL, and UNKNOWN"
+3. "When Your Checklist IS Your Specification: Process Gaps That Compound"
+
+---
+
 **Last Updated:** 2026-03-12

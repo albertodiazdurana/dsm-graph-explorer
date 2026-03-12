@@ -101,6 +101,7 @@ Wait for approval before generating. Trivial artifacts (`.gitkeep`, minor config
   - [ ] Blog journal entry written (`docs/blog/<epoch>/journal.md`)
   - [ ] Repository README updated (status, results, structure)
   - [ ] Epoch plan updated (completed tasks checked off, sprint status updated)
+  - [ ] Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)
 - At phase boundaries (intra-sprint): update blog materials if insights worth sharing
 
 ## Blog Integration

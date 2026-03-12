@@ -404,6 +404,35 @@
 
 - **Evidence:** dsm-graph-explorer Session 29 (2026-03-12). Agent updated epoch-3-plan.md (Sprint 9+10 checkboxes). User requested explicit alignment review and confirmation. Several deviations from original plan existed (find_repo_root() not planned, content-based parser variants not planned, CLI version bump). Without the review, these would have gone unnoticed. See `methodology.md` Entry 39.
 
+### Proposal #35: Hub/Portfolio Notification in Sprint Boundary Checklist
+- **DSM Section:** DSM 2.0 Template 8 (Sprint Boundary Checklist), DSM_0.2 (Custom Instructions / CLAUDE.md)
+- **Problem:** The Sprint Boundary Checklist (6 items after Proposal #33) is entirely project-local. No item notifies hub projects (DSM Central, portfolio) that a spoke sprint completed. Hub projects only learn about spoke progress through indirect channels: feedback entries (methodology observations, not status signals) or manual README inspection. The `_inbox/` mechanism exists in both DSM Central and the portfolio for exactly this kind of cross-repo notification, but the boundary checklist does not invoke it. As a result, the portfolio's project status and DSM Central's ecosystem awareness are always stale.
+- **Proposed Solution:** Add a 7th item to the Sprint Boundary Checklist:
+
+  ```
+  - [ ] Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)
+  ```
+
+  At sprint wrap-up, the agent writes a brief notification file to each target's `_inbox/`:
+
+  ```markdown
+  # Sprint Completion: [Project Name] Sprint N
+  **Date:** YYYY-MM-DD
+  **Project:** [project name]
+  **Sprint:** N — [sprint title]
+  **Key deliverables:** [1-3 bullet points]
+  **Tests:** N passed, N% coverage
+  **Status:** [what's next]
+  ```
+
+  This is a push notification, not a pull mechanism. The hub processes its `_inbox/` at session start (per DSM_0.2 inbox protocol) and updates its awareness without polling spoke repositories.
+
+  **Notification targets:**
+  - DSM Central `_inbox/`: methodology ecosystem awareness
+  - Portfolio `_inbox/`: project status tracking
+
+- **Evidence:** dsm-graph-explorer Session 30 (2026-03-12). User asked "when do we inform central DSM and ds-portfolio about the sprint's boundary checklist completion?" during Sprint 11 boundary. Investigation confirmed no existing checklist item triggers hub/portfolio notification. See `methodology.md` Entry 40.
+
 ---
 
 ## Low Priority
@@ -413,5 +442,5 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-03-12
-**Total Proposals:** 34
-**Pushed:** 2026-03-12 (Proposal #34 pushed simultaneously with creation)
+**Total Proposals:** 35
+**Pushed:** 2026-03-12 (Proposal #35 pushed simultaneously with creation)

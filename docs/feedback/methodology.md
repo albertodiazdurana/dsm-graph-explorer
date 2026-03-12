@@ -434,9 +434,18 @@
 - **Recommendation:** Add an "Alignment Review" step to the sprint transition protocol, after the plan update and before starting new sprint work. The agent presents: (1) what was completed, (2) deviations from the original plan, (3) scope additions not in the plan, (4) current state of epoch progress, (5) next sprint scope for confirmation. User confirms before proceeding. See `backlogs.md` Proposal #34.
 - **Pushed:** 2026-03-12
 
+### Entry 40: Sprint Boundary Checklist Missing Hub/Portfolio Notification
+- **Date:** 2026-03-12 | **Sprint:** Sprint 11 (boundary) | **Type:** Gap / Process
+- **Context:** During Session 30, while running the Sprint 11 boundary checklist, the user asked: "when do we inform central DSM and ds-portfolio about the sprint's boundary checklist completion?" The checklist had 6 items (checkpoint, feedback, decisions, journal, README, epoch plan), all project-local. No item triggers a notification to hub projects (DSM Central) or the portfolio. Individual feedback entries are pushed atomically as they are created during the sprint, but these are methodology observations, not sprint completion signals. The hub and portfolio have `_inbox/` folders specifically designed for cross-repo notifications, yet no checklist item uses them for sprint status.
+- **Finding:** The Sprint Boundary Checklist treats sprint completion as a project-internal event. Hub projects (DSM Central, portfolio) only learn about spoke sprint completions through two indirect channels: (1) feedback entries pushed during the sprint (methodology observations, not status), and (2) manual inspection of the spoke's README. Neither channel provides a structured "Sprint N complete" signal. This means the portfolio's project status page and DSM Central's ecosystem awareness are always stale unless manually updated. The `_inbox/` mechanism was designed precisely for this kind of cross-repo notification, but the boundary checklist does not invoke it.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 4 (Avg: 4.50)
+- **Reasoning:** The DSM ecosystem has three notification targets (DSM Central, portfolio, local feedback). The boundary checklist updates local feedback but does not notify the other two targets about the sprint's completion. This is the same structural pattern as Entries 37-38: if a step is not in the checklist, it does not happen. The cost is one brief notification file per target per sprint. The value is that hub projects can track spoke progress without polling.
+- **Recommendation:** Add a 7th item to the Sprint Boundary Checklist: "Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)." The notification should be a brief structured file (project name, sprint number, key deliverables, test count) dropped into each target's `_inbox/`. See `backlogs.md` Proposal #35.
+- **Pushed:** 2026-03-12
+
 ---
 
 **Last Updated:** 2026-03-12
-**Entries So Far:** 39
-**Average Score:** 3.73
-**Pushed:** 2026-03-12 (Entry 39 pushed simultaneously with creation)
+**Entries So Far:** 40
+**Average Score:** 3.75
+**Pushed:** 2026-03-12 (Entry 40 pushed simultaneously with creation)

@@ -1,3 +1,5 @@
+**Consumed at:** Session 30 start (2026-03-12)
+
 # Session 29 Lightweight Checkpoint
 
 **Date:** 2026-03-12

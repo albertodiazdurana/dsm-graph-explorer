@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.3.0
-**Status:** Epoch 3 in progress (Sprint 10 complete, Sprint 11 next)
+**Status:** Epoch 3 in progress (Sprint 11 complete, Sprint 12 next)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
 
@@ -85,8 +85,14 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - Rich console output for structural diff (added/removed/modified nodes and edges)
 - EXP-006: 19/19 git-ref temporal accuracy checks passed
 
+**Implemented (Sprint 11 — Entity Inventory):**
+- Entity inventory spec (`dsm-entity-inventory.yml`) with Pydantic models (Entity, RepoInfo, EntityInventory)
+- Inventory parser: `load_inventory()`, `discover_inventory()` for automatic detection
+- Cross-repo reference resolution via `--inventory PATH` (external repo inventories)
+- EXTERNAL classification for references resolved via inventory (distinct from UNKNOWN)
+- Inventory export (`--export-inventory PATH`) with type heuristics for sections, protocols, and backlog items
+
 **Future (Epoch 3+):**
-- Entity inventory (`--inventory`, `--export-inventory`)
 - Cross-repo reference edges and drift reports
 - Cypher query library for navigation
 - spaCy NER for advanced reference extraction
@@ -110,6 +116,7 @@ dsm-graph-explorer/
 │   ├── semantic/         # TF-IDF similarity (Sprint 6)
 │   ├── graph/            # Graph builder, queries, export, diff (Sprint 7, 10)
 │   ├── git_ref/          # Git-ref resolver for temporal compilation (Sprint 10)
+│   ├── inventory/        # Entity inventory parser and export (Sprint 11)
 │   └── linter/           # Convention linting checks (Sprint 8)
 ├── tests/
 │   ├── test_parser.py    # Parser module tests
@@ -127,6 +134,7 @@ dsm-graph-explorer/
 │   ├── test_graph_diff.py   # Graph diff tests
 │   ├── test_git_resolver.py # Git-ref resolver tests
 │   ├── test_cli_git_ref.py  # Git-ref CLI integration tests
+│   ├── test_inventory.py      # Entity inventory tests
 │   ├── test_linter.py       # Convention linting tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
@@ -323,7 +331,10 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
   - Phase 10.0: EXP-006 git-ref temporal accuracy (19/19 checks)
   - Phase 10.1: `src/git_ref/git_resolver.py` + content-based parser variants (35 tests)
   - Phase 10.2: `src/graph/graph_diff.py` + CLI `--graph-diff` (12 tests)
-- [ ] **Sprint 11:** Entity Inventory (`dsm-entity-inventory.yml`, `--inventory`, `--export-inventory`)
+- [x] **Sprint 11:** Entity Inventory — Pydantic models, `--inventory` for cross-repo resolution, `--export-inventory` for manifest generation, EXTERNAL classification (471 tests, 95% coverage)
+  - Phase 11.1: Inventory spec and parser (`src/inventory/inventory_parser.py`, Pydantic models, 33 tests)
+  - Phase 11.2: Cross-repo reference resolution (`--inventory PATH`, EXTERNAL classification, 17 tests)
+  - Phase 11.3: Inventory export (`--export-inventory PATH`, type heuristics, 19 tests)
 - [ ] **Sprint 12:** Cross-Repo Edges + BL-156 (`--compare-repo`, `--drift-report`)
 
 ---
@@ -360,6 +371,6 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 ---
 
 **Last Updated:** 2026-03-12
-**Current Status:** Epoch 3 in progress (Sprint 10 complete: git-ref temporal compilation)
-**Tests:** 402 passed, 95% coverage
-**DSM Feedback:** 37 methodology entries, 32 improvement proposals
+**Current Status:** Epoch 3 in progress (Sprint 11 complete: entity inventory)
+**Tests:** 471 passed, 95% coverage
+**DSM Feedback:** 40 methodology entries, 35 improvement proposals

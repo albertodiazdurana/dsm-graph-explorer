@@ -169,3 +169,41 @@ All 6 boundary items addressed. Sprint 10 is now properly closed.
 **Thinking:** Need export_inventory function + --export-inventory CLI option. Function takes parsed documents, produces EntityInventory. Heuristics for entity type: headings matching "Sprint Boundary Checklist" etc → protocol, "BL-###" → backlog-item, default → section. TDD: tests first. I'll put the export function in inventory_parser.py (keeps the module cohesive) and add tests to test_inventory.py.
 
 **Output:** Phase 11.3 complete. Added export_inventory() with heuristic type classification (section/protocol/backlog-item), --export-inventory CLI option, YAML output with round-trip validation. 14 export unit tests + 5 CLI export tests. Full suite: 471 tests, 95% coverage. Sprint 11 all three phases complete.
+
+---
+
+## Session 30 (lightweight continuation)
+**Started:** 2026-03-12T13:35:08-03:00
+**Previous session artifacts:**
+- Checkpoint: session-29-light-checkpoint.md
+- MEMORY.md updated: yes (Session 29)
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: session-29-light-checkpoint.md
+
+---
+
+### Turn: Sprint 11 Boundary Checklist
+**Thinking:** User wants the full Sprint Boundary Checklist (DSM 2.0 Template 8) for Sprint 11 before moving to Sprint 12. Six items: checkpoint, feedback, decisions, journal, README, epoch plan. Need to read current state of each artifact to know what's already done vs what's needed.
+
+### Action: Epoch plan Sprint 11 checkboxes
+**What:** Check off all Sprint 11 tasks in epoch-3-plan.md, update status to COMPLETE, update MoSCoW/success/deliverable checkboxes, update plan status line.
+
+### Action: README update for Sprint 11
+**What:** Update status line, add Sprint 11 feature section, check off Sprint 11, update footer metrics.
+
+### Turn: When to notify DSM Central and portfolio about boundary checklist
+**Thinking:** User is asking about the notification protocol. The three-file atomic feedback system pushes to DSM Central inbox. But the boundary checklist itself (checkpoint, journal, README, epoch plan) is project-local. The question is: should DSM Central and the portfolio be notified that a sprint boundary was completed? Currently, feedback entries are pushed individually as they're created (Entry 38-39 already pushed). But there's no "sprint X complete" notification to hub/portfolio. Let me check if there's an existing protocol for this.
+
+### Turn: Add hub/portfolio notification as 7th checklist item + feedback
+**Thinking:** User wants (1) a 7th item in the Sprint Boundary Checklist in CLAUDE.md, (2) a methodology entry (Entry 40) documenting the gap, (3) a backlog proposal (#35), and (4) three-file atomic push to DSM Central inbox. Need to read CLAUDE.md checklist location, then write Entry 40 + Proposal #35, then push to DSM Central. Follow Edit Explanation Stop Protocol: explain each edit, stop, approve, execute.
+
+### Action: CLAUDE.md 7th checklist item + Entry 40 / Proposal #35 + DSM Central push
+**What:** Add hub/portfolio notification to Sprint Boundary Checklist, write feedback entry and proposal, push to DSM Central inbox.
+
+### Action: Blog journal entry for Sprint 11
+**What:** Append Sprint 11 session entry to epoch-3/journal.md (What Happened, Aha Moments, Metrics, Blog Material).
+
+### Action: Sprint 11 completion checkpoint
+**What:** Create docs/checkpoints/epoch-3/2026-03-12_sprint-11-complete.md

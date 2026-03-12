@@ -42,7 +42,7 @@ upgrade to enable it was decided in DEC-007.
 - [x] FalkorDBLite integration: persistent graph store (Sprint 9)
 - [x] EXP-005: validate FalkorDBLite with existing graph data (Sprint 9)
 - [x] Git-ref temporal compilation: `--git-ref` flag (Sprint 10)
-- [ ] Entity inventory format: per-repo referenceable entity manifest (Sprint 11)
+- [x] Entity inventory format: per-repo referenceable entity manifest (Sprint 11)
 - [ ] Cross-repo edges: typed edges for inbox, @-imports, ecosystem paths (Sprint 12)
 - [ ] BL-156: private-to-public repo mapping with drift detection (Sprint 12)
 
@@ -65,7 +65,7 @@ upgrade to enable it was decided in DEC-007.
 - [x] FalkorDBLite stores and persists the existing NetworkX graph (EXP-005)
 - [x] Graph survives CLI restarts (data persists on disk)
 - [x] `--git-ref` produces a correct historical snapshot of the graph
-- [ ] Entity inventory format is machine-readable and human-editable
+- [x] Entity inventory format is machine-readable and human-editable
 - [ ] Cross-repo node matching works via entity inventory lookup
 - [ ] BL-156: private DSM and public DSM can be modeled as separate graphs with cross-repo edges
 
@@ -77,7 +77,7 @@ upgrade to enable it was decided in DEC-007.
 
 **Deliverable:**
 - [x] Persistent graph CLI with `--graph-db PATH --git-ref REF`
-- [ ] Entity inventory spec and parser
+- [x] Entity inventory spec and parser
 - [ ] Cross-repo mapping support for DSM Central (BL-156)
 
 ---
@@ -281,11 +281,11 @@ And diffs between two stored snapshots.
 
 ### Sprint 11: Entity Inventory
 
-**Duration:** 1 session
+**Duration:** 1 session (actual: 1 session)
 **Objective:** Define and implement an entity inventory format so each repository can
 publish a machine-readable manifest of its referenceable entities, enabling cross-repo
 reference resolution.
-**Status:** PLANNED
+**Status:** COMPLETE
 
 #### Design
 
@@ -331,45 +331,45 @@ entities:
 #### Phase 11.1: Inventory Spec and Parser
 
 **Tasks:**
-1. [ ] Define final `dsm-entity-inventory.yml` schema (Pydantic model)
-2. [ ] Create `src/inventory/inventory_parser.py`:
-   - [ ] `EntityInventory` Pydantic model
-   - [ ] `Entity` model: id, type, path, heading, level, stable
-   - [ ] `load_inventory(path)` → EntityInventory
-   - [ ] `discover_inventory(repo_path)` → optional path to inventory file
-3. [ ] Write `tests/test_inventory.py` with fixture inventory files
+1. [x] Define final `dsm-entity-inventory.yml` schema (Pydantic model)
+2. [x] Create `src/inventory/inventory_parser.py`:
+   - [x] `EntityInventory` Pydantic model
+   - [x] `Entity` model: id, type, path, heading, level, stable
+   - [x] `load_inventory(path)` → EntityInventory
+   - [x] `discover_inventory(repo_path)` → optional path to inventory file
+3. [x] Write `tests/test_inventory.py` with fixture inventory files
 
 #### Phase 11.2: Cross-Repo Reference Resolution
 
 **Tasks:**
-1. [ ] Update `src/validator/cross_ref_validator.py`:
-   - [ ] Accept optional list of `EntityInventory` objects (external repos)
-   - [ ] When a reference cannot be resolved locally, check external inventories
-   - [ ] Flag: EXTERNAL (resolved via inventory) vs UNKNOWN (unresolved)
-2. [ ] Add `--inventory PATH` CLI option to load an external repo's inventory
-3. [ ] Update reporter to show EXTERNAL references distinctly
+1. [x] Update `src/validator/cross_ref_validator.py`:
+   - [x] Accept optional list of `EntityInventory` objects (external repos)
+   - [x] When a reference cannot be resolved locally, check external inventories
+   - [x] Flag: EXTERNAL (resolved via inventory) vs UNKNOWN (unresolved)
+2. [x] Add `--inventory PATH` CLI option to load an external repo's inventory
+3. [x] Update reporter to show EXTERNAL references distinctly
 
 #### Phase 11.3: Inventory Export
 
 **Tasks:**
-1. [ ] Add `--export-inventory PATH` CLI option:
-   - [ ] Scan current repo and generate a `dsm-entity-inventory.yml`
-   - [ ] Include all sections, protocols (heuristic: headings matching known patterns)
-2. [ ] Write tests for inventory export
+1. [x] Add `--export-inventory PATH` CLI option:
+   - [x] Scan current repo and generate a `dsm-entity-inventory.yml`
+   - [x] Include all sections, protocols (heuristic: headings matching known patterns)
+2. [x] Write tests for inventory export
 
 #### Sprint 11 Deliverables
 
-- [ ] `dsm-entity-inventory.yml` spec (Pydantic model)
-- [ ] `src/inventory/inventory_parser.py`
-- [ ] `--inventory PATH` CLI option for cross-repo resolution
-- [ ] `--export-inventory PATH` for inventory generation
-- [ ] EXTERNAL reference classification in reporter
+- [x] `dsm-entity-inventory.yml` spec (Pydantic model)
+- [x] `src/inventory/inventory_parser.py`
+- [x] `--inventory PATH` CLI option for cross-repo resolution
+- [x] `--export-inventory PATH` for inventory generation
+- [x] EXTERNAL reference classification in reporter
 
 **Sprint boundary checklist:**
-- [ ] Checkpoint document
-- [ ] Feedback files updated
-- [ ] Blog journal entry
-- [ ] README updated
+- [x] Checkpoint document
+- [x] Feedback files updated
+- [x] Blog journal entry
+- [x] README updated
 
 ---
 
@@ -571,7 +571,7 @@ dsm-graph-explorer/
 
 ---
 
-**Plan Status:** ACTIVE (Epoch 3, Sprints 9-10 complete, Sprint 11 starting)
+**Plan Status:** ACTIVE (Epoch 3, Sprints 9-11 complete, Sprint 12 next)
 **Last Updated:** 2026-03-12
 **Previous:** [epoch-2-plan.md](epoch-2-plan.md)
 **Research:** [epoch-3-neo4j-landscape-research.md](../research/epoch-3-neo4j-landscape-research.md), [epoch-3-falkordblite-deep-dive.md](../research/epoch-3-falkordblite-deep-dive.md)
