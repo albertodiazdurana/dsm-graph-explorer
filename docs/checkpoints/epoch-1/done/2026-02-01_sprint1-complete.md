@@ -1,3 +1,5 @@
+**Consumed at:** Session 27 start (2026-03-12)
+
 # Checkpoint: Sprint 1 Complete — Parser MVP
 
 **Date:** 2026-02-01

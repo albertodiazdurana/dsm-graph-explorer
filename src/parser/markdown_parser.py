@@ -51,11 +51,38 @@ def parse_markdown_file(
         ParsedDocument with file path and list of sections.
     """
     path = Path(path)
-    sections: list[Section] = []
 
     with path.open(encoding="utf-8") as f:
         lines = f.readlines()
 
+    return _parse_lines(lines, str(path), excerpt_words)
+
+
+def parse_markdown_content(
+    content: str, file_path: str, excerpt_words: int = _DEFAULT_EXCERPT_WORDS
+) -> ParsedDocument:
+    """Parse markdown content from a string and extract all sections.
+
+    Same logic as parse_markdown_file but accepts content directly,
+    useful when file contents come from git show rather than disk.
+
+    Args:
+        content: Markdown text content.
+        file_path: Virtual file path to store in the ParsedDocument.
+        excerpt_words: Maximum number of words for context_excerpt.
+
+    Returns:
+        ParsedDocument with file path and list of sections.
+    """
+    lines = content.splitlines(keepends=True)
+    return _parse_lines(lines, file_path, excerpt_words)
+
+
+def _parse_lines(
+    lines: list[str], file_path: str, excerpt_words: int
+) -> ParsedDocument:
+    """Core parsing logic operating on pre-read lines."""
+    sections: list[Section] = []
     heading_indices: list[tuple[int, int, str, str | None, str]] = []
 
     for idx, raw_line in enumerate(lines):
@@ -96,7 +123,7 @@ def parse_markdown_file(
             )
         )
 
-    return ParsedDocument(file=str(path), sections=sections)
+    return ParsedDocument(file=file_path, sections=sections)
 
 
 def _extract_excerpt(

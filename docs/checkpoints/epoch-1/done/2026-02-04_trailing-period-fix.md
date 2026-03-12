@@ -1,3 +1,5 @@
+**Consumed at:** Session 27 start (2026-03-12)
+
 # Checkpoint: Trailing Period Bug Fix
 
 **Date:** 2026-02-04

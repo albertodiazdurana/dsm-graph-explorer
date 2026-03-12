@@ -51,10 +51,38 @@ def extract_cross_references(
         List of CrossReference objects found in the file.
     """
     path = Path(path)
-    references: list[CrossReference] = []
 
     with path.open(encoding="utf-8") as f:
         lines = f.readlines()
+
+    return _extract_from_lines(lines, context_window)
+
+
+def extract_cross_references_from_content(
+    content: str, file_path: str, context_window: int = _DEFAULT_CONTEXT_WINDOW
+) -> list[CrossReference]:
+    """Extract cross-references from markdown content string.
+
+    Same logic as extract_cross_references but accepts content directly,
+    useful when file contents come from git show rather than disk.
+
+    Args:
+        content: Markdown text content.
+        file_path: Virtual file path (unused in extraction, kept for symmetry).
+        context_window: Number of non-blank, non-code lines to capture.
+
+    Returns:
+        List of CrossReference objects found in the content.
+    """
+    lines = content.splitlines(keepends=True)
+    return _extract_from_lines(lines, context_window)
+
+
+def _extract_from_lines(
+    lines: list[str], context_window: int
+) -> list[CrossReference]:
+    """Core extraction logic operating on pre-read lines."""
+    references: list[CrossReference] = []
 
     # Build a map of which lines are inside code blocks
     in_code_block = False

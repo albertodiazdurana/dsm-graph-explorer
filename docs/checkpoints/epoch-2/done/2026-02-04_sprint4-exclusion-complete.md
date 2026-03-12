@@ -1,3 +1,5 @@
+**Consumed at:** Session 27 start (2026-03-12)
+
 # Checkpoint: Sprint 4 Exclusion & Config Complete
 
 **Date:** 2026-02-04

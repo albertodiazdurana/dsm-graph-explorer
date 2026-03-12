@@ -1,3 +1,5 @@
+**Consumed at:** Session 27 start (2026-03-12)
+
 # Checkpoint: Sprint 3 In Progress — CLI & Real-World Run
 
 **Date:** 2026-02-02

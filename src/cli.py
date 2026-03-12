@@ -15,8 +15,11 @@ from filter.file_filter import filter_files
 from linter.checks import run_all_checks
 from linter.lint_reporter import format_lint_markdown, print_lint_results
 from linter.models import LintRule
-from parser.cross_ref_extractor import extract_cross_references
-from parser.markdown_parser import parse_markdown_file
+from parser.cross_ref_extractor import (
+    extract_cross_references,
+    extract_cross_references_from_content,
+)
+from parser.markdown_parser import parse_markdown_content, parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
 from graph.graph_store import FALKORDB_AVAILABLE
 from semantic.similarity import SKLEARN_AVAILABLE, SemanticResult
@@ -53,8 +56,84 @@ def collect_markdown_files(
     return files
 
 
+def _print_diff_report(result: "DiffResult", elapsed: float) -> None:
+    """Print a Rich-formatted graph diff report."""
+    from rich.console import Console
+    from rich.table import Table
+
+    from graph.graph_diff import DiffResult  # noqa: F811
+
+    console = Console()
+
+    if not result.has_changes:
+        console.print(
+            f"\nNo differences between {result.ref_a} and {result.ref_b} "
+            f"({elapsed:.2f}s)"
+        )
+        return
+
+    console.print(
+        f"\n[bold]Graph Diff:[/bold] {result.ref_a} → {result.ref_b} "
+        f"({elapsed:.2f}s)\n"
+    )
+
+    if result.added_files or result.removed_files:
+        table = Table(title="Files", show_lines=False)
+        table.add_column("Status", style="bold", width=8)
+        table.add_column("File")
+
+        for f in result.added_files:
+            table.add_row("[green]+added[/green]", f)
+        for f in result.removed_files:
+            table.add_row("[red]-removed[/red]", f)
+
+        console.print(table)
+        console.print()
+
+    if result.added_sections or result.removed_sections:
+        table = Table(title="Sections", show_lines=False)
+        table.add_column("Status", style="bold", width=8)
+        table.add_column("Section")
+
+        for s in result.added_sections:
+            table.add_row("[green]+added[/green]", s)
+        for s in result.removed_sections:
+            table.add_row("[red]-removed[/red]", s)
+
+        console.print(table)
+        console.print()
+
+    if result.changed:
+        table = Table(title="Changed", show_lines=False)
+        table.add_column("Node", min_width=20)
+        table.add_column("Field")
+        table.add_column("Old")
+        table.add_column("New")
+
+        for c in result.changed:
+            table.add_row(c.node_id, c.field, c.old_value, c.new_value)
+
+        console.print(table)
+        console.print()
+
+    # Summary
+    summary_parts = []
+    if result.added_files:
+        summary_parts.append(f"{len(result.added_files)} file(s) added")
+    if result.removed_files:
+        summary_parts.append(f"{len(result.removed_files)} file(s) removed")
+    if result.added_sections:
+        summary_parts.append(f"{len(result.added_sections)} section(s) added")
+    if result.removed_sections:
+        summary_parts.append(f"{len(result.removed_sections)} section(s) removed")
+    if result.changed:
+        summary_parts.append(f"{len(result.changed)} node(s) changed")
+
+    console.print(f"Summary: {', '.join(summary_parts)}")
+
+
 @click.command()
-@click.version_option(version="0.2.0", prog_name="dsm-validate")
+@click.version_option(version="0.3.0", prog_name="dsm-validate")
 @click.argument("paths", nargs=-1, type=click.Path())
 @click.option(
     "-o",
@@ -135,6 +214,19 @@ def collect_markdown_files(
     default=False,
     help="Force graph rebuild even if cached (requires --graph-db).",
 )
+@click.option(
+    "--git-ref",
+    "git_ref",
+    default=None,
+    help="Compile graph from a historical git ref (commit SHA, tag, or branch).",
+)
+@click.option(
+    "--graph-diff",
+    "graph_diff_refs",
+    nargs=2,
+    default=None,
+    help="Compare graphs at two git refs. Usage: --graph-diff REF_A REF_B",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -149,6 +241,8 @@ def main(
     lint: bool,
     graph_db_path: str | None,
     rebuild: bool,
+    git_ref: str | None,
+    graph_diff_refs: tuple[str, str] | None,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -167,6 +261,36 @@ def main(
     if not paths:
         paths = (".",)
 
+    # Graph diff mode: independent early-exit path
+    if graph_diff_refs:
+        try:
+            import networkx  # noqa: F401
+        except ImportError:
+            click.echo(
+                "Error: --graph-diff requires networkx. "
+                "Install with: pip install dsm-graph-explorer[graph]",
+                err=True,
+            )
+            sys.exit(2)
+
+        from graph.graph_diff import diff_graphs
+        from git_ref.git_resolver import GitRefError
+
+        base_path = Path(paths[0]).resolve() if paths else Path.cwd()
+        ref_a, ref_b = graph_diff_refs
+        click.echo(f"Comparing graphs: {ref_a} vs {ref_b}")
+
+        try:
+            start = time.perf_counter()
+            result = diff_graphs(base_path, ref_a, ref_b)
+            elapsed = time.perf_counter() - start
+        except GitRefError as e:
+            click.echo(f"Error: {e}", err=True)
+            sys.exit(2)
+
+        _print_diff_report(result, elapsed)
+        return
+
     # Load configuration
     try:
         base_config = load_config(
@@ -184,28 +308,86 @@ def main(
         cli_strict=strict if strict else None,
     )
 
-    # Collect files
-    try:
-        md_files = collect_markdown_files(paths, glob_pattern)
-    except click.BadParameter as e:
-        click.echo(f"Error: {e}", err=True)
-        sys.exit(2)
-
-    if not md_files:
-        click.echo("No markdown files found.", err=True)
-        sys.exit(2)
-
-    # Apply exclusion filters
     base_path = Path(paths[0]).resolve() if paths else Path.cwd()
-    original_count = len(md_files)
-    md_files = filter_files(md_files, config.exclude, base_path)
-    excluded_count = original_count - len(md_files)
 
-    if not md_files:
-        click.echo("All files excluded by patterns. Nothing to validate.", err=True)
+    # Git-ref mode: collect and parse files from a historical commit
+    git_ref_sha: str | None = None
+    git_file_contents: dict[str, str] | None = None
+    if git_ref:
+        from git_ref.git_resolver import (
+            GitRefError,
+            find_repo_root,
+            list_files_at_ref,
+            read_file_at_ref,
+            resolve_ref,
+        )
+
+        try:
+            repo_root = find_repo_root(base_path)
+            git_ref_sha = resolve_ref(repo_root, git_ref)
+            git_files = list_files_at_ref(repo_root, git_ref_sha)
+            click.echo(
+                f"Resolved --git-ref '{git_ref}' to {git_ref_sha[:12]} "
+                f"({len(git_files)} markdown file(s))"
+            )
+        except GitRefError as e:
+            click.echo(f"Error: {e}", err=True)
+            sys.exit(2)
+
+        if not git_files:
+            click.echo("No markdown files found at the given git ref.", err=True)
+            sys.exit(2)
+
+        # Apply exclusion filters to git file paths
+        original_count = len(git_files)
+        if config.exclude:
+            from filter.file_filter import should_exclude
+            git_files = [
+                f for f in git_files
+                if not should_exclude(f, config.exclude, base_path)
+            ]
+        excluded_count = original_count - len(git_files)
+
+        if not git_files:
+            click.echo("All files excluded by patterns. Nothing to validate.", err=True)
+            sys.exit(2)
+
+        # Read all file contents from git
+        git_file_contents = {}
+        for gf in git_files:
+            try:
+                git_file_contents[gf] = read_file_at_ref(repo_root, git_ref_sha, gf)
+            except GitRefError as e:
+                click.echo(f"Warning: skipping {gf}: {e}", err=True)
+
+        # Use git_files as the file list (as strings, not Paths)
+        md_files = git_files  # type: ignore[assignment]
+    else:
+        # Disk-based file collection
+        try:
+            md_files = collect_markdown_files(paths, glob_pattern)
+        except click.BadParameter as e:
+            click.echo(f"Error: {e}", err=True)
+            sys.exit(2)
+
+        if not md_files:
+            click.echo("No markdown files found.", err=True)
+            sys.exit(2)
+
+        # Apply exclusion filters
+        original_count = len(md_files)
+        md_files = filter_files(md_files, config.exclude, base_path)
+        excluded_count = original_count - len(md_files)
+
+        if not md_files:
+            click.echo("All files excluded by patterns. Nothing to validate.", err=True)
+            sys.exit(2)
+
+    # Lint mode (independent from validation pipeline, disk-only)
+    if lint and git_ref:
+        click.echo("Error: --lint cannot be combined with --git-ref.", err=True)
         sys.exit(2)
 
-    # Lint mode (independent from validation pipeline)
     if lint:
         start = time.perf_counter()
 
@@ -248,12 +430,22 @@ def main(
     documents = []
     references = {}
 
-    for f in md_files:
-        doc = parse_markdown_file(f)
-        documents.append(doc)
-        refs = extract_cross_references(f)
-        if refs:
-            references[doc.file] = refs
+    if git_file_contents is not None:
+        # Git-ref mode: parse from in-memory content
+        for file_path, content in git_file_contents.items():
+            doc = parse_markdown_content(content, file_path)
+            documents.append(doc)
+            refs = extract_cross_references_from_content(content, file_path)
+            if refs:
+                references[doc.file] = refs
+    else:
+        # Disk mode: parse from filesystem
+        for f in md_files:
+            doc = parse_markdown_file(f)
+            documents.append(doc)
+            refs = extract_cross_references(f)
+            if refs:
+                references[doc.file] = refs
 
     # Validate cross-references
     cross_ref_results = validate_cross_references(documents, references)
@@ -409,6 +601,7 @@ def main(
             from graph.graph_store import GraphStore
 
             graph_name = base_path.name
+            ref_label = git_ref_sha[:12] if git_ref_sha else "HEAD"
             store = GraphStore(graph_db_path)
             try:
                 if store.graph_exists(graph_name) and not rebuild:
@@ -417,10 +610,14 @@ def main(
                         f"from {graph_db_path}"
                     )
                 else:
-                    store.write_graph(G, graph_name=graph_name)
+                    store.write_graph(
+                        G,
+                        graph_name=graph_name,
+                        git_ref=git_ref_sha or "HEAD",
+                    )
                     click.echo(
                         f"Graph persisted to {graph_db_path} "
-                        f"(graph: '{graph_name}')"
+                        f"(graph: '{graph_name}', ref: {ref_label})"
                     )
             finally:
                 store.close()
