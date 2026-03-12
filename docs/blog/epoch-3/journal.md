@@ -110,4 +110,53 @@
 
 ---
 
-**Last Updated:** 2026-03-11
+## Session: 2026-03-12 — Sprint 10: Git-Ref Temporal Compilation
+
+### What Happened
+
+1. **Phase 10.0: EXP-006 Git-Ref Temporal Accuracy** — Pre-implementation gate experiment validating subprocess-based git commands (`rev-parse`, `ls-tree`, `show`) at historical refs. Used two refs from this repo's history: an early commit (87d869d, 12 markdown files) and HEAD (86+ files). All 19 checks passed, confirming the approach for `git_resolver.py`.
+
+2. **Phase 10.1: git_resolver.py + Content-Based Parsers** — Built `src/git_ref/git_resolver.py` with `resolve_ref()`, `list_markdown_files()`, `read_file_at_ref()`, and `find_repo_root()`. Added content-based variants to the parser (`parse_markdown_content()`, `extract_cross_references_from_content()`) so git-ref content can be parsed without writing temporary files. CLI `--git-ref REF` flag compiles and validates at any historical commit. 35 tests (28 resolver + 7 CLI).
+
+3. **Phase 10.2: graph_diff.py + CLI Integration** — Built `src/graph/graph_diff.py` with `diff_graphs()` comparing two NetworkX DiGraphs: added/removed/modified nodes and edges. `format_diff_report()` produces Rich console output. CLI `--graph-diff REF_A REF_B` compiles both refs and shows structural differences. 12 tests.
+
+4. **Ancillary fixes** — `find_repo_root()` walks up from CWD to find `.git/`, making `--git-ref` work from subdirectories. CLI version bumped from 0.2.0 to 0.3.0. Fixed `test_errors_with_strict_exits_one` to use empty config file.
+
+### Aha Moments
+
+1. **Content-based parsing avoids temp files** — The original parser functions take file paths. For git-ref content (read from `git show`), writing to temp files would add I/O overhead and cleanup complexity. Adding `parse_markdown_content()` and `extract_cross_references_from_content()` keeps the same logic but accepts strings directly. The file-based functions become thin wrappers that read the file and delegate. This is the adapter pattern applied to I/O boundaries.
+
+2. **Graph diff as in-memory comparison** — Instead of diffing Cypher query results (which would couple the diff logic to FalkorDB), the diff operates on NetworkX DiGraphs. Two refs produce two graphs; the diff compares them. This keeps the diff logic database-agnostic, meaning it works whether the user has FalkorDB installed or not. The database is for persistence and querying; the diff is a pure computation.
+
+3. **find_repo_root() for subdirectory safety** — Users may run `dsm-validate --git-ref HEAD` from a subdirectory. Without repo root resolution, `git ls-tree` would fail because relative paths don't resolve against the working directory's `.git/`. Walking up to find `.git/` is the same pattern `git` itself uses internally, and it costs one stat call per directory level.
+
+4. **Experiment as implementation blueprint** — EXP-006's 19 checks mapped almost 1:1 to `git_resolver.py`'s functions. The experiment validated the subprocess commands; the implementation wrapped them with error handling and typing. This confirms the pattern from Sprint 9 (EXP-005 → graph_store.py): experiments are not just validation, they are the implementation's first draft.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| New source files | 3 (`git_resolver.py`, `git_ref/__init__.py`, `graph_diff.py`) |
+| Modified source files | 3 (`cli.py`, `markdown_parser.py`, `cross_ref_extractor.py`) |
+| New test files | 3 (`test_git_resolver.py`, `test_cli_git_ref.py`, `test_graph_diff.py`) |
+| Tests added | 47 |
+| Total tests | 402 |
+| Coverage | 95% |
+| Experiments | 1 (EXP-006, 19/19) |
+
+### Blog Material
+
+**Sprint 10 narrative threads:**
+- Time travel for documentation: how `--git-ref` lets you validate any historical snapshot
+- Content-based parsing: the adapter pattern at I/O boundaries
+- Graph diffing without a database: why in-memory comparison beats Cypher queries for structural diff
+- Experiment-to-implementation pipeline: EXP-006 checks become git_resolver.py functions
+
+**Title options for Sprint 10 blog:**
+1. "Time-Traveling Your Documentation Graph: Git-Ref Temporal Compilation"
+2. "From Experiment to Implementation: When Your Validation Checks Become Your API"
+3. "Diffing Documentation Graphs Across Git History"
+
+---
+
+**Last Updated:** 2026-03-12

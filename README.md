@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.3.0
-**Status:** Epoch 3 in progress (Sprint 9 complete, Sprint 10 next)
+**Status:** Epoch 3 in progress (Sprint 10 complete, Sprint 11 next)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
 
@@ -77,10 +77,18 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - EXP-005: 16/16 FalkorDB API validation checks passed
 - Graceful fallback: `--graph-db` without falkordblite prints a clear error and exits with code 2
 
+**Implemented (Sprint 10 — Git-Ref Temporal Compilation):**
+- Git-ref resolver (`--git-ref REF`) for validating and building graphs at any historical commit
+- Content-based parser variants for parsing git-ref content without temporary files
+- Subdirectory-safe repo root resolution (`find_repo_root()`)
+- Graph diff engine (`--graph-diff REF_A REF_B`) comparing reference graphs across two commits
+- Rich console output for structural diff (added/removed/modified nodes and edges)
+- EXP-006: 19/19 git-ref temporal accuracy checks passed
+
 **Future (Epoch 3+):**
-- Git-ref temporal compilation (`--git-ref`, graph diffing across commits)
+- Entity inventory (`--inventory`, `--export-inventory`)
+- Cross-repo reference edges and drift reports
 - Cypher query library for navigation
-- Bridge graph for cross-repo references
 - spaCy NER for advanced reference extraction
 - LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
 
@@ -100,7 +108,8 @@ dsm-graph-explorer/
 │   ├── config/           # YAML config loader
 │   ├── filter/           # File exclusion logic
 │   ├── semantic/         # TF-IDF similarity (Sprint 6)
-│   ├── graph/            # Graph builder, queries, export (Sprint 7)
+│   ├── graph/            # Graph builder, queries, export, diff (Sprint 7, 10)
+│   ├── git_ref/          # Git-ref resolver for temporal compilation (Sprint 10)
 │   └── linter/           # Convention linting checks (Sprint 8)
 ├── tests/
 │   ├── test_parser.py    # Parser module tests
@@ -115,6 +124,9 @@ dsm-graph-explorer/
 │   ├── test_semantic.py  # TF-IDF similarity tests
 │   ├── test_graph.py        # Graph builder and query tests
 │   ├── test_graph_store.py  # FalkorDBLite persistence tests
+│   ├── test_graph_diff.py   # Graph diff tests
+│   ├── test_git_resolver.py # Git-ref resolver tests
+│   ├── test_cli_git_ref.py  # Git-ref CLI integration tests
 │   ├── test_linter.py       # Convention linting tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
@@ -219,6 +231,12 @@ dsm-validate /path/to/dsm-repo --graph-db /path/to/db.falkordb
 # Force rebuild of cached graph
 dsm-validate /path/to/dsm-repo --graph-db /path/to/db.falkordb --rebuild
 
+# Validate at a historical git ref (commit, tag, branch)
+dsm-validate /path/to/dsm-repo --git-ref v1.0
+
+# Compare reference graphs between two git refs
+dsm-validate /path/to/dsm-repo --graph-diff main feature-branch
+
 # Combine semantic with other options
 dsm-validate /path/to/dsm-repo --semantic --strict --output report.md
 ```
@@ -301,9 +319,12 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
   - Phase 9.1: EXP-005 FalkorDBLite API validation (16/16 checks)
   - Phase 9.2: `src/graph/graph_store.py` persistence layer (18 tests)
   - Phase 9.3: CLI `--graph-db` integration (6 tests)
-- [ ] **Sprint 10:** Git-Ref Temporal Compilation (`--git-ref`, `git_resolver.py`, `graph_diff.py`, EXP-006)
-- [ ] **Sprint 11:** Bridge Graph (cross-repo reference edges)
-- [ ] **Sprint 12:** Cypher Query Library
+- [x] **Sprint 10:** Git-Ref Temporal Compilation — `git_resolver.py`, content-based parsers, `--git-ref`, `graph_diff.py`, `--graph-diff`, EXP-006 (402 tests, 95% coverage)
+  - Phase 10.0: EXP-006 git-ref temporal accuracy (19/19 checks)
+  - Phase 10.1: `src/git_ref/git_resolver.py` + content-based parser variants (35 tests)
+  - Phase 10.2: `src/graph/graph_diff.py` + CLI `--graph-diff` (12 tests)
+- [ ] **Sprint 11:** Entity Inventory (`dsm-entity-inventory.yml`, `--inventory`, `--export-inventory`)
+- [ ] **Sprint 12:** Cross-Repo Edges + BL-156 (`--compare-repo`, `--drift-report`)
 
 ---
 
@@ -338,7 +359,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-03-11
-**Current Status:** Epoch 3 in progress (Sprint 9 complete: FalkorDBLite integration)
-**Tests:** 355 passed, 96% coverage
-**DSM Feedback:** 36 methodology entries, 31 improvement proposals
+**Last Updated:** 2026-03-12
+**Current Status:** Epoch 3 in progress (Sprint 10 complete: git-ref temporal compilation)
+**Tests:** 402 passed, 95% coverage
+**DSM Feedback:** 37 methodology entries, 32 improvement proposals

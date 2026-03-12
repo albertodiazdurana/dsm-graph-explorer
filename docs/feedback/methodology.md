@@ -4,7 +4,7 @@
 **Author:** Alberto Diaz Durana
 **DSM Version Used:** DSM 4.0 v1.0, DSM 1.0 v1.1
 **Date:** 2026-01-31 (started)
-**Duration:** Sprint 1-9 complete
+**Duration:** Sprint 1-10 complete
 
 ---
 
@@ -407,9 +407,18 @@
 - **Recommendation:** Amend the collaboration protocol to include an Edit Explanation Stop Protocol: when implementing changes that involve multiple distinct edits (to the same or different files), explain each edit in plain words and stop for approval before executing. The explanation should include: what the edit does (in plain language, not just "Added N lines"), where it goes (file and approximate location), and why (how it connects to the current task). Trivial edits (fixing a typo, adding an import) may be grouped. See `backlogs.md` Proposal #31.
 - **Pushed:** 2026-03-11
 
+### Entry 37: Sprint Boundary Gate Missing from /dsm-go Session Start
+- **Date:** 2026-03-12 | **Sprint:** Sprint 10 (boundary) | **Type:** Gap / Process
+- **Context:** Session 28 started with `/dsm-go`. The agent loaded MEMORY.md ("Sprint 10 complete"), found no pending checkpoints, and suggested starting Sprint 11. The user asked "did we do the sprint boundary?" The agent checked and confirmed that no Sprint 10 boundary artifacts existed: no checkpoint, no journal entry, no feedback update, no README update. The agent had suggested starting a new sprint without verifying that the prior sprint was properly closed.
+- **Finding:** `/dsm-go` Step 9 (Report) suggests next work items from MEMORY.md and checkpoints, but no step verifies whether the previous sprint's boundary checklist was completed. The word "complete" in MEMORY.md means code-complete (all phases done, tests passing, code committed), not boundary-complete (checkpoint, feedback, journal, README all updated). The agent conflated the two meanings. Step 3.5 (Checkpoint check) reads checkpoints for context and moves them to `done/`, but this is a context-loading step, not a verification gate. There is no step that asks: "Do boundary artifacts exist for the most recent sprint?" Without this gate, the agent will always skip straight to suggesting new work, leaving the boundary checklist to the user's memory.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 5 (Avg: 4.75)
+- **Reasoning:** The sprint boundary checklist (DSM 2.0 Template 8) is a quality gate, not optional documentation. It captures the sprint's outcomes, feeds the feedback loop, and updates the project's public-facing state. Skipping it means: (1) no checkpoint for future session context, (2) no journal entry for blog material, (3) no feedback review for methodology improvement, (4) README shows stale metrics and status. The fix is structural: add a verification step to `/dsm-go` that checks for boundary artifacts matching the latest sprint in MEMORY.md, and flag missing artifacts as a blocker before suggesting new work.
+- **Recommendation:** Add a "Sprint Boundary Gate" step to `/dsm-go` between Step 3.5 (Checkpoint check) and Step 4 (Bandwidth). The gate reads the latest sprint number from MEMORY.md, then verifies boundary artifacts exist: (1) checkpoint in `docs/checkpoints/done/` matching the sprint, (2) journal entry in the current epoch's blog journal, (3) README status updated for the sprint. If any are missing, report them as blockers and suggest completing the boundary before new work. See `backlogs.md` Proposal #32.
+- **Pushed:** 2026-03-12
+
 ---
 
-**Last Updated:** 2026-03-11
-**Entries So Far:** 36
-**Average Score:** 3.67
-**Pushed:** 2026-03-11 (Entry 36 pushed simultaneously with creation)
+**Last Updated:** 2026-03-12
+**Entries So Far:** 37
+**Average Score:** 3.70
+**Pushed:** 2026-03-12 (Entry 37 pushed simultaneously with creation)

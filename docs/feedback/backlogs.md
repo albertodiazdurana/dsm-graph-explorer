@@ -349,6 +349,28 @@
 
 - **Evidence:** dsm-graph-explorer Session 25 (2026-03-11), Sprint 9 Phase 9.3. Agent explained a multi-part edit to `cli.py` (expanding a guard condition, adding a dependency check, adding a persistence block) and attempted to execute all three in a single turn. User rejected the edit, noting that the explanation should have been a stopping point: "Stop after each explanation → I read, understand, ask questions, approve → continue → Edit." The agent had to re-approach the implementation one edit at a time. See `methodology.md` Entry 36.
 
+### Proposal #32: Sprint Boundary Gate in /dsm-go Session Start
+- **DSM Section:** DSM_0.2 (Custom Instructions / /dsm-go skill), DSM 2.0 Template 8 (Sprint Boundary Checklist)
+- **Problem:** `/dsm-go` loads context from MEMORY.md and checkpoints, then suggests next work items (Step 9). No step verifies whether the previous sprint's boundary checklist was actually completed. MEMORY.md records "Sprint N complete" when code is committed, but the boundary checklist (checkpoint, journal, feedback, README) may not have been run. The agent conflates "code-complete" with "boundary-complete" and suggests starting the next sprint, leaving the boundary to the user's memory. This was caught in Session 28: Sprint 10 code was committed in Session 27, but the boundary checklist was never executed. The agent suggested Sprint 11 without noticing.
+- **Proposed Solution:** Add a "Sprint Boundary Gate" step to `/dsm-go` between Step 3.5 (Checkpoint check) and Step 4 (Bandwidth report):
+
+  ```
+  Step 3.6 — Sprint Boundary Gate:
+  1. Read the latest sprint number from MEMORY.md (e.g., "Sprint 10 complete")
+  2. Check for boundary artifacts:
+     a. Checkpoint: does docs/checkpoints/done/ contain a file matching the sprint?
+     b. Journal: does the current epoch's blog journal have an entry for the sprint?
+     c. README: does the Project Status section show the sprint as checked off?
+  3. If all exist: report "Sprint N boundary verified" and continue
+  4. If any are missing: report the missing artifacts as blockers:
+     "Sprint N boundary incomplete. Missing: [list]. Complete the boundary
+     checklist before starting new work."
+  ```
+
+  This is a verification gate, not a context-loading step. It blocks new work suggestions until the prior sprint is properly closed.
+
+- **Evidence:** dsm-graph-explorer Session 28 (2026-03-12). Sprint 10 code committed in Session 27 (c8839e7). Session 28 `/dsm-go` loaded MEMORY.md ("Sprint 10 complete"), found no pending checkpoints (all moved to `done/` in Session 27), and suggested Sprint 11. User caught the missing boundary. Investigation confirmed: no Sprint 10 checkpoint, no journal entry, no README update, no feedback update. See `methodology.md` Entry 37.
+
 ---
 
 ## Low Priority
@@ -357,6 +379,6 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-03-11
-**Total Proposals:** 31
-**Pushed:** 2026-03-11 (Proposal #31 pushed simultaneously with creation)
+**Last Updated:** 2026-03-12
+**Total Proposals:** 32
+**Pushed:** 2026-03-12 (Proposal #32 pushed simultaneously with creation)
