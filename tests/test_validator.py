@@ -609,3 +609,152 @@ class TestVersionConsistency:
         f3.write_text("**Version:** 2.0.0\n")
         results = validate_version_consistency([f1, f2, f3])
         assert len(results) >= 1
+
+
+# ===========================================================================
+# Inventory-Based Cross-Repo Resolution Tests (Sprint 11, Phase 11.2)
+# ===========================================================================
+
+from inventory.inventory_parser import Entity, EntityInventory, RepoInfo
+
+
+def make_inventory(
+    repo_name: str, entities: list[tuple[str, str, str, str]]
+) -> EntityInventory:
+    """Create an EntityInventory from (id, type, path, heading) tuples."""
+    return EntityInventory(
+        version="1.0",
+        repo=RepoInfo(name=repo_name, type="dsm-hub"),
+        entities=[
+            Entity(id=eid, type=etype, path=epath, heading=eheading)
+            for eid, etype, epath, eheading in entities
+        ],
+    )
+
+
+class TestValidateCrossReferencesWithInventories:
+    """Test cross-reference validation with external entity inventories."""
+
+    def test_broken_ref_resolved_by_inventory_becomes_info(self):
+        """A ref not found locally but found in inventory becomes INFO."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("section", "2.3.7", line=5)]}
+        inv = make_inventory("dsm-central", [
+            ("DSM_1.0/section/2.3.7", "section", "DSM_1.0.md", "2.3.7 Data Leakage Prevention"),
+        ])
+
+        results = validate_cross_references([doc], refs, inventories=[inv])
+        assert len(results) == 1
+        assert results[0].severity == Severity.INFO
+        assert results[0].resolution == "external"
+
+    def test_broken_ref_not_in_inventory_stays_error(self):
+        """A ref not found locally or in inventories stays ERROR."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("section", "99.99", line=5)]}
+        inv = make_inventory("dsm-central", [
+            ("DSM_1.0/section/2.3.7", "section", "DSM_1.0.md", "2.3.7 Data Leakage Prevention"),
+        ])
+
+        results = validate_cross_references([doc], refs, inventories=[inv])
+        assert len(results) == 1
+        assert results[0].severity == Severity.ERROR
+        assert results[0].resolution == "unresolved"
+
+    def test_locally_resolved_ref_stays_local(self):
+        """A ref found locally has resolution='local' (no change)."""
+        doc = make_doc("f.md", [("2.3.7", "Leakage", 1, 3)])
+        refs = {"f.md": [make_ref("section", "2.3.7")]}
+        inv = make_inventory("dsm-central", [
+            ("DSM_1.0/section/2.3.7", "section", "DSM_1.0.md", "2.3.7 Data Leakage Prevention"),
+        ])
+
+        results = validate_cross_references([doc], refs, inventories=[inv])
+        assert len(results) == 0  # valid ref, no result
+
+    def test_inventory_resolution_checks_heading_number(self):
+        """Inventory matching uses the section number from the heading."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("section", "3.1", line=5)]}
+        inv = make_inventory("other-repo", [
+            ("other/section/3.1", "section", "guide.md", "3.1 Setup Guide"),
+        ])
+
+        results = validate_cross_references([doc], refs, inventories=[inv])
+        assert len(results) == 1
+        assert results[0].severity == Severity.INFO
+        assert results[0].resolution == "external"
+
+    def test_multiple_inventories_searched(self):
+        """All inventories are checked, first match wins."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("section", "5.2", line=5)]}
+        inv1 = make_inventory("repo-a", [
+            ("a/1", "section", "a.md", "1 Intro"),
+        ])
+        inv2 = make_inventory("repo-b", [
+            ("b/5.2", "section", "b.md", "5.2 Advanced"),
+        ])
+
+        results = validate_cross_references([doc], refs, inventories=[inv1, inv2])
+        assert len(results) == 1
+        assert results[0].severity == Severity.INFO
+        assert results[0].resolution == "external"
+        assert "repo-b" in results[0].message
+
+    def test_no_inventories_behaves_as_before(self):
+        """Without inventories param, broken refs are errors (backward compat)."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("section", "99")]}
+
+        results = validate_cross_references([doc], refs)
+        assert len(results) == 1
+        assert results[0].severity == Severity.ERROR
+        assert results[0].resolution == "unresolved"
+
+    def test_empty_inventories_list_behaves_as_before(self):
+        """Empty inventories list behaves same as no inventories."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("section", "99")]}
+
+        results = validate_cross_references([doc], refs, inventories=[])
+        assert len(results) == 1
+        assert results[0].severity == Severity.ERROR
+
+    def test_external_result_includes_repo_name(self):
+        """External resolution message mentions the source repo."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("section", "2.3.7")]}
+        inv = make_inventory("dsm-central", [
+            ("DSM_1.0/section/2.3.7", "section", "DSM_1.0.md", "2.3.7 Data Leakage Prevention"),
+        ])
+
+        results = validate_cross_references([doc], refs, inventories=[inv])
+        assert "dsm-central" in results[0].message
+
+    def test_dsm_ref_not_affected_by_inventories(self):
+        """DSM document refs (type=dsm) are not resolved via inventories."""
+        doc = make_doc("f.md", [])
+        refs = {"f.md": [make_ref("dsm", "99.0")]}
+        inv = make_inventory("dsm-central", [
+            ("DSM_99.0", "protocol", "DSM_99.md", "DSM 99.0"),
+        ])
+
+        results = validate_cross_references(
+            [doc], refs, known_dsm_ids=["4.0"], inventories=[inv]
+        )
+        assert len(results) == 1
+        assert results[0].severity == Severity.WARNING  # still a dsm warning
+
+    def test_appendix_ref_resolved_by_inventory(self):
+        """Appendix refs can also be resolved via inventory."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("appendix", "A.1", line=10)]}
+        inv = make_inventory("dsm-central", [
+            ("DSM/appendix/A.1", "section", "DSM.md", "A.1 Glossary"),
+        ])
+
+        results = validate_cross_references([doc], refs, inventories=[inv])
+        assert len(results) == 1
+        assert results[0].severity == Severity.INFO
+        assert results[0].resolution == "external"

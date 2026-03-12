@@ -221,6 +221,20 @@ def _print_diff_report(result: "DiffResult", elapsed: float) -> None:
     help="Compile graph from a historical git ref (commit SHA, tag, or branch).",
 )
 @click.option(
+    "--inventory",
+    "inventory_paths",
+    multiple=True,
+    type=click.Path(exists=True),
+    help="Path to external entity inventory YAML (repeatable).",
+)
+@click.option(
+    "--export-inventory",
+    "export_inventory_path",
+    type=click.Path(),
+    default=None,
+    help="Scan repo and export entity inventory to YAML file.",
+)
+@click.option(
     "--graph-diff",
     "graph_diff_refs",
     nargs=2,
@@ -241,6 +255,8 @@ def main(
     lint: bool,
     graph_db_path: str | None,
     rebuild: bool,
+    inventory_paths: tuple[str, ...],
+    export_inventory_path: str | None,
     git_ref: str | None,
     graph_diff_refs: tuple[str, str] | None,
 ) -> None:
@@ -447,8 +463,24 @@ def main(
             if refs:
                 references[doc.file] = refs
 
+    # Load external inventories if provided
+    inventories = []
+    if inventory_paths:
+        from inventory.inventory_parser import InventoryError, load_inventory
+
+        for inv_path in inventory_paths:
+            try:
+                inv = load_inventory(inv_path)
+                inventories.append(inv)
+                click.echo(f"Loaded inventory: {inv.repo.name} ({len(inv.entities)} entities)")
+            except InventoryError as e:
+                click.echo(f"Error loading inventory {inv_path}: {e}", err=True)
+                sys.exit(2)
+
     # Validate cross-references
-    cross_ref_results = validate_cross_references(documents, references)
+    cross_ref_results = validate_cross_references(
+        documents, references, inventories=inventories if inventories else None,
+    )
 
     # Apply severity overrides from config
     cross_ref_results = apply_severity_overrides(
@@ -508,7 +540,11 @@ def main(
     # Summary line
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
-    infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
+    external_refs = [r for r in cross_ref_results if r.resolution == "external"]
+    infos = [
+        r for r in cross_ref_results
+        if r.severity == Severity.INFO and r.resolution != "external"
+    ]
 
     # Semantic summary counts
     drift_warnings = [
@@ -526,10 +562,15 @@ def main(
     if excluded_count > 0:
         summary_parts.append(f"({excluded_count} excluded)")
     summary_parts.append(f"in {elapsed:.2f}s.")
-    summary_parts.append(
-        f"Found {len(errors)} error(s), {len(warnings)} warning(s), "
-        f"{len(infos)} info(s), {len(version_results)} version mismatch(es)."
-    )
+    found_parts = [
+        f"{len(errors)} error(s)",
+        f"{len(warnings)} warning(s)",
+        f"{len(infos)} info(s)",
+    ]
+    if external_refs:
+        found_parts.append(f"{len(external_refs)} external ref(s)")
+    found_parts.append(f"{len(version_results)} version mismatch(es)")
+    summary_parts.append(f"Found {', '.join(found_parts)}.")
     if semantic:
         summary_parts.append(
             f"Semantic: {len(drift_warnings)} drift warning(s), "
@@ -537,6 +578,21 @@ def main(
         )
 
     click.echo(f"\n{' '.join(summary_parts)}")
+
+    # Export entity inventory (opt-in)
+    if export_inventory_path:
+        from inventory.inventory_parser import export_inventory as do_export
+
+        repo_name = base_path.name
+        inv = do_export(
+            documents,
+            repo_name=repo_name,
+            output_path=export_inventory_path,
+        )
+        click.echo(
+            f"Inventory exported to {export_inventory_path} "
+            f"({len(inv.entities)} entities from {len(documents)} file(s))"
+        )
 
     # Graph operations (opt-in)
     if graph_export_path or graph_stats or graph_db_path:

@@ -9,14 +9,20 @@ Uses severity levels:
 - INFO: Issue in a file classified as informational by config.
 """
 
+from __future__ import annotations
+
 import fnmatch
 from dataclasses import dataclass, replace
 from enum import Enum
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from config.config_loader import SeverityMapping
 from parser.cross_ref_extractor import CrossReference
 from parser.markdown_parser import ParsedDocument, Section
+
+if TYPE_CHECKING:
+    from inventory.inventory_parser import EntityInventory
 
 
 class Severity(Enum):
@@ -38,6 +44,7 @@ class ValidationResult:
     target: str
     message: str
     context: str
+    resolution: str = "unresolved"
 
 
 # Known DSM document identifiers. References to DSM versions not in this
@@ -100,10 +107,32 @@ def build_section_lookup(
     return lookup
 
 
+def _resolve_in_inventories(
+    target: str,
+    inventories: list[EntityInventory],
+) -> tuple[str, str] | None:
+    """Check if a section/appendix target exists in any external inventory.
+
+    Matches by extracting the section number from entity headings
+    (e.g. heading "2.3.7 Data Leakage Prevention" matches target "2.3.7").
+
+    Returns:
+        (repo_name, entity_id) if found, None otherwise.
+    """
+    for inv in inventories:
+        for entity in inv.entities:
+            # Match if the heading starts with the target number
+            heading_parts = entity.heading.split(None, 1)
+            if heading_parts and heading_parts[0] == target:
+                return (inv.repo.name, entity.id)
+    return None
+
+
 def validate_cross_references(
     documents: list[ParsedDocument],
     references: dict[str, list[CrossReference]],
     known_dsm_ids: list[str] | None = None,
+    inventories: list[EntityInventory] | None = None,
 ) -> list[ValidationResult]:
     """Validate all cross-references against the section index.
 
@@ -112,12 +141,17 @@ def validate_cross_references(
         references: Map of file path to cross-references found in that file.
         known_dsm_ids: Optional list of recognised DSM document identifiers.
             Defaults to KNOWN_DSM_IDS.
+        inventories: Optional list of external entity inventories for
+            cross-repo resolution. References not found locally are checked
+            against these inventories before being flagged as errors.
 
     Returns:
-        List of validation results (errors and warnings).
+        List of validation results (errors, warnings, and info).
     """
     if known_dsm_ids is None:
         known_dsm_ids = KNOWN_DSM_IDS
+    if inventories is None:
+        inventories = []
 
     index = build_section_index(documents)
     results: list[ValidationResult] = []
@@ -126,20 +160,42 @@ def validate_cross_references(
         for ref in refs:
             if ref.type in ("section", "appendix"):
                 if ref.target not in index:
-                    results.append(
-                        ValidationResult(
-                            severity=Severity.ERROR,
-                            source_file=file_path,
-                            line=ref.line,
-                            ref_type=ref.type,
-                            target=ref.target,
-                            message=(
-                                f"Broken {ref.type} reference: "
-                                f"{ref.target} not found in any document"
-                            ),
-                            context=ref.context,
+                    # Try external inventories
+                    match = _resolve_in_inventories(ref.target, inventories)
+                    if match:
+                        repo_name, entity_id = match
+                        results.append(
+                            ValidationResult(
+                                severity=Severity.INFO,
+                                source_file=file_path,
+                                line=ref.line,
+                                ref_type=ref.type,
+                                target=ref.target,
+                                message=(
+                                    f"External {ref.type} reference: "
+                                    f"{ref.target} resolved via "
+                                    f"inventory ({repo_name})"
+                                ),
+                                context=ref.context,
+                                resolution="external",
+                            )
                         )
-                    )
+                    else:
+                        results.append(
+                            ValidationResult(
+                                severity=Severity.ERROR,
+                                source_file=file_path,
+                                line=ref.line,
+                                ref_type=ref.type,
+                                target=ref.target,
+                                message=(
+                                    f"Broken {ref.type} reference: "
+                                    f"{ref.target} not found in any document"
+                                ),
+                                context=ref.context,
+                                resolution="unresolved",
+                            )
+                        )
             elif ref.type == "dsm":
                 if ref.target not in known_dsm_ids:
                     results.append(

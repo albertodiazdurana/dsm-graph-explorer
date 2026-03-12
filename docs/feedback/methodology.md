@@ -416,9 +416,27 @@
 - **Recommendation:** Add a "Sprint Boundary Gate" step to `/dsm-go` between Step 3.5 (Checkpoint check) and Step 4 (Bandwidth). The gate reads the latest sprint number from MEMORY.md, then verifies boundary artifacts exist: (1) checkpoint in `docs/checkpoints/done/` matching the sprint, (2) journal entry in the current epoch's blog journal, (3) README status updated for the sprint. If any are missing, report them as blockers and suggest completing the boundary before new work. See `backlogs.md` Proposal #32.
 - **Pushed:** 2026-03-12
 
+### Entry 38: Epoch Plan Not Updated at Sprint Boundaries
+- **Date:** 2026-03-12 | **Sprint:** Sprint 11 (start) | **Type:** Gap / Process
+- **Context:** Session 29 began Sprint 11 planning. The user noticed that `epoch-3-plan.md` still shows all Sprint 9 and Sprint 10 tasks as unchecked (`[ ]`), despite both sprints being fully complete (402 tests, all phases delivered, boundary checklists done). The plan document was created at the start of Epoch 3 (Session 24) and never updated since.
+- **Finding:** The Sprint Boundary Checklist in CLAUDE.md lists 5 items: checkpoint, feedback, decisions, journal, README. "Update epoch plan with completed tasks" is not one of them. Since the checklist is what drives sprint wrap-up behavior (the agent follows it literally), the plan document is systematically skipped at every sprint boundary. This is the same structural pattern as Entry 37 (missing sprint boundary gate) and Entry 20 (missing "next steps"): if a process step is not in the checklist, it does not happen. The epoch plan is the project's roadmap; when it shows all tasks as pending despite half the epoch being complete, it loses its value as a planning instrument and confuses anyone reading the repository.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 4 (Avg: 4.50)
+- **Reasoning:** The epoch plan serves two audiences: (1) the agent, which reads it at epoch/sprint boundaries for scope, and (2) the user, who reads it in the IDE to track progress. When the plan never gets updated, the user has to cross-reference MEMORY.md, checkpoints, and git history to reconstruct what's actually done. The fix is simple: add "Epoch plan updated" to the Sprint Boundary Checklist. The cost is one `sed` or edit per sprint. The value is a single source of truth for epoch progress.
+- **Recommendation:** Add "Epoch plan updated (completed tasks checked off)" to the Sprint Boundary Checklist in CLAUDE.md and in DSM 2.0 Template 8. See `backlogs.md` Proposal #33.
+- **Pushed:** 2026-03-12
+
+### Entry 39: Alignment Review Missing at Sprint Transitions
+- **Date:** 2026-03-12 | **Sprint:** Sprint 11 (start) | **Type:** Gap / Collaboration
+- **Context:** After updating epoch-3-plan.md with Sprint 9+10 completions (Entry 38 fix), the user requested: "confirm we are aligned and highlight any changes. This should be part of the protocol between sprints." The user wants a collaborative review step, not just a mechanical checkbox update. The agent had been updating the plan silently; the user needs to see the changes, confirm accuracy, and verify scope for the next sprint before proceeding.
+- **Finding:** The Sprint Boundary Checklist (even with Proposal #33's "update epoch plan" addition) treats the plan as a documentation artifact: update it and move on. But the plan is also a *collaboration artifact*: it reflects shared understanding of scope, progress, and priorities. Updating it without review means the user has to independently verify every checkbox, cross-reference with actual commits, and catch any drift between plan and reality. This is the planning equivalent of committing without code review. The gap is: there is no "alignment review" step where the agent presents the updated plan, highlights what changed (completions, deviations from plan, scope additions), and gets explicit confirmation before starting the next sprint.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 4 (Avg: 4.50)
+- **Reasoning:** Sprint transitions are natural alignment checkpoints. The agent has all the context (what was planned vs what was delivered, what deviated, what was added). Presenting a summary takes 30 seconds. Catching a misalignment before starting the next sprint saves an entire session of misdirected work. The cost-benefit is strongly in favor of the review step.
+- **Recommendation:** Add an "Alignment Review" step to the sprint transition protocol, after the plan update and before starting new sprint work. The agent presents: (1) what was completed, (2) deviations from the original plan, (3) scope additions not in the plan, (4) current state of epoch progress, (5) next sprint scope for confirmation. User confirms before proceeding. See `backlogs.md` Proposal #34.
+- **Pushed:** 2026-03-12
+
 ---
 
 **Last Updated:** 2026-03-12
-**Entries So Far:** 37
-**Average Score:** 3.70
-**Pushed:** 2026-03-12 (Entry 37 pushed simultaneously with creation)
+**Entries So Far:** 39
+**Average Score:** 3.73
+**Pushed:** 2026-03-12 (Entry 39 pushed simultaneously with creation)

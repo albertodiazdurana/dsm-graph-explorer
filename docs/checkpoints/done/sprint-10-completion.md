@@ -1,3 +1,5 @@
+**Consumed at:** Session 29 start (2026-03-12)
+
 # Sprint 10 Completion Checkpoint
 
 **Date:** 2026-03-12

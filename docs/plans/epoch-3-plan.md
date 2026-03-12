@@ -38,17 +38,17 @@ upgrade to enable it was decided in DEC-007.
 ### Scope (MoSCoW)
 
 **MUST (Epoch 3 Core):**
-- [ ] Python 3.12 upgrade and zero test regressions (Sprint 9)
-- [ ] FalkorDBLite integration: persistent graph store (Sprint 9)
-- [ ] EXP-005: validate FalkorDBLite with existing graph data (Sprint 9)
-- [ ] Git-ref temporal compilation: `--git-ref` flag (Sprint 10)
+- [x] Python 3.12 upgrade and zero test regressions (Sprint 9)
+- [x] FalkorDBLite integration: persistent graph store (Sprint 9)
+- [x] EXP-005: validate FalkorDBLite with existing graph data (Sprint 9)
+- [x] Git-ref temporal compilation: `--git-ref` flag (Sprint 10)
 - [ ] Entity inventory format: per-repo referenceable entity manifest (Sprint 11)
 - [ ] Cross-repo edges: typed edges for inbox, @-imports, ecosystem paths (Sprint 12)
 - [ ] BL-156: private-to-public repo mapping with drift detection (Sprint 12)
 
 **SHOULD (Epoch 3 Enhancements):**
 - [ ] Incremental graph updates (avoid full rebuild on unchanged files)
-- [ ] Temporal diff query: "what changed between two git refs?"
+- [x] Temporal diff query: "what changed between two git refs?" (Sprint 10)
 - [ ] Index creation for `path` and `heading` properties (query performance)
 - [ ] `--graph-export` updated to export from FalkorDB (not just NetworkX)
 
@@ -62,21 +62,21 @@ upgrade to enable it was decided in DEC-007.
 ### Success Criteria
 
 **Technical:**
-- [ ] FalkorDBLite stores and persists the existing NetworkX graph (EXP-005)
-- [ ] Graph survives CLI restarts (data persists on disk)
-- [ ] `--git-ref` produces a correct historical snapshot of the graph
+- [x] FalkorDBLite stores and persists the existing NetworkX graph (EXP-005)
+- [x] Graph survives CLI restarts (data persists on disk)
+- [x] `--git-ref` produces a correct historical snapshot of the graph
 - [ ] Entity inventory format is machine-readable and human-editable
 - [ ] Cross-repo node matching works via entity inventory lookup
 - [ ] BL-156: private DSM and public DSM can be modeled as separate graphs with cross-repo edges
 
 **Process:**
-- [ ] Each sprint produces a working increment
-- [ ] Feedback files updated at sprint boundaries
-- [ ] Blog material captured for Epoch 3 writeup
-- [ ] Experiments documented with results
+- [x] Each sprint produces a working increment
+- [x] Feedback files updated at sprint boundaries
+- [x] Blog material captured for Epoch 3 writeup
+- [x] Experiments documented with results
 
 **Deliverable:**
-- [ ] Persistent graph CLI with `--graph-db PATH --git-ref REF`
+- [x] Persistent graph CLI with `--graph-db PATH --git-ref REF`
 - [ ] Entity inventory spec and parser
 - [ ] Cross-repo mapping support for DSM Central (BL-156)
 
@@ -133,85 +133,85 @@ Performance: historical compilation completes within 2x normal compilation time.
 
 ### Sprint 9: Foundation (Python 3.12 + FalkorDBLite Integration)
 
-**Duration:** 1-2 sessions
+**Duration:** 1-2 sessions (actual: 2 sessions)
 **Objective:** Upgrade Python, validate FalkorDBLite, and build the persistence layer.
-**Status:** PLANNED
+**Status:** COMPLETE
 
 #### Phase 9.0: Python 3.12 Upgrade (DEC-007)
 
 **Tasks:**
-1. [ ] Update `pyproject.toml`:
-   - [ ] `requires-python = ">=3.12"`
-   - [ ] Drop Python 3.10/3.11 classifiers
-   - [ ] Add `falkordblite>=0.9` to `[graph]` optional extra
-   - [ ] Update `[tool.black] target-version = ['py312']`
-   - [ ] Update `[tool.ruff] target-version = "py312"`
-   - [ ] Version bump: `0.2.0 → 0.3.0`
-2. [ ] Run `pytest tests/` and confirm 331 tests pass, 96% coverage maintained
-3. [ ] Commit: "Sprint 9: Python 3.12 upgrade (DEC-007)"
+1. [x] Update `pyproject.toml`:
+   - [x] `requires-python = ">=3.12"`
+   - [x] Drop Python 3.10/3.11 classifiers
+   - [x] Add `falkordblite>=0.9` to `[graph]` optional extra
+   - [x] Update `[tool.black] target-version = ['py312']`
+   - [x] Update `[tool.ruff] target-version = "py312"`
+   - [x] Version bump: `0.2.0 → 0.3.0`
+2. [x] Run `pytest tests/` and confirm 331 tests pass, 96% coverage maintained
+3. [x] Commit: "Sprint 9: Python 3.12 upgrade (DEC-007)"
 
-**Gate:** Zero test regressions before proceeding to EXP-005.
+**Gate:** Zero test regressions before proceeding to EXP-005. ✓ Passed
 
 #### Phase 9.1: EXP-005 (Integration Validation Experiment)
 
 **Tasks:**
-1. [ ] Install `falkordblite` in dev environment
-2. [ ] Run EXP-005 test matrix (see above) as an exploratory script in `data/experiments/`
-3. [ ] Document results in `data/experiments/EXP-005-falkordb-integration/`
-4. [ ] If any test fails: resolve before Phase 9.2 (escalate to DEC-006 or DEC-007 revision if needed)
+1. [x] Install `falkordblite` in dev environment
+2. [x] Run EXP-005 test matrix (see above) as an exploratory script in `data/experiments/`
+3. [x] Document results in `data/experiments/EXP-005-falkordb-integration/`
+4. [x] If any test fails: resolve before Phase 9.2 (escalate to DEC-006 or DEC-007 revision if needed)
 
-**Gate:** All EXP-005 acceptance criteria met before building `graph_store.py`.
+**Gate:** All EXP-005 acceptance criteria met before building `graph_store.py`. ✓ 16/16 passed
 
 #### Phase 9.2: Graph Store Module
 
 **Tasks:**
-1. [ ] Create `src/graph/graph_store.py`:
-   - [ ] `GraphStore` class wrapping FalkorDBLite connection
-   - [ ] `open(path)` / `close()` lifecycle management
-   - [ ] `write_graph(networkx_graph, repo_name, git_ref)`: imports NetworkX DiGraph into FalkorDB
-   - [ ] `query(cypher, params)` and `ro_query(cypher, params)`: thin wrappers
-   - [ ] `graph_exists(repo_name)`: check before rebuilding
-   - [ ] Parameterized queries throughout (no string interpolation)
-2. [ ] Create Cypher schema: indexes on `path` (Document), `heading` (Section)
-3. [ ] Write `tests/test_graph_store.py`:
-   - [ ] Session-scoped FalkorDBLite fixture (`tmp_path_factory`)
-   - [ ] Per-test graph isolation (unique graph names via UUID)
-   - [ ] `g.delete()` cleanup in fixture teardown
-   - [ ] Tests: write, query, persist simulation, multi-graph isolation
+1. [x] Create `src/graph/graph_store.py`:
+   - [x] `GraphStore` class wrapping FalkorDBLite connection
+   - [x] `open(path)` / `close()` lifecycle management
+   - [x] `write_graph(networkx_graph, repo_name, git_ref)`: imports NetworkX DiGraph into FalkorDB
+   - [x] `query(cypher, params)` and `ro_query(cypher, params)`: thin wrappers
+   - [x] `graph_exists(repo_name)`: check before rebuilding
+   - [x] Parameterized queries throughout (no string interpolation)
+2. [x] Create Cypher schema: indexes on `path` (Document), `heading` (Section)
+3. [x] Write `tests/test_graph_store.py`:
+   - [x] Session-scoped FalkorDBLite fixture (`tmp_path_factory`)
+   - [x] Per-test graph isolation (unique graph names via UUID)
+   - [x] `g.delete()` cleanup in fixture teardown
+   - [x] Tests: write, query, persist simulation, multi-graph isolation (18 tests)
 
 #### Phase 9.3: CLI Integration
 
 **Tasks:**
-1. [ ] Add `--graph-db PATH` option to CLI (path to FalkorDB storage file)
-2. [ ] When `--graph-db` is provided: after graph build, persist via `GraphStore`
-3. [ ] If graph already exists at path: skip rebuild (use cached), unless `--rebuild` flag
-4. [ ] Graceful error if `falkordblite` not installed (same pattern as networkx/scikit-learn)
-5. [ ] Update `--graph-stats` to query FalkorDB when `--graph-db` is set
-6. [ ] Write CLI integration tests
+1. [x] Add `--graph-db PATH` option to CLI (path to FalkorDB storage file)
+2. [x] When `--graph-db` is provided: after graph build, persist via `GraphStore`
+3. [x] If graph already exists at path: skip rebuild (use cached), unless `--rebuild` flag
+4. [x] Graceful error if `falkordblite` not installed (same pattern as networkx/scikit-learn)
+5. [x] Update `--graph-stats` to query FalkorDB when `--graph-db` is set
+6. [x] Write CLI integration tests (6 tests)
 
 #### Sprint 9 Deliverables
 
-- [ ] Python 3.12 minimum, all tests green
-- [ ] `falkordblite` in `[graph]` optional extra
-- [ ] `src/graph/graph_store.py` with full test coverage
-- [ ] `--graph-db PATH` CLI option
-- [ ] EXP-005 results documented
-- [ ] Version 0.3.0
+- [x] Python 3.12 minimum, all tests green
+- [x] `falkordblite` in `[graph]` optional extra
+- [x] `src/graph/graph_store.py` with full test coverage
+- [x] `--graph-db PATH` CLI option
+- [x] EXP-005 results documented
+- [x] Version 0.3.0
 
 **Sprint boundary checklist:**
-- [ ] Checkpoint document (`docs/checkpoints/`)
-- [ ] Feedback files updated (`docs/feedback/`)
-- [ ] Blog journal entry
-- [ ] README updated
+- [x] Checkpoint document (`docs/checkpoints/`)
+- [x] Feedback files updated (`docs/feedback/`)
+- [x] Blog journal entry
+- [x] README updated
 
 ---
 
 ### Sprint 10: Git-Ref Temporal Compilation
 
-**Duration:** 1-2 sessions
+**Duration:** 1-2 sessions (actual: 2 sessions)
 **Objective:** Accept a git ref parameter and compile the graph at a historical point,
 enabling temporal queries and diff-based analysis.
-**Status:** PLANNED
+**Status:** COMPLETE
 
 #### Design
 
@@ -230,49 +230,52 @@ And diffs between two stored snapshots.
 #### Phase 10.0: EXP-006 (Temporal Accuracy Experiment)
 
 **Tasks:**
-1. [ ] Identify two historical refs in DSM repository (a tag and an older commit)
-2. [ ] Run EXP-006 test matrix manually before building the feature
-3. [ ] Document results in `data/experiments/EXP-006-git-ref-temporal/`
+1. [x] Identify two historical refs in DSM repository (a tag and an older commit)
+2. [x] Run EXP-006 test matrix manually before building the feature
+3. [x] Document results in `data/experiments/EXP-006-git-ref-temporal/`
 
-**Gate:** Confirm historical snapshot approach is feasible before full implementation.
+**Gate:** Confirm historical snapshot approach is feasible before full implementation. ✓ 19/19 passed
 
 #### Phase 10.1: Git-Ref Compilation
 
 **Tasks:**
-1. [ ] Add `--git-ref REF` CLI option (commit SHA, tag, or branch name)
-2. [ ] Create `src/git_ref/git_resolver.py`:
-   - [ ] `resolve_ref(repo_path, ref)` → validated commit SHA
-   - [ ] `list_files_at_ref(repo_path, sha)` → list of markdown files at that ref
-   - [ ] `read_file_at_ref(repo_path, sha, filepath)` → file contents as string
-   - [ ] Uses `subprocess` (git show, git ls-tree) rather than gitpython dependency
-3. [ ] Update compilation pipeline: when `--git-ref` is set, feed historical file contents
+1. [x] Add `--git-ref REF` CLI option (commit SHA, tag, or branch name)
+2. [x] Create `src/git_ref/git_resolver.py`:
+   - [x] `resolve_ref(repo_path, ref)` → validated commit SHA
+   - [x] `list_files_at_ref(repo_path, sha)` → list of markdown files at that ref
+   - [x] `read_file_at_ref(repo_path, sha, filepath)` → file contents as string
+   - [x] Uses `subprocess` (git show, git ls-tree) rather than gitpython dependency
+   - [x] Added `find_repo_root()` for subdirectory-safe resolution
+   - [x] Content-based parser variants for in-memory parsing
+3. [x] Update compilation pipeline: when `--git-ref` is set, feed historical file contents
    to the parser instead of current disk state
-4. [ ] Store `git_ref` as a property on Document nodes in FalkorDB
-5. [ ] Write tests for git resolver (using current repo as test data)
+4. [x] Store `git_ref` as a property on Document nodes in FalkorDB
+5. [x] Write tests for git resolver (28 tests)
 
 #### Phase 10.2: Temporal Diff
 
 **Tasks:**
-1. [ ] Create `src/graph/graph_diff.py`:
-   - [ ] `diff_graphs(store, ref_a, ref_b, repo_name)` → DiffResult
-   - [ ] `DiffResult`: added nodes, removed nodes, changed nodes (property changes)
-2. [ ] Add `--graph-diff REF_A REF_B` CLI option
-3. [ ] Reporter: show diff as a Rich table (added/removed/changed)
-4. [ ] Write tests for diff logic
+1. [x] Create `src/graph/graph_diff.py`:
+   - [x] `diff_graphs(base_path, ref_a, ref_b)` → DiffResult
+   - [x] `DiffResult`: added nodes, removed nodes, changed nodes (property changes)
+2. [x] Add `--graph-diff REF_A REF_B` CLI option
+3. [x] Reporter: show diff as a Rich table (added/removed/changed)
+4. [x] Write tests for diff logic (12 tests)
 
 #### Sprint 10 Deliverables
 
-- [ ] `--git-ref REF` CLI option with historical compilation
-- [ ] `src/git_ref/git_resolver.py` (subprocess-based, no gitpython)
-- [ ] `git_ref` property on Document nodes
-- [ ] `--graph-diff REF_A REF_B` CLI option
-- [ ] EXP-006 results documented
+- [x] `--git-ref REF` CLI option with historical compilation
+- [x] `src/git_ref/git_resolver.py` (subprocess-based, no gitpython)
+- [x] `git_ref` property on Document nodes
+- [x] `--graph-diff REF_A REF_B` CLI option
+- [x] EXP-006 results documented
+- [x] CLI version updated 0.2.0 → 0.3.0
 
 **Sprint boundary checklist:**
-- [ ] Checkpoint document
-- [ ] Feedback files updated
-- [ ] Blog journal entry
-- [ ] README updated
+- [x] Checkpoint document
+- [x] Feedback files updated
+- [x] Blog journal entry
+- [x] README updated
 
 ---
 
@@ -568,8 +571,8 @@ dsm-graph-explorer/
 
 ---
 
-**Plan Status:** ACTIVE (Epoch 3, pre-Sprint 9)
-**Last Updated:** 2026-03-10
+**Plan Status:** ACTIVE (Epoch 3, Sprints 9-10 complete, Sprint 11 starting)
+**Last Updated:** 2026-03-12
 **Previous:** [epoch-2-plan.md](epoch-2-plan.md)
 **Research:** [epoch-3-neo4j-landscape-research.md](../research/epoch-3-neo4j-landscape-research.md), [epoch-3-falkordblite-deep-dive.md](../research/epoch-3-falkordblite-deep-dive.md)
 **Decisions:** [DEC-006](../decisions/DEC-006-graph-database-selection.md), [DEC-007](../decisions/DEC-007-python-312-upgrade.md)

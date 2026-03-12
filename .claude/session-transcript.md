@@ -1,263 +1,171 @@
-# Session 27 Transcript
-**Started:** 2026-03-12T02:20:56-03:00
+# Session 28 Transcript
+**Started:** 2026-03-12T05:33:38-03:00
 **Project:** DSM Graph Explorer
 
 ---
 
 ## Session Start
 
-**Context loaded:** MEMORY.md (Session 26, Sprint 9 complete), DSM_0.2 v1.3.58, project CLAUDE.md.
+**Context loaded:** MEMORY.md (Session 27, Sprint 10 complete), DSM_0.2 v1.3.58, project CLAUDE.md.
 
 **Project type:** Application (DSM 4.0), Standard Spoke pattern.
 **Ecosystem paths:** No registry found; using fallback resolution.
-**Inbox:** Empty (only README.md).
-**Version check:** DSM_0.2 v1.3.58, last breaking change 2026-02-13. No change since last session.
+**Inbox:** Empty (only done/ subdir).
+**Version check:** DSM_0.2 v1.3.58, no change since last session.
 **Handoffs:** None unconsumed.
-**Checkpoints:** Read sprint-9-completion.md (Sprint 9 summary, 355 tests, 96% coverage). Moved all 9 checkpoints (epoch 1-3) to done/.
-**Transcript archived:** 2026-03-11T16:41-ST.md
-**Bandwidth:** Normal usage, 150 MiB spike at 02:00 today (likely system updates).
+**Checkpoints:** None pending (only README.md in checkpoints/).
+**Transcript archived:** 2026-03-12T02:20-ST.md
+**Bandwidth:** Normal usage, 150 MiB spike at 02:00 (likely system updates).
 **Git:** Clean working tree, up to date with origin/master.
 **Baseline:** Saved to .claude/session-baseline.txt.
 
-**Pending work from checkpoint:**
-1. Sprint 10: Git-Ref Temporal Compilation (--git-ref, git_resolver.py, graph_diff.py, EXP-006)
-2. Epoch 4 roadmap: LLM second-pass (tiered: TF-IDF filters, LLM confirms)
-3. Deferred SHOULD: section rename tracking (section-renames.yml)
+---
 
-## Sprint 10 Kickoff
+## Turn: Sprint boundary question
 
-User wants to start Sprint 10: Git-Ref Temporal Compilation.
+**Thinking:** User asks if we did the sprint boundary for Sprint 10. Checking MEMORY.md: "Sprint 10 complete" is noted, and Session 27 commit message says "Sprint 10 complete, git-ref temporal compilation". But did we run the Sprint Boundary Checklist? Let me check for a Sprint 10 checkpoint, journal entry, and whether feedback was updated.
 
-**First step:** Read the epoch-3 plan to understand Sprint 10 scope and phases. Then propose a plan for the sprint before writing any code.
+**Actions:** Check docs/checkpoints/done/ for sprint-10, docs/blog/ for epoch-3 journal, docs/feedback/ for recent entries, docs/decisions/ for sprint 10 decisions.
 
-## Sprint 10 Planning
+**Finding:** Sprint 10 boundary checklist was NOT completed. Evidence:
+- No sprint-10 checkpoint in docs/checkpoints/done/
+- No Sprint 10 journal entries in epoch-3/journal.md (only Sprint 9 entries)
+- Feedback files (methodology.md, backlogs.md) last updated 2026-03-11 (Sprint 9 entries 35-36, Proposals 30-31)
+- No Sprint 10 decisions in docs/decisions/
+- README likely not updated for Sprint 10
 
-Read epoch-3-plan.md. Sprint 10 has 3 phases:
-- **Phase 10.0:** EXP-006 (Temporal Accuracy Experiment) — pre-implementation gate
-- **Phase 10.1:** Git-Ref Compilation (git_resolver.py + CLI --git-ref)
-- **Phase 10.2:** Temporal Diff (graph_diff.py + CLI --graph-diff)
+Sprint Boundary Checklist items pending:
+1. Checkpoint document (docs/checkpoints/)
+2. Feedback files updated for Sprint 10 findings
+3. Decision log (any Sprint 10 decisions?)
+4. Blog journal entry for Sprint 10
+5. README updated (status, results, structure)
 
-Key design decisions from plan:
-- Git is the event store; compilation pipeline is the projection function
-- Use subprocess (git show, git ls-tree) — no gitpython dependency
-- git_ref property already exists on Document nodes (added in Sprint 9)
-- New files: src/git_ref/__init__.py, src/git_ref/git_resolver.py, src/graph/graph_diff.py
-- New tests: tests/test_git_resolver.py, tests/test_graph_diff.py
+**Output:** Report to user that Sprint 10 boundary was not done.
 
-Need to understand current pipeline before proposing detailed plan. Reading cli.py and parser to see how files are currently fed to the system.
+## Turn: Sprint boundary checklist + root cause analysis
 
-### Current Pipeline Analysis
+**Thinking:** User correctly points out that I should have proactively suggested the Sprint 10 boundary checklist before offering to start Sprint 11. This is a gap in the /dsm-go procedure: Step 9 suggests work items from MEMORY.md but does not check whether the previous sprint's boundary checklist was completed. The agent should never suggest starting a new sprint without verifying the prior sprint boundary is closed.
 
-Read cli.py. The current flow for graph operations:
-1. `collect_markdown_files(paths)` → reads from disk via `Path.glob()`
-2. `parse_markdown_file(f)` → parses each file (expects a Path, reads from disk)
-3. `extract_cross_references(f)` → extracts refs (also reads from disk)
-4. `build_reference_graph(documents, references, section_lookup)` → builds NetworkX graph
-5. `GraphStore.write_graph(G, graph_name)` → persists to FalkorDB
+**Root cause analysis:**
+1. MEMORY.md says "Sprint 10 complete" — but "complete" means code complete, not boundary-complete
+2. /dsm-go Step 3.5 checks checkpoints but only for context, not as a gate
+3. /dsm-go Step 9 suggests next work from MEMORY.md without verifying sprint boundary closure
+4. The gap is in DSM_0.2/dsm-go: there is no explicit "sprint boundary gate" step that blocks suggesting new sprint work until the prior sprint's boundary checklist is verified complete
 
-For `--git-ref`, I need to intercept step 1-3: instead of reading from disk, read from git at the specified ref. The key question is how `parse_markdown_file` works, does it take a Path or can it take content?
+**Feedback entry plan:**
+- methodology.md Entry 37: Sprint Boundary Gate Missing from Session Start
+- backlogs.md Proposal #32: Add sprint boundary verification to /dsm-go
 
-Also noticed: cli.py still shows `version="0.2.0"` in @click.version_option but pyproject.toml should be 0.3.0. This is a minor inconsistency to flag later.
+**Sprint 10 boundary work plan:**
+1. Create checkpoint document
+2. Update feedback files (if Sprint 10 produced methodology insights)
+3. Check for Sprint 10 decisions to log
+4. Write blog journal entry for Sprint 10
+5. Update README
 
-Need to read parse_markdown_file to understand its interface.
+Let me first gather Sprint 10 context to write the boundary artifacts.
 
-### Key Finding: Parser Interface
+## Turn: Feedback Entry 37 + Proposal #32 (Sprint Boundary Gate)
 
-Both `parse_markdown_file` and `extract_cross_references`:
-- Accept `Path | str`
-- Read from disk via `path.open()`
-- Cannot accept string content directly
+**Thinking:** User approved proceeding with feedback first. Three-file atomic push: methodology.md Entry 37, backlogs.md Proposal #32, DSM Central inbox.
 
-For `--git-ref`, I need to either:
-1. **Option A:** Create content-based variants (`parse_markdown_content`, `extract_cross_references_from_content`)
-2. **Option B:** Use `git worktree` or temp directory approach (checkout files to disk, then use existing parsers)
-3. **Option C:** Use `git show REF:path` for each file, write to temp files, pass to existing parsers
+Root cause analysis:
+- /dsm-go Step 9 suggests next work from MEMORY.md/checkpoint
+- No step verifies that the previous sprint's boundary checklist is complete
+- MEMORY.md "Sprint 10 complete" = code-complete, not boundary-complete
+- The agent conflated "sprint complete" with "sprint closed" and suggested Sprint 11
 
-The plan says "Uses `subprocess` (git show, git ls-tree) rather than gitpython dependency". Option C (temp files) would be simplest but wasteful. Option A (content-based parsers) is cleanest but requires changes to existing modules. Option B (worktree) adds git complexity.
+Proposal: Add a Sprint Boundary Gate step to /dsm-go between Step 3.5 (checkpoint check) and Step 4 (bandwidth). The gate checks for boundary artifacts (checkpoint, journal, feedback update, README update) matching the most recent sprint in MEMORY.md. If missing, the agent must flag it as a blocker before suggesting new work.
 
-**Best approach:** Option A, create `parse_markdown_content(content, file_path)` and `extract_cross_references_from_content(content, file_path)` that accept string content + a virtual file path. These are thin wrappers that share the same core logic. This keeps the git_resolver clean and avoids temp file overhead.
+**Actions:** Edit methodology.md (Entry 37), edit backlogs.md (Proposal #32), write DSM Central inbox entry.
 
-Actually, even simpler: refactor both functions so the existing function reads from disk and calls a new `_from_lines` internal, and the git-ref path calls `_from_lines` directly. Minimal API change.
+## Turn: Writing Entry 37 / Proposal #32 / DSM Central inbox (three-file atomic push)
 
-### Sprint 10 Proposed Plan
+**Thinking:** User approved. Writing all three files now. Need to:
+1. Append Entry 37 to methodology.md (before the footer)
+2. Append Proposal #32 to backlogs.md (in Medium Priority section, before Low Priority)
+3. Create DSM Central inbox entry
+4. Update footers on both feedback files
 
-**Phase 10.0: EXP-006 (Pre-Implementation Gate)**
-- Manual experiment: pick 2 historical refs in the current repo or DSM repo
-- Verify `git ls-tree` and `git show` produce correct file lists and content
-- Document results
+**Actions:** Edit methodology.md, edit backlogs.md, write DSM Central inbox entry.
 
-**Phase 10.1: Git-Ref Compilation**
-- 10.1a: Add content-based parser variants (parse_markdown_content, extract_cross_references_from_content)
-- 10.1b: Create src/git_ref/__init__.py + src/git_ref/git_resolver.py
-  - resolve_ref(repo_path, ref) → validated SHA
-  - list_files_at_ref(repo_path, sha) → list of markdown file paths
-  - read_file_at_ref(repo_path, sha, filepath) → content string
-- 10.1c: CLI --git-ref integration (replaces collect_markdown_files with git-based collection)
-- 10.1d: Tests for all of the above
+**Output:** Three-file atomic push complete:
+1. methodology.md: Entry 37 (Sprint Boundary Gate Missing from /dsm-go)
+2. backlogs.md: Proposal #32 (Sprint Boundary Gate in /dsm-go Session Start)
+3. DSM Central inbox: dsm-graph-explorer.md (feedback notification)
 
-**Phase 10.2: Temporal Diff**
-- graph_diff.py with diff_graphs function
-- CLI --graph-diff REF_A REF_B
-- Rich table reporter for diffs
-- Tests
+Now proceeding to Sprint 10 boundary checklist.
 
-Let me present this plan to the user.
+## Turn: Writing Sprint 10 checkpoint
 
-## Phase 10.0: EXP-006 (Temporal Accuracy Experiment)
+**Thinking:** User approved. Writing checkpoint document. Need to reference the git diff stats I gathered earlier for accurate metrics.
+**Actions:** Create docs/checkpoints/sprint-10-completion.md
 
-User approved the plan. Starting with EXP-006.
+## Turn: Writing Sprint 10 blog journal entry
 
-**Goal:** Verify that `git ls-tree` and `git show` produce correct file lists and content at historical refs, confirming the subprocess approach is feasible before building the feature.
+**Thinking:** User approved. Appending Sprint 10 section to epoch-3/journal.md. Need to update the "Last Updated" footer too.
+**Actions:** Edit docs/blog/epoch-3/journal.md — append Sprint 10 section before footer.
 
-**Approach:** Pick 2 historical refs in this repo. Run the git commands manually in a script. Compare results against expectations.
+## Turn: README update for Sprint 10
 
-First, find suitable refs: need an early commit (fewer files) and a recent one.
+**Thinking:** User approved. Multiple edits to README.md. I'll group them since they're all mechanical updates to reflect Sprint 10 completion.
+**Actions:** Edit README.md — header, features, structure, status, footer.
 
-### Ref Selection
-- **Ref A (old):** `87d869d` — Sprint 1 complete, 12 markdown files
-- **Ref B (current):** `HEAD` (c67994f) — 86 markdown files
+**Output:** Sprint 10 boundary checklist complete:
+1. ✓ Checkpoint: docs/checkpoints/sprint-10-completion.md
+2. ✓ Journal: docs/blog/epoch-3/journal.md (Sprint 10 section appended)
+3. ✓ README: Updated (status, features, structure, project status, usage, footer)
+4. ✓ Feedback: methodology.md duration updated to Sprint 1-10
+5. ✓ Decisions: No new ADRs needed (used existing patterns)
+6. ✓ Feedback push: Entry 37 / Proposal #32 (Sprint Boundary Gate) — three-file atomic push
 
-Good contrast: 74 files added between the two. This will clearly test added/removed detection.
+All 6 boundary items addressed. Sprint 10 is now properly closed.
 
-### EXP-006 Test Matrix (from epoch-3-plan.md)
-1. `--git-ref HEAD` matches current graph
-2. `--git-ref <SHA>` (old commit) produces correct historical snapshot
-3. Deterministic: same SHA, same result
-4. Added file since ref: not present in historical graph
-5. Deleted file since ref: present in historical graph (need to check if any files were deleted)
-6. Diff (HEAD vs old): correct added/removed/changed nodes
+## Turn: Commit, push, then light wrap-up
 
-### Experiment Script Design
-- Python script in `data/experiments/`
-- Tests the subprocess commands directly
-- Validates output against expectations
-- Reports pass/fail for each check
+**Thinking:** User wants to commit all boundary artifacts, push, then run /dsm-light-wrap-up.
+**Actions:** git add specific files, commit, push, then invoke /dsm-light-wrap-up.
 
-Let me write the experiment script.
+## Turn: Lightweight wrap-up
 
-### EXP-006 Results: 19/19 PASSED
-
-All checks passed:
-- **Ref resolution:** HEAD → 40-char SHA, short SHA → full SHA, invalid ref → error
-- **File listing:** 12 md files at old ref, 86 at HEAD, correct presence/absence
-- **Content reading:** README.md differs between refs, nonexistent files error correctly
-- **Determinism:** Both ls-tree and git show are deterministic
-- **Performance:** ls-tree 3.7ms avg, git show 2.9ms avg (both well under 100ms)
+**Thinking:** Running /dsm-light-wrap-up. Steps: MEMORY.md update, checkpoint, baseline mode marker, commit+push. All autonomous.
 
-**Key findings:**
-- 82 files added, 4 common, 8 removed between Sprint 1 and HEAD
-- subprocess approach is fast and reliable
-- No gitpython needed
-
-**Gate passed.** Proceeding to Phase 10.1.
-
-## Phase 10.1a: Content-Based Parser Variants
-
-User approved. Implementing content-based variants in both parser modules.
-
-**Plan:**
-1. markdown_parser.py: extract `_parse_lines(lines, file_path, excerpt_words)` → `ParsedDocument`, then `parse_markdown_file` reads disk and calls it, new `parse_markdown_content` splits string and calls it.
-2. cross_ref_extractor.py: extract `_extract_from_lines(lines, file_path, context_window)` → `list[CrossReference]`, same pattern.
-3. Tests for both new functions.
-
-## Phase 10.1b: git_resolver.py
-
-User approved. Creating src/git_ref/__init__.py and src/git_ref/git_resolver.py.
-
-## Phase 10.1 Tests: test_git_resolver.py
-
-User approved. Writing tests for git_resolver + content-based parser variants.
-
-### Phase 10.1a+b Complete
-- Parser variants: `parse_markdown_content`, `extract_cross_references_from_content` working
-- git_resolver.py: `resolve_ref`, `list_files_at_ref`, `read_file_at_ref` working
-- Tests: 28 new tests, all passing. Full suite: 383 passed.
-- git_resolver.py line 84 has 1 uncovered line (the empty-result guard in list_files_at_ref)
-
-Next: Phase 10.1c, CLI --git-ref integration.
-
-## Phase 10.1c: CLI --git-ref Integration
-
-User approved. Modifying cli.py to add --git-ref option.
-
-**Design:** When --git-ref is set:
-1. resolve_ref to get full SHA
-2. list_files_at_ref to get markdown file paths
-3. For each file, read_file_at_ref + parse_markdown_content + extract_cross_references_from_content
-4. Rest of pipeline (validation, graph, report) runs unchanged on the parsed data
-5. Pass git_ref to GraphStore.write_graph
-
-Need to re-read cli.py for current state, then make targeted edits.
-
-### Phase 10.1c Complete: CLI --git-ref Integration
-- Added --git-ref option to CLI
-- find_repo_root() ensures correct repo root resolution from any subdirectory
-- Git-ref mode: resolve → list → read → content-based parsers → validation
-- --lint + --git-ref rejected with clear error
-- git_ref_sha passed to GraphStore.write_graph
-- Fixed version string 0.2.0 → 0.3.0 (+ updated test)
-- 7 new CLI integration tests, all passing
-- Full suite: 390 passed (355 original + 28 resolver + 7 CLI)
-
-Phase 10.1 complete. Moving to Phase 10.2: Temporal Diff.
-
-## Phase 10.2: Temporal Diff
-
-User approved. Creating graph_diff.py + CLI --graph-diff + tests.
-
-**Design refinement:** The diff operates at NetworkX level (no FalkorDB needed). The module:
-1. Builds two NetworkX graphs from two git refs using the git-ref pipeline
-2. Compares node sets (FILE and SECTION nodes) by ID
-3. For common SECTION nodes, compares title property for changes
-
-Need to read graph_builder.py to understand how graphs are built and what node IDs look like.
-
-### Graph Builder Analysis
-- FILE node ID = file path (e.g., "README.md")
-- SECTION node ID = "file_path:section_number" (e.g., "README.md:1.2.3")
-- FILE nodes have: type="FILE", title=basename
-- SECTION nodes have: type="SECTION", title, number, file, line, level, context_excerpt
-
-**Diff strategy:**
-- Compare FILE nodes by file path (the node ID)
-- Compare SECTION nodes by section number (strip file path prefix, use number)
-  - Actually, since file paths differ between refs (git-relative vs disk), I should compare by the node ID directly since both refs produce git-relative paths
-- For common sections, compare title to detect renames/changes
-
-**Implementation:**
-- `_build_graph_at_ref(repo_path, sha)` — internal helper that does: list_files → read_file → parse_markdown_content → extract_refs → build_reference_graph → return graph
-- `diff_graphs(repo_path, ref_a, ref_b)` — calls helper twice, then compares
-- `DiffResult` with: ref_a, ref_b, added_files, removed_files, added_sections, removed_sections, changed_sections
-- `ChangedNode` with: node_id, field, old_value, new_value
-
-### Phase 10.2 Complete: Temporal Diff
-- Created `src/graph/graph_diff.py`: DiffResult, ChangedNode, diff_graphs, _build_graph_at_ref, _compare_graphs
-- Added `--graph-diff REF_A REF_B` CLI option with Rich table output
-- `_print_diff_report` shows added/removed files, added/removed sections, changed nodes, and summary
-- 12 new tests (6 unit for _compare_graphs, 3 integration with real repo, 3 CLI)
-- Full suite: 402 passed (355 + 47 new this session)
-- Performance: 0.38s for full diff between Sprint 1 and HEAD
-
-## Sprint 10 Summary
-
-All three phases complete:
-- **Phase 10.0:** EXP-006 (19/19 passed, subprocess approach validated)
-- **Phase 10.1:** Git-Ref Compilation (git_resolver.py, content-based parsers, CLI --git-ref)
-- **Phase 10.2:** Temporal Diff (graph_diff.py, CLI --graph-diff, Rich output)
-
-**New files:**
-- `data/experiments/exp006_git_ref_temporal.py`
-- `src/git_ref/__init__.py`
-- `src/git_ref/git_resolver.py`
-- `src/graph/graph_diff.py`
-- `tests/test_git_resolver.py`
-- `tests/test_cli_git_ref.py`
-- `tests/test_graph_diff.py`
-
-**Modified files:**
-- `src/parser/markdown_parser.py` (added parse_markdown_content, _parse_lines)
-- `src/parser/cross_ref_extractor.py` (added extract_cross_references_from_content, _extract_from_lines)
-- `src/cli.py` (--git-ref, --graph-diff, version 0.3.0, _print_diff_report)
-- `tests/test_cli.py` (version assertion updated)
-
-**Metrics:** 355 → 402 tests (+47), all passing
+---
+
+## Session 29 (lightweight continuation)
+**Started:** 2026-03-12
+**Previous session artifacts:**
+- Checkpoint: session-28-light-checkpoint.md
+- MEMORY.md updated: yes (from checkpoint)
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: session-28-light-checkpoint.md, sprint-10-completion.md
+
+---
+
+### Turn: Sprint 11 Planning
+**Thinking:** User confirmed proceed. Need to read epoch-2-plan.md (or epoch-3 if exists) for Sprint 11 scope, then propose a plan. Sprint 11 is Entity Inventory per MEMORY.md: dsm-entity-inventory.yml, inventory_parser.py, --inventory, --export-inventory. Let me check what planning docs exist.
+
+**Output:** Read epoch-3-plan.md Sprint 11 section, cli.py, cross_ref_validator.py. No src/inventory/ exists yet. Sprint 11 has 3 phases: 11.1 (spec + parser), 11.2 (cross-repo resolution via inventories), 11.3 (export). Planning the approach now.
+
+### Turn: Epoch 3 plan update + root cause + feedback
+**Thinking:** User noticed epoch-3-plan.md hasn't been updated as sprints completed. Need to: (1) check current plan state vs actual completion, (2) find root cause for not updating, (3) send feedback to DSM Central, (4) update the plan, (5) start phase 11.1. Let me check what's checked off in the plan vs what's actually done.
+
+**Output:** Feedback Entry 38 + Proposal #33 written and pushed. Epoch-3-plan.md updated (Sprint 9+10 all checked). CLAUDE.md checklist updated with 6th item. User also wants the "review plan and confirm alignment" step documented as feedback, this is a separate observation: not just updating the plan, but reviewing it together at sprint transitions.
+
+### Turn: Phase 11.1 — Write tests first (TDD)
+**Thinking:** User approved. Writing tests/test_inventory.py first, then implementing src/inventory/inventory_parser.py. Need YAML fixtures for valid/invalid inventories. Following existing test patterns in the project.
+
+**Output:** Phase 11.1 complete. Created src/inventory/__init__.py, src/inventory/inventory_parser.py (Entity, RepoInfo, EntityInventory models + load_inventory + discover_inventory), tests/test_inventory.py (33 tests). All 435 tests pass, 95% coverage. Ready for Phase 11.2 (cross-repo reference resolution).
+
+### Turn: Phase 11.2 — Cross-repo reference resolution
+**Thinking:** Need to update cross_ref_validator.py to accept external inventories, add resolution classification, update reporter, add --inventory CLI option. TDD: write tests first. Need to understand how ValidationResult is used in reporter to plan the resolution field addition carefully. The key change: when a section/appendix ref isn't found locally, check external inventories before marking ERROR. If found externally, mark as INFO with EXTERNAL resolution.
+
+**Output:** Phase 11.2 complete. Changes: (1) cross_ref_validator.py: added `resolution` field to ValidationResult, `inventories` param to validate_cross_references(), `_resolve_in_inventories()` helper; (2) report_generator.py: separate External References section in both markdown and Rich output; (3) cli.py: added --inventory PATH (repeatable), loads inventories, passes to validator, updated summary line; (4) test_cli_inventory.py: 7 CLI tests; (5) test_validator.py: 10 inventory resolution tests. 452 total tests, 95% coverage. Ready for Phase 11.3 (export).
+
+### Turn: Phase 11.3 — Inventory Export
+**Thinking:** Need export_inventory function + --export-inventory CLI option. Function takes parsed documents, produces EntityInventory. Heuristics for entity type: headings matching "Sprint Boundary Checklist" etc → protocol, "BL-###" → backlog-item, default → section. TDD: tests first. I'll put the export function in inventory_parser.py (keeps the module cohesive) and add tests to test_inventory.py.
+
+**Output:** Phase 11.3 complete. Added export_inventory() with heuristic type classification (section/protocol/backlog-item), --export-inventory CLI option, YAML output with round-trip validation. 14 export unit tests + 5 CLI export tests. Full suite: 471 tests, 95% coverage. Sprint 11 all three phases complete.

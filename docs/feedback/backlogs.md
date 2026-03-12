@@ -371,6 +371,39 @@
 
 - **Evidence:** dsm-graph-explorer Session 28 (2026-03-12). Sprint 10 code committed in Session 27 (c8839e7). Session 28 `/dsm-go` loaded MEMORY.md ("Sprint 10 complete"), found no pending checkpoints (all moved to `done/` in Session 27), and suggested Sprint 11. User caught the missing boundary. Investigation confirmed: no Sprint 10 checkpoint, no journal entry, no README update, no feedback update. See `methodology.md` Entry 37.
 
+### Proposal #33: Epoch Plan Update in Sprint Boundary Checklist
+- **DSM Section:** DSM 2.0 Template 8 (Sprint Boundary Checklist), CLAUDE.md (project-level checklist)
+- **Problem:** The Sprint Boundary Checklist lists 5 items (checkpoint, feedback, decisions, journal, README) but does not include "update epoch plan." The epoch plan document (`docs/plans/epoch-N-plan.md`) is the roadmap for the epoch; it contains per-sprint task lists with checkboxes. Since the checklist drives wrap-up behavior, the plan is systematically skipped at every sprint boundary. In dsm-graph-explorer, `epoch-3-plan.md` was created at Session 24 (Sprint 9 start) and never updated through Sprint 9 and Sprint 10 completion, leaving all tasks as `[ ]` despite both sprints being fully delivered.
+- **Proposed Solution:** Add a sixth item to the Sprint Boundary Checklist:
+
+  ```
+  - [ ] Epoch plan updated (completed tasks checked off, sprint status updated)
+  ```
+
+  At sprint wrap-up, the agent marks the current sprint's tasks as `[x]` in the epoch plan and updates the sprint status from `PLANNED` to `COMPLETE`. This takes one edit per sprint and keeps the plan accurate as a progress tracker.
+
+- **Evidence:** dsm-graph-explorer Session 29 (2026-03-12). `epoch-3-plan.md` created at Session 24. Sprints 9 and 10 fully complete (402 tests, all phases delivered, boundary checklists done for both). All 40+ task checkboxes in Sprints 9 and 10 still show `[ ]`. The plan lost its value as a progress instrument. Root cause: not in the checklist. See `methodology.md` Entry 38.
+
+### Proposal #34: Alignment Review at Sprint Transitions
+- **DSM Section:** DSM 2.0 Template 8 (Sprint Boundary Checklist), DSM_0.2 (Custom Instructions / session protocol)
+- **Problem:** Even with Proposal #33's plan update step, the epoch plan is treated as a documentation artifact updated mechanically. But it is also a collaboration artifact reflecting shared understanding of scope and progress. Without a review step, the user must independently verify every checkbox and catch drift between plan and reality. In Session 29, after updating epoch-3-plan.md, the user explicitly requested: "confirm we are aligned and highlight any changes." The agent had no protocol step prompting this review.
+- **Proposed Solution:** Add an "Alignment Review" step to the sprint transition protocol, after the plan update (Proposal #33) and before starting new sprint work:
+
+  ```
+  Sprint Transition — Alignment Review:
+  After updating the epoch plan, present a summary to the user:
+  1. What was completed (tasks checked off)
+  2. Deviations from the original plan (scope changes, reordering)
+  3. Additions not in the plan (new modules, extra tests, unplanned work)
+  4. Current epoch progress (N of M MUSTs, N of M SHOULDs)
+  5. Next sprint scope for confirmation
+  Wait for user confirmation before starting the next sprint.
+  ```
+
+  This is a collaboration checkpoint, not a documentation step. It ensures the user and agent share the same understanding of where the project stands and where it's going.
+
+- **Evidence:** dsm-graph-explorer Session 29 (2026-03-12). Agent updated epoch-3-plan.md (Sprint 9+10 checkboxes). User requested explicit alignment review and confirmation. Several deviations from original plan existed (find_repo_root() not planned, content-based parser variants not planned, CLI version bump). Without the review, these would have gone unnoticed. See `methodology.md` Entry 39.
+
 ---
 
 ## Low Priority
@@ -380,5 +413,5 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-03-12
-**Total Proposals:** 32
-**Pushed:** 2026-03-12 (Proposal #32 pushed simultaneously with creation)
+**Total Proposals:** 34
+**Pushed:** 2026-03-12 (Proposal #34 pushed simultaneously with creation)

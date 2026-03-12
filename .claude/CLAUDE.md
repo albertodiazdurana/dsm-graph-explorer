@@ -100,6 +100,7 @@ Wait for approval before generating. Trivial artifacts (`.gitkeep`, minor config
   - [ ] Decision log updated with sprint decisions (`docs/decisions/`)
   - [ ] Blog journal entry written (`docs/blog/<epoch>/journal.md`)
   - [ ] Repository README updated (status, results, structure)
+  - [ ] Epoch plan updated (completed tasks checked off, sprint status updated)
 - At phase boundaries (intra-sprint): update blog materials if insights worth sharing
 
 ## Blog Integration

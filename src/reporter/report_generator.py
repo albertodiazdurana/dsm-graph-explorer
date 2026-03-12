@@ -37,7 +37,11 @@ def generate_markdown_report(
         semantic_results = []
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
-    infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
+    external = [r for r in cross_ref_results if r.resolution == "external"]
+    infos = [
+        r for r in cross_ref_results
+        if r.severity == Severity.INFO and r.resolution != "external"
+    ]
 
     lines: list[str] = []
     lines.append("# DSM Integrity Report")
@@ -47,10 +51,11 @@ def generate_markdown_report(
     lines.append(f"- **Errors:** {len(errors)}")
     lines.append(f"- **Warnings:** {len(warnings)}")
     lines.append(f"- **Info:** {len(infos)}")
+    lines.append(f"- **External references:** {len(external)}")
     lines.append(f"- **Version mismatches:** {len(version_results)}")
     lines.append("")
 
-    if not errors and not warnings and not infos and not version_results:
+    if not errors and not warnings and not infos and not external and not version_results:
         lines.append("No issues found. All cross-references and versions are consistent.")
         lines.append("")
     else:
@@ -87,6 +92,19 @@ def generate_markdown_report(
             lines.append("| File | Line | Type | Target | Message |")
             lines.append("|------|------|------|--------|---------|")
             for r in infos:
+                lines.append(
+                    f"| {r.source_file} | {r.line} | {r.ref_type} | "
+                    f"{r.target} | {r.message} |"
+                )
+            lines.append("")
+
+        # External references section
+        if external:
+            lines.append("## External References")
+            lines.append("")
+            lines.append("| File | Line | Type | Target | Resolved Via |")
+            lines.append("|------|------|------|--------|-------------|")
+            for r in external:
                 lines.append(
                     f"| {r.source_file} | {r.line} | {r.ref_type} | "
                     f"{r.target} | {r.message} |"
@@ -162,7 +180,11 @@ def print_rich_report(
 
     errors = [r for r in cross_ref_results if r.severity == Severity.ERROR]
     warnings = [r for r in cross_ref_results if r.severity == Severity.WARNING]
-    infos = [r for r in cross_ref_results if r.severity == Severity.INFO]
+    external = [r for r in cross_ref_results if r.resolution == "external"]
+    infos = [
+        r for r in cross_ref_results
+        if r.severity == Severity.INFO and r.resolution != "external"
+    ]
 
     # Header
     console.print()
@@ -173,11 +195,13 @@ def print_rich_report(
     error_style = "red bold" if errors else "green"
     warn_style = "yellow" if warnings else "green"
     info_style = "blue" if infos else "green"
+    ext_style = "cyan" if external else "green"
     version_style = "red bold" if version_results else "green"
 
     console.print(f"  Errors:             [{error_style}]{len(errors)}[/{error_style}]")
     console.print(f"  Warnings:           [{warn_style}]{len(warnings)}[/{warn_style}]")
     console.print(f"  Info:               [{info_style}]{len(infos)}[/{info_style}]")
+    console.print(f"  External refs:      [{ext_style}]{len(external)}[/{ext_style}]")
     console.print(f"  Version mismatches: [{version_style}]{len(version_results)}[/{version_style}]")
 
     # Semantic summary counts
@@ -197,7 +221,7 @@ def print_rich_report(
 
     console.print()
 
-    has_issues = errors or warnings or infos or version_results or drift or insufficient
+    has_issues = errors or warnings or infos or external or version_results or drift or insufficient
     if not has_issues:
         console.print("[green]No issues found.[/green]")
         console.print()
@@ -243,6 +267,21 @@ def print_rich_report(
         table.add_column("Message")
 
         for r in infos:
+            table.add_row(r.source_file, str(r.line), r.ref_type, r.target, r.message)
+
+        console.print(table)
+        console.print()
+
+    # External references table
+    if external:
+        table = Table(title="External References", title_style="cyan")
+        table.add_column("File", style="cyan")
+        table.add_column("Line", justify="right")
+        table.add_column("Type")
+        table.add_column("Target", style="bold")
+        table.add_column("Resolved Via")
+
+        for r in external:
             table.add_row(r.source_file, str(r.line), r.ref_type, r.target, r.message)
 
         console.print(table)
