@@ -43,8 +43,8 @@ upgrade to enable it was decided in DEC-007.
 - [x] EXP-005: validate FalkorDBLite with existing graph data (Sprint 9)
 - [x] Git-ref temporal compilation: `--git-ref` flag (Sprint 10)
 - [x] Entity inventory format: per-repo referenceable entity manifest (Sprint 11)
-- [ ] Cross-repo edges: typed edges for inbox, @-imports, ecosystem paths (Sprint 12)
-- [ ] BL-156: private-to-public repo mapping with drift detection (Sprint 12)
+- [x] Cross-repo edges: typed edges for inbox, @-imports, ecosystem paths (Sprint 12)
+- [x] BL-156: private-to-public repo mapping with drift detection (Sprint 12)
 
 **SHOULD (Epoch 3 Enhancements):**
 - [ ] Incremental graph updates (avoid full rebuild on unchanged files)
@@ -66,8 +66,8 @@ upgrade to enable it was decided in DEC-007.
 - [x] Graph survives CLI restarts (data persists on disk)
 - [x] `--git-ref` produces a correct historical snapshot of the graph
 - [x] Entity inventory format is machine-readable and human-editable
-- [ ] Cross-repo node matching works via entity inventory lookup
-- [ ] BL-156: private DSM and public DSM can be modeled as separate graphs with cross-repo edges
+- [x] Cross-repo node matching works via entity inventory lookup
+- [x] BL-156: private DSM and public DSM can be modeled as separate graphs with cross-repo edges
 
 **Process:**
 - [x] Each sprint produces a working increment
@@ -78,7 +78,7 @@ upgrade to enable it was decided in DEC-007.
 **Deliverable:**
 - [x] Persistent graph CLI with `--graph-db PATH --git-ref REF`
 - [x] Entity inventory spec and parser
-- [ ] Cross-repo mapping support for DSM Central (BL-156)
+- [x] Cross-repo mapping support for DSM Central (BL-156)
 
 ---
 
@@ -375,10 +375,10 @@ entities:
 
 ### Sprint 12: Cross-Repo Edges + BL-156
 
-**Duration:** 1-2 sessions
+**Duration:** 1 session (actual: 1 session)
 **Objective:** Build cross-repo graph support with typed edges for existing DSM
 cross-repo mechanisms, and fulfill BL-156 (private-to-public repo mapping).
-**Status:** PLANNED
+**Status:** COMPLETE
 
 #### Design
 
@@ -397,55 +397,55 @@ and tracks drift (sections that diverged between private and public versions).
 #### Phase 12.1: Typed Cross-Repo Edges
 
 **Tasks:**
-1. [ ] Define cross-repo edge types:
+1. [x] Define cross-repo edge types:
    - `INBOX_NOTIFICATION`: source sends inbox entry to target repo
    - `AT_IMPORT`: source imports a file from target repo
    - `ECOSYSTEM_LINK`: Ecosystem Path Registry entry between repos
-2. [ ] Create `src/graph/cross_repo.py`:
-   - [ ] `CrossRepoBridge`: manages the `_cross_repo` graph in FalkorDB
-   - [ ] `add_edge(source_repo, target_repo, edge_type, properties)`: creates cross-repo edge
-   - [ ] `edges_for_repo(repo_name)`: all cross-repo edges involving a repo
-3. [ ] Update `--graph-db` pipeline to detect and store cross-repo references
-4. [ ] Write tests for cross-repo edge operations
+2. [x] Create `src/graph/cross_repo.py`:
+   - [x] `CrossRepoBridge`: manages the `_cross_repo` graph in FalkorDB
+   - [x] `add_edge(source_repo, target_repo, edge_type, properties)`: creates cross-repo edge
+   - [x] `edges_for_repo(repo_name)`: all cross-repo edges involving a repo
+3. [x] Update `--graph-db` pipeline to detect and store cross-repo references
+4. [x] Write tests for cross-repo edge operations
 
 #### Phase 12.2: BL-156 Private-to-Public Mapping
 
 **Tasks:**
-1. [ ] Add `--compare-repo INVENTORY_PATH` CLI option:
-   - [ ] Loads a second repo's entity inventory
-   - [ ] Matches nodes by entity ID or heading similarity
-   - [ ] Classifies match types: IDENTICAL, RENAMED, MODIFIED, ADDED, REMOVED
-2. [ ] Create `src/graph/repo_diff.py`:
-   - [ ] `RepoDiff`: match results between two repos
-   - [ ] `MatchResult`: entity_a, entity_b, match_type, similarity_score
-   - [ ] Uses entity IDs for exact matching; TF-IDF for fuzzy matching (reuses Sprint 6)
-3. [ ] Store mapping results in `_cross_repo` bridge graph as `MAPS_TO` edges
-4. [ ] Reporter: show mapping table with match types and similarity scores
-5. [ ] Write tests with fixture inventories (private-like and public-like)
+1. [x] Add `--compare-repo INV_A INV_B` CLI option:
+   - [x] Loads two repo entity inventories
+   - [x] Matches nodes by entity ID or heading similarity
+   - [x] Classifies match types: IDENTICAL, RENAMED, MODIFIED, ADDED, REMOVED
+2. [x] Create `src/graph/repo_diff.py`:
+   - [x] `compare_inventories()`: match results between two repos
+   - [x] `MatchResult`: entity_a, entity_b, match_type, similarity_score
+   - [x] Uses entity IDs for exact matching; TF-IDF for fuzzy matching (reuses Sprint 6)
+3. [x] Store mapping results in `_cross_repo` bridge graph as `MAPS_TO` edges
+4. [x] Reporter: show mapping table with match types and similarity scores
+5. [x] Write tests with fixture inventories (private-like and public-like)
 
 #### Phase 12.3: Drift Detection
 
 **Tasks:**
-1. [ ] Add `--drift-report` CLI option:
-   - [ ] Queries `_cross_repo` graph for MODIFIED nodes
-   - [ ] Shows sections present in both repos with content divergence
-   - [ ] Uses similarity threshold from DEC-005 (0.35)
-2. [ ] Write drift detection tests
+1. [x] Add `--drift-report` CLI option:
+   - [x] Filters comparison results for MODIFIED/RENAMED matches
+   - [x] Shows sections present in both repos with content divergence
+   - [x] Uses similarity threshold from DEC-005
+2. [x] Write drift detection tests
 
 #### Sprint 12 Deliverables
 
-- [ ] Typed cross-repo edges (INBOX_NOTIFICATION, AT_IMPORT, ECOSYSTEM_LINK)
-- [ ] `_cross_repo` bridge graph in FalkorDB
-- [ ] `--compare-repo INVENTORY_PATH` with match classification
-- [ ] `MAPS_TO` cross-repo edges with match type properties
-- [ ] `--drift-report` for divergence analysis
-- [ ] BL-156 fulfilled: private/public DSM comparison supported
+- [x] Typed cross-repo edges (INBOX_NOTIFICATION, AT_IMPORT, ECOSYSTEM_LINK, MAPS_TO)
+- [x] `CrossRepoBridge` bridge graph manager
+- [x] `--compare-repo INV_A INV_B` with three-pass match classification
+- [x] `MAPS_TO` cross-repo edges with match type properties
+- [x] `--drift-report` for divergence analysis
+- [x] BL-156 fulfilled: private/public DSM comparison supported
 
 **Sprint boundary checklist:**
-- [ ] Checkpoint document
-- [ ] Feedback files updated
-- [ ] Blog journal entry
-- [ ] README updated (major feature)
+- [x] Checkpoint document
+- [x] Feedback files updated
+- [x] Blog journal entry
+- [x] README updated (major feature)
 
 ---
 
@@ -571,8 +571,8 @@ dsm-graph-explorer/
 
 ---
 
-**Plan Status:** ACTIVE (Epoch 3, Sprints 9-11 complete, Sprint 12 next)
-**Last Updated:** 2026-03-12
+**Plan Status:** ACTIVE (Epoch 3, Sprints 9-12 complete, all MUSTs done)
+**Last Updated:** 2026-03-13
 **Previous:** [epoch-2-plan.md](epoch-2-plan.md)
 **Research:** [epoch-3-neo4j-landscape-research.md](../research/epoch-3-neo4j-landscape-research.md), [epoch-3-falkordblite-deep-dive.md](../research/epoch-3-falkordblite-deep-dive.md)
 **Decisions:** [DEC-006](../decisions/DEC-006-graph-database-selection.md), [DEC-007](../decisions/DEC-007-python-312-upgrade.md)

@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.3.0
-**Status:** Epoch 3 in progress (Sprint 11 complete, Sprint 12 next)
+**Status:** Epoch 3 in progress (Sprint 12 complete, boundary checklist done)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
 
@@ -92,8 +92,14 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - EXTERNAL classification for references resolved via inventory (distinct from UNKNOWN)
 - Inventory export (`--export-inventory PATH`) with type heuristics for sections, protocols, and backlog items
 
-**Future (Epoch 3+):**
-- Cross-repo reference edges and drift reports
+**Implemented (Sprint 12 — Cross-Repo Edges + BL-156):**
+- Cross-repo bridge graph (`CrossRepoBridge`) with typed edges: INBOX_NOTIFICATION, AT_IMPORT, ECOSYSTEM_LINK, MAPS_TO
+- Three-pass entity matching algorithm: exact ID → heading → TF-IDF fuzzy (reuses Sprint 6 threshold)
+- Repo comparison (`--compare-repo INV_A INV_B`) showing match types: IDENTICAL, RENAMED, MODIFIED, ADDED, REMOVED
+- Drift detection (`--drift-report`) filtering to diverged sections between private and public repos
+- BL-156 fulfilled: private-to-public DSM repository mapping with drift tracking
+
+**Future (Epoch 4+):**
 - Cypher query library for navigation
 - spaCy NER for advanced reference extraction
 - LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
@@ -135,6 +141,9 @@ dsm-graph-explorer/
 │   ├── test_git_resolver.py # Git-ref resolver tests
 │   ├── test_cli_git_ref.py  # Git-ref CLI integration tests
 │   ├── test_inventory.py      # Entity inventory tests
+│   ├── test_cross_repo.py     # Cross-repo bridge graph tests
+│   ├── test_repo_diff.py      # Repo comparison tests
+│   ├── test_cli_compare.py    # Cross-repo CLI integration tests
 │   ├── test_linter.py       # Convention linting tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
@@ -245,6 +254,12 @@ dsm-validate /path/to/dsm-repo --git-ref v1.0
 # Compare reference graphs between two git refs
 dsm-validate /path/to/dsm-repo --graph-diff main feature-branch
 
+# Compare two repo inventories (cross-repo entity matching)
+dsm-validate --compare-repo inventory-a.yml inventory-b.yml
+
+# Drift report (show diverged sections between repos)
+dsm-validate --compare-repo inventory-a.yml inventory-b.yml --drift-report
+
 # Combine semantic with other options
 dsm-validate /path/to/dsm-repo --semantic --strict --output report.md
 ```
@@ -335,7 +350,10 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
   - Phase 11.1: Inventory spec and parser (`src/inventory/inventory_parser.py`, Pydantic models, 33 tests)
   - Phase 11.2: Cross-repo reference resolution (`--inventory PATH`, EXTERNAL classification, 17 tests)
   - Phase 11.3: Inventory export (`--export-inventory PATH`, type heuristics, 19 tests)
-- [ ] **Sprint 12:** Cross-Repo Edges + BL-156 (`--compare-repo`, `--drift-report`)
+- [x] **Sprint 12:** Cross-Repo Edges + BL-156 — `CrossRepoBridge`, three-pass entity matching, `--compare-repo`, `--drift-report`, BL-156 complete (513 tests, 95% coverage)
+  - Phase 12.1: `src/graph/cross_repo.py` (CrossRepoBridge, EdgeType, 19 tests)
+  - Phase 12.2: `src/graph/repo_diff.py` (compare_inventories, three-pass matching, 13 tests)
+  - Phase 12.3: CLI `--compare-repo INV_A INV_B`, `--drift-report` (10 tests)
 
 ---
 
@@ -370,7 +388,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-03-12
-**Current Status:** Epoch 3 in progress (Sprint 11 complete: entity inventory)
-**Tests:** 471 passed, 95% coverage
+**Last Updated:** 2026-03-13
+**Current Status:** Epoch 3 in progress (Sprint 12 complete: cross-repo edges + BL-156)
+**Tests:** 513 passed, 95% coverage
 **DSM Feedback:** 40 methodology entries, 35 improvement proposals

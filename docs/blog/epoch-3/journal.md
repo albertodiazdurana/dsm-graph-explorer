@@ -210,4 +210,51 @@
 
 ---
 
-**Last Updated:** 2026-03-12
+## Session: 2026-03-13 — Sprint 12: Cross-Repo Edges + BL-156
+
+### What Happened
+
+1. **Phase 12.1: Typed Cross-Repo Edges** — Created `src/graph/cross_repo.py` with `CrossRepoBridge` class managing a `_cross_repo` bridge graph. Defined four edge types via `EdgeType` enum: `INBOX_NOTIFICATION`, `AT_IMPORT`, `ECOSYSTEM_LINK`, and `MAPS_TO`. The bridge stores cross-repo relationships separately from per-repo graphs, using `store_mapping()` to persist entity matches. 19 tests in `tests/test_cross_repo.py`.
+
+2. **Phase 12.2: BL-156 Private-to-Public Mapping** — Built `src/graph/repo_diff.py` with `compare_inventories()` implementing a three-pass entity matching algorithm: (1) exact ID match, (2) heading match, (3) fuzzy TF-IDF similarity (reusing Sprint 6's threshold). Match types: IDENTICAL, RENAMED, MODIFIED, ADDED, REMOVED. Added `--compare-repo INV_A INV_B` CLI option showing match results as a Rich table. 13 tests in `tests/test_repo_diff.py`.
+
+3. **Phase 12.3: Drift Detection** — Added `--drift-report` CLI option that filters comparison results to show only MODIFIED and RENAMED matches, highlighting sections that diverged between private and public repos. 10 CLI integration tests in `tests/test_cli_compare.py`.
+
+4. **BL-156 Complete** — The combination of entity inventories (Sprint 11) and cross-repo edges (Sprint 12) fulfills BL-156: private and public DSM repositories can be modeled as separate entity inventories, compared via `--compare-repo`, and divergence tracked via `--drift-report`.
+
+### Aha Moments
+
+1. **Bridge graph as separation of concerns** — Cross-repo relationships live in their own graph (`_cross_repo`), not mixed into per-repo graphs. This means per-repo graphs remain self-contained and can be rebuilt independently. The bridge graph is a join table in graph form: it only stores relationships, not entity data. This mirrors the relational pattern of a many-to-many junction table.
+
+2. **Three-pass matching as progressive refinement** — Exact ID match catches the easy cases (same entity ID in both repos). Heading match catches renamed entities where the ID changed but the heading didn't. TF-IDF catches semantic matches where both changed. Each pass is cheaper than the next, so the algorithm exits early when possible. This is the same tiered approach used in Sprint 6's semantic validation: simple checks first, expensive checks only for unresolved cases.
+
+3. **Inventory as the federation layer** — Sprint 11's entity inventories turned out to be the key enabler. Without per-repo manifests, cross-repo comparison would require parsing both repos from scratch. With inventories, comparison is an inventory-to-inventory operation: fast, offline, and independent of the actual markdown files. The inventory is the API contract between repos.
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| New source files | 2 (`cross_repo.py`, `repo_diff.py`) |
+| Modified source files | 2 (`cli.py`, `graph/__init__.py`) |
+| New test files | 3 (`test_cross_repo.py`, `test_repo_diff.py`, `test_cli_compare.py`) |
+| Tests added | 42 (19 + 13 + 10) |
+| Total tests | 513 |
+| Coverage | 95% |
+| Sessions | 1 (Session 31) |
+
+### Blog Material
+
+**Sprint 12 narrative threads:**
+- Bridge graphs as junction tables: modeling cross-repo relationships without contaminating per-repo data
+- Three-pass entity matching: progressive refinement from exact to fuzzy
+- Entity inventories as a federation API: comparing repos without parsing them
+- BL-156 retrospective: from backlog item to working feature across two sprints (11+12)
+
+**Title options for Sprint 12 blog:**
+1. "Cross-Repo Knowledge Graphs: Bridge Graphs, Entity Matching, and Drift Detection"
+2. "Comparing Documentation Repositories: A Three-Pass Entity Matching Algorithm"
+3. "From Backlog to Feature: How BL-156 Became a Two-Sprint Cross-Repo Solution"
+
+---
+
+**Last Updated:** 2026-03-13

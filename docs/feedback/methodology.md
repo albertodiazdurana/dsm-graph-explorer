@@ -4,7 +4,7 @@
 **Author:** Alberto Diaz Durana
 **DSM Version Used:** DSM 4.0 v1.0, DSM 1.0 v1.1
 **Date:** 2026-01-31 (started)
-**Duration:** Sprint 1-10 complete
+**Duration:** Sprint 1-12 complete
 
 ---
 
@@ -443,9 +443,18 @@
 - **Recommendation:** Add a 7th item to the Sprint Boundary Checklist: "Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)." The notification should be a brief structured file (project name, sprint number, key deliverables, test count) dropped into each target's `_inbox/`. See `backlogs.md` Proposal #35.
 - **Pushed:** 2026-03-12
 
+### Entry 41: Ecosystem Alignment Gate Before Epoch Planning
+- **Date:** 2026-03-13 | **Sprint:** Epoch 3/4 transition | **Type:** Gap / Process
+- **Context:** After completing Sprint 12 (the final sprint of Epoch 3), the natural next step is drafting an Epoch 4 plan. The Research Gate protocol (Entry 32, Proposal #27) prescribes Idea -> Research -> Plan -> Action, addressing technical uncertainty within the project. However, DSM Graph Explorer has been in development across 12 sprints and 3 epochs since 2026-01-31. During that time, the DSM ecosystem itself has evolved: new DSM versions, adopted proposals, structural changes, new spoke projects. The project's CLAUDE.md locally implements several proposals (#15, #24, #30, #31) that may or may not have been adopted into the canonical DSM. Without checking, the next epoch could be planned against stale ecosystem assumptions.
+- **Finding:** Long-running projects spanning multiple epochs experience DSM ecosystem evolution that needs to be analyzed before designing the next phase. The Research Gate addresses "what technology should we use?" but not "has the environment we build for changed?" At epoch boundaries, the project should consult DSM Central to understand: (1) which DSM versions are current, (2) which submitted proposals have been adopted, declined, or are pending, (3) whether new spoke projects or ecosystem patterns create new requirements, and (4) whether portfolio-level goals affect scope priorities. This is distinct from the Research Gate (which addresses implementation uncertainty) and from the Sprint Boundary Gate (which verifies local checklist completion). It is an ecosystem alignment gate that ensures the project plans its next phase against the current state of the world, not the state from when the previous epoch started.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 4 (Avg: 4.50)
+- **Reasoning:** The gap becomes more impactful as projects grow longer. A 2-sprint project in one epoch has minimal ecosystem drift. A 12-sprint project across 3 epochs (6+ weeks) can accumulate significant drift: DSM versions change, proposals get adopted or declined, new spoke projects emerge, portfolio priorities shift. Without an alignment step, the project plans in isolation. The cost is one `_inbox/` message to DSM Central and waiting for a response before drafting the epoch plan. The value is ensuring the next epoch builds on current ecosystem state.
+- **Recommendation:** Add an "Ecosystem Alignment Gate" to the epoch transition protocol, positioned between the Research Gate and the epoch plan draft. Before drafting any epoch plan, the project sends a structured alignment request to DSM Central's `_inbox/` describing: current project state, candidate items for the next epoch, and specific questions about ecosystem evolution. The project waits for DSM Central's response before finalizing the plan. This ensures the plan is grounded in the current ecosystem, not assumptions from the previous epoch's start. See `backlogs.md` Proposal #36.
+- **Pushed:** 2026-03-13
+
 ---
 
-**Last Updated:** 2026-03-12
-**Entries So Far:** 40
-**Average Score:** 3.75
-**Pushed:** 2026-03-12 (Entry 40 pushed simultaneously with creation)
+**Last Updated:** 2026-03-13
+**Entries So Far:** 41
+**Average Score:** 3.76
+**Pushed:** 2026-03-13 (Entry 41 pushed simultaneously with creation)

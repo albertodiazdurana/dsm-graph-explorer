@@ -433,6 +433,35 @@
 
 - **Evidence:** dsm-graph-explorer Session 30 (2026-03-12). User asked "when do we inform central DSM and ds-portfolio about the sprint's boundary checklist completion?" during Sprint 11 boundary. Investigation confirmed no existing checklist item triggers hub/portfolio notification. See `methodology.md` Entry 40.
 
+### Proposal #36: Ecosystem Alignment Gate at Epoch Boundaries
+- **DSM Section:** DSM 2.0 (Project Management / Epoch Transition Protocol), DSM_0.2 (Custom Instructions / Planning Protocol)
+- **Problem:** The Research Gate (Proposal #27) prescribes Idea -> Research -> Plan -> Action, addressing technical uncertainty within the project. It does not address ecosystem-level changes that accumulate over long development timeframes. Projects spanning multiple epochs (weeks to months) experience DSM ecosystem evolution: new DSM versions, adopted proposals, new spoke projects, portfolio priority shifts. Without checking ecosystem state before epoch planning, the project drafts plans against stale assumptions. The planning sequence should be: Idea -> Ecosystem Alignment -> Research (if uncertainty) -> Plan -> Action.
+- **Proposed Solution:** Add an "Ecosystem Alignment Gate" to the epoch transition protocol, between the epoch retrospective and the Research Gate:
+
+  ```
+  Epoch Transition — Ecosystem Alignment Gate:
+  Before drafting an epoch plan, the project consults the DSM hub:
+
+  1. Send an alignment request to DSM Central _inbox/ containing:
+     a. Current project state (epoch completed, metrics, capabilities)
+     b. Candidate items for next epoch (carry-forward, deferred, new ideas)
+     c. Questions: DSM version changes, proposal adoption status,
+        new spoke projects, portfolio priorities
+
+  2. Wait for hub response before drafting the epoch plan
+
+  3. Incorporate hub feedback into scope and priority decisions
+  ```
+
+  This gate is triggered at epoch boundaries only, not at sprint boundaries. Sprint-level changes are too granular for ecosystem alignment; epoch-level changes are where strategic drift accumulates.
+
+  **Relationship to existing protocols:**
+  - Extends the Research Gate (Proposal #27) with an ecosystem dimension
+  - Complements Hub/Portfolio Notification (Proposal #35): that sends status out; this requests context in
+  - Does not replace the Research Gate: ecosystem alignment addresses "has the environment changed?"; research addresses "how should we build the next feature?"
+
+- **Evidence:** dsm-graph-explorer Session 32 (2026-03-13). Project completed Epoch 3 (12 sprints, 6+ weeks, 35 proposals submitted). At epoch transition, the user identified that no protocol step checks whether the DSM ecosystem has evolved since Epoch 3 started. The project's CLAUDE.md implements several proposals locally (#15, #24, #30, #31) without knowing their adoption status. Epoch 4 planning would proceed on assumptions from 2026-03-10 (Epoch 3 start) without this gate. See `methodology.md` Entry 41.
+
 ---
 
 ## Low Priority
@@ -441,6 +470,6 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-03-12
-**Total Proposals:** 35
-**Pushed:** 2026-03-12 (Proposal #35 pushed simultaneously with creation)
+**Last Updated:** 2026-03-13
+**Total Proposals:** 36
+**Pushed:** 2026-03-13 (Proposal #36 pushed simultaneously with creation)
