@@ -132,6 +132,109 @@ def _print_diff_report(result: "DiffResult", elapsed: float) -> None:
     console.print(f"Summary: {', '.join(summary_parts)}")
 
 
+def _print_compare_report(
+    results: list,
+    inv_a: "EntityInventory",
+    inv_b: "EntityInventory",
+    elapsed: float,
+) -> None:
+    """Print a Rich-formatted repo comparison report."""
+    from rich.console import Console
+    from rich.table import Table
+
+    from graph.repo_diff import MatchType
+
+    console = Console()
+    console.print(
+        f"\n[bold]Repo Comparison:[/bold] {inv_a.repo.name} → {inv_b.repo.name} "
+        f"({elapsed:.2f}s)\n"
+    )
+
+    table = Table(show_lines=False)
+    table.add_column("Match", style="bold", width=10)
+    table.add_column(f"{inv_a.repo.name}", min_width=20)
+    table.add_column(f"{inv_b.repo.name}", min_width=20)
+    table.add_column("Score", width=6, justify="right")
+
+    style_map = {
+        MatchType.IDENTICAL: "green",
+        MatchType.MODIFIED: "yellow",
+        MatchType.RENAMED: "cyan",
+        MatchType.ADDED: "green",
+        MatchType.REMOVED: "red",
+    }
+
+    for r in results:
+        style = style_map.get(r.match_type, "")
+        a_label = r.entity_a.heading if r.entity_a else ""
+        b_label = r.entity_b.heading if r.entity_b else ""
+        score = f"{r.similarity_score:.2f}" if r.similarity_score > 0 else "-"
+        table.add_row(
+            f"[{style}]{r.match_type}[/{style}]",
+            a_label,
+            b_label,
+            score,
+        )
+
+    console.print(table)
+
+    # Summary by match type
+    from collections import Counter
+    counts = Counter(r.match_type for r in results)
+    parts = []
+    for mt in MatchType:
+        c = counts.get(mt, 0)
+        if c > 0:
+            parts.append(f"{c} {mt.lower()}")
+    console.print(f"\nSummary: {', '.join(parts)} ({len(results)} total)")
+
+
+def _print_drift_report_compare(
+    results: list,
+    inv_a: "EntityInventory",
+    inv_b: "EntityInventory",
+    elapsed: float,
+) -> None:
+    """Print a Rich-formatted drift report (MODIFIED entities only)."""
+    from rich.console import Console
+    from rich.table import Table
+
+    from graph.repo_diff import MatchType
+
+    console = Console()
+
+    modified = [r for r in results if r.match_type == MatchType.MODIFIED]
+
+    if not modified:
+        console.print(
+            f"\nDrift Report: {inv_a.repo.name} → {inv_b.repo.name}: "
+            f"no drift detected ({elapsed:.2f}s)"
+        )
+        return
+
+    console.print(
+        f"\n[bold]Drift Report:[/bold] {inv_a.repo.name} → {inv_b.repo.name} "
+        f"({elapsed:.2f}s)\n"
+    )
+
+    table = Table(show_lines=False)
+    table.add_column("Entity ID", min_width=12)
+    table.add_column(f"{inv_a.repo.name}", min_width=20)
+    table.add_column(f"{inv_b.repo.name}", min_width=20)
+    table.add_column("Similarity", width=10, justify="right")
+
+    for r in modified:
+        table.add_row(
+            r.entity_a.id,
+            r.entity_a.heading,
+            r.entity_b.heading,
+            f"{r.similarity_score:.2f}",
+        )
+
+    console.print(table)
+    console.print(f"\n{len(modified)} MODIFIED entity(ies) with content drift")
+
+
 @click.command()
 @click.version_option(version="0.3.0", prog_name="dsm-validate")
 @click.argument("paths", nargs=-1, type=click.Path())
@@ -241,6 +344,20 @@ def _print_diff_report(result: "DiffResult", elapsed: float) -> None:
     default=None,
     help="Compare graphs at two git refs. Usage: --graph-diff REF_A REF_B",
 )
+@click.option(
+    "--compare-repo",
+    "compare_repo_paths",
+    nargs=2,
+    type=click.Path(),
+    default=None,
+    help="Compare two entity inventories. Usage: --compare-repo INV_A INV_B",
+)
+@click.option(
+    "--drift-report",
+    is_flag=True,
+    default=False,
+    help="Show only MODIFIED entities (requires --compare-repo).",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -259,6 +376,8 @@ def main(
     export_inventory_path: str | None,
     git_ref: str | None,
     graph_diff_refs: tuple[str, str] | None,
+    compare_repo_paths: tuple[str, str] | None,
+    drift_report: bool,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -305,6 +424,37 @@ def main(
             sys.exit(2)
 
         _print_diff_report(result, elapsed)
+        return
+
+    # Compare-repo mode: independent early-exit path
+    if drift_report and not compare_repo_paths:
+        click.echo(
+            "Error: --drift-report requires --compare-repo.",
+            err=True,
+        )
+        sys.exit(2)
+
+    if compare_repo_paths:
+        from inventory.inventory_parser import InventoryError, load_inventory
+        from graph.repo_diff import compare_inventories
+
+        inv_path_a, inv_path_b = compare_repo_paths
+
+        try:
+            inv_a = load_inventory(inv_path_a)
+            inv_b = load_inventory(inv_path_b)
+        except InventoryError as e:
+            click.echo(f"Error loading inventory: {e}", err=True)
+            sys.exit(2)
+
+        start = time.perf_counter()
+        results = compare_inventories(inv_a, inv_b)
+        elapsed = time.perf_counter() - start
+
+        if drift_report:
+            _print_drift_report_compare(results, inv_a, inv_b, elapsed)
+        else:
+            _print_compare_report(results, inv_a, inv_b, elapsed)
         return
 
     # Load configuration

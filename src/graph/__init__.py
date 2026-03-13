@@ -16,6 +16,13 @@ except ImportError:
 
 from graph.graph_store import FALKORDB_AVAILABLE, GraphStore
 
+if FALKORDB_AVAILABLE:
+    from graph.cross_repo import BRIDGE_GRAPH_NAME, CrossRepoBridge, EdgeType
+else:
+    CrossRepoBridge = None  # type: ignore[assignment,misc]
+    EdgeType = None  # type: ignore[assignment,misc]
+    BRIDGE_GRAPH_NAME = None  # type: ignore[assignment]
+
 __all__ = [
     "build_reference_graph",
     "most_referenced_sections",
@@ -23,4 +30,7 @@ __all__ = [
     "reference_chain",
     "GraphStore",
     "FALKORDB_AVAILABLE",
+    "CrossRepoBridge",
+    "EdgeType",
+    "BRIDGE_GRAPH_NAME",
 ]
