@@ -571,7 +571,8 @@ dsm-graph-explorer/
 
 ---
 
-**Plan Status:** ACTIVE (Epoch 3, Sprints 9-12 complete, all MUSTs done)
+**Plan Status:** COMPLETE (Epoch 3, Sprints 9-12 complete, all MUSTs done, 1/4 SHOULDs done)
+**Next:** [epoch-4-plan.md](epoch-4-plan.md)
 **Last Updated:** 2026-03-13
 **Previous:** [epoch-2-plan.md](epoch-2-plan.md)
 **Research:** [epoch-3-neo4j-landscape-research.md](../research/epoch-3-neo4j-landscape-research.md), [epoch-3-falkordblite-deep-dive.md](../research/epoch-3-falkordblite-deep-dive.md)

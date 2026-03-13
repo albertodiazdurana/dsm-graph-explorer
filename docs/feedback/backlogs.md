@@ -462,6 +462,142 @@
 
 - **Evidence:** dsm-graph-explorer Session 32 (2026-03-13). Project completed Epoch 3 (12 sprints, 6+ weeks, 35 proposals submitted). At epoch transition, the user identified that no protocol step checks whether the DSM ecosystem has evolved since Epoch 3 started. The project's CLAUDE.md implements several proposals locally (#15, #24, #30, #31) without knowing their adoption status. Epoch 4 planning would proceed on assumptions from 2026-03-10 (Epoch 3 start) without this gate. See `methodology.md` Entry 41.
 
+### Proposal #37: Open Source Contribution Pipeline (Issue → Blog → PR)
+- **DSM Section:** DSM 4.0 Section 4 (Tests vs Capability Experiments), DSM 2.0 (Strategic Visibility / Blog Process)
+- **Problem:** DSM 4.0 capability experiments routinely discover gaps in external libraries (undocumented APIs, missing testing guidance, incomplete examples, version requirements). These findings are documented internally (research files, experiment scripts, blog journal) but never converted into upstream contributions. Each undocumented gap is simultaneously: (a) an impediment for other users of the library, (b) a natural contribution opportunity, and (c) a public visibility artifact for take-ai-bite and DSM. The current workflow stops at internal documentation, leaving strategic value unrealized.
+- **Proposed Solution:** Add an "Open Source Contribution Pipeline" assessment step after capability experiments that validate external libraries:
+
+  ```
+  Post-Experiment Assessment — Contribution Pipeline:
+  After completing a capability experiment (EXP-xxx) that validates an external library:
+
+  1. Assess: Did the experiment discover documentation or usability gaps?
+     Decision criteria:
+     a. Would other users likely hit the same gap?
+     b. Do we have enough evidence to document it clearly?
+     c. Does the contribution showcase DSM methodology?
+     If all three: suggest the pipeline. If not: skip.
+
+  2. Step 1 — Issue: Open a GitHub issue on the upstream repo documenting
+     the gaps. Include a link to the take-ai-bite project that discovered them.
+     Gauge maintainer responsiveness before investing in a PR.
+
+  3. Step 2 — Blog post: Write a blog post narrating the discovery process.
+     Focus on how structured capability experiments (DSM 4.0 Section 4)
+     systematically surface gaps that ad-hoc usage misses. This is the
+     methodology showcase.
+
+  4. Step 3 — PR: If maintainers are responsive, contribute the fix
+     (documentation, examples, tests). The PR establishes take-ai-bite
+     as a contributor in the library's ecosystem.
+  ```
+
+  **Scaling:** This pattern applies across all spoke projects. Any experiment that validates an external library is a potential pipeline trigger. Over time, contributions across multiple libraries compound into a visible open-source presence.
+
+  **Relationship to existing protocols:**
+  - Extends the experiment documentation template (Proposal #29) with a post-experiment assessment
+  - Feeds the blog process (DSM 1.0 Section 2.5.6-2.5.8) with a specific narrative type: "experiment becomes contribution"
+  - Complements the Ecosystem Alignment Gate (Proposal #36): contributions create bidirectional relationships with library ecosystems, not just dependency relationships
+
+- **Evidence:** dsm-graph-explorer Session 33-34 (2026-03-13). EXP-005 (FalkorDBLite validation, 16/16 checks) and deep-dive research discovered 5 documentation gaps: import path confusion, no testing guidance, no complete working example, editable install failure, Python 3.12+ requirement. Session 34 opened FalkorDB/falkordblite#85 with project link. Blog journal already contained the narrative thread "when your experiment becomes upstream documentation." See `methodology.md` Entry 42.
+
+### Proposal #38: Plan Notification to Hub/Portfolio After Drafting
+- **DSM Section:** DSM 2.0 (Project Management / Planning Protocol), DSM_0.2 (Custom Instructions / Ecosystem Notifications)
+- **Problem:** The DSM ecosystem has two notification mechanisms for spoke-to-hub communication: the Ecosystem Alignment Gate (Proposal #36, inbound: spoke asks hub before planning) and the Sprint Boundary Notification (Proposal #35, outbound: spoke tells hub after completing a sprint). Between these two points, the drafted plan is never communicated. The hub and portfolio learn what a spoke *did* but not what it *intends to do*. In a multi-spoke ecosystem, this creates a coordination gap: the hub could start work that conflicts with a spoke's planned direction, and other spokes could duplicate effort. The gap widens as more spoke projects join the ecosystem.
+- **Proposed Solution:** Add a "Plan Notification" step to the DSM planning protocol (DSM 2.0), applicable to all spoke projects:
+
+  ```
+  Plan Notification (all DSM spoke projects):
+  After drafting any plan (epoch plan for larger projects, sprint plan
+  for smaller projects):
+
+  1. Send a structured notification to hub and portfolio _inbox/ folders:
+     - Plan summary (scope table with MoSCoW priorities)
+     - Relevance to recipient's current work (how the plan intersects
+       with hub-level items, other spokes, or portfolio goals)
+     - Pointer to the full plan document
+     - Requested action: review and flag conflicts before execution starts
+
+  2. The notification is informational with an alignment request,
+     not a blocking gate. The spoke can begin execution immediately
+     but should incorporate feedback if the hub responds before the
+     first sprint completes.
+  ```
+
+  **Scaling:** The trigger scales with project size:
+  - **Larger projects (multi-sprint epochs):** Notify at epoch plan draft
+  - **Smaller projects (single-sprint scope):** Notify at sprint plan draft
+  - **Micro-projects (no sprints):** Skip; the overhead exceeds the value
+
+  **Notification loop (complete):**
+  ```
+  Alignment request (inbound, Proposal #36)
+    → Plan draft
+      → Plan notification (outbound, this proposal)
+        → Execution (sprints)
+          → Sprint completion notification (outbound, Proposal #35)
+  ```
+
+  **Relationship to existing protocols:**
+  - Complements Proposal #36 (Ecosystem Alignment Gate): that is inbound (spoke asks hub); this is outbound (spoke informs hub)
+  - Complements Proposal #35 (Sprint Boundary Notification): that reports completed work; this reports planned work
+  - Together, Proposals #35, #36, and #38 form a complete bidirectional communication loop between spokes and hub
+
+- **Evidence:** dsm-graph-explorer Session 34 (2026-03-13). After drafting the Epoch 4 plan using DSM Central's alignment response, the user requested notifications to both DSM Central and portfolio, stating: "This pattern should be triggered every time a plan is drafted." The notification was sent manually; no protocol step triggered it. See `methodology.md` Entry 43.
+
+### Proposal #39: Inbox Anti-Pattern Guard — No Full File Copies in _inbox/
+- **DSM Section:** DSM_0.2 (Custom Instructions / Inbox Protocol), DSM_3 Section 6.4 (Bidirectional Project Inbox)
+- **Problem:** An agent interpreted "push feedback to DSM Central inbox" as copying the full `methodology.md` (76KB) and `backlogs.md` (61KB) files into `_inbox/`. The `_inbox/README.md` defines the inbox as a transit point for brief structured entries, but does not explicitly prohibit file copies. The error compounded across multiple sessions, with each push overwriting the previous copy with a larger file. The root cause was a compressed memory entry ("Three-file atomic feedback: methodology.md + backlogs.md + DSM Central inbox") that was ambiguous about whether "DSM Central inbox" was a destination for the files or a third action (push a notification).
+- **Proposed Solution:** Two changes:
+
+  1. **Add anti-pattern guard to `_inbox/README.md`:**
+     ```markdown
+     ## Anti-Patterns
+     - **Never copy full feedback files** (methodology.md, backlogs.md) into _inbox/.
+       Inbox entries are notifications with pointers, not file mirrors.
+       Reference the spoke's files by path (e.g., "See ~/project/docs/feedback/
+       methodology.md Entry 42").
+     - **Maximum entry size:** Each entry should be a brief summary (5-15 lines),
+       not a reproduction of the source material.
+     ```
+
+  2. **Clarify the three-file atomic feedback pattern in DSM_0.2:**
+     ```
+     Three-file atomic feedback:
+     1. Update methodology.md in the spoke project (docs/feedback/)
+     2. Update backlogs.md in the spoke project (docs/feedback/)
+     3. Push a brief structured notification to DSM Central _inbox/{project-name}.md
+        summarizing the new entry and pointing to the spoke's files
+     The third file is a notification, not a copy.
+     ```
+
+  **Scope:** All DSM spoke projects. Any agent reading compressed memory or ambiguous instructions could make the same mistake.
+
+- **Evidence:** dsm-graph-explorer Session 34 (2026-03-13). Agent copied full methodology.md (76KB) and backlogs.md (61KB) into DSM Central `_inbox/`. The `_inbox/README.md` template shows entries of 5-10 lines; the copied files were 470+ and 550+ lines respectively. Error persisted across multiple sessions. See `methodology.md` Entry 44.
+
+### Proposal #40: Inbox Filename Convention — Dated and Content-Identified
+- **DSM Section:** DSM_0.2 (Custom Instructions / Inbox Protocol), DSM_3 Section 6.4 (Bidirectional Project Inbox)
+- **Problem:** The `_inbox/README.md` prescribes filenames as `{project-name}.md` (e.g., `dsm-graph-explorer.md`). This convention lacks temporal context (when was it pushed?) and content identification (what does it contain?). The hub must open every file to understand and prioritize its contents. In a multi-spoke ecosystem with frequent notifications, this creates unnecessary overhead. The filesystem's modification timestamp is the only temporal signal, and it is fragile (copies, moves, edits all change it).
+- **Proposed Solution:** Update the `_inbox/README.md` filename convention:
+
+  **General pattern:** `{date}_{project-name}_{content-description}.md`
+
+  **Specific patterns by notification type:**
+  | Type | Pattern | Example |
+  |------|---------|---------|
+  | Feedback entries | `{date}_{project}_feedback-entries-{from}-{to}.md` | `2026-03-13_dsm-graph-explorer_feedback-entries-42-44.md` |
+  | Plan notification | `{date}_{project}_{plan-type}-drafted.md` | `2026-03-13_dsm-graph-explorer_epoch-4-plan-drafted.md` |
+  | Sprint completion | `{date}_{project}_sprint-{N}-complete.md` | `2026-03-13_dsm-graph-explorer_sprint-12-complete.md` |
+  | Alignment request | `{date}_{project}_alignment-request.md` | `2026-03-13_dsm-graph-explorer_epoch-4-alignment-request.md` |
+
+  **Benefits:**
+  - Self-documenting: hub can triage by scanning filenames
+  - Temporally ordered: `ls` sorts by date prefix
+  - Content-identified: no need to open files to prioritize
+  - Applies to all DSM spoke projects and all notification types
+
+- **Evidence:** dsm-graph-explorer Session 34 (2026-03-13). Agent created `dsm-graph-explorer.md` (no date) in `_inbox/`. User corrected to `2026-03-13_dsm-graph-explorer_feedback-entries-42-44.md`. The `_inbox/README.md` file convention only prescribes `{project-name}.md`. See `methodology.md` Entry 45.
+
 ---
 
 ## Low Priority
@@ -471,5 +607,5 @@ _No low-priority items identified yet._
 ---
 
 **Last Updated:** 2026-03-13
-**Total Proposals:** 36
-**Pushed:** 2026-03-13 (Proposal #36 pushed simultaneously with creation)
+**Total Proposals:** 40
+**Pushed:** 2026-03-13 (Proposal #40 pushed simultaneously with creation)

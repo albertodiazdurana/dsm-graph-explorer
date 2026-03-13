@@ -257,4 +257,30 @@
 
 ---
 
+## Session: 2026-03-13 — FalkorDBLite Documentation Contribution Opportunity
+
+### What Happened
+
+Reviewing the Epoch 3 journal entry about "EXP-005 as API discovery," we identified that our deep-dive research and experiment results constitute a comprehensive user guide for FalkorDBLite that doesn't exist in its official documentation. The experiment wasn't just validation for us; it filled real documentation gaps in the upstream project.
+
+### Contribution-Ready Documentation Gaps
+
+From our research (`docs/research/epoch-3-falkordblite-deep-dive.md`) and EXP-005 (`data/experiments/exp005_falkordb_integration.py`):
+
+1. **Import path confusion** — Package is `falkordblite`, import is `from redislite.falkordb_client import FalkorDB`. The #1 gotcha for new users, buried in heritage from RedisLite/RedisGraph.
+2. **Testing patterns** — Session-scoped DB fixture + per-test graph isolation via UUID naming + `g.delete()` cleanup. We validated this across 18+ tests; official docs have no testing guidance.
+3. **Complete working example** — EXP-005 covers graph creation, parameterized queries, persistence verification, multi-graph isolation, and index creation in a single runnable script.
+4. **Editable installs fail** — `pip install -e .` doesn't work, only `pip install .`. Worth a note in installation docs.
+5. **Python 3.12+ requirement** — Not prominently documented; catches users upgrading from 3.10/3.11.
+
+### Blog Material
+
+**Narrative thread:** "When your experiment becomes upstream documentation" — how capability experiments (DSM 4.0 Section 4) can produce contributions to open-source projects. The experiment-as-API-discovery pattern generates documentation that the library maintainers didn't write because they already know their own API. Users discover the gaps; experiments document them systematically.
+
+### Next Action
+
+Open an issue on [FalkorDBLite GitHub](https://github.com/FalkorDB/falkordblite) listing the documentation gaps with specific suggestions. Gauge maintainer responsiveness before investing in a PR.
+
+---
+
 **Last Updated:** 2026-03-13

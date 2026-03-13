@@ -320,3 +320,187 @@ No questions or recommendations from me — the user's insight is clear and well
 - Wrap up session cleanly
 
 Most valuable: commit changes, update MEMORY.md, and wrap up. The changes are substantial and uncommitted.
+
+### Turn: Commit + MEMORY.md + Wrap-up
+**Output:**
+- Committed d058464: Sprint 12 boundary checklist + Entry 41/Proposal #36
+- MEMORY.md updated: Epoch 3 marked COMPLETE, NEXT section shows Epoch 4 blocked on alignment response, Ecosystem Alignment Gate added to Key Patterns
+- Checkpoint created: 2026-03-13_session-32-boundary-complete.md
+- Session baseline saved with mode: light
+
+## Session 32 End
+**Ended:** 2026-03-13
+**Artifacts:** 1 commit (d058464), 1 checkpoint, MEMORY.md updated
+**Status:** Epoch 3 complete. Epoch 4 blocked on DSM Central alignment.
+
+---
+
+## Session 33 (lightweight continuation)
+**Started:** 2026-03-13T12:00:00-03:00
+**Previous session artifacts:**
+- Checkpoint: 2026-03-13_session-32-boundary-complete.md
+- MEMORY.md updated: yes
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: 2026-03-13_session-32-boundary-complete.md
+
+---
+
+### Turn: FalkorDBLite documentation contribution feasibility
+**Thinking:** User asks if the API discovery from EXP-005 could be contributed back to FalkorDBLite docs or as an issue. Need to check:
+1. What specific gaps did EXP-005 find?
+2. Where is FalkorDBLite's repo?
+3. What did we document in the experiment results?
+Let me read the EXP-005 results to identify concrete documentation gaps.
+
+**Output:** Analyzed EXP-005 and deep-dive research for FalkorDBLite documentation gaps.
+
+Key findings from our research that could be contributed:
+1. Import path gotcha (redislite.falkordb_client, not falkordblite)
+2. Testing patterns (session-scoped fixture, per-test graph isolation, UUID naming)
+3. Persistence verification pattern (del + reopen)
+4. CI/install gotcha: editable installs fail
+5. Complete working example with parameterized queries, multi-graph, indexes
+6. Python 3.12+ requirement not prominently documented
+
+The deep-dive research doc is essentially a comprehensive user guide that doesn't exist in the official docs.
+
+### Turn: Document FalkorDBLite contribution opportunity + light wrap-up
+**Thinking:** User wants to document the FalkorDBLite contribution opportunity and wrap up. I'll:
+1. Add a note to the blog journal (this is blog-worthy material for the Epoch 3 narrative)
+2. Save a checkpoint with this as a deferred action item
+3. Light wrap-up (baseline, MEMORY.md if needed)
+
+**Output:** Session 33 wrap-up:
+- Blog journal: added FalkorDBLite contribution opportunity entry (5 documentation gaps, narrative thread)
+- Checkpoint: saved with FalkorDBLite issue as next action
+- Session baseline: mode: light
+
+## Session 33 End
+**Ended:** 2026-03-13
+**Artifacts:** 1 journal entry, 1 checkpoint
+**Status:** FalkorDBLite issue pending. Epoch 4 blocked on DSM Central alignment.
+
+---
+
+## Session 34 (lightweight continuation)
+**Started:** 2026-03-13
+**Previous session artifacts:**
+- Checkpoint: 2026-03-13_session-33-falkordb-contribution.md
+- MEMORY.md updated: yes
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: 2026-03-13_session-33-falkordb-contribution.md
+
+---
+
+### Turn 1 — FalkorDBLite GitHub issue
+**Thinking:** User approved. Need to read the journal entry with the 5 gaps to get exact details, then craft the GitHub issue. Let me read the journal to extract the specifics.
+
+### Turn 2 — Issue review & visibility assessment
+**Thinking:** User asks two things: (1) is the issue complete/accurate, and (2) could it attract attention to take-ai-bite and DSM. Let me assess both. The issue is technically solid but purely altruistic — it doesn't mention the project, methodology, or user's profile. For visibility, open-source contributions CAN attract attention, but only if there's a breadcrumb trail. Let me think about whether adding context about the project would be natural and appropriate in the issue, or if it would feel promotional.
+
+### Turn 3 — Submit issue + DSM feedback
+**Thinking:** Two actions: (1) submit the GitHub issue with the project link added, (2) write DSM feedback about the pattern (issue discovery + blog → PR) as a strategic promotion mechanism. This is methodology feedback (new pattern) + backlog proposal. Need to do three-file atomic feedback: methodology.md + backlogs.md + DSM Central inbox.
+
+**Actions:**
+- Submitted GitHub issue FalkorDB/falkordblite#85 (5 documentation gaps, project link included)
+- Wrote Entry 42 / Proposal #37: Open Source Contribution Pipeline (Issue → Blog → PR)
+- Pushed feedback to DSM Central inbox (methodology.md + backlogs.md)
+- Three-file atomic feedback complete
+
+### Turn 4 — Read inbox
+**Thinking:** User wants to check the project's _inbox/ for any responses (likely the DSM Central alignment response we've been waiting for).
+
+**Output:** DSM Central alignment response found in _inbox/dsm-central.md. Key findings:
+- 4 DSM versions released (v1.3.36-39) since Epoch 3 start
+- 15/36 proposals implemented, 5 active, 18 unprocessed
+- Ecosystem priority: BL-090 context consumption (DSM_0.2 grew to 2,458 lines / 111 KB)
+- Epoch 4 suggestion: MUST resilience to DSM_0.2 splitting, SHOULD carry-forwards, COULD protocol usage analysis + LLM features
+- Epoch 4 planning is UNBLOCKED
+
+### Turn 5 — Planning decision
+**Thinking:** User asks if we should start Epoch 4 planning. Context budget is fine (>50%). But this session started as Light config (Low effort). Epoch planning involves architectural judgment: scoping MUSTs/SHOULDs/COULDs, sprint decomposition, sequencing decisions. That's Standard or Deep profile territory per the subscription config. Should flag this.
+
+### Turn 6 — Epoch 4 planning
+**Thinking:** User approved starting the plan. I need to:
+1. Read the Epoch 3 plan to understand the format and carry-forwards
+2. Read the epoch-3 retrospective data (MEMORY.md already loaded)
+3. Draft an Epoch 4 plan using the alignment response as primary input
+4. Follow the Pre-Generation Brief: explain what/why before generating
+
+Let me read the Epoch 3 plan for format reference, and the Epoch 2 plan to see the established pattern.
+
+### Turn 7 — Write Epoch 4 plan
+**Thinking:** User approved. Writing the full epoch-4-plan.md. Need to think carefully about Sprint 13 (BL-090 resilience) — what does "multi-file document resilience" actually mean for the parser? The parser currently processes individual markdown files independently. The cross-reference validator resolves references across files. The real risk from BL-090 splitting is: (1) references that point to section numbers in DSM_0.2 (e.g., "Section 3.2") may move to a different file, (2) the entity inventory for DSM Central would change (sections move between files), (3) the convention linter checks naming patterns that may need updating. This is more about testing resilience than building new features. An experiment (EXP-007) to validate current behavior against a simulated split would be the right approach.
+
+For Sprint 14 (carry-forwards): incremental graph updates is the most valuable — avoid full rebuild when only some files changed. Index creation and FalkorDB export are straightforward.
+
+For Sprint 15 (protocol usage analysis): this is a new analysis feature — scan spoke CLAUDE.md files for DSM_0.2 section references, count frequency, report which sections are "always-load" vs "on-demand." This directly feeds BL-090 Phase 1.
+
+Sprint 16: reserve for LLM features or close epoch early.
+
+**Output:** Wrote docs/plans/epoch-4-plan.md. 4 sprints:
+- Sprint 13: BL-090 resilience (MUST) — EXP-007 + multi-file document handling
+- Sprint 14: Performance & completeness (SHOULD) — incremental updates, indexes, FalkorDB export
+- Sprint 15: Protocol usage analysis (COULD) — ecosystem measurement for BL-090 splitting
+- Sprint 16: Reserved — decision gate at Sprint 15 boundary
+Awaiting user review and approval.
+
+### Turn 8 — Fix LLM dependency reference
+**Thinking:** User wants to replace the openai reference with ollama+RAG as the LLM option, but keep it as a deferred decision for Sprint 16. Two edits needed in the plan.
+
+### Turn 9 — Notify hub/portfolio + feedback on plan notification pattern
+**Thinking:** Three actions: (1) send notification to DSM Central _inbox/ about Epoch 4 plan, (2) send notification to portfolio _inbox/, (3) write feedback Entry 43 / Proposal #38 about the pattern: notify hub/portfolio when a plan is drafted so they can align. Three-file atomic feedback.
+
+**Actions:**
+- Sent plan notification to DSM Central _inbox/ (epoch-4-plan-drafted.md)
+- Sent plan notification to portfolio _inbox/ (epoch-4-plan-drafted.md)
+- Wrote Entry 43 / Proposal #38: Plan Notification to Hub/Portfolio (all DSM spoke projects)
+- Pushed feedback to DSM Central inbox (methodology.md + backlogs.md)
+- Three-file atomic feedback complete
+
+### Turn 10 — Root cause analysis: incorrect feedback push
+**Thinking:** The user is right. I've been copying the full methodology.md and backlogs.md files into DSM Central's _inbox/ folder. This is wrong. The _inbox/ mechanism is for structured notifications (brief, specific messages), not for dumping entire feedback files. The correct protocol is:
+- Feedback files (methodology.md, backlogs.md) live in the spoke project (docs/feedback/)
+- DSM Central _inbox/ receives structured notification messages pointing to the spoke's feedback
+- The full files should NOT be copied wholesale into _inbox/
+
+What confused me: MEMORY.md says "Simultaneous local + DSM Central inbox (no waiting for session end)" and "Three-file atomic feedback: methodology.md + backlogs.md + DSM Central inbox (always all 3)". I interpreted "DSM Central inbox" as copying the files there. But the third file should be a notification in the inbox, not a copy of the feedback files. Looking at the existing inbox contents, I see `dsm-graph-explorer_methodology.md` and `dsm-graph-explorer_backlogs.md` already there from previous sessions — so this error has been compounding. But the protocol intent is clear: _inbox/ is for notifications, not file mirrors.
+
+Let me check what's actually in the inbox to understand the full picture.
+
+### Turn 10b — Additional feedback: inbox filename convention
+**Thinking:** User caught another protocol gap: inbox files should include the date in the filename. I used `dsm-graph-explorer.md` (no date) while the plan notification correctly used `2026-03-13_dsm-graph-explorer_epoch-4-plan-drafted.md` (with date). The README says "One file per spoke project: `{project-name}.md`" which doesn't include a date. But the user's feedback suggests each notification should be a dated file, not an append-to-single-file pattern. This is a third protocol clarity issue to document.
+
+Actually, re-reading the README more carefully: it says "One file per spoke project" and "File is cleared (or deleted) after all entries are processed." So the README prescribes a single file that accumulates entries. But the user wants dated files. This is a conflict between the README convention and the user's preference. The user's preference makes more sense: dated files are self-documenting and don't require clearing.
+
+I need to: (1) rename the inbox file with date, (2) document this as additional feedback (Entry 45 / Proposal #40).
+
+**Actions (Turn 10):**
+- Root cause identified: compressed MEMORY.md entry "Three-file atomic feedback" was ambiguous, leading to full file copies (137KB) in _inbox/ instead of brief notifications
+- Removed incorrect full-file copies from DSM Central _inbox/
+- Created proper notification: 2026-03-13_dsm-graph-explorer_feedback-entries-42-45.md
+- Entry 44 / Proposal #39: Inbox anti-pattern guard (no full file copies)
+- Entry 45 / Proposal #40: Inbox filename convention ({date}_{project}_{content}.md)
+- Fixed MEMORY.md: clarified three-file atomic feedback (never copy full files), updated project state and NEXT section
+- DSM Central inbox updated with all entries (42-45)
+
+### Turn 11 — Session assessment
+**Thinking:** 30% context left. What's pending or achievable?
+- Epoch 4 plan: drafted, notified, approved
+- FalkorDBLite issue: submitted (#85)
+- Feedback entries 42-45: done, pushed correctly
+- DSM Central inbox: cleaned up
+- MEMORY.md: updated
+
+Options for remaining context:
+1. Move the alignment response to done/ (consumed)
+2. Commit all changes (lots of uncommitted work)
+3. Update epoch-3-plan status to COMPLETE
+4. Create blog epoch-4 folder structure
+5. Wrap up session (checkpoint, transcript)
+
+Best use of 30%: commit + lightweight wrap-up. The session has been productive and we should preserve it.
