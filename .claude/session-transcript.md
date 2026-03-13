@@ -1,209 +1,245 @@
-# Session 28 Transcript
-**Started:** 2026-03-12T05:33:38-03:00
+# Session 31 Transcript
+**Started:** 2026-03-13T07:01:22-03:00
 **Project:** DSM Graph Explorer
 
 ---
 
 ## Session Start
 
-**Context loaded:** MEMORY.md (Session 27, Sprint 10 complete), DSM_0.2 v1.3.58, project CLAUDE.md.
-
 **Project type:** Application (DSM 4.0), Standard Spoke pattern.
-**Ecosystem paths:** No registry found; using fallback resolution.
-**Inbox:** Empty (only done/ subdir).
-**Version check:** DSM_0.2 v1.3.58, no change since last session.
-**Handoffs:** None unconsumed.
-**Checkpoints:** None pending (only README.md in checkpoints/).
-**Transcript archived:** 2026-03-12T02:20-ST.md
-**Bandwidth:** Normal usage, 150 MiB spike at 02:00 (likely system updates).
-**Git:** Clean working tree, up to date with origin/master.
-**Baseline:** Saved to .claude/session-baseline.txt.
+**DSM version:** v1.3.58 (unchanged from last session).
+**Inbox:** Empty (only README.md).
+**Checkpoint consumed:** `2026-03-12_sprint-11-complete.md` → moved to `done/`.
+**Handoffs:** None pending.
+**Transcript archived:** `2026-03-12T05:33-ST.md`.
+**Git status:** Clean working tree, branch master up to date with origin.
+**Bandwidth:** Normal usage, no anomalies.
 
----
+**Context loaded from checkpoint:** Sprint 11 complete (Entity Inventory), 471 tests, 95% coverage. Sprint 12 next: Cross-Repo Edges + BL-156 (cross_repo.py, --compare-repo, --drift-report). Epoch 3 MoSCoW: 5/7 MUSTs done, 1/4 SHOULDs done.
 
-## Turn: Sprint boundary question
+## Sprint 12 Planning
 
-**Thinking:** User asks if we did the sprint boundary for Sprint 10. Checking MEMORY.md: "Sprint 10 complete" is noted, and Session 27 commit message says "Sprint 10 complete, git-ref temporal compilation". But did we run the Sprint Boundary Checklist? Let me check for a Sprint 10 checkpoint, journal entry, and whether feedback was updated.
+**User request:** Start Sprint 12.
+**Reading:** epoch-3-plan.md for Sprint 12 scope, then BL-156 from backlog for full context.
 
-**Actions:** Check docs/checkpoints/done/ for sprint-10, docs/blog/ for epoch-3 journal, docs/feedback/ for recent entries, docs/decisions/ for sprint 10 decisions.
+**Epoch 3 plan read.** Sprint 12 has 3 phases:
+- **12.1:** Typed cross-repo edges (INBOX_NOTIFICATION, AT_IMPORT, ECOSYSTEM_LINK) + `CrossRepoBridge` class in `src/graph/cross_repo.py`
+- **12.2:** BL-156 private-to-public mapping (`--compare-repo`, `src/graph/repo_diff.py`, match classification, MAPS_TO edges)
+- **12.3:** Drift detection (`--drift-report`, similarity threshold 0.35)
 
-**Finding:** Sprint 10 boundary checklist was NOT completed. Evidence:
-- No sprint-10 checkpoint in docs/checkpoints/done/
-- No Sprint 10 journal entries in epoch-3/journal.md (only Sprint 9 entries)
-- Feedback files (methodology.md, backlogs.md) last updated 2026-03-11 (Sprint 9 entries 35-36, Proposals 30-31)
-- No Sprint 10 decisions in docs/decisions/
-- README likely not updated for Sprint 10
+**Need to review before starting:** existing graph_store.py (to understand FalkorDB patterns), inventory_parser.py (entity model we'll consume), cross_ref_validator.py (EXTERNAL classification), and cli.py (current CLI structure).
 
-Sprint Boundary Checklist items pending:
-1. Checkpoint document (docs/checkpoints/)
-2. Feedback files updated for Sprint 10 findings
-3. Decision log (any Sprint 10 decisions?)
-4. Blog journal entry for Sprint 10
-5. README updated (status, results, structure)
+**Approach:** TDD, one phase at a time, tests first. Phase 12.1 is foundational, 12.2 and 12.3 build on it.
 
-**Output:** Report to user that Sprint 10 boundary was not done.
+**Code review complete.** Key observations:
+- `GraphStore` already supports multi-repo (separate named graphs), parameterized Cypher, `select_graph()`. The bridge graph `_cross_repo` will be another named graph.
+- `EntityInventory` has `Entity` (id, type, path, heading, level, stable) and `RepoInfo` (name, type, url). `load_inventory()` and `get_entity()` are the main interfaces.
+- `graph/__init__.py` guards networkx imports in try/except. Will need to export `CrossRepoBridge` similarly.
 
-## Turn: Sprint boundary checklist + root cause analysis
+**Sprint 12 decomposition:** Three phases, TDD approach. Phase 12.1 is the foundation (CrossRepoBridge + edge types). Phase 12.2 builds repo comparison on top. Phase 12.3 adds drift reporting.
 
-**Thinking:** User correctly points out that I should have proactively suggested the Sprint 10 boundary checklist before offering to start Sprint 11. This is a gap in the /dsm-go procedure: Step 9 suggests work items from MEMORY.md but does not check whether the previous sprint's boundary checklist was completed. The agent should never suggest starting a new sprint without verifying the prior sprint boundary is closed.
+**Presenting concept gate to user now.**
 
-**Root cause analysis:**
-1. MEMORY.md says "Sprint 10 complete" — but "complete" means code complete, not boundary-complete
-2. /dsm-go Step 3.5 checks checkpoints but only for context, not as a gate
-3. /dsm-go Step 9 suggests next work from MEMORY.md without verifying sprint boundary closure
-4. The gap is in DSM_0.2/dsm-go: there is no explicit "sprint boundary gate" step that blocks suggesting new sprint work until the prior sprint's boundary checklist is verified complete
+## Phase 12.1: Typed Cross-Repo Edges
 
-**Feedback entry plan:**
-- methodology.md Entry 37: Sprint Boundary Gate Missing from Session Start
-- backlogs.md Proposal #32: Add sprint boundary verification to /dsm-go
+**User approved concept.** Starting TDD: tests first, then implementation.
 
-**Sprint 10 boundary work plan:**
-1. Create checkpoint document
-2. Update feedback files (if Sprint 10 produced methodology insights)
-3. Check for Sprint 10 decisions to log
-4. Write blog journal entry for Sprint 10
-5. Update README
+**Design decisions for CrossRepoBridge:**
+- Reuses GraphStore instance (same FalkorDB connection, separate named graph `_cross_repo`)
+- Node schema: (:RepoNode {repo_name}) — lightweight anchors for cross-repo edges
+- Edge schema: (:RepoNode)-[:INBOX_NOTIFICATION|AT_IMPORT|ECOSYSTEM_LINK {properties}]->(:RepoNode)
+- Edge properties vary by type:
+  - INBOX_NOTIFICATION: source_path, target_path, date, subject
+  - AT_IMPORT: source_path, target_path, line
+  - ECOSYSTEM_LINK: name, source_path, target_path
 
-Let me first gather Sprint 10 context to write the boundary artifacts.
+Wait, rethinking. The plan says edges connect entities across repos, not just repos. So we need entity-level nodes in the bridge graph. But that duplicates the per-repo graphs...
 
-## Turn: Feedback Entry 37 + Proposal #32 (Sprint Boundary Gate)
+Better approach: edges reference entity IDs (strings) as properties, but the bridge graph nodes are lightweight "anchors" (repo-level). The cross-repo edges store source_entity_id and target_entity_id as properties. This avoids duplicating nodes while still enabling entity-level queries.
 
-**Thinking:** User approved proceeding with feedback first. Three-file atomic push: methodology.md Entry 37, backlogs.md Proposal #32, DSM Central inbox.
+Actually, simplest: (:CrossRef {source_repo, source_entity_id, target_repo, target_entity_id, edge_type, ...properties}). But that's not a graph, it's a table. The graph value comes from having actual edges.
 
-Root cause analysis:
-- /dsm-go Step 9 suggests next work from MEMORY.md/checkpoint
-- No step verifies that the previous sprint's boundary checklist is complete
-- MEMORY.md "Sprint 10 complete" = code-complete, not boundary-complete
-- The agent conflated "sprint complete" with "sprint closed" and suggested Sprint 11
+Final design:
+- Nodes: (:RepoEntity {repo, entity_id, path, heading}) — created on demand when edges are added
+- Edges: (:RepoEntity)-[:CROSS_REF {type, ...props}]->(:RepoEntity)
+- This gives us actual graph traversal while keeping the bridge graph self-contained
+- `add_edge()` creates source/target nodes if they don't exist (MERGE pattern)
 
-Proposal: Add a Sprint Boundary Gate step to /dsm-go between Step 3.5 (checkpoint check) and Step 4 (bandwidth). The gate checks for boundary artifacts (checkpoint, journal, feedback update, README update) matching the most recent sprint in MEMORY.md. If missing, the agent must flag it as a blocker before suggesting new work.
+This is cleaner. The bridge graph is queryable independently.
 
-**Actions:** Edit methodology.md (Entry 37), edit backlogs.md (Proposal #32), write DSM Central inbox entry.
+**test_cross_repo.py written.** 18 tests covering:
+- EdgeType constants (3)
+- add_edge for each type + multiple + no properties (5)
+- MERGE behavior: same entity reused, no duplicate nodes (1)
+- edges_for_repo filtering (2)
+- edges_by_type filtering (1)
+- Empty bridge behavior (4)
+- node_count (2, in merge + empty tests)
 
-## Turn: Writing Entry 37 / Proposal #32 / DSM Central inbox (three-file atomic push)
+**API surface defined by tests:**
+- `CrossRepoBridge(store, graph_name)` — wraps a GraphStore
+- `EdgeType` — enum with INBOX_NOTIFICATION, AT_IMPORT, ECOSYSTEM_LINK
+- `add_edge(source_repo, source_entity_id, target_repo, target_entity_id, edge_type, properties=None)`
+- `all_edges()` → list of dicts
+- `edges_for_repo(repo_name)` → filtered list
+- `edges_by_type(edge_type)` → filtered list
+- `node_count()` → int
 
-**Thinking:** User approved. Writing all three files now. Need to:
-1. Append Entry 37 to methodology.md (before the footer)
-2. Append Proposal #32 to backlogs.md (in Medium Priority section, before Low Priority)
-3. Create DSM Central inbox entry
-4. Update footers on both feedback files
+**Now implementing cross_repo.py.**
 
-**Actions:** Edit methodology.md, edit backlogs.md, write DSM Central inbox entry.
+**Phase 12.1 complete.** All 16 new tests pass, full suite 487 passed (471 + 16), 95% coverage maintained.
 
-**Output:** Three-file atomic push complete:
-1. methodology.md: Entry 37 (Sprint Boundary Gate Missing from /dsm-go)
-2. backlogs.md: Proposal #32 (Sprint Boundary Gate in /dsm-go Session Start)
-3. DSM Central inbox: dsm-graph-explorer.md (feedback notification)
+**Files created:**
+- `src/graph/cross_repo.py`: CrossRepoBridge, EdgeType, BRIDGE_GRAPH_NAME
+- `tests/test_cross_repo.py`: 16 tests
 
-Now proceeding to Sprint 10 boundary checklist.
+**Files modified:**
+- `src/graph/__init__.py`: exports CrossRepoBridge, EdgeType, BRIDGE_GRAPH_NAME (guarded by FALKORDB_AVAILABLE)
 
-## Turn: Writing Sprint 10 checkpoint
+**Ready for Phase 12.2: BL-156 Private-to-Public Mapping.**
 
-**Thinking:** User approved. Writing checkpoint document. Need to reference the git diff stats I gathered earlier for accurate metrics.
-**Actions:** Create docs/checkpoints/sprint-10-completion.md
+## Phase 12.2: BL-156 Private-to-Public Mapping
 
-## Turn: Writing Sprint 10 blog journal entry
+**User approved proceeding.** Planning Phase 12.2.
 
-**Thinking:** User approved. Appending Sprint 10 section to epoch-3/journal.md. Need to update the "Last Updated" footer too.
-**Actions:** Edit docs/blog/epoch-3/journal.md — append Sprint 10 section before footer.
+**What we need:**
+1. `src/graph/repo_diff.py` — `RepoDiff` class with entity matching logic
+2. `tests/test_repo_diff.py` — tests with fixture inventories
+3. CLI integration (`--compare-repo`) — later, after core logic works
 
-## Turn: README update for Sprint 10
+**Match algorithm:**
+- Step 1: Exact match by entity ID → IDENTICAL
+- Step 2: For unmatched, heading similarity via TF-IDF (reuse from Sprint 6) → RENAMED (high sim, different ID) or MODIFIED (moderate sim)
+- Step 3: Remaining in repo A only → REMOVED; in repo B only → ADDED
 
-**Thinking:** User approved. Multiple edits to README.md. I'll group them since they're all mechanical updates to reflect Sprint 10 completion.
-**Actions:** Edit README.md — header, features, structure, status, footer.
+**Key types:**
+- MatchType enum: IDENTICAL, RENAMED, MODIFIED, ADDED, REMOVED
+- MatchResult: entity_a (Entity|None), entity_b (Entity|None), match_type, similarity_score (float)
+- RepoDiff: takes two EntityInventory objects, produces list[MatchResult]
 
-**Output:** Sprint 10 boundary checklist complete:
-1. ✓ Checkpoint: docs/checkpoints/sprint-10-completion.md
-2. ✓ Journal: docs/blog/epoch-3/journal.md (Sprint 10 section appended)
-3. ✓ README: Updated (status, features, structure, project status, usage, footer)
-4. ✓ Feedback: methodology.md duration updated to Sprint 1-10
-5. ✓ Decisions: No new ADRs needed (used existing patterns)
-6. ✓ Feedback push: Entry 37 / Proposal #32 (Sprint Boundary Gate) — three-file atomic push
+**Design choice:** RepoDiff is a pure function on EntityInventory objects (no FalkorDB dependency). Storing results as MAPS_TO edges in the bridge graph is a separate step. This keeps the matching logic testable without FalkorDB.
 
-All 6 boundary items addressed. Sprint 10 is now properly closed.
+Starting TDD: tests first.
 
-## Turn: Commit, push, then light wrap-up
+**similarity.py reviewed.** Key reusable functions:
+- `preprocess_text(text)` — strips section numbers, normalizes whitespace
+- `compute_similarity(ref_text, target_text, vectorizer)` — cosine similarity via TF-IDF
+- `TfidfVectorizer` with `stop_words="english"`, `min_df=1`
 
-**Thinking:** User wants to commit all boundary artifacts, push, then run /dsm-light-wrap-up.
-**Actions:** git add specific files, commit, push, then invoke /dsm-light-wrap-up.
+For repo_diff, I'll build a lightweight vectorizer from entity headings (not full sections). The matching needs:
+- Fit vectorizer on all headings from both inventories
+- For unmatched entities, compute pairwise similarity on headings
+- Threshold from DEC-005: 0.35 for "related" match
 
-## Turn: Lightweight wrap-up
+**RepoDiff won't depend on FalkorDB** — pure function on two EntityInventory objects. MAPS_TO edge storage is a separate concern (add_edge calls on CrossRepoBridge).
 
-**Thinking:** Running /dsm-light-wrap-up. Steps: MEMORY.md update, checkpoint, baseline mode marker, commit+push. All autonomous.
+Writing test_repo_diff.py now.
 
----
+**repo_diff.py implemented and tested.** 13/13 tests pass.
+- Exact ID match → IDENTICAL/MODIFIED: works
+- Fuzzy heading match → RENAMED: works (TF-IDF cosine similarity)
+- Leftovers → ADDED/REMOVED: works
+- Threshold controls: high threshold reduces matches, low increases
 
-## Session 29 (lightweight continuation)
-**Started:** 2026-03-12
-**Previous session artifacts:**
-- Checkpoint: session-28-light-checkpoint.md
-- MEMORY.md updated: yes (from checkpoint)
+**MAPS_TO edge storage:** Now need to add a convenience method to CrossRepoBridge that takes a list of MatchResults and stores them as MAPS_TO edges. This is simple: one new EdgeType value + a helper method.
 
-**Context loaded:**
-- MEMORY.md (latest)
-- Checkpoint: session-28-light-checkpoint.md, sprint-10-completion.md
+Actually, rethinking. The epoch-3 plan says "Store mapping results in _cross_repo bridge graph as MAPS_TO edges." MAPS_TO is a separate edge type from the three cross-repo types. Two options:
+1. Add MAPS_TO to EdgeType enum and use the same CROSS_REF edge label
+2. Use a different edge label (:MAPS_TO) in the bridge graph
 
----
+Option 1 is simpler and consistent. MAPS_TO is just another edge type stored via add_edge(). The properties carry match_type and similarity_score.
 
-### Turn: Sprint 11 Planning
-**Thinking:** User confirmed proceed. Need to read epoch-2-plan.md (or epoch-3 if exists) for Sprint 11 scope, then propose a plan. Sprint 11 is Entity Inventory per MEMORY.md: dsm-entity-inventory.yml, inventory_parser.py, --inventory, --export-inventory. Let me check what planning docs exist.
+Going with option 1. Adding MAPS_TO to EdgeType and a store_mapping() convenience method.
 
-**Output:** Read epoch-3-plan.md Sprint 11 section, cli.py, cross_ref_validator.py. No src/inventory/ exists yet. Sprint 11 has 3 phases: 11.1 (spec + parser), 11.2 (cross-repo resolution via inventories), 11.3 (export). Planning the approach now.
+**Phase 12.2 core complete.** 32 new tests (19 cross_repo + 13 repo_diff), full suite 503 passed (471 → 503), 95% coverage.
 
-### Turn: Epoch 3 plan update + root cause + feedback
-**Thinking:** User noticed epoch-3-plan.md hasn't been updated as sprints completed. Need to: (1) check current plan state vs actual completion, (2) find root cause for not updating, (3) send feedback to DSM Central, (4) update the plan, (5) start phase 11.1. Let me check what's checked off in the plan vs what's actually done.
+**Deliverables so far:**
+- `src/graph/cross_repo.py`: CrossRepoBridge + EdgeType (4 types incl. MAPS_TO) + store_mapping()
+- `src/graph/repo_diff.py`: compare_inventories() + MatchType + MatchResult
+- `tests/test_cross_repo.py`: 19 tests
+- `tests/test_repo_diff.py`: 13 tests
 
-**Output:** Feedback Entry 38 + Proposal #33 written and pushed. Epoch-3-plan.md updated (Sprint 9+10 all checked). CLAUDE.md checklist updated with 6th item. User also wants the "review plan and confirm alignment" step documented as feedback, this is a separate observation: not just updating the plan, but reviewing it together at sprint transitions.
+**Remaining for Sprint 12:**
+- Phase 12.3: Drift detection (--drift-report)
+- CLI integration: --compare-repo, --drift-report options
+- Reporter updates for mapping table and drift report
 
-### Turn: Phase 11.1 — Write tests first (TDD)
-**Thinking:** User approved. Writing tests/test_inventory.py first, then implementing src/inventory/inventory_parser.py. Need YAML fixtures for valid/invalid inventories. Following existing test patterns in the project.
+**Note:** CLI integration and reporter are typically done after core logic is solid. Core is solid. Moving to Phase 12.3 next.
 
-**Output:** Phase 11.1 complete. Created src/inventory/__init__.py, src/inventory/inventory_parser.py (Entity, RepoInfo, EntityInventory models + load_inventory + discover_inventory), tests/test_inventory.py (33 tests). All 435 tests pass, 95% coverage. Ready for Phase 11.2 (cross-repo reference resolution).
+## Phase 12.3: Drift Detection + CLI Integration
 
-### Turn: Phase 11.2 — Cross-repo reference resolution
-**Thinking:** Need to update cross_ref_validator.py to accept external inventories, add resolution classification, update reporter, add --inventory CLI option. TDD: write tests first. Need to understand how ValidationResult is used in reporter to plan the resolution field addition carefully. The key change: when a section/appendix ref isn't found locally, check external inventories before marking ERROR. If found externally, mark as INFO with EXTERNAL resolution.
+**User approved proceeding.** Phase 12.3 has two parts:
+1. Drift detection: query bridge graph for MODIFIED entities, show divergence
+2. CLI integration: --compare-repo and --drift-report options
 
-**Output:** Phase 11.2 complete. Changes: (1) cross_ref_validator.py: added `resolution` field to ValidationResult, `inventories` param to validate_cross_references(), `_resolve_in_inventories()` helper; (2) report_generator.py: separate External References section in both markdown and Rich output; (3) cli.py: added --inventory PATH (repeatable), loads inventories, passes to validator, updated summary line; (4) test_cli_inventory.py: 7 CLI tests; (5) test_validator.py: 10 inventory resolution tests. 452 total tests, 95% coverage. Ready for Phase 11.3 (export).
+**Drift detection design:**
+- `get_drift_report()` method on CrossRepoBridge (or standalone function)
+- Queries MAPS_TO edges where match_type is MODIFIED
+- Returns list of DriftEntry with entity pairs and similarity scores
+- Threshold from DEC-005 (0.35) already applied during compare_inventories
 
-### Turn: Phase 11.3 — Inventory Export
-**Thinking:** Need export_inventory function + --export-inventory CLI option. Function takes parsed documents, produces EntityInventory. Heuristics for entity type: headings matching "Sprint Boundary Checklist" etc → protocol, "BL-###" → backlog-item, default → section. TDD: tests first. I'll put the export function in inventory_parser.py (keeps the module cohesive) and add tests to test_inventory.py.
+Actually, drift is simpler than I initially thought. compare_inventories already classifies MODIFIED. The "drift report" is just a filtered view of the mapping results. Two options:
+1. Query the bridge graph for MAPS_TO edges with match_type=MODIFIED
+2. Filter the compare_inventories results directly
 
-**Output:** Phase 11.3 complete. Added export_inventory() with heuristic type classification (section/protocol/backlog-item), --export-inventory CLI option, YAML output with round-trip validation. 14 export unit tests + 5 CLI export tests. Full suite: 471 tests, 95% coverage. Sprint 11 all three phases complete.
+Option 1 requires FalkorDB. Option 2 is pure Python.
+Better: provide both. The CLI --drift-report path uses compare_inventories results (no FalkorDB required). If --graph-db is also provided, store the mapping and enable graph queries.
 
----
+**CLI integration plan:**
+- `--compare-repo PATH`: loads external inventory, runs compare_inventories, shows mapping table
+- `--drift-report`: modifier flag, when combined with --compare-repo, filters to MODIFIED only
+- Reporter: new functions for mapping table and drift report (Rich tables)
 
-## Session 30 (lightweight continuation)
-**Started:** 2026-03-12T13:35:08-03:00
-**Previous session artifacts:**
-- Checkpoint: session-29-light-checkpoint.md
-- MEMORY.md updated: yes (Session 29)
+**Approach:** Tests first for drift filtering (pure function), then CLI integration, then reporter.
 
-**Context loaded:**
-- MEMORY.md (latest)
-- Checkpoint: session-29-light-checkpoint.md
+**CLI reviewed.** Current structure:
+- Early exits: --graph-diff (line 281), --lint (line 402)
+- Main pipeline: parse → validate → report → optional graph/inventory
+- --compare-repo should be another early-exit path (like --graph-diff), since it doesn't need the full validation pipeline
+- --drift-report is a modifier flag on --compare-repo
 
----
+**Plan for CLI integration:**
+1. Add --compare-repo and --drift-report options
+2. Add early-exit block after --graph-diff block
+3. Create _print_compare_report() and _print_drift_report_compare() helper functions (Rich tables)
 
-### Turn: Sprint 11 Boundary Checklist
-**Thinking:** User wants the full Sprint Boundary Checklist (DSM 2.0 Template 8) for Sprint 11 before moving to Sprint 12. Six items: checkpoint, feedback, decisions, journal, README, epoch plan. Need to read current state of each artifact to know what's already done vs what's needed.
+**Files to create/modify:**
+- `src/cli.py`: add options + early-exit block + report helpers
+- `tests/test_cli_compare.py`: CLI integration tests (Click CliRunner)
 
-### Action: Epoch plan Sprint 11 checkboxes
-**What:** Check off all Sprint 11 tasks in epoch-3-plan.md, update status to COMPLETE, update MoSCoW/success/deliverable checkboxes, update plan status line.
+Let me structure the work:
+1. Tests for --compare-repo and --drift-report
+2. CLI implementation
+3. Full suite run
 
-### Action: README update for Sprint 11
-**What:** Update status line, add Sprint 11 feature section, check off Sprint 11, update footer metrics.
+**Phase 12.3 + CLI integration complete.** 513 passed (471 → 513), 95% coverage.
 
-### Turn: When to notify DSM Central and portfolio about boundary checklist
-**Thinking:** User is asking about the notification protocol. The three-file atomic feedback system pushes to DSM Central inbox. But the boundary checklist itself (checkpoint, journal, README, epoch plan) is project-local. The question is: should DSM Central and the portfolio be notified that a sprint boundary was completed? Currently, feedback entries are pushed individually as they're created (Entry 38-39 already pushed). But there's no "sprint X complete" notification to hub/portfolio. Let me check if there's an existing protocol for this.
+**Sprint 12 deliverables summary:**
+- `src/graph/cross_repo.py`: CrossRepoBridge, EdgeType (4 types), store_mapping()
+- `src/graph/repo_diff.py`: compare_inventories(), MatchType, MatchResult
+- `src/graph/__init__.py`: updated exports
+- `src/cli.py`: --compare-repo, --drift-report options + Rich report helpers
+- `tests/test_cross_repo.py`: 19 tests
+- `tests/test_repo_diff.py`: 13 tests
+- `tests/test_cli_compare.py`: 10 tests
 
-### Turn: Add hub/portfolio notification as 7th checklist item + feedback
-**Thinking:** User wants (1) a 7th item in the Sprint Boundary Checklist in CLAUDE.md, (2) a methodology entry (Entry 40) documenting the gap, (3) a backlog proposal (#35), and (4) three-file atomic push to DSM Central inbox. Need to read CLAUDE.md checklist location, then write Entry 40 + Proposal #35, then push to DSM Central. Follow Edit Explanation Stop Protocol: explain each edit, stop, approve, execute.
+**Total new tests:** 42
+**Total tests:** 513 (was 471)
+**Coverage:** 95%
 
-### Action: CLAUDE.md 7th checklist item + Entry 40 / Proposal #35 + DSM Central push
-**What:** Add hub/portfolio notification to Sprint Boundary Checklist, write feedback entry and proposal, push to DSM Central inbox.
+Sprint 12 implementation is complete. All three phases delivered. Ready for sprint boundary checklist when user is ready.
 
-### Action: Blog journal entry for Sprint 11
-**What:** Append Sprint 11 session entry to epoch-3/journal.md (What Happened, Aha Moments, Metrics, Blog Material).
+## Context Assessment
 
-### Action: Sprint 11 completion checkpoint
-**What:** Create docs/checkpoints/epoch-3/2026-03-12_sprint-11-complete.md
+User asks if 25% context is enough for sprint boundary checklist. The checklist has 7 items:
+1. Checkpoint document
+2. Feedback files updated
+3. Decision log updated
+4. Blog journal entry
+5. Repository README updated
+6. Epoch plan updated
+7. Hub/portfolio notified
+
+Each involves reading existing files and writing/editing. That's a lot of file I/O and the feedback push is particularly heavy (methodology.md, backlogs.md, DSM Central inbox). With 25% context, we'd likely run out mid-checklist.
+
+**Recommendation:** Commit the Sprint 12 implementation now, then use /dsm-light-wrap-up (designed for context-critical sessions) or start a fresh session for the boundary checklist.
