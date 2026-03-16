@@ -598,6 +598,45 @@
 
 - **Evidence:** dsm-graph-explorer Session 34 (2026-03-13). Agent created `dsm-graph-explorer.md` (no date) in `_inbox/`. User corrected to `2026-03-13_dsm-graph-explorer_feedback-entries-42-44.md`. The `_inbox/README.md` file convention only prescribes `{project-name}.md`. See `methodology.md` Entry 45.
 
+### Proposal #41: DSM_0.2 Modular Split Section Numbering Consistency
+- **DSM Section:** DSM_0.2 (Custom Instructions / Module Dispatch Table), DSM_3 (Cross-Project Communication)
+- **Problem:** The BL-090 modularization split DSM_0.2 from a single file (2,625 lines) into a slim core plus four modules (A-D). The pre-split document used numbered section references throughout (e.g., "Section 6.6", "Section 6.4.3", "Section 7"). After the split, the referenced content moved to module files, but the section references were not updated to indicate which module contains the target. Inline prose still says "Section 6.6" without specifying that it now lives in Module A or Module D. Any consumer following these references (agents, tools, humans) cannot locate the target without reading all module files.
+- **Proposed Solution:** Two options (not mutually exclusive):
+
+  1. **Update references to include module context:** Replace bare section references with module-qualified references. For example: "Section 6.6 (Module A)" or "see the Lightweight Session Lifecycle protocol in Module A." This is the minimal fix.
+
+  2. **Add a section number mapping:** Include a mapping table in the core file or as an appendix that maps legacy section numbers to their module locations:
+     ```
+     | Legacy Section | Module | Current Heading |
+     |---------------|--------|-----------------|
+     | 6.4.3 | A | Session-End Inbox Push |
+     | 6.6 | D | External Contribution |
+     | 6.8 | Core | Private Project |
+     ```
+
+  Option 1 is lower effort and more sustainable (references are self-contained). Option 2 is a temporary migration aid that becomes stale as modules evolve.
+
+- **Evidence:** dsm-graph-explorer Session 35 (2026-03-16). EXP-007 compared pre-split (v1.3.59) against post-split (v1.3.69) DSM_0.2 using GE's cross-reference validator. Both versions produce only warnings (0 errors), but the warnings reveal unresolvable section references pointing to content that moved to modules. See `methodology.md` Entry 46.
+
+### Proposal #42: Heading-Based Section Detection in GE Parser
+- **DSM Section:** DSM 4.0 (Software Engineering / Parser Design), DSM_0.2 (Custom Instructions / Tool Resilience)
+- **Problem:** GE's `markdown_parser.py` only recognizes numbered section headings (pattern: `### 2.1 Title`). Documents that use plain markdown headings (`## Title`) produce zero section nodes in the graph. DSM_0.2 itself uses the heading-level format exclusively, meaning GE cannot build a meaningful section graph of the very methodology it validates. This limitation was surfaced by EXP-007 (0 sections detected in a 2,625-line document) and affects any markdown document that uses standard heading conventions.
+- **Proposed Solution:** Add heading-based section detection alongside the existing numbered-section detection:
+
+  1. **Detection:** Every markdown heading (`#` through `######`) becomes a candidate SECTION node. The heading level (count of `#` characters) provides hierarchy depth. The heading text provides the section identity.
+
+  2. **Graph structure:** Each heading creates a SECTION node with attributes: `level` (1-6), `title` (heading text), `file`, `line`. Parent-child relationships derive from heading levels (an `##` is a child of the preceding `#`).
+
+  3. **Cross-reference resolution:** For heading-based sections, resolve references by title matching:
+     - Exact match first (e.g., "Pre-Generation Brief Protocol" matches `## Pre-Generation Brief Protocol`)
+     - Fuzzy match via existing TF-IDF infrastructure (Sprint 6) for partial or paraphrased references
+
+  4. **Activation:** Either default behavior (auto-detect which style the document uses) or a CLI flag (`--heading-sections`). Auto-detection is preferred: if numbered sections are found, use numbered mode; if not, fall back to heading-based mode.
+
+  **Scope:** This is a GE enhancement, not a DSM methodology change. It makes GE useful for any markdown document, not just those with numbered sections.
+
+- **Evidence:** dsm-graph-explorer Session 35 (2026-03-16). EXP-007 found 0 sections in DSM_0.2 (both pre-split and post-split) because the parser only recognizes numbered sections. The user noted: "The important part of the section is the level (#, ##, ###) not the number, and of course the section title that is handled with NLP or other approach." See `methodology.md` Entry 47.
+
 ---
 
 ## Low Priority
@@ -606,6 +645,6 @@ _No low-priority items identified yet._
 
 ---
 
-**Last Updated:** 2026-03-13
-**Total Proposals:** 40
-**Pushed:** 2026-03-13 (Proposal #40 pushed simultaneously with creation)
+**Last Updated:** 2026-03-16
+**Total Proposals:** 42
+**Pushed:** 2026-03-16 (Proposals #41-42 pushed simultaneously with creation)

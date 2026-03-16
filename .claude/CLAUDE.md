@@ -74,6 +74,15 @@ This project uses Claude Code to write files directly. User reviews in IDE.
 - Run `pytest tests/` after each module to verify before proceeding
 - Keep changes focused: one logical unit per step
 
+## Session Transcript Protocol (reinforces inherited protocol)
+- Append thinking to `.claude/session-transcript.md` BEFORE acting
+- Output summary AFTER completing work
+- Conversation text = results only
+- Use Reasoning Delimiter Format for every thinking block:
+  <------------Start Thinking / HH:MM------------>
+  [reasoning content]
+- HH:MM is 24-hour local time when thinking begins; no end delimiter needed
+
 ## Pre-Generation Brief Protocol (reinforces inherited protocol)
 
 Before creating any artifact (code file, test file, configuration), explain:

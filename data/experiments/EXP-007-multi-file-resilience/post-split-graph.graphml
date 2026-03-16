@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d1" for="node" attr.name="title" attr.type="string" />
+  <key id="d0" for="node" attr.name="type" attr.type="string" />
+  <graph edgedefault="directed">
+    <node id="data/experiments/EXP-007-multi-file-resilience/post-split/DSM_0.2.A_Session_Lifecycle.md">
+      <data key="d0">FILE</data>
+      <data key="d1">DSM_0.2.A_Session_Lifecycle.md</data>
+    </node>
+    <node id="data/experiments/EXP-007-multi-file-resilience/post-split/DSM_0.2.B_Artifact_Creation.md">
+      <data key="d0">FILE</data>
+      <data key="d1">DSM_0.2.B_Artifact_Creation.md</data>
+    </node>
+    <node id="data/experiments/EXP-007-multi-file-resilience/post-split/DSM_0.2.C_Security_Safety.md">
+      <data key="d0">FILE</data>
+      <data key="d1">DSM_0.2.C_Security_Safety.md</data>
+    </node>
+    <node id="data/experiments/EXP-007-multi-file-resilience/post-split/DSM_0.2.D_Research_Onboarding.md">
+      <data key="d0">FILE</data>
+      <data key="d1">DSM_0.2.D_Research_Onboarding.md</data>
+    </node>
+    <node id="data/experiments/EXP-007-multi-file-resilience/post-split/DSM_0.2_Custom_Instructions_v1.1.md">
+      <data key="d0">FILE</data>
+      <data key="d1">DSM_0.2_Custom_Instructions_v1.1.md</data>
+    </node>
+  </graph>
+</graphml>

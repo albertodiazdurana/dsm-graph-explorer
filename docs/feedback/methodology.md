@@ -488,9 +488,27 @@
 - **Recommendation:** Update the `_inbox/README.md` filename convention from `{project-name}.md` to `{date}_{project-name}_{content-description}.md`. For feedback notifications specifically: `{date}_{project-name}_feedback-entries-{from}-{to}.md`. For other notification types: `{date}_{project-name}_{type}.md` (e.g., `2026-03-13_dsm-graph-explorer_epoch-4-plan-drafted.md`). See `backlogs.md` Proposal #40.
 - **Pushed:** 2026-03-13
 
+### Entry 46: DSM_0.2 Modular Split Broke Section Number Cross-References
+- **Date:** 2026-03-16 | **Sprint:** 13 (EXP-007) | **Type:** Bug / Ecosystem
+- **Context:** EXP-007 tested GE's resilience against the real DSM_0.2 modularization (BL-090, v1.3.61). The pre-split file (v1.3.59, 2,625 lines) was compared against the post-split set (v1.3.69, 5 files, 2,573 lines). GE ran both through the full pipeline: parse, validate, cross-reference check, graph build.
+- **Finding:** The split itself causes no parser regression (0 errors in both cases). However, the split introduced a section numbering consistency issue in DSM_0.2. The pre-split file used numbered references like "Section 6.6", "Section 6.4.3", "Section 7" throughout, pointing to content within the same file. After the split, those referenced sections now live in module files (A-D) that do not preserve the original numbering context. The Module Dispatch Table in the core file uses markdown links (`[A](DSM_0.2.A_...md)`) to point to modules, but inline prose still references "Section 6.6" or "DSM_3 Section 6.4.3" without indicating which module file contains the target. This is not a GE bug; it is a content consistency issue in the split itself. The cross-reference warnings dropped from 70 (baseline) to 46 (post-split) because the slim core contains fewer inline references, but the underlying resolution failure is the same: references to sections in DSM_3 and other documents that are outside the scanned file set.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.00)
+- **Reasoning:** The modular split was a necessary structural change (BL-090), but cross-references within the modules still use the pre-split numbering scheme. This creates a gap for any consumer of DSM_0.2 (agents, tools, humans) that tries to follow "Section 6.6" and cannot locate it within the module they are reading. The fix is either: (a) update section references in modules to use module-relative identifiers, or (b) add a section number mapping table that maps old numbers to module locations. This affects all DSM spoke projects that parse or reference DSM_0.2 content.
+- **Recommendation:** Notify DSM Central about the section numbering consistency issue. Propose that module files either adopt their own numbering scheme or include a mapping from legacy section numbers to module locations. See `backlogs.md` Proposal #41.
+- **Pushed:** 2026-03-16
+
+### Entry 47: GE Parser Limited to Numbered Sections, Missing Heading-Based Structure
+- **Date:** 2026-03-16 | **Sprint:** 13 (EXP-007) | **Type:** Gap / Enhancement
+- **Context:** EXP-007 revealed that GE detects zero sections in DSM_0.2 (both pre-split and post-split). The parser found 0 sections in a 2,625-line document. Investigation showed that GE's `markdown_parser.py` only recognizes numbered section headings (pattern: `### 2.1 Section Title`) and ignores plain markdown headings (`## Section Title`). DSM_0.2 uses the latter format exclusively.
+- **Finding:** GE's section detection is too narrow. It relies on a numbered section pattern that assumes documents use hierarchical numbering (e.g., "### 2.1.3 Title"). Many markdown documents, including DSM_0.2 itself, use heading levels (`#`, `##`, `###`) for hierarchy and descriptive titles for identity. The heading level provides the structural hierarchy (depth in the document tree); the heading text provides the semantic identity (what the section is about). Section numbers are one encoding of hierarchy, but heading levels are the universal one in markdown. The current parser misses the universal encoding and only catches the specialized one.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 4 (Avg: 4.50)
+- **Reasoning:** Supporting heading-based section detection would make GE useful for any markdown document, not just those with numbered sections. The heading level maps directly to hierarchy (h1=top, h2=chapter, h3=section, etc.). For cross-reference resolution, the section title text can be matched using the existing TF-IDF infrastructure (Sprint 6) or exact string matching. This aligns with how markdown is actually written: heading levels carry structure, titles carry identity. A reference like "see the Pre-Generation Brief Protocol" should resolve to the `## Pre-Generation Brief Protocol` heading by title match.
+- **Recommendation:** Add heading-based section detection to GE's parser alongside the existing numbered-section detection. Each markdown heading becomes a SECTION node with attributes: level (from `#` count), title (heading text), file, line. Cross-reference resolution for heading-based sections uses title matching (exact first, then TF-IDF fuzzy). This could be a default behavior or activated via a flag (e.g., `--heading-sections`). See `backlogs.md` Proposal #42.
+- **Pushed:** 2026-03-16
+
 ---
 
-**Last Updated:** 2026-03-13
-**Entries So Far:** 45
-**Average Score:** 3.82
-**Pushed:** 2026-03-13 (Entry 45 pushed simultaneously with creation)
+**Last Updated:** 2026-03-16
+**Entries So Far:** 47
+**Average Score:** 3.84
+**Pushed:** 2026-03-16 (Entries 46-47 pushed simultaneously with creation)
