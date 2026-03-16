@@ -4,7 +4,7 @@ Constructs a NetworkX DiGraph from parsed documents and cross-references.
 
 Node types:
     FILE:    one per parsed document (ID = file path)
-    SECTION: one per numbered section (ID = file_path:section_number)
+    SECTION: one per section (ID = file_path:number or file_path:h:slug)
 
 Edge types:
     CONTAINS:   FILE -> SECTION
@@ -12,6 +12,7 @@ Edge types:
 """
 
 import os
+import re
 
 import networkx as nx
 
@@ -19,16 +20,40 @@ from parser.cross_ref_extractor import CrossReference
 from parser.markdown_parser import ParsedDocument, Section
 
 
+def _slugify(title: str) -> str:
+    """Convert a heading title to a URL-friendly slug.
+
+    Examples:
+        "Session Transcript Protocol" -> "session-transcript-protocol"
+        "Gate 1: Concept Approval" -> "gate-1-concept-approval"
+    """
+    slug = title.lower()
+    slug = re.sub(r"[^a-z0-9\s-]", "", slug)
+    slug = re.sub(r"\s+", "-", slug.strip())
+    return slug
+
+
+def _section_id(file_id: str, section: Section) -> str:
+    """Generate a unique node ID for a section.
+
+    Numbered sections: file_path:number (e.g., "docs/DSM.md:2.1")
+    Heading sections:  file_path:h:slug (e.g., "docs/DSM.md:h:inclusive-language")
+    """
+    if section.number:
+        return f"{file_id}:{section.number}"
+    return f"{file_id}:h:{_slugify(section.title)}"
+
+
 def _find_enclosing_section(
-    numbered_sections: list[Section], line: int
+    sections: list[Section], line: int
 ) -> Section | None:
     """Find the section that encloses a given line number.
 
-    Walks backward through numbered sections to find the last one
+    Walks backward through sections to find the last one
     whose line is <= the target line. Returns None if the line
     precedes all sections.
     """
-    for s in reversed(numbered_sections):
+    for s in reversed(sections):
         if s.line <= line:
             return s
     return None
@@ -59,19 +84,18 @@ def build_reference_graph(
         G.add_node(file_id, type="FILE", title=os.path.basename(doc.file))
 
         for section in doc.sections:
-            if section.number:
-                section_id = f"{file_id}:{section.number}"
-                G.add_node(
-                    section_id,
-                    type="SECTION",
-                    title=section.title,
-                    number=section.number,
-                    file=file_id,
-                    line=section.line,
-                    level=section.level,
-                    context_excerpt=section.context_excerpt,
-                )
-                G.add_edge(file_id, section_id, type="CONTAINS")
+            sid = _section_id(file_id, section)
+            G.add_node(
+                sid,
+                type="SECTION",
+                title=section.title,
+                number=section.number,
+                file=file_id,
+                line=section.line,
+                level=section.level,
+                context_excerpt=section.context_excerpt,
+            )
+            G.add_edge(file_id, sid, type="CONTAINS")
 
     # Add REFERENCES edges
     for source_file, refs in references.items():
@@ -79,14 +103,14 @@ def build_reference_graph(
         if not doc:
             continue
 
-        numbered_sections = [s for s in doc.sections if s.number]
+        all_sections = list(doc.sections)
 
         for ref in refs:
-            enclosing = _find_enclosing_section(numbered_sections, ref.line)
+            enclosing = _find_enclosing_section(all_sections, ref.line)
             if not enclosing:
                 continue
 
-            source_id = f"{source_file}:{enclosing.number}"
+            source_id = _section_id(source_file, enclosing)
 
             # Resolve the reference target
             if ref.type == "section" and ref.target in section_lookup:

@@ -96,7 +96,7 @@ class TestNodeCreation:
         assert node["level"] == 2
         assert node["context_excerpt"] == ""
 
-    def test_unnumbered_sections_are_skipped(self):
+    def test_unnumbered_sections_are_included(self):
         doc = _make_doc("file.md", [
             _make_section(None, "Unnumbered Heading", line=1),
             _make_section("2.1", "Numbered", line=10),
@@ -105,8 +105,9 @@ class TestNodeCreation:
         section_nodes = [
             n for n, d in G.nodes(data=True) if d.get("type") == "SECTION"
         ]
-        assert len(section_nodes) == 1
+        assert len(section_nodes) == 2
         assert "file.md:2.1" in section_nodes
+        assert "file.md:h:unnumbered-heading" in section_nodes
 
     def test_node_id_format(self):
         G = build_reference_graph([DOC_A, DOC_B], {}, {})
