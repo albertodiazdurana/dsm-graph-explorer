@@ -1,3 +1,5 @@
+**Consumed at:** Session 35 (2026-03-16)
+
 ### [2026-03-15] Architecture audit requested (BL-170 Part B)
 
 **Type:** Action Item

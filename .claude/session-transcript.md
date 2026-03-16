@@ -504,3 +504,28 @@ Options for remaining context:
 5. Wrap up session (checkpoint, transcript)
 
 Best use of 30%: commit + lightweight wrap-up. The session has been productive and we should preserve it.
+
+---
+
+## Session 35 (lightweight continuation)
+**Started:** 2026-03-16
+**Previous session artifacts:**
+- Checkpoint: none found (no checkpoint in docs/checkpoints/)
+- MEMORY.md updated: yes (from Session 34)
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: none (using MEMORY.md for context)
+
+---
+
+### Turn 2: Inbox check
+**Thinking:** User asked if I read inbox. Lightweight start defers inbox, so checking now. Found one item: `2026-03-15_bl170-architecture-audit.md`, a high-priority action item from DSM Central requesting an architecture audit of GE. Three questions: (1) artifact inventory/node types, (2) git access method, (3) cross-pattern availability for private projects. Output goes to `docs/research/2026-03-15_architecture-audit.md` + DSM Central inbox notification.
+
+### Turn 3: Start BL-170 architecture audit
+**Thinking:** User approved. Need to read GE source to answer 3 questions. Plan: (1) explore src/ structure, (2) find node/entity type definitions, (3) find git access patterns, (4) identify filesystem vs git dependencies per artifact type. Then write findings doc + notify DSM Central.
+
+**Output:** Architecture audit complete.
+- Findings: `docs/research/2026-03-15_architecture-audit.md` (26 classified values across 7 categories, all local-only I/O, 100% Private Project compatibility)
+- Inbox item moved to `_inbox/done/`
+- DSM Central notified: `_inbox/2026-03-16_dsm-graph-explorer_bl170-architecture-audit-results.md`
