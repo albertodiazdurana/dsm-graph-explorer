@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
-**Version:** 0.3.0
-**Status:** Epoch 3 in progress (Sprint 12 complete, boundary checklist done)
+**Version:** 0.4.0
+**Status:** Epoch 4 in progress (Sprint 13 complete)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
 
@@ -99,9 +99,17 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - Drift detection (`--drift-report`) filtering to diverged sections between private and public repos
 - BL-156 fulfilled: private-to-public DSM repository mapping with drift tracking
 
-**Future (Epoch 4+):**
-- Cypher query library for navigation
-- spaCy NER for advanced reference extraction
+**Implemented (Sprint 13 — BL-090 Resilience + Heading-Based Sections):**
+- EXP-007: Multi-file document resilience validated against real DSM_0.2 modular split (BL-090)
+- Heading-based section detection: graph builder creates SECTION nodes for all markdown headings, not just numbered sections
+- Architecture audit (BL-170): confirmed 100% Private Project compatibility (all I/O local)
+- DEC-008: heading-based section node IDs (`h:slug` format)
+
+**Future (Epoch 4 remaining):**
+- Cross-reference resolution by heading title matching (NLP/TF-IDF)
+- Incremental graph updates (skip unchanged files)
+- FalkorDB index creation and export
+- Protocol usage frequency analysis
 - LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
 
 ---
@@ -145,6 +153,7 @@ dsm-graph-explorer/
 │   ├── test_repo_diff.py      # Repo comparison tests
 │   ├── test_cli_compare.py    # Cross-repo CLI integration tests
 │   ├── test_linter.py       # Convention linting tests
+│   ├── test_heading_sections.py # Heading-based section tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
 ├── _inbox/               # Hub-spoke communication
@@ -304,7 +313,7 @@ This project is built using the [Agentic AI Data Science Methodology (DSM)](http
 
 The three-file feedback system (`docs/feedback/`) tracks methodology effectiveness as the project progresses, generating actionable improvements back into the DSM itself.
 
-For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), [epoch-2-plan.md](docs/plans/epoch-2-plan.md) (complete), and [epoch-3-plan.md](docs/plans/epoch-3-plan.md) (in progress) in this repository.
+For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), [epoch-2-plan.md](docs/plans/epoch-2-plan.md) (complete), [epoch-3-plan.md](docs/plans/epoch-3-plan.md) (complete), and [epoch-4-plan.md](docs/plans/epoch-4-plan.md) (in progress) in this repository.
 
 ---
 
@@ -336,7 +345,7 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
   - `src/linter/lint_reporter.py`: Rich console + markdown report output
   - CLI `--lint` flag, config `lint:` section with per-rule severity overrides
 
-### Epoch 3: Graph Database Integration (In Progress)
+### Epoch 3: Graph Database Integration (Complete)
 - [x] **Sprint 9:** FalkorDBLite Integration — Python 3.12 upgrade, GraphStore persistence layer, `--graph-db`/`--rebuild` CLI flags, EXP-005 validation (355 tests, 96% coverage)
   - Phase 9.0: Python 3.12 upgrade (DEC-007)
   - Phase 9.1: EXP-005 FalkorDBLite API validation (16/16 checks)
@@ -354,6 +363,15 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
   - Phase 12.1: `src/graph/cross_repo.py` (CrossRepoBridge, EdgeType, 19 tests)
   - Phase 12.2: `src/graph/repo_diff.py` (compare_inventories, three-pass matching, 13 tests)
   - Phase 12.3: CLI `--compare-repo INV_A INV_B`, `--drift-report` (10 tests)
+
+### Epoch 4: Resilience & Ecosystem Analysis (In Progress)
+- [x] **Sprint 13:** BL-090 Resilience + Heading-Based Sections — EXP-007 multi-file validation, heading-based section detection, BL-170 architecture audit, DEC-008 (531 tests, 95% coverage)
+  - Phase 13.0: EXP-007 multi-file document resilience (real DSM_0.2 split data)
+  - Phase 13.1: BL-042 heading-based section detection in graph builder (18 new tests)
+  - BL-170 Part B: architecture audit (100% Private Project compatibility)
+- [ ] **Sprint 14:** Performance & Completeness (carry-forward SHOULDs)
+- [ ] **Sprint 15:** Protocol Usage Analysis
+- [ ] **Sprint 16:** Reserved
 
 ---
 
@@ -388,7 +406,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-03-13
-**Current Status:** Epoch 3 in progress (Sprint 12 complete: cross-repo edges + BL-156)
-**Tests:** 513 passed, 95% coverage
-**DSM Feedback:** 40 methodology entries, 35 improvement proposals
+**Last Updated:** 2026-03-16
+**Current Status:** Epoch 4 in progress (Sprint 13 complete: BL-090 resilience + heading-based sections)
+**Tests:** 531 passed, 95% coverage
+**DSM Feedback:** 47 methodology entries, 42 improvement proposals

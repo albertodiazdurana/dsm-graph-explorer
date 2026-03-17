@@ -2,7 +2,7 @@
 
 **Project Type:** Software Engineering (DSM 4.0 Track)
 **Start Date:** 2026-03-13
-**Status:** PLANNING
+**Status:** IN PROGRESS (Sprint 13 complete)
 **Prerequisite:** Epoch 3 Complete ([epoch-3-plan.md](epoch-3-plan.md))
 **Project Lead:** Alberto Diaz Durana (with AI assistance)
 **Alignment:** DSM Central response received 2026-03-13 (v1.3.36-v1.3.39)
@@ -44,8 +44,8 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 ### Scope (MoSCoW)
 
 **MUST (Epoch 4 Core):**
-- [ ] BL-090 resilience: parser handles multi-file document sets (Sprint 13)
-- [ ] EXP-007: validate current parser behavior against simulated DSM_0.2 split (Sprint 13)
+- [x] BL-090 resilience: parser handles multi-file document sets (Sprint 13)
+- [x] EXP-007: validate current parser behavior against real DSM_0.2 split (Sprint 13)
 - [ ] Incremental graph updates: skip unchanged files on rebuild (Sprint 14)
 
 **SHOULD (Epoch 4 Enhancements):**
@@ -64,7 +64,7 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 ### Success Criteria
 
 **Technical:**
-- [ ] Parser processes a simulated multi-file DSM_0.2 split with zero regressions (EXP-007)
+- [x] Parser processes real multi-file DSM_0.2 split with zero regressions (EXP-007)
 - [ ] Incremental rebuild skips unchanged files (measured by timestamp or hash)
 - [ ] FalkorDB indexes created on `path` and `heading` properties
 - [ ] `--graph-export` produces GraphML from FalkorDB store
@@ -76,7 +76,7 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 - [ ] Open Source Contribution Pipeline executed (FalkorDBLite blog post)
 
 **Ecosystem:**
-- [ ] GE resilient to DSM_0.2 structural changes before BL-090 Phase 1 lands
+- [x] GE resilient to DSM_0.2 structural changes (BL-090 Phase 1 already landed)
 - [ ] Protocol usage analysis available to inform BL-090 splitting decisions (if Sprint 15 reached)
 
 ---
@@ -123,7 +123,7 @@ documentation and defensive tests.
 **Duration:** 1-2 sessions
 **Objective:** Ensure GE handles the upcoming DSM_0.2 split without regressions.
 This is defensive work: validate current behavior, fix gaps, add resilience tests.
-**Status:** PLANNED
+**Status:** COMPLETE (531 tests, 95% coverage)
 
 #### Design
 
@@ -145,36 +145,30 @@ independently), but that:
 #### Phase 13.0: EXP-007 (Resilience Experiment)
 
 **Tasks:**
-1. [ ] Create a simulated split: take an existing large test fixture and split it
-       into 3-4 files with cross-references between them
-2. [ ] Run the full pipeline (parse, validate, cross-ref, graph build) on the split
-3. [ ] Compare results against the original single-file version
-4. [ ] Document gaps in `data/experiments/EXP-007-multi-file-resilience/`
+1. [x] Tested against real DSM_0.2 split (pre-split v1.3.59 vs post-split v1.3.69)
+2. [x] Run the full pipeline (parse, validate, cross-ref, graph build) on both
+3. [x] Compared results: 0 errors both cases, warning delta explained by content redistribution
+4. [x] Documented in `data/experiments/EXP-007-multi-file-resilience/`
 
 **Gate:** Identify which (if any) pipeline stages break on split files.
 
-#### Phase 13.1: Cross-Reference Resolution Across Split Files
+#### Phase 13.1: Heading-Based Section Detection (BL-042)
+
+EXP-007 revealed GE detected 0 sections in DSM_0.2 (heading-only format). Scoped BL-042 into this sprint.
 
 **Tasks:**
-1. [ ] If EXP-007 reveals cross-reference gaps: update `cross_ref_validator.py` to
-       resolve references across a file group (files that were originally one document)
-2. [ ] If EXP-007 reveals no gaps: add defensive tests confirming current behavior
-3. [ ] Update entity inventory export to handle split-file repos correctly
-4. [ ] Write tests for split-file scenarios
-
-#### Phase 13.2: Defensive Test Suite
-
-**Tasks:**
-1. [ ] Add test fixtures simulating DSM_0.2 split structure
-2. [ ] Integration test: full pipeline on split fixtures
-3. [ ] Regression gate: ensure single-file behavior unchanged
+1. [x] TDD: 18 new tests for heading-based section detection
+2. [x] Updated `graph_builder.py`: `_slugify()`, `_section_id()`, removed `if section.number:` guard
+3. [x] Updated existing test for new behavior
+4. [x] DEC-008: heading-based section ID format (`h:slug`)
 
 #### Sprint 13 Deliverables
 
-- [ ] EXP-007 results documented
-- [ ] Cross-reference resolution updated (if needed)
-- [ ] Defensive test suite for multi-file document scenarios
-- [ ] Confirmation: GE is resilient to BL-090 Phase 1
+- [x] EXP-007 results documented
+- [x] Heading-based section detection implemented (BL-042)
+- [x] 18 new tests for heading-based scenarios
+- [x] Confirmation: GE is resilient to BL-090 Phase 1
+- [x] BL-170 Part B architecture audit complete
 
 **Sprint boundary checklist:**
 - [ ] Checkpoint document (`docs/checkpoints/`)
@@ -419,7 +413,7 @@ This decision is deferred to the Sprint 16 planning gate.
 
 ---
 
-**Plan Status:** PLANNING (awaiting approval)
-**Last Updated:** 2026-03-13
+**Plan Status:** IN PROGRESS (Sprint 13 complete)
+**Last Updated:** 2026-03-16
 **Previous:** [epoch-3-plan.md](epoch-3-plan.md)
 **Alignment Source:** `_inbox/dsm-central.md` (2026-03-13)
