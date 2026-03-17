@@ -1,3 +1,5 @@
+**Consumed at:** Session 36 start (2026-03-17)
+
 # Sprint 13 Checkpoint: BL-090 Resilience + Heading-Based Sections
 
 **Date:** 2026-03-16
