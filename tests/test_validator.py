@@ -14,6 +14,7 @@ from validator.cross_ref_validator import (
     Severity,
     ValidationResult,
     build_section_index,
+    build_heading_index,
     validate_cross_references,
     assign_severity,
     apply_severity_overrides,
@@ -110,6 +111,57 @@ class TestBuildSectionIndex:
 
     def test_empty_documents(self):
         index = build_section_index([])
+        assert index == {}
+
+
+class TestBuildHeadingIndex:
+    """Test building a heading index from unnumbered headings."""
+
+    def test_returns_dict(self):
+        doc = make_doc("f.md", [(None, "Protocol Name", 1, 2)])
+        index = build_heading_index([doc])
+        assert isinstance(index, dict)
+
+    def test_indexes_unnumbered_headings(self):
+        doc = make_doc("f.md", [(None, "Session Transcript Protocol", 10, 2)])
+        index = build_heading_index([doc])
+        assert "session transcript protocol" in index
+
+    def test_excludes_numbered_sections(self):
+        doc = make_doc("f.md", [
+            ("1", "Introduction", 1, 1),
+            (None, "Protocol Name", 10, 2),
+        ])
+        index = build_heading_index([doc])
+        assert "introduction" not in index
+        assert "protocol name" in index
+
+    def test_maps_to_file_and_section(self):
+        doc = make_doc("guide.md", [(None, "My Heading", 5, 2)])
+        index = build_heading_index([doc])
+        entries = index["my heading"]
+        assert len(entries) == 1
+        assert entries[0][0] == "guide.md"
+        assert entries[0][1].title == "My Heading"
+
+    def test_multi_document_same_heading(self):
+        doc1 = make_doc("a.md", [(None, "Overview", 1, 1)])
+        doc2 = make_doc("b.md", [(None, "Overview", 1, 1)])
+        index = build_heading_index([doc1, doc2])
+        assert len(index["overview"]) == 2
+
+    def test_normalizes_whitespace(self):
+        doc = make_doc("f.md", [(None, "Heading with extra   spaces", 1, 2)])
+        index = build_heading_index([doc])
+        assert "heading with extra spaces" in index
+
+    def test_empty_documents(self):
+        index = build_heading_index([])
+        assert index == {}
+
+    def test_no_unnumbered_headings(self):
+        doc = make_doc("f.md", [("1", "Intro", 1, 1), ("2", "Body", 5, 1)])
+        index = build_heading_index([doc])
         assert index == {}
 
 
@@ -758,3 +810,78 @@ class TestValidateCrossReferencesWithInventories:
         assert len(results) == 1
         assert results[0].severity == Severity.INFO
         assert results[0].resolution == "external"
+
+
+# ===========================================================================
+# Heading Title Resolution Tests
+# ===========================================================================
+
+
+class TestValidateHeadingReferences:
+    """Test heading title reference resolution in the validator."""
+
+    def test_valid_heading_ref_no_result(self):
+        """A heading ref matching a known unnumbered heading produces no error."""
+        doc = make_doc("f.md", [
+            ("1", "Intro", 1, 1),
+            (None, "Session Transcript Protocol", 10, 2),
+        ])
+        refs = {"f.md": [make_ref("heading", "Session Transcript Protocol", line=20)]}
+        results = validate_cross_references([doc], refs)
+        assert len(results) == 0
+
+    def test_broken_heading_ref_produces_warning(self):
+        """A heading ref not matching any heading produces a WARNING."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("heading", "Nonexistent Protocol", line=5)]}
+        results = validate_cross_references([doc], refs)
+        assert len(results) == 1
+        assert results[0].severity == Severity.WARNING
+        assert results[0].ref_type == "heading"
+
+    def test_heading_resolution_is_case_insensitive(self):
+        """Heading resolution normalizes case."""
+        doc = make_doc("f.md", [(None, "My Protocol", 1, 2)])
+        refs = {"f.md": [make_ref("heading", "my protocol", line=5)]}
+        results = validate_cross_references([doc], refs)
+        assert len(results) == 0
+
+    def test_heading_resolution_normalizes_whitespace(self):
+        """Heading resolution collapses extra whitespace."""
+        doc = make_doc("f.md", [(None, "Heading with extra   spaces", 1, 2)])
+        refs = {"f.md": [make_ref("heading", "Heading with extra   spaces", line=5)]}
+        results = validate_cross_references([doc], refs)
+        assert len(results) == 0
+
+    def test_heading_ref_cross_file(self):
+        """A heading ref in file A to heading in file B should resolve."""
+        doc_a = make_doc("a.md", [("1", "Intro", 1, 1)])
+        doc_b = make_doc("b.md", [(None, "Target Heading", 1, 2)])
+        refs = {"a.md": [make_ref("heading", "Target Heading", line=5)]}
+        results = validate_cross_references([doc_a, doc_b], refs)
+        assert len(results) == 0
+
+    def test_heading_and_section_refs_mixed(self):
+        """Both heading and section refs validated in same call."""
+        doc = make_doc("f.md", [
+            ("1", "Intro", 1, 1),
+            (None, "Protocol Name", 10, 2),
+        ])
+        refs = {"f.md": [
+            make_ref("section", "1"),           # valid
+            make_ref("heading", "Protocol Name"),  # valid
+            make_ref("section", "99"),           # broken
+            make_ref("heading", "Missing"),      # broken
+        ]}
+        results = validate_cross_references([doc], refs)
+        assert len(results) == 2
+        targets = {r.target for r in results}
+        assert "99" in targets
+        assert "Missing" in targets
+
+    def test_broken_heading_message_is_descriptive(self):
+        """Broken heading ref message mentions the target title."""
+        doc = make_doc("f.md", [("1", "Intro", 1, 1)])
+        refs = {"f.md": [make_ref("heading", "Unknown Protocol", line=5)]}
+        results = validate_cross_references([doc], refs)
+        assert "Unknown Protocol" in results[0].message

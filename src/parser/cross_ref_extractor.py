@@ -4,6 +4,7 @@ Extracts prose cross-reference patterns from markdown files:
 - "Section X.Y.Z" references
 - "Appendix X.Y" references
 - "DSM_X.Y" and "DSM X.Y" document references
+- Heading title references (exact match against known heading titles)
 
 Skips references inside fenced code blocks to avoid false positives.
 """
@@ -172,3 +173,96 @@ def _gather_context(
                 break
 
     return " ".join(gathered)
+
+
+def extract_heading_references(
+    path: Path | str | None = None,
+    known_headings: set[str] | None = None,
+    *,
+    content: str | None = None,
+    file_path: str = "<string>",
+) -> list[CrossReference]:
+    """Extract references to known heading titles from prose text.
+
+    Scans each non-code-block, non-heading line for exact (case-insensitive)
+    occurrences of known heading titles. Returns CrossReference objects with
+    type="heading" and target set to the original-case title as found in
+    the text.
+
+    Args:
+        path: Path to the markdown file (mutually exclusive with content).
+        known_headings: Set of normalized (lowercase) heading titles to match.
+        content: Markdown text content (mutually exclusive with path).
+        file_path: Virtual file path when using content parameter.
+
+    Returns:
+        List of CrossReference objects for heading title matches.
+    """
+    if known_headings is None or len(known_headings) == 0:
+        return []
+
+    if path is not None and content is not None:
+        raise ValueError("Provide either path or content, not both")
+    if path is not None:
+        p = Path(path)
+        with p.open(encoding="utf-8") as f:
+            lines = f.readlines()
+    elif content is not None:
+        lines = content.splitlines(keepends=True)
+    else:
+        raise ValueError("Provide either path or content")
+
+    # Build code block map
+    in_code_block = False
+    code_block_lines: set[int] = set()
+    for idx, raw_line in enumerate(lines):
+        stripped = raw_line.strip()
+        if stripped.startswith("```"):
+            in_code_block = not in_code_block
+            code_block_lines.add(idx)
+            continue
+        if in_code_block:
+            code_block_lines.add(idx)
+
+    references: list[CrossReference] = []
+
+    for idx, raw_line in enumerate(lines):
+        if idx in code_block_lines:
+            continue
+
+        line = raw_line.rstrip("\n")
+        stripped = line.lstrip()
+
+        # Skip heading definition lines (## Title)
+        if stripped.startswith("#"):
+            continue
+
+        line_lower = line.lower()
+
+        for heading in known_headings:
+            pos = line_lower.find(heading)
+            if pos == -1:
+                continue
+
+            # Extract the original-case text from the line
+            original_title = line[pos : pos + len(heading)]
+            # Capitalize to match heading style
+            original_title = _restore_title_case(original_title, heading, line, pos)
+
+            references.append(
+                CrossReference(
+                    type="heading",
+                    target=original_title,
+                    line=idx + 1,
+                    context=line,
+                )
+            )
+
+    return references
+
+
+def _restore_title_case(
+    matched_text: str, _heading: str, line: str, pos: int
+) -> str:
+    """Restore the original case of a matched heading title from the source line."""
+    return line[pos : pos + len(_heading)]

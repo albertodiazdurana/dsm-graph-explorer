@@ -7,8 +7,18 @@ from pathlib import Path
 
 import pytest
 
-from parser.markdown_parser import ParsedDocument, Section, parse_markdown_file
-from parser.cross_ref_extractor import CrossReference, extract_cross_references
+from parser.markdown_parser import (
+    ParsedDocument,
+    Section,
+    SkeletonEntry,
+    extract_skeleton,
+    parse_markdown_file,
+)
+from parser.cross_ref_extractor import (
+    CrossReference,
+    extract_cross_references,
+    extract_heading_references,
+)
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
@@ -488,3 +498,159 @@ class TestCrossRefContextWindow:
         post_code_ref = ref_31[0]
         assert "result = parse" not in post_code_ref.context_before
         assert "Section 99.99" not in post_code_ref.context_before
+
+
+# ---------------------------------------------------------------------------
+# extract_skeleton tests
+# ---------------------------------------------------------------------------
+
+
+class TestExtractSkeleton:
+    """Test the extract_skeleton function for lightweight heading extraction."""
+
+    def test_returns_list_of_skeleton_entries(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        assert isinstance(result, list)
+        assert all(isinstance(e, SkeletonEntry) for e in result)
+
+    def test_extracts_all_headings(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        full_parse = parse_markdown_file(SAMPLE_DSM)
+        assert len(result) == len(full_parse.sections)
+
+    def test_entry_has_heading_text(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        headings = [e.heading for e in result]
+        assert "Introduction" in headings
+        assert "Overview & Purpose" in headings
+
+    def test_entry_has_level(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        intro = next(e for e in result if e.heading == "Introduction")
+        assert intro.level == 1
+        overview = next(e for e in result if e.heading == "Overview & Purpose")
+        assert overview.level == 2
+
+    def test_entry_has_line_number(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        intro = next(e for e in result if e.heading == "Introduction")
+        assert intro.line == 1
+
+    def test_entry_has_end_line(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        intro = next(e for e in result if e.heading == "Introduction")
+        overview = next(e for e in result if e.heading == "Overview & Purpose")
+        assert intro.end_line == overview.line
+
+    def test_last_entry_end_line_is_file_length(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        with open(SAMPLE_DSM) as f:
+            total_lines = len(f.readlines())
+        assert result[-1].end_line == total_lines + 1
+
+    def test_entry_has_number_for_numbered_sections(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        sec1 = next(e for e in result if e.heading == "Introduction")
+        assert sec1.number == "1"
+
+    def test_entry_has_none_number_for_unnumbered(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        no_num = next(e for e in result if e.heading == "No Number Heading")
+        assert no_num.number is None
+
+    def test_accepts_content_string(self):
+        content = "# Heading One\n\nSome text.\n\n## Heading Two\n\nMore text.\n"
+        result = extract_skeleton(content=content, file_path="test.md")
+        assert len(result) == 2
+        assert result[0].heading == "Heading One"
+        assert result[1].heading == "Heading Two"
+
+    def test_accepts_path(self):
+        result = extract_skeleton(SAMPLE_DSM)
+        assert len(result) > 0
+
+
+# ---------------------------------------------------------------------------
+# extract_heading_references tests
+# ---------------------------------------------------------------------------
+
+
+class TestExtractHeadingReferences:
+    """Test detection of heading title references in prose text."""
+
+    KNOWN_HEADINGS = {
+        "session transcript protocol",
+        "pre-generation brief protocol",
+        "context budget protocol",
+        "no number heading",
+    }
+
+    def test_returns_list_of_cross_references(self):
+        result = extract_heading_references(SAMPLE_DSM, self.KNOWN_HEADINGS)
+        assert isinstance(result, list)
+        assert all(isinstance(r, CrossReference) for r in result)
+
+    def test_finds_heading_title_in_prose(self):
+        result = extract_heading_references(SAMPLE_DSM, self.KNOWN_HEADINGS)
+        targets = [r.target for r in result]
+        assert "Session Transcript Protocol" in targets
+
+    def test_finds_multiple_heading_refs(self):
+        result = extract_heading_references(SAMPLE_DSM, self.KNOWN_HEADINGS)
+        targets = [r.target for r in result]
+        assert "Pre-Generation Brief Protocol" in targets
+        assert "Context Budget Protocol" in targets
+
+    def test_ref_type_is_heading(self):
+        result = extract_heading_references(SAMPLE_DSM, self.KNOWN_HEADINGS)
+        for ref in result:
+            assert ref.type == "heading"
+
+    def test_skips_heading_definition_lines(self):
+        """Should not match the heading definition itself (## Title)."""
+        result = extract_heading_references(SAMPLE_DSM, self.KNOWN_HEADINGS)
+        for ref in result:
+            assert not ref.context.lstrip().startswith("#")
+
+    def test_skips_code_blocks(self):
+        content = (
+            "## My Protocol\n\nDefines the protocol.\n\n"
+            "```\nSee My Protocol here\n```\n\n"
+            "After code: My Protocol is referenced.\n"
+        )
+        known = {"my protocol"}
+        result = extract_heading_references(
+            content=content, known_headings=known, file_path="test.md"
+        )
+        assert len(result) == 1
+        assert "After code" in result[0].context
+
+    def test_case_insensitive_matching(self):
+        content = "## My Protocol\n\nSee the my protocol for details.\n"
+        known = {"my protocol"}
+        result = extract_heading_references(
+            content=content, known_headings=known, file_path="test.md"
+        )
+        assert len(result) == 1
+
+    def test_no_matches_returns_empty(self):
+        content = "## Heading\n\nNo references to any known heading here.\n"
+        known = {"something else entirely"}
+        result = extract_heading_references(
+            content=content, known_headings=known, file_path="test.md"
+        )
+        assert result == []
+
+    def test_empty_known_headings_returns_empty(self):
+        result = extract_heading_references(SAMPLE_DSM, set())
+        assert result == []
+
+    def test_line_numbers_are_accurate(self):
+        result = extract_heading_references(SAMPLE_DSM, self.KNOWN_HEADINGS)
+        for ref in result:
+            assert ref.line > 0
+
+    def test_finds_reference_to_no_number_heading(self):
+        result = extract_heading_references(SAMPLE_DSM, self.KNOWN_HEADINGS)
+        targets = [r.target for r in result]
+        assert "No Number Heading" in targets

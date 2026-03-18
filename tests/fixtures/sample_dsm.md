@@ -171,3 +171,25 @@ print(x)
 ## Blockquote Section
 
 > This is a blockquote that serves as the section content for testing purposes.
+
+# Heading Reference Test Cases
+
+## Session Transcript Protocol
+
+The session transcript is the primary reasoning channel.
+
+## Pre-Generation Brief Protocol
+
+Before creating any artifact, explain what and why.
+
+## Context Budget Protocol
+
+The agent's context window is a finite resource.
+
+## Heading Reference Prose
+
+See the Session Transcript Protocol for reasoning guidelines.
+Follow the Pre-Generation Brief Protocol before creating files.
+The Context Budget Protocol governs large file reads.
+This line has no heading reference at all.
+The No Number Heading is also referenced here.

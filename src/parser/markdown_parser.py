@@ -24,6 +24,21 @@ class Section:
 
 
 @dataclass
+class SkeletonEntry:
+    """A lightweight heading entry for structural scanning.
+
+    Contains heading text, nesting level, and line range without
+    excerpt extraction. Useful for quick structural overviews.
+    """
+
+    heading: str
+    level: int
+    line: int
+    end_line: int
+    number: str | None
+
+
+@dataclass
 class ParsedDocument:
     """Result of parsing a markdown file."""
 
@@ -78,12 +93,65 @@ def parse_markdown_content(
     return _parse_lines(lines, file_path, excerpt_words)
 
 
-def _parse_lines(
-    lines: list[str], file_path: str, excerpt_words: int
-) -> ParsedDocument:
-    """Core parsing logic operating on pre-read lines."""
-    sections: list[Section] = []
-    heading_indices: list[tuple[int, int, str, str | None, str]] = []
+def extract_skeleton(
+    path: Path | str | None = None,
+    *,
+    content: str | None = None,
+    file_path: str = "<string>",
+) -> list[SkeletonEntry]:
+    """Extract a lightweight heading skeleton from a markdown file or string.
+
+    Returns heading text, nesting level, and line ranges without
+    building full sections or extracting excerpts. Accepts either
+    a file path or content string (not both).
+
+    Args:
+        path: Path to the markdown file (mutually exclusive with content).
+        content: Markdown text content (mutually exclusive with path).
+        file_path: Virtual file path when using content parameter.
+
+    Returns:
+        List of SkeletonEntry objects representing the document structure.
+    """
+    if path is not None and content is not None:
+        raise ValueError("Provide either path or content, not both")
+    if path is not None:
+        path = Path(path)
+        with path.open(encoding="utf-8") as f:
+            lines = f.readlines()
+    elif content is not None:
+        lines = content.splitlines(keepends=True)
+    else:
+        raise ValueError("Provide either path or content")
+
+    headings = _detect_headings(lines)
+    total_lines = len(lines)
+    entries: list[SkeletonEntry] = []
+
+    for i, (idx, level, title, number) in enumerate(headings):
+        end_idx = headings[i + 1][0] if i + 1 < len(headings) else total_lines
+        entries.append(
+            SkeletonEntry(
+                heading=title,
+                level=level,
+                line=idx + 1,
+                end_line=end_idx + 1,
+                number=number,
+            )
+        )
+
+    return entries
+
+
+def _detect_headings(
+    lines: list[str],
+) -> list[tuple[int, int, str, str | None]]:
+    """Detect all markdown headings and return their metadata.
+
+    Returns:
+        List of (line_index, level, title, number) tuples.
+    """
+    headings: list[tuple[int, int, str, str | None]] = []
 
     for idx, raw_line in enumerate(lines):
         line = raw_line.rstrip("\n")
@@ -106,11 +174,21 @@ def _parse_lines(
             continue
 
         number, title = _parse_heading_content(content)
-        heading_indices.append((idx, level, title, number, content))
+        headings.append((idx, level, title, number))
 
-    for i, (idx, level, title, number, _content) in enumerate(heading_indices):
+    return headings
+
+
+def _parse_lines(
+    lines: list[str], file_path: str, excerpt_words: int
+) -> ParsedDocument:
+    """Core parsing logic operating on pre-read lines."""
+    sections: list[Section] = []
+    headings = _detect_headings(lines)
+
+    for i, (idx, level, title, number) in enumerate(headings):
         next_heading_idx = (
-            heading_indices[i + 1][0] if i + 1 < len(heading_indices) else len(lines)
+            headings[i + 1][0] if i + 1 < len(headings) else len(lines)
         )
         excerpt = _extract_excerpt(lines, idx + 1, next_heading_idx, excerpt_words)
         sections.append(

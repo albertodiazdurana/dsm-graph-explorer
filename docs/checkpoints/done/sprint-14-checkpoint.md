@@ -1,3 +1,5 @@
+**Consumed at:** Session 38 start (2026-03-18)
+
 # Sprint 14 Checkpoint: Incremental Graph Updates + FalkorDB Enhancements
 
 **Date:** 2026-03-17

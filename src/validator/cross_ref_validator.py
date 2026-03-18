@@ -85,6 +85,30 @@ def build_section_index(
     return index
 
 
+def build_heading_index(
+    documents: list[ParsedDocument],
+) -> dict[str, list[tuple[str, Section]]]:
+    """Build an index of unnumbered heading titles to their locations.
+
+    Maps normalized heading titles (lowercase, collapsed whitespace) to
+    a list of (file_path, Section) tuples. Only includes headings where
+    number is None (unnumbered markdown headings).
+
+    Args:
+        documents: Parsed documents with section definitions.
+
+    Returns:
+        Dict mapping normalized title to list of (file_path, Section) pairs.
+    """
+    index: dict[str, list[tuple[str, Section]]] = {}
+    for doc in documents:
+        for section in doc.sections:
+            if section.number is None:
+                key = " ".join(section.title.lower().split())
+                index.setdefault(key, []).append((doc.file, section))
+    return index
+
+
 def build_section_lookup(
     documents: list[ParsedDocument],
 ) -> dict[str, Section]:
@@ -154,6 +178,7 @@ def validate_cross_references(
         inventories = []
 
     index = build_section_index(documents)
+    heading_index = build_heading_index(documents)
     results: list[ValidationResult] = []
 
     for file_path, refs in references.items():
@@ -196,6 +221,24 @@ def validate_cross_references(
                                 resolution="unresolved",
                             )
                         )
+            elif ref.type == "heading":
+                normalized = " ".join(ref.target.lower().split())
+                if normalized not in heading_index:
+                    results.append(
+                        ValidationResult(
+                            severity=Severity.WARNING,
+                            source_file=file_path,
+                            line=ref.line,
+                            ref_type=ref.type,
+                            target=ref.target,
+                            message=(
+                                f"Unresolved heading reference: "
+                                f'"{ref.target}" not found in any document'
+                            ),
+                            context=ref.context,
+                            resolution="unresolved",
+                        )
+                    )
             elif ref.type == "dsm":
                 if ref.target not in known_dsm_ids:
                     results.append(
