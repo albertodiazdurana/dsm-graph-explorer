@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.4.0
-**Status:** Epoch 4 in progress (Sprint 13 complete)
+**Status:** Epoch 4 in progress (Sprint 14 complete)
 
 Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
 
@@ -105,10 +105,15 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - Architecture audit (BL-170): confirmed 100% Private Project compatibility (all I/O local)
 - DEC-008: heading-based section node IDs (`h:slug` format)
 
+**Implemented (Sprint 14 — Incremental Graph Updates + FalkorDB Enhancements):**
+- Incremental graph updates: `update_files()` for file-level selective rebuild (skip unchanged files)
+- FalkorDB indexes on `Section.node_id` and `Section.heading` for fast h:slug lookups
+- FalkorDB export: `to_networkx()` roundtrip (FalkorDB → NetworkX DiGraph)
+- CLI ref-change detection: automatic incremental update when git ref changes
+- `get_stored_ref()` for cache staleness detection
+
 **Future (Epoch 4 remaining):**
 - Cross-reference resolution by heading title matching (NLP/TF-IDF)
-- Incremental graph updates (skip unchanged files)
-- FalkorDB index creation and export
 - Protocol usage frequency analysis
 - LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
 
@@ -369,7 +374,7 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
   - Phase 13.0: EXP-007 multi-file document resilience (real DSM_0.2 split data)
   - Phase 13.1: BL-042 heading-based section detection in graph builder (18 new tests)
   - BL-170 Part B: architecture audit (100% Private Project compatibility)
-- [ ] **Sprint 14:** Performance & Completeness (carry-forward SHOULDs)
+- [x] **Sprint 14:** Incremental Graph Updates + FalkorDB Enhancements — update_files(), heading indexes, to_networkx(), CLI ref-change detection (547 tests, 95% coverage)
 - [ ] **Sprint 15:** Protocol Usage Analysis
 - [ ] **Sprint 16:** Reserved
 
@@ -406,7 +411,7 @@ Built as a dog-fooding project to validate and improve the DSM methodology frame
 
 ---
 
-**Last Updated:** 2026-03-16
-**Current Status:** Epoch 4 in progress (Sprint 13 complete: BL-090 resilience + heading-based sections)
-**Tests:** 531 passed, 95% coverage
-**DSM Feedback:** 47 methodology entries, 42 improvement proposals
+**Last Updated:** 2026-03-17
+**Current Status:** Epoch 4 in progress (Sprint 14 complete: incremental graph updates + FalkorDB enhancements)
+**Tests:** 547 passed, 95% coverage
+**DSM Feedback:** 47 methodology entries, 42 improvement proposals (legacy files archived; per-session format from Sprint 14)

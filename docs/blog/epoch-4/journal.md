@@ -26,3 +26,32 @@ fundamental limitation in the tool. Dog-fooding at its finest.
 Also completed the BL-170 architecture audit requested by DSM Central. The audit
 confirmed that GE operates entirely on local data (subprocess git + filesystem
 reads), making it 100% compatible with Private Projects.
+
+## 2026-03-17 — Sprint 14: Making the Graph Database Practical
+
+Sprint 14 was a "carry-forward SHOULDs" sprint, three enhancements that make
+the FalkorDB integration practical rather than just functional.
+
+The biggest item was incremental graph updates. Until now, every `--graph-db`
+run deleted the entire named graph and rewrote everything from scratch. For a
+small DSM repository that's fine, but for larger codebases it's wasteful. The
+new `update_files()` method takes a list of changed files, removes only their
+nodes and edges, and re-inserts them from the fresh NetworkX graph. REFERENCES
+edges are rebuilt entirely since they cross file boundaries, but that's cheap
+compared to the node operations.
+
+The design decision was file-level granularity rather than node-level diffing.
+A file either changed or it didn't. This keeps the logic simple and matches how
+the system works: files get parsed, parsed data becomes graph nodes. If a file
+changed, all its nodes might have changed, so delete and reinsert. The CLI
+detects staleness by comparing git refs: if the stored ref differs from the
+current one, it triggers the incremental path.
+
+The other two items were smaller: adding FalkorDB indexes on `Section.node_id`
+and `Section.heading` (a follow-up to Sprint 13's heading-based sections), and
+a `to_networkx()` roundtrip method that reads a FalkorDB graph back into
+NetworkX format.
+
+Also processed the DSM Central feedback audit, which mapped all 42 of GE's
+backlog proposals to their processing status. A nice milestone: 33 out of 42
+proposals have been implemented in DSM Central. The feedback loop works.
