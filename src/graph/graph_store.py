@@ -126,6 +126,20 @@ class GraphStore:
         """
         return graph_name in self._db.list_graphs()
 
+    def get_stored_ref(self, graph_name: str) -> str | None:
+        """Return the git_ref stored on Document nodes, or None.
+
+        Reads the git_ref from the first Document node in the graph.
+        Returns None if the graph does not exist or has no Document nodes.
+        """
+        if not self.graph_exists(graph_name):
+            return None
+        g = self._db.select_graph(graph_name)
+        result = g.ro_query("MATCH (d:Document) RETURN d.git_ref LIMIT 1")
+        if result.result_set:
+            return result.result_set[0][0]
+        return None
+
     def write_graph(
         self,
         nx_graph: "nx.DiGraph",
@@ -261,6 +275,219 @@ class GraphStore:
                 },
             )
 
+    def update_files(
+        self,
+        nx_graph: "nx.DiGraph",
+        graph_name: str,
+        changed_files: list[str],
+        git_ref: str = "HEAD",
+    ) -> None:
+        """Incrementally update only the changed files in a named graph.
+
+        Instead of deleting and rewriting the entire graph, this method:
+        1. Removes Document and Section nodes for changed files (edges cascade)
+        2. Removes all REFERENCES edges (cross-file, cheap to rebuild)
+        3. Re-inserts changed files' Document + Section nodes + CONTAINS edges
+        4. Re-inserts all REFERENCES edges from the full nx.DiGraph
+
+        If the named graph does not exist, falls back to write_graph().
+
+        Args:
+            nx_graph: Full DiGraph produced by graph_builder.build_reference_graph().
+            graph_name: Named graph to update.
+            changed_files: List of file paths that changed (Document.path values).
+            git_ref: Git ref to stamp on new/updated nodes.
+        """
+        if not NETWORKX_AVAILABLE:
+            raise ImportError(
+                "networkx is required to import graphs. "
+                "Install with: pip install '.[graph]'"
+            )
+
+        if not self.graph_exists(graph_name):
+            self.write_graph(nx_graph, graph_name=graph_name, git_ref=git_ref)
+            return
+
+        g = self._db.select_graph(graph_name)
+
+        # 1. Delete Section nodes for changed files (cascades edges)
+        for file_path in changed_files:
+            g.query(
+                "MATCH (s:Section {document_path: $path}) DELETE s",
+                params={"path": file_path},
+            )
+            g.query(
+                "MATCH (d:Document {path: $path}) DELETE d",
+                params={"path": file_path},
+            )
+
+        # 2. Delete all remaining REFERENCES edges (cross-file refs)
+        g.query("MATCH ()-[r:REFERENCES]->() DELETE r")
+
+        # 3. Re-insert changed files' Document + Section nodes + CONTAINS
+        file_nodes = [
+            (nid, attrs)
+            for nid, attrs in nx_graph.nodes(data=True)
+            if attrs.get("type") == "FILE" and nid in changed_files
+        ]
+        section_nodes = [
+            (nid, attrs)
+            for nid, attrs in nx_graph.nodes(data=True)
+            if attrs.get("type") == "SECTION"
+            and attrs.get("file") in changed_files
+        ]
+
+        for node_id, attrs in file_nodes:
+            g.query(
+                """
+                CREATE (:Document {
+                    path: $path, title: $title,
+                    repo: $repo, git_ref: $git_ref
+                })
+                """,
+                params={
+                    "path": node_id,
+                    "title": attrs.get("title", ""),
+                    "repo": graph_name,
+                    "git_ref": git_ref,
+                },
+            )
+
+        for node_id, attrs in section_nodes:
+            g.query(
+                """
+                CREATE (:Section {
+                    node_id: $node_id, heading: $heading,
+                    number: $number, level: $level, line: $line,
+                    document_path: $document_path,
+                    context_excerpt: $context_excerpt,
+                    repo: $repo, git_ref: $git_ref
+                })
+                """,
+                params={
+                    "node_id": node_id,
+                    "heading": attrs.get("title", ""),
+                    "number": attrs.get("number", ""),
+                    "level": attrs.get("level", 0),
+                    "line": attrs.get("line", 0),
+                    "document_path": attrs.get("file", ""),
+                    "context_excerpt": attrs.get("context_excerpt", ""),
+                    "repo": graph_name,
+                    "git_ref": git_ref,
+                },
+            )
+
+        contains_order: dict[str, int] = {}
+        for src, tgt, edata in nx_graph.edges(data=True):
+            if edata.get("type") != "CONTAINS":
+                continue
+            if src not in changed_files:
+                continue
+            contains_order[src] = contains_order.get(src, 0) + 1
+            g.query(
+                """
+                MATCH (d:Document {path: $doc_path})
+                MATCH (s:Section {node_id: $sec_id})
+                CREATE (d)-[:CONTAINS {order: $order}]->(s)
+                """,
+                params={
+                    "doc_path": src,
+                    "sec_id": tgt,
+                    "order": contains_order[src],
+                },
+            )
+
+        # 4. Re-insert ALL REFERENCES edges from the full graph
+        for src, tgt, edata in nx_graph.edges(data=True):
+            if edata.get("type") != "REFERENCES":
+                continue
+            g.query(
+                """
+                MATCH (s1:Section {node_id: $src_id})
+                MATCH (s2:Section {node_id: $tgt_id})
+                CREATE (s1)-[:REFERENCES {line: $line, ref_type: $ref_type}]->(s2)
+                """,
+                params={
+                    "src_id": src,
+                    "tgt_id": tgt,
+                    "line": edata.get("line", 0),
+                    "ref_type": edata.get("ref_type", ""),
+                },
+            )
+
+    def to_networkx(self, graph_name: str) -> "nx.DiGraph":
+        """Export a FalkorDB named graph as an nx.DiGraph.
+
+        Produces a graph in the same schema as graph_builder.build_reference_graph():
+        FILE and SECTION nodes with CONTAINS and REFERENCES edges.
+
+        Args:
+            graph_name: Named graph to export.
+
+        Returns:
+            nx.DiGraph with the same node/edge schema as graph_builder output.
+
+        Raises:
+            ImportError: If networkx is not installed.
+            ValueError: If the named graph does not exist.
+        """
+        if not NETWORKX_AVAILABLE:
+            raise ImportError(
+                "networkx is required to export graphs. "
+                "Install with: pip install '.[graph]'"
+            )
+        if not self.graph_exists(graph_name):
+            raise ValueError(f"Graph '{graph_name}' does not exist")
+
+        G = nx.DiGraph()
+        g = self._db.select_graph(graph_name)
+
+        # Read Document nodes -> FILE nodes
+        docs = g.ro_query(
+            "MATCH (d:Document) RETURN d.path, d.title"
+        )
+        for row in docs.result_set:
+            G.add_node(row[0], type="FILE", title=row[1])
+
+        # Read Section nodes -> SECTION nodes
+        sections = g.ro_query(
+            "MATCH (s:Section) "
+            "RETURN s.node_id, s.heading, s.number, s.level, "
+            "s.line, s.document_path, s.context_excerpt"
+        )
+        for row in sections.result_set:
+            G.add_node(
+                row[0],
+                type="SECTION",
+                title=row[1],
+                number=row[2],
+                level=row[3],
+                line=row[4],
+                file=row[5],
+                context_excerpt=row[6],
+            )
+
+        # Read CONTAINS edges
+        contains = g.ro_query(
+            "MATCH (d:Document)-[r:CONTAINS]->(s:Section) "
+            "RETURN d.path, s.node_id"
+        )
+        for row in contains.result_set:
+            G.add_edge(row[0], row[1], type="CONTAINS")
+
+        # Read REFERENCES edges
+        refs = g.ro_query(
+            "MATCH (s1:Section)-[r:REFERENCES]->(s2:Section) "
+            "RETURN s1.node_id, s2.node_id, r.line, r.ref_type"
+        )
+        for row in refs.result_set:
+            G.add_edge(
+                row[0], row[1],
+                type="REFERENCES", line=row[2], ref_type=row[3],
+            )
+
+        return G
+
     def query(
         self,
         cypher: str,
@@ -313,8 +540,12 @@ class GraphStore:
         graph (indexes do not exist yet).
 
         Indexes created:
-            Document.path  — primary lookup key for documents
-            Section.number — lookup by section number
+            Document.path    — primary lookup key for documents
+            Section.number   — lookup by section number
+            Section.node_id  — lookup by full node ID (includes h:slug)
+            Section.heading  — lookup by heading title
         """
         g.query("CREATE INDEX FOR (d:Document) ON (d.path)")  # type: ignore[union-attr]
         g.query("CREATE INDEX FOR (s:Section) ON (s.number)")  # type: ignore[union-attr]
+        g.query("CREATE INDEX FOR (s:Section) ON (s.node_id)")  # type: ignore[union-attr]
+        g.query("CREATE INDEX FOR (s:Section) ON (s.heading)")  # type: ignore[union-attr]

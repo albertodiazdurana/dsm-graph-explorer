@@ -235,6 +235,62 @@ def test_section_has_heading(populated_store):
     assert "Introduction" in headings or "Sprint Checklist" in headings
 
 
+# ── index-backed lookups ──────────────────────────────────────────────────────
+
+
+def test_lookup_by_node_id(populated_store):
+    """Section nodes can be looked up by node_id (uses Section.node_id index)."""
+    s, gname = populated_store
+    result = s.ro_query(
+        "MATCH (sec:Section {node_id: $nid}) RETURN sec.heading",
+        graph_name=gname,
+        params={"nid": "repo/DSM_1.0.md:2"},
+    )
+    assert len(result.result_set) == 1
+    assert result.result_set[0][0] == "Lifecycle"
+
+
+def test_lookup_by_heading(populated_store):
+    """Section nodes can be looked up by heading (uses Section.heading index)."""
+    s, gname = populated_store
+    result = s.ro_query(
+        "MATCH (sec:Section {heading: $h}) RETURN sec.node_id",
+        graph_name=gname,
+        params={"h": "Sprint Checklist"},
+    )
+    assert len(result.result_set) == 1
+    assert result.result_set[0][0] == "repo/DSM_2.0.md:1"
+
+
+def test_lookup_heading_section_by_node_id(store):
+    """Heading-based section (h:slug) can be looked up by node_id."""
+    gname = _unique_name("heading_idx")
+    G = nx.DiGraph()
+    G.add_node("doc.md", type="FILE", title="doc.md")
+    G.add_node(
+        "doc.md:h:inclusive-language",
+        type="SECTION",
+        title="Inclusive Language",
+        number="",
+        level=2,
+        line=10,
+        file="doc.md",
+        context_excerpt="Guidelines for inclusive language.",
+    )
+    G.add_edge("doc.md", "doc.md:h:inclusive-language", type="CONTAINS")
+    store.write_graph(G, graph_name=gname, git_ref="HEAD")
+
+    result = store.ro_query(
+        "MATCH (sec:Section {node_id: $nid}) RETURN sec.heading",
+        graph_name=gname,
+        params={"nid": "doc.md:h:inclusive-language"},
+    )
+    store._db.select_graph(gname).delete()
+
+    assert len(result.result_set) == 1
+    assert result.result_set[0][0] == "Inclusive Language"
+
+
 # ── traversal queries ─────────────────────────────────────────────────────────
 
 
@@ -326,6 +382,204 @@ def test_list_graphs_includes_written(store, graph_name):
     store._db.select_graph(graph_name).delete()
 
     assert graph_name in graphs
+
+
+# ── incremental updates (update_files) ────────────────────────────────────────
+
+
+# ── to_networkx export ────────────────────────────────────────────────────────
+
+
+def test_to_networkx_roundtrip_node_counts(populated_store):
+    """to_networkx() returns the same number of nodes as the original graph."""
+    s, gname = populated_store
+    G = s.to_networkx(gname)
+    file_nodes = [n for n, d in G.nodes(data=True) if d.get("type") == "FILE"]
+    section_nodes = [n for n, d in G.nodes(data=True) if d.get("type") == "SECTION"]
+    assert len(file_nodes) == 2
+    assert len(section_nodes) == 3
+
+
+def test_to_networkx_roundtrip_edge_counts(populated_store):
+    """to_networkx() returns the same number of edges as the original graph."""
+    s, gname = populated_store
+    G = s.to_networkx(gname)
+    contains = [e for _, _, e in G.edges(data=True) if e.get("type") == "CONTAINS"]
+    refs = [e for _, _, e in G.edges(data=True) if e.get("type") == "REFERENCES"]
+    assert len(contains) == 3
+    assert len(refs) == 1
+
+
+def test_to_networkx_preserves_section_properties(populated_store):
+    """to_networkx() preserves section node properties."""
+    s, gname = populated_store
+    G = s.to_networkx(gname)
+    node = G.nodes["repo/DSM_1.0.md:2"]
+    assert node["title"] == "Lifecycle"
+    assert node["number"] == "2"
+    assert node["file"] == "repo/DSM_1.0.md"
+    assert node["type"] == "SECTION"
+
+
+def test_to_networkx_preserves_reference_properties(populated_store):
+    """to_networkx() preserves reference edge properties."""
+    s, gname = populated_store
+    G = s.to_networkx(gname)
+    edge = G.edges["repo/DSM_1.0.md:2", "repo/DSM_2.0.md:1"]
+    assert edge["type"] == "REFERENCES"
+    assert edge["ref_type"] == "section"
+    assert edge["line"] == 25
+
+
+def test_to_networkx_raises_on_missing_graph(store):
+    """to_networkx() raises ValueError for non-existent graph."""
+    with pytest.raises(ValueError, match="does not exist"):
+        store.to_networkx(_unique_name("no_such"))
+
+
+# ── incremental updates (update_files) ────────────────────────────────────────
+
+
+def test_update_files_changes_one_file(store):
+    """update_files() updates only the changed file, preserves the other."""
+    gname = _unique_name("incr")
+    G = _small_nx_graph()
+    store.write_graph(G, graph_name=gname, git_ref="v1")
+
+    # Modify DSM_1.0.md: change section title, add a new section
+    G2 = _small_nx_graph()
+    G2.nodes["repo/DSM_1.0.md:1"]["title"] = "Updated Introduction"
+    G2.add_node(
+        "repo/DSM_1.0.md:3",
+        type="SECTION",
+        title="New Section",
+        number="3",
+        level=1,
+        line=40,
+        file="repo/DSM_1.0.md",
+        context_excerpt="Brand new section.",
+    )
+    G2.add_edge("repo/DSM_1.0.md", "repo/DSM_1.0.md:3", type="CONTAINS")
+
+    store.update_files(G2, graph_name=gname, changed_files=["repo/DSM_1.0.md"], git_ref="v2")
+
+    # DSM_1.0.md should have 3 sections now
+    result = store.ro_query(
+        "MATCH (d:Document {path: $p})-[:CONTAINS]->(s:Section) RETURN s.heading ORDER BY s.heading",
+        graph_name=gname,
+        params={"p": "repo/DSM_1.0.md"},
+    )
+    headings = [row[0] for row in result.result_set]
+    assert "Updated Introduction" in headings
+    assert "New Section" in headings
+    assert len(headings) == 3
+
+    # DSM_2.0.md should be unchanged
+    result2 = store.ro_query(
+        "MATCH (d:Document {path: $p})-[:CONTAINS]->(s:Section) RETURN s.heading",
+        graph_name=gname,
+        params={"p": "repo/DSM_2.0.md"},
+    )
+    assert len(result2.result_set) == 1
+    assert result2.result_set[0][0] == "Sprint Checklist"
+
+    store._db.select_graph(gname).delete()
+
+
+def test_update_files_preserves_references(store):
+    """update_files() rebuilds REFERENCES edges after file update."""
+    gname = _unique_name("incr_ref")
+    G = _small_nx_graph()
+    store.write_graph(G, graph_name=gname, git_ref="v1")
+
+    # Update DSM_1.0.md without changing the reference structure
+    store.update_files(G, graph_name=gname, changed_files=["repo/DSM_1.0.md"], git_ref="v2")
+
+    result = store.ro_query(
+        "MATCH (s1:Section)-[:REFERENCES]->(s2:Section) RETURN s1.heading, s2.heading",
+        graph_name=gname,
+    )
+    assert len(result.result_set) == 1
+    assert result.result_set[0][0] == "Lifecycle"
+    assert result.result_set[0][1] == "Sprint Checklist"
+
+    store._db.select_graph(gname).delete()
+
+
+def test_update_files_no_duplicates(store):
+    """update_files() does not create duplicate nodes for changed files."""
+    gname = _unique_name("incr_dup")
+    G = _small_nx_graph()
+    store.write_graph(G, graph_name=gname, git_ref="v1")
+
+    # Update same file twice
+    store.update_files(G, graph_name=gname, changed_files=["repo/DSM_1.0.md"], git_ref="v2")
+    store.update_files(G, graph_name=gname, changed_files=["repo/DSM_1.0.md"], git_ref="v3")
+
+    result = store.ro_query("MATCH (d:Document) RETURN d.path", graph_name=gname)
+    assert len(result.result_set) == 2  # still 2 documents, not more
+
+    result2 = store.ro_query("MATCH (s:Section) RETURN s", graph_name=gname)
+    assert len(result2.result_set) == 3  # still 3 sections
+
+    store._db.select_graph(gname).delete()
+
+
+def test_update_files_updates_git_ref(store):
+    """update_files() stamps the new git_ref on updated nodes."""
+    gname = _unique_name("incr_ref_stamp")
+    G = _small_nx_graph()
+    store.write_graph(G, graph_name=gname, git_ref="abc123")
+
+    store.update_files(G, graph_name=gname, changed_files=["repo/DSM_1.0.md"], git_ref="def456")
+
+    # Changed file should have new ref
+    result = store.ro_query(
+        "MATCH (d:Document {path: $p}) RETURN d.git_ref",
+        graph_name=gname,
+        params={"p": "repo/DSM_1.0.md"},
+    )
+    assert result.result_set[0][0] == "def456"
+
+    # Unchanged file keeps old ref
+    result2 = store.ro_query(
+        "MATCH (d:Document {path: $p}) RETURN d.git_ref",
+        graph_name=gname,
+        params={"p": "repo/DSM_2.0.md"},
+    )
+    assert result2.result_set[0][0] == "abc123"
+
+    store._db.select_graph(gname).delete()
+
+
+def test_get_stored_ref(store):
+    """get_stored_ref() returns the git_ref stored on Document nodes."""
+    gname = _unique_name("stored_ref")
+    G = _small_nx_graph()
+    store.write_graph(G, graph_name=gname, git_ref="abc123def")
+
+    assert store.get_stored_ref(gname) == "abc123def"
+
+    store._db.select_graph(gname).delete()
+
+
+def test_get_stored_ref_none_when_missing(store):
+    """get_stored_ref() returns None for a non-existent graph."""
+    assert store.get_stored_ref(_unique_name("no_such")) is None
+
+
+def test_update_files_fallback_to_write(store):
+    """update_files() falls back to write_graph() when graph does not exist."""
+    gname = _unique_name("incr_fallback")
+    G = _small_nx_graph()
+
+    # Graph doesn't exist yet, should create it
+    store.update_files(G, graph_name=gname, changed_files=["repo/DSM_1.0.md"], git_ref="HEAD")
+
+    result = store.ro_query("MATCH (d:Document) RETURN d", graph_name=gname)
+    assert len(result.result_set) == 2
+
+    store._db.select_graph(gname).delete()
 
 
 # ── import guard ──────────────────────────────────────────────────────────────

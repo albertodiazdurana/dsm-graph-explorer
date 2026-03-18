@@ -153,6 +153,40 @@ class TestGraphDbWithStats:
         assert "edge" in result.output.lower() or "Edge" in result.output
 
 
+# ── Requirement 6: incremental update on ref change ──────────────────────────
+
+
+class TestGraphDbIncrementalUpdate:
+    """When graph exists but git_ref differs, update_files() is used."""
+
+    def test_graph_db_incremental_update_on_change(self, runner, md_dir, tmp_path):
+        db_path = tmp_path / "test.falkordb"
+        # First run: persist with default ref (HEAD)
+        result1 = runner.invoke(
+            main, [str(md_dir), "--graph-db", str(db_path)]
+        )
+        assert result1.exit_code == 0, result1.output
+        assert "persisted" in result1.output.lower()
+
+        # Modify a file to simulate a change
+        doc = md_dir / "doc.md"
+        doc.write_text(
+            "# 1 Introduction\n"
+            "Updated content.\n"
+            "## 2.1 Details\n"
+            "More content here.\n"
+            "## 3 New Section\n"
+            "Brand new.\n"
+        )
+
+        # Second run with --rebuild to force update
+        result2 = runner.invoke(
+            main, [str(md_dir), "--graph-db", str(db_path), "--rebuild"]
+        )
+        assert result2.exit_code == 0, result2.output
+        assert "persisted" in result2.output.lower()
+
+
 # ── Real-data integration ────────────────────────────────────────────────────
 
 

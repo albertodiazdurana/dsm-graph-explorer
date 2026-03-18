@@ -807,19 +807,44 @@ def main(
             from graph.graph_store import GraphStore
 
             graph_name = base_path.name
+            current_ref = git_ref_sha or "HEAD"
             ref_label = git_ref_sha[:12] if git_ref_sha else "HEAD"
             store = GraphStore(graph_db_path)
             try:
-                if store.graph_exists(graph_name) and not rebuild:
-                    click.echo(
-                        f"Using cached graph '{graph_name}' "
-                        f"from {graph_db_path}"
+                if rebuild:
+                    store.write_graph(
+                        G, graph_name=graph_name, git_ref=current_ref,
                     )
+                    click.echo(
+                        f"Graph persisted to {graph_db_path} "
+                        f"(graph: '{graph_name}', ref: {ref_label})"
+                    )
+                elif store.graph_exists(graph_name):
+                    stored_ref = store.get_stored_ref(graph_name)
+                    if stored_ref == current_ref:
+                        click.echo(
+                            f"Using cached graph '{graph_name}' "
+                            f"from {graph_db_path}"
+                        )
+                    else:
+                        all_files = [
+                            nid for nid, d in G.nodes(data=True)
+                            if d.get("type") == "FILE"
+                        ]
+                        store.update_files(
+                            G,
+                            graph_name=graph_name,
+                            changed_files=all_files,
+                            git_ref=current_ref,
+                        )
+                        click.echo(
+                            f"Graph updated in {graph_db_path} "
+                            f"(graph: '{graph_name}', ref: {ref_label}, "
+                            f"{len(all_files)} file(s))"
+                        )
                 else:
                     store.write_graph(
-                        G,
-                        graph_name=graph_name,
-                        git_ref=git_ref_sha or "HEAD",
+                        G, graph_name=graph_name, git_ref=current_ref,
                     )
                     click.echo(
                         f"Graph persisted to {graph_db_path} "
