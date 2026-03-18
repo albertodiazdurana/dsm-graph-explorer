@@ -264,3 +264,132 @@ class TestNestedHeadingHierarchy:
         deep = [d for d in section_nodes.values() if d["title"] == "Subsection Deep"]
         assert len(deep) == 1
         assert deep[0]["level"] == 4
+
+
+# ---------------------------------------------------------------------------
+# Tests: Heading reference edges in graph
+# ---------------------------------------------------------------------------
+
+
+class TestGraphHeadingRefEdges:
+    """Verify graph builder creates REFERENCES edges for heading refs."""
+
+    def test_heading_ref_creates_edge(self):
+        """A heading ref from prose to a defined heading produces an edge."""
+        from parser.cross_ref_extractor import CrossReference
+
+        doc = parse_markdown_content(HEADING_ONLY_DOC, "config.md")
+        refs = {
+            "config.md": [
+                CrossReference(
+                    type="heading",
+                    target="Inclusive Language",
+                    line=5,
+                    context="See Inclusive Language for guidelines.",
+                ),
+            ],
+        }
+        G = build_reference_graph([doc], refs, {})
+        ref_edges = [
+            (u, v, d) for u, v, d in G.edges(data=True)
+            if d.get("type") == "REFERENCES"
+        ]
+        assert len(ref_edges) == 1
+
+    def test_heading_ref_edge_has_correct_attributes(self):
+        """REFERENCES edge for heading ref has line and ref_type."""
+        from parser.cross_ref_extractor import CrossReference
+
+        doc = parse_markdown_content(HEADING_ONLY_DOC, "config.md")
+        refs = {
+            "config.md": [
+                CrossReference(
+                    type="heading",
+                    target="Session Transcript Protocol",
+                    line=46,
+                    context="Follow Session Transcript Protocol.",
+                ),
+            ],
+        }
+        G = build_reference_graph([doc], refs, {})
+        ref_edges = [
+            (u, v, d) for u, v, d in G.edges(data=True)
+            if d.get("type") == "REFERENCES"
+        ]
+        assert len(ref_edges) == 1
+        _, _, data = ref_edges[0]
+        assert data["ref_type"] == "heading"
+        assert data["line"] == 46
+
+    def test_heading_ref_cross_file_edge(self):
+        """Heading defined in one file, referenced from another."""
+        from parser.cross_ref_extractor import CrossReference
+
+        defs_doc = parse_markdown_content(HEADING_ONLY_DOC, "config.md")
+        prose_doc = parse_markdown_content(
+            "# Notes\n\nSee Pre-Generation Brief Protocol for details.\n",
+            "notes.md",
+        )
+        refs = {
+            "notes.md": [
+                CrossReference(
+                    type="heading",
+                    target="Pre-Generation Brief Protocol",
+                    line=3,
+                    context="See Pre-Generation Brief Protocol for details.",
+                ),
+            ],
+        }
+        G = build_reference_graph([defs_doc, prose_doc], refs, {})
+        ref_edges = [
+            (u, v, d) for u, v, d in G.edges(data=True)
+            if d.get("type") == "REFERENCES"
+        ]
+        assert len(ref_edges) == 1
+        src, tgt, _ = ref_edges[0]
+        assert src.startswith("notes.md:")
+        assert tgt.startswith("config.md:")
+
+    def test_unmatched_heading_ref_no_edge(self):
+        """A heading ref to a nonexistent heading produces no edge."""
+        from parser.cross_ref_extractor import CrossReference
+
+        doc = parse_markdown_content(HEADING_ONLY_DOC, "config.md")
+        refs = {
+            "config.md": [
+                CrossReference(
+                    type="heading",
+                    target="Nonexistent Heading",
+                    line=5,
+                    context="See Nonexistent Heading.",
+                ),
+            ],
+        }
+        G = build_reference_graph([doc], refs, {})
+        ref_edges = [
+            (u, v, d) for u, v, d in G.edges(data=True)
+            if d.get("type") == "REFERENCES"
+        ]
+        assert len(ref_edges) == 0
+
+    def test_heading_ref_case_insensitive(self):
+        """Heading ref resolution is case-insensitive via slugify."""
+        from parser.cross_ref_extractor import CrossReference
+
+        doc = parse_markdown_content(HEADING_ONLY_DOC, "config.md")
+        refs = {
+            "config.md": [
+                CrossReference(
+                    type="heading",
+                    target="inclusive language",
+                    line=5,
+                    context="See inclusive language.",
+                ),
+            ],
+        }
+        G = build_reference_graph([doc], refs, {})
+        ref_edges = [
+            (u, v, d) for u, v, d in G.edges(data=True)
+            if d.get("type") == "REFERENCES"
+        ]
+        assert len(ref_edges) == 1

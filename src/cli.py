@@ -18,6 +18,7 @@ from linter.models import LintRule
 from parser.cross_ref_extractor import (
     extract_cross_references,
     extract_cross_references_from_content,
+    extract_heading_references,
 )
 from parser.markdown_parser import parse_markdown_content, parse_markdown_file
 from reporter.report_generator import generate_markdown_report, print_rich_report
@@ -358,6 +359,12 @@ def _print_drift_report_compare(
     default=False,
     help="Show only MODIFIED entities (requires --compare-repo).",
 )
+@click.option(
+    "--heading-refs",
+    is_flag=True,
+    default=False,
+    help="Detect heading title mentions in prose as cross-references.",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -378,6 +385,7 @@ def main(
     graph_diff_refs: tuple[str, str] | None,
     compare_repo_paths: tuple[str, str] | None,
     drift_report: bool,
+    heading_refs: bool,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -612,6 +620,46 @@ def main(
             refs = extract_cross_references(f)
             if refs:
                 references[doc.file] = refs
+
+    # Heading reference extraction (opt-in)
+    # Minimum 4 non-stopword tokens to filter generic headings (EXP-008, Proposal #46)
+    _HEADING_STOPWORDS = frozenset({
+        "a", "an", "the", "in", "on", "at", "to", "for", "of", "with", "by",
+        "from", "and", "or", "but", "is", "are", "was", "were", "be", "been",
+        "has", "have", "had", "do", "does", "did", "will", "would", "should",
+        "may", "can", "could", "not", "no", "this", "that", "it", "its", "as",
+        "so", "if", "when", "where", "how", "what", "which", "who",
+    })
+    _MIN_NON_STOPWORD_TOKENS = 4
+    if heading_refs:
+        known_headings: set[str] = set()
+        for doc in documents:
+            for section in doc.sections:
+                if section.number is None:
+                    normalized = " ".join(section.title.lower().split())
+                    non_stop = [
+                        w for w in normalized.split()
+                        if w not in _HEADING_STOPWORDS
+                    ]
+                    if len(non_stop) >= _MIN_NON_STOPWORD_TOKENS:
+                        known_headings.add(normalized)
+
+        if known_headings:
+            for doc in documents:
+                if git_file_contents is not None:
+                    content = git_file_contents.get(doc.file, "")
+                    heading_cross_refs = extract_heading_references(
+                        known_headings=known_headings,
+                        content=content,
+                        file_path=doc.file,
+                    )
+                else:
+                    heading_cross_refs = extract_heading_references(
+                        doc.file,
+                        known_headings=known_headings,
+                    )
+                if heading_cross_refs:
+                    references.setdefault(doc.file, []).extend(heading_cross_refs)
 
     # Load external inventories if provided
     inventories = []

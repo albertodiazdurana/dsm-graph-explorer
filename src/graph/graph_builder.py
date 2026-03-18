@@ -130,4 +130,21 @@ def build_reference_graph(
                             )
                         break
 
+            elif ref.type == "heading":
+                target_slug = _slugify(ref.target)
+                for node_id, data in G.nodes(data=True):
+                    if (
+                        data.get("type") == "SECTION"
+                        and data.get("number") is None
+                        and _slugify(data.get("title", "")) == target_slug
+                    ):
+                        if G.has_node(source_id):
+                            G.add_edge(
+                                source_id,
+                                node_id,
+                                type="REFERENCES",
+                                line=ref.line,
+                                ref_type=ref.type,
+                            )
+
     return G

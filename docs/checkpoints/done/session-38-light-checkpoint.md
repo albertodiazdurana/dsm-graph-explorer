@@ -1,3 +1,5 @@
+**Consumed at:** Session 39 start (2026-03-18)
+
 # Session 38 Light Checkpoint
 
 **Date:** 2026-03-18

@@ -51,6 +51,9 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 **SHOULD (Epoch 4 Enhancements):**
 - [x] Index creation for `node_id` and `heading` properties in FalkorDB (Sprint 14)
 - [x] `to_networkx()` roundtrip export from FalkorDB (Sprint 14)
+- [x] Heading reference detection: `--heading-refs` CLI flag, cross-ref extraction by heading title (Sessions 38-39)
+- [x] Heading reference graph edges: `ref.type == "heading"` resolution in graph builder (Session 39)
+- [x] EXP-008: validate heading reference detection quality on real DSM data (Session 39, FAIL -> pre-filter applied)
 - [ ] Protocol usage frequency analysis: which DSM_0.2 sections are used by which spokes (Sprint 15)
 
 **COULD (Future / Conditional):**
@@ -113,6 +116,41 @@ section numbers (e.g., "Section 3.2") that assume a specific file context.
 **Decision gate:** If cross-file references break, Sprint 13 implementation focuses on
 fixing the resolution logic. If everything passes, Sprint 13 scope reduces to
 documentation and defensive tests.
+
+### EXP-008: Heading Reference Detection Quality
+
+**Sprint:** Between 14 and 15 (post-implementation gate)
+**Goal:** Validate that `--heading-refs` produces useful, low-noise signal when run
+against real DSM documents. Heading reference detection was implemented in Sessions
+38-39 as a follow-on to EXP-007 findings (GE could not detect heading-only sections
+or resolve heading title mentions in prose).
+
+**Justification:** Unit tests validate correctness with synthetic fixtures, but cannot
+answer whether the feature is useful on real data. Common heading titles like
+"Overview" or "Summary" may produce excessive false positives. Cross-file resolution
+may behave differently when many files share similar heading titles. This experiment
+validates signal quality before the feature is promoted to production use.
+
+**Hypothesis:** Heading reference detection will find meaningful cross-references in
+DSM documents where section numbering is absent. False positive rate will be
+acceptable for specific, multi-word headings (e.g., "Session Transcript Protocol")
+but may be problematic for generic single-word headings (e.g., "Overview").
+
+**Success Criteria:**
+| Criterion | Threshold |
+|-----------|-----------|
+| Detection: heading refs found in real DSM documents | >0 meaningful refs |
+| True positive rate: detected mentions are actual references | ≥80% |
+| False positive rate: spurious matches from generic titles | ≤20% |
+| Cross-file resolution: heading refs resolve across files | ≥90% |
+| No regressions: existing validation results unchanged | Exact match |
+
+**Environment:** Python 3.12, DSM repository (`~/dsm-agentic-ai-data-science-methodology/`),
+real DSM_0.2 split (v1.3.69 modular format).
+
+**Decision gate:** If false positive rate exceeds 20%, scope TF-IDF fuzzy filtering
+or heading length threshold as a pre-filter before the feature is promoted. If true
+positive rate is below 80%, revisit the extraction heuristic.
 
 ---
 

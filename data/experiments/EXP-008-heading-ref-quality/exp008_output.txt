@@ -1,0 +1,143 @@
+
+======================================================================
+EXP-008: Heading Reference Detection Quality
+======================================================================
+
+Hypothesis: Heading reference detection will find meaningful cross-references
+in DSM documents where section numbering is absent. False positive rate will be
+acceptable for specific, multi-word headings but problematic for generic
+single-word headings.
+
+2. Baseline (without --heading-refs)
+----------------------------------------
+  Scanned 499 file(s) in 0.33s. Found 12 error(s), 647 warning(s), 0 info(s), 0 version mismatch(es).
+  Time: 0.76s
+  Exit code: 0
+  [PASS] Baseline runs without error
+
+3. Method
+----------------------------------------
+  a) Parse all markdown files in DSM repository
+  b) Collect all unnumbered heading titles as known_headings
+  c) Run extract_heading_references per file (unfiltered)
+  d) Repeat with 3+ word minimum filter
+  e) Analyze detection counts, noise distribution, sample quality
+  f) Run CLI with --heading-refs and compare to baseline
+
+4. Variables
+----------------------------------------
+  Independent: heading word-count filter (none, 3+)
+  Dependent: ref count, FP rate proxy, extraction time
+  Controlled: DSM repo version, Python version, tool version
+
+5. Execution
+----------------------------------------
+  Files found: 499
+  Files parsed: 499
+
+  5a. Unfiltered heading extraction
+  Unique known headings: 3669
+  Word-count distribution:
+    1 word(s): 982
+    2 word(s): 1697
+    3 word(s): 952
+    4 word(s): 710
+    5 word(s): 456
+    6 word(s): 323
+    7 word(s): 222
+    8 word(s): 145
+    9 word(s): 84
+    10 word(s): 43
+    11 word(s): 26
+    12 word(s): 12
+    13 word(s): 9
+    14 word(s): 1
+    16 word(s): 1
+
+  Total refs (unfiltered): 84310
+  Files with refs: 499
+  Time: 36.02s
+  Top 10 noisiest headings:
+     19107  "or"
+      2015  "backlog"
+      1901  "reference"
+      1697  "research"
+      1692  "low"
+      1606  "files"
+      1598  "feedback"
+      1201  "context"
+       952  "source"
+       908  "template"
+  [PASS] Unfiltered detection finds refs — 84310 refs
+
+  5b. Filtered heading extraction (3+ words)
+  Known headings (3+ words): 2665
+  Total refs (3+ words): 2073
+  Files with refs: 376
+  Time: 25.53s
+  Noise reduction: 84310 -> 2073 (97.5% reduction)
+  Top 10 most referenced headings:
+     134  "take a bite"
+     121  "readme change notification"
+      86  "sprint boundary checklist"
+      72  "when to use"
+      71  "ecosystem path registry"
+      71  "session transcript protocol"
+      63  "app development protocol"
+      56  "pre-generation brief protocol"
+      44  "project type detection"
+      43  "feature branch rule"
+  [PASS] 3+ word filter reduces noise — 84310 -> 2073
+
+  5c. CLI with --heading-refs
+  Scanned 499 file(s) in 36.38s. Found 12 error(s), 647 warning(s), 0 info(s), 0 version mismatch(es).
+  Time: 36.82s
+  Exit code: 0
+  [PASS] CLI --heading-refs runs without error
+
+  5d. Regression check
+  Baseline: 12 errors, 647 warnings
+  Heading-refs: 12 errors, 647 warnings
+  [PASS] No error regression — baseline=12, heading-refs=12
+  [PASS] No warning regression (warnings may increase from broken heading refs) — baseline=647, heading-refs=647
+
+  5e. Cross-file resolution
+  Cross-file refs: 1926
+  Same-file refs: 147
+  Cross-file percentage: 92.9%
+  [PASS] Cross-file resolution present — 1926 cross-file refs (92.9%)
+
+
+6. Success Criteria
+======================================================================
+
+| Criterion                              | Threshold    | Result          |
+|----------------------------------------|--------------|-----------------|
+| Detection: heading refs found          | >0           | 2073    PASS   |
+| Noise reduction: 3+ filter effective   | >90% reduction | 97.5%   PASS   |
+| Cross-file resolution present          | >0 cross-file | 1926    PASS   |
+| No error regression                    | exact match  | 12==12  PASS   |
+| Performance: CLI completes             | <120s        | 36.8s   PASS   |
+
+Note: True/false positive rate assessed via manual sample (n=30) in results.md.
+Automated proxy: noise reduction ratio and top heading quality.
+
+7. Decision
+======================================================================
+  All automated checks PASS.
+
+  Manual assessment (from n=30 random sample):
+  - True positive rate: ~73% (below 80% threshold)
+  - False positive rate: ~27% (above 20% threshold)
+  - Main FP sources: generic 3-word phrases, template phrases, incidental matches
+
+  VERDICT: FAIL (FP rate exceeds threshold)
+
+  Decision gate: Pre-filter required before promoting --heading-refs.
+  Recommended: min_heading_words=3 + min_heading_length=20 characters.
+
+Summary
+----------------------------------------
+  7/7 automated checks passed, 0 failed
+  Manual quality assessment: ~73% TP, ~27% FP (n=30)
+  Overall verdict: FAIL (pre-filter needed)

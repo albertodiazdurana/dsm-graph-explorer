@@ -1,0 +1,1994 @@
+
+DSM Integrity Report
+
+  Errors:             12
+  Warnings:           645
+  Info:               0
+  External refs:      0
+  Version mismatches: 0
+
+                                     Errors                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ File                    ┃ Line ┃ Type    ┃ Target  ┃ Message                 ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ /home/berto/dsm-agenti… │  201 │ section │ 5.5.1   │ Broken section          │
+│                         │      │         │         │ reference: 5.5.1 not    │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  169 │ section │ 2.1.3.1 │ Broken section          │
+│                         │      │         │         │ reference: 2.1.3.1 not  │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  187 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  192 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │   23 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │   27 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │   30 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  134 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  194 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  480 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  525 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+│ /home/berto/dsm-agenti… │  658 │ section │ 2.6     │ Broken section          │
+│                         │      │         │         │ reference: 2.6 not      │
+│                         │      │         │         │ found in any document   │
+└─────────────────────────┴──────┴─────────┴─────────┴─────────────────────────┘
+
+                                    Warnings                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ File                      ┃ Line ┃ Type ┃ Target ┃ Message                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ /home/berto/dsm-agentic-… │  106 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  187 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    6 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   61 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   16 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  726 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  728 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  161 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  589 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  603 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   64 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   75 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   86 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   95 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   99 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  110 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  118 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  137 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  146 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  152 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  167 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  123 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  130 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  133 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  170 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  182 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  188 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  518 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  526 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  532 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  535 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  535 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  541 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  549 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  551 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  560 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  579 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  579 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  586 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  593 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  604 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  604 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  614 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  614 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  621 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  845 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   12 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   21 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  381 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  381 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  384 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  386 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  387 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  389 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  391 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  391 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   16 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  222 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  223 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  233 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  405 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  406 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   16 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  301 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  305 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  308 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  313 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  319 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  335 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  339 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  343 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  344 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  365 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  373 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  375 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  392 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  424 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  443 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  449 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  471 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  473 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  480 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  484 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  492 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  142 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  156 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  213 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  220 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  220 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  613 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   16 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   74 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   80 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   82 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   91 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  109 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  147 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  212 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  212 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  219 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  461 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   13 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  638 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  647 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  654 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  663 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  682 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  707 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   16 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  205 │ dsm  │ 0.2.1  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.1 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  205 │ dsm  │ 0.2.1  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.1 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  326 │ dsm  │ 0.2.1  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.1 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  327 │ dsm  │ 0.2.2  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.2 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  328 │ dsm  │ 0.2.3  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.3 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  329 │ dsm  │ 0.2.4  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.4 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  330 │ dsm  │ 0.2.5  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.5 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  331 │ dsm  │ 0.2.6  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.6 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  424 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  504 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  819 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  826 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1288 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1289 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  212 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  213 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  381 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  519 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  792 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  801 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  813 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  818 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  820 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  857 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  930 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  930 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1158 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1177 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1236 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1239 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1265 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1277 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1278 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1281 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1285 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1298 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1362 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   12 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  369 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  771 │ dsm  │ 5      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  211 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  104 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  152 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  197 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  146 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   12 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   13 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  230 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  266 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   13 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   13 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  385 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  418 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  423 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  429 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  456 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  614 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  175 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  179 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  180 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  184 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  189 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  196 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  199 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  202 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  204 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  209 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  235 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  236 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  247 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  256 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  262 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  262 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  264 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  277 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  283 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  308 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   47 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   51 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   88 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  128 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  148 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   29 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   49 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   64 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   73 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   73 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   81 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   35 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   46 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   50 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   68 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  124 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  248 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  261 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  541 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  562 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  605 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  607 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  615 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  619 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   35 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   46 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   50 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   55 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   55 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   62 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   69 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  105 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  135 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  150 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  151 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  152 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  153 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  154 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  160 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   12 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1071 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1072 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  291 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  150 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  151 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  158 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  169 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  200 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  228 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  237 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  242 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  247 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  260 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   17 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   42 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  112 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  128 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  192 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  266 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  274 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  275 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  277 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  283 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  289 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  295 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  298 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  301 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  667 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   13 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  134 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  293 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   13 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   39 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   57 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   61 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   68 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   74 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   77 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   82 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   86 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   95 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  112 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  117 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   12 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   31 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   73 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  227 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  229 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  351 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  364 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  365 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  366 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  402 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  405 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  456 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  457 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  458 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  459 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  461 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  632 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  633 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  651 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  657 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  669 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  675 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  676 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  676 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  684 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  734 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  930 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  937 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  941 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  277 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  371 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  592 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  912 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  937 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1053 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   49 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   97 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  116 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   70 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  123 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   23 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   46 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  420 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  440 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  444 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   65 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   72 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   76 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   81 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   88 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  114 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  133 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  919 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1308 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 1745 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   11 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  202 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  321 │ dsm  │ 3.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 3.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  457 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  467 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  486 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   22 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   45 │ dsm  │ 5      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   45 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   48 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   48 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   90 │ dsm  │ 5      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   91 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  387 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  395 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  405 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   36 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 2041 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│ asked ChatGPT about       │      │      │        │ 6.0 not in known          │
+│ TAKE_A_BITE and DSM_6.md  │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 2201 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│ asked ChatGPT about       │      │      │        │ 6.0 not in known          │
+│ TAKE_A_BITE and DSM_6.md  │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 2211 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│ asked ChatGPT about       │      │      │        │ 6.0 not in known          │
+│ TAKE_A_BITE and DSM_6.md  │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │ 2429 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│ asked ChatGPT about       │      │      │        │ 6.0 not in known          │
+│ TAKE_A_BITE and DSM_6.md  │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  218 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  289 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  270 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  274 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  278 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  282 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  327 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   49 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   49 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   53 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    6 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    7 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   22 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   60 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   62 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   63 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   82 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    6 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   27 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   58 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  152 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  152 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   60 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   24 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   20 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   33 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   63 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  106 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   36 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   60 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   70 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   17 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   18 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   31 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   34 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   24 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   40 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   43 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   16 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   13 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   24 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   11 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   31 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   27 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   28 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   23 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   40 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   21 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   38 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   40 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   38 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   49 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   20 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   34 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    4 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   17 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   21 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   22 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   23 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   24 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   25 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   26 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   27 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   28 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   29 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   30 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   46 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   47 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   61 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   71 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   48 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  155 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  159 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  183 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  192 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  306 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  323 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  450 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  473 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  509 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  512 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  122 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  123 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  124 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  138 │ dsm  │ 5      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  140 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  140 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  186 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  237 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  241 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   33 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   35 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   35 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   41 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   47 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  213 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  243 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  348 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  374 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  577 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   78 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   96 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  118 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   98 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  176 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  176 │ dsm  │ 3.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 3.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  203 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  228 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  257 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  262 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  308 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  410 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  421 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    4 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   76 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   89 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    3 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   50 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   79 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  123 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  128 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  139 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    4 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   17 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   20 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  109 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  111 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  116 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  175 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  176 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  177 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  203 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   97 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  103 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  400 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  358 │ dsm  │ 5.1    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.1 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  358 │ dsm  │ 7.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 7.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    3 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    4 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    8 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   72 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   74 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  108 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  124 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  124 │ dsm  │ 7.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 7.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  128 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  138 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   52 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   56 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   64 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   68 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   70 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   88 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   92 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   94 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   94 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  112 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  136 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  140 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  140 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  142 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  121 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  129 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  131 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  117 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   43 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    7 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   18 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   32 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   35 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   24 │ dsm  │ 3.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 3.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   57 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   63 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   75 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   88 │ dsm  │ 0.2.1  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.1 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   88 │ dsm  │ 0.2.2  │ Unknown DSM document: DSM │
+│                           │      │      │        │ 0.2.2 not in known        │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   34 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   32 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   12 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   17 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   18 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   27 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   29 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   33 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   37 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   39 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   17 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   39 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   42 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   42 │ dsm  │ 7.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 7.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   47 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   21 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   64 │ dsm  │ 5.1    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.1 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   64 │ dsm  │ 7.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 7.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  104 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   10 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   29 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   53 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   63 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   93 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  109 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  155 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  158 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  159 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  175 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  177 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  184 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   34 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   34 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   47 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   78 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   26 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   83 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   89 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   30 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   20 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   21 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   14 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   25 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   20 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   18 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   39 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   58 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   42 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   72 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   31 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   33 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   52 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   70 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   79 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    9 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   22 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   43 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   69 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   90 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    1 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │    6 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   15 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   19 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   34 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   44 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   46 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   51 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   53 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   69 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   79 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   81 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   89 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   90 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   91 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   92 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   11 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   17 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   32 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   32 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   62 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  123 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  134 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   94 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  111 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │  112 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   18 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   39 │ dsm  │ 6      │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6 not in known            │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   65 │ dsm  │ 6.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 6.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+│ /home/berto/dsm-agentic-… │   23 │ dsm  │ 5.0    │ Unknown DSM document: DSM │
+│                           │      │      │        │ 5.0 not in known          │
+│                           │      │      │        │ identifiers list          │
+└───────────────────────────┴──────┴──────┴────────┴───────────────────────────┘
+
+
+Scanned 498 file(s) in 0.32s. Found 12 error(s), 645 warning(s), 0 info(s), 0 version mismatch(es).
