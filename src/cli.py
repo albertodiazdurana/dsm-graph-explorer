@@ -236,6 +236,133 @@ def _print_drift_report_compare(
     console.print(f"\n{len(modified)} MODIFIED entity(ies) with content drift")
 
 
+def _print_usage_report(report: "UsageReport") -> None:
+    """Print a Rich-formatted protocol usage report."""
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console()
+
+    # Summary.
+    s = report.summary
+    console.print(
+        f"\n[bold]Protocol Usage Report[/bold] "
+        f"({report.spoke}, DSM_0.2 {report.version})"
+    )
+    console.print(
+        f"Sections: {s['total_sections']} total, "
+        f"{s['high_usage']} high-usage, {s['low_usage']} low-usage, "
+        f"{s['gaps']} gaps"
+    )
+
+    # Main table: sections sorted by total_score descending.
+    table = Table(title="Section Usage (sorted by score)")
+    table.add_column("Section", style="cyan", max_width=40)
+    table.add_column("Module", style="dim")
+    table.add_column("Designed", style="dim")
+    table.add_column("D", justify="right")  # declared
+    table.add_column("P", justify="right")  # prescribed
+    table.add_column("O", justify="right")  # observed
+    table.add_column("Score", justify="right", style="bold")
+    table.add_column("Inferred", style="bold")
+
+    for sec in sorted(report.sections, key=lambda x: x.total_score, reverse=True):
+        style = ""
+        if sec.inferred_classification == "high":
+            style = "green"
+        elif sec.total_score == 0:
+            style = "dim"
+        table.add_row(
+            sec.heading,
+            sec.module,
+            sec.designed_classification,
+            str(sec.declared_count),
+            str(sec.prescribed_count),
+            str(sec.observed_count),
+            str(sec.total_score),
+            sec.inferred_classification,
+            style=style,
+        )
+
+    console.print(table)
+
+    # Gaps.
+    if report.gaps:
+        gap_table = Table(title="Designed vs Observed Gaps")
+        gap_table.add_column("Section", style="cyan")
+        gap_table.add_column("Designed")
+        gap_table.add_column("Observed")
+        gap_table.add_column("Gap Type", style="yellow")
+        for gap in report.gaps:
+            gap_table.add_row(
+                gap.heading, gap.designed, gap.observed, gap.gap_type
+            )
+        console.print(gap_table)
+
+    # Ground truth.
+    if report.ground_truth_results:
+        gt_table = Table(title="Ground Truth Validation")
+        gt_table.add_column("Section ID", style="cyan")
+        gt_table.add_column("Result")
+        for sid, result in report.ground_truth_results.items():
+            style = "green" if result == "pass" else "red"
+            gt_table.add_row(sid, f"[{style}]{result}[/{style}]")
+        console.print(gt_table)
+
+
+def _print_usage_diff(diff: "DiffReport") -> None:
+    """Print a Rich-formatted usage diff report."""
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console()
+    console.print(
+        f"\n[bold]Usage Diff[/bold]: {diff.version_old} → {diff.version_new}"
+    )
+
+    if diff.structural_changes:
+        table = Table(title="Structural Changes")
+        table.add_column("Section", style="cyan")
+        table.add_column("Change")
+        for ch in diff.structural_changes:
+            style = "green" if ch.change_type == "added" else "red"
+            table.add_row(ch.heading, f"[{style}]{ch.change_type}[/{style}]")
+        console.print(table)
+
+    if diff.classification_changes:
+        table = Table(title="Classification Changes")
+        table.add_column("Section", style="cyan")
+        table.add_column("Old")
+        table.add_column("New")
+        for ch in diff.classification_changes:
+            table.add_row(ch.heading, ch.old_classification, ch.new_classification)
+        console.print(table)
+
+    if diff.new_gaps:
+        table = Table(title="New Gaps")
+        table.add_column("Section", style="cyan")
+        table.add_column("Gap Type", style="yellow")
+        for g in diff.new_gaps:
+            table.add_row(g.heading, g.gap_type)
+        console.print(table)
+
+    if diff.resolved_gaps:
+        table = Table(title="Resolved Gaps")
+        table.add_column("Section", style="cyan")
+        table.add_column("Gap Type", style="green")
+        for g in diff.resolved_gaps:
+            table.add_row(g.heading, g.gap_type)
+        console.print(table)
+
+    if not any([
+        diff.structural_changes,
+        diff.classification_changes,
+        diff.new_gaps,
+        diff.resolved_gaps,
+    ]):
+        console.print("[dim]No changes detected.[/dim]")
+
+
 @click.command()
 @click.version_option(version="0.3.0", prog_name="dsm-validate")
 @click.argument("paths", nargs=-1, type=click.Path())
@@ -365,6 +492,55 @@ def _print_drift_report_compare(
     default=False,
     help="Detect heading title mentions in prose as cross-references.",
 )
+@click.option(
+    "--protocol-usage",
+    "protocol_usage_dsm_path",
+    type=click.Path(exists=True),
+    default=None,
+    help="Run protocol usage analysis. Path to DSM_0.2 directory.",
+)
+@click.option(
+    "--dsm-version",
+    "dsm_version",
+    default=None,
+    help="DSM_0.2 version tag for the analysis (e.g., v1.3.69).",
+)
+@click.option(
+    "--commands-dir",
+    "commands_dir",
+    type=click.Path(exists=True),
+    default=None,
+    help="Path to skill definition files (dsm-*.md). Requires --protocol-usage.",
+)
+@click.option(
+    "--claude-md",
+    "claude_md_path",
+    type=click.Path(exists=True),
+    default=None,
+    help="Path to spoke CLAUDE.md for declared refs. Requires --protocol-usage.",
+)
+@click.option(
+    "--transcripts",
+    "transcript_paths",
+    multiple=True,
+    type=click.Path(exists=True),
+    help="Session transcript files to scan (repeatable). Requires --protocol-usage.",
+)
+@click.option(
+    "--usage-output",
+    "usage_output_path",
+    type=click.Path(),
+    default=None,
+    help="Write usage report JSON to this path. Requires --protocol-usage.",
+)
+@click.option(
+    "--usage-compare",
+    "usage_compare_paths",
+    nargs=2,
+    type=click.Path(exists=True),
+    default=None,
+    help="Compare two usage report JSON files. Usage: --usage-compare OLD NEW",
+)
 def main(
     paths: tuple[str, ...],
     output: str | None,
@@ -386,6 +562,13 @@ def main(
     compare_repo_paths: tuple[str, str] | None,
     drift_report: bool,
     heading_refs: bool,
+    protocol_usage_dsm_path: str | None,
+    dsm_version: str | None,
+    commands_dir: str | None,
+    claude_md_path: str | None,
+    transcript_paths: tuple[str, ...],
+    usage_output_path: str | None,
+    usage_compare_paths: tuple[str, str] | None,
 ) -> None:
     """Validate cross-references and version consistency in DSM markdown files.
 
@@ -432,6 +615,96 @@ def main(
             sys.exit(2)
 
         _print_diff_report(result, elapsed)
+        return
+
+    # Protocol usage compare mode: independent early-exit path
+    if usage_compare_paths:
+        import json as _json
+
+        from analysis.usage_diff import compare_reports as _compare_reports
+        from analysis.usage_report import UsageReport as _UsageReport
+
+        old_path, new_path = usage_compare_paths
+        old_data = _json.loads(Path(old_path).read_text())
+        new_data = _json.loads(Path(new_path).read_text())
+        old_report = _UsageReport(**old_data)
+        new_report = _UsageReport(**new_data)
+        diff = _compare_reports(old_report, new_report)
+        _print_usage_diff(diff)
+        return
+
+    # Protocol usage analysis mode: independent early-exit path
+    if protocol_usage_dsm_path:
+        from analysis.section_index import build_section_index
+        from analysis.declared_refs import extract_declared_references
+        from analysis.prescribed_refs import extract_prescribed_references
+        from analysis.observed_refs import extract_observed_references
+        from analysis.usage_report import aggregate_usage
+
+        dsm_path = Path(protocol_usage_dsm_path)
+        version = dsm_version or "unknown"
+        spoke_name = Path.cwd().name
+
+        # Build section index.
+        index = build_section_index(dsm_path, version)
+        click.echo(
+            f"Section index: {len(index.sections)} sections, "
+            f"{len(index.dispatch_table)} dispatch entries (DSM_0.2 {version})"
+        )
+
+        # Layer 1: Declared.
+        declared = []
+        if claude_md_path:
+            declared = extract_declared_references(Path(claude_md_path), index)
+            click.echo(f"Layer 1 (Declared): {len(declared)} references")
+
+        # Layer 2: Prescribed.
+        prescribed = []
+        if commands_dir:
+            prescribed = extract_prescribed_references(
+                Path(commands_dir), index
+            )
+            click.echo(f"Layer 2 (Prescribed): {len(prescribed)} references")
+
+        # Layer 3: Observed.
+        observed = []
+        if transcript_paths:
+            observed = extract_observed_references(
+                [Path(p) for p in transcript_paths], index
+            )
+            sessions = {r.session_number for r in observed}
+            click.echo(
+                f"Layer 3 (Observed): {len(observed)} references "
+                f"across {len(sessions)} sessions"
+            )
+
+        # Ground truth (hardcoded per DSM Central Session 141).
+        ground_truth = [
+            "session-transcript-protocol",
+            "pre-generation-brief-protocol",
+            "three-level-branching-strategy",
+            "read-only-access-within-repository",
+            "ecosystem-path-registry",
+            "inclusive-language",
+            "active-suggestion-protocol",
+        ]
+
+        # Aggregate.
+        report = aggregate_usage(
+            index, declared, prescribed, observed,
+            spoke=spoke_name,
+            ground_truth_ids=ground_truth,
+        )
+
+        # Output.
+        _print_usage_report(report)
+
+        if usage_output_path:
+            Path(usage_output_path).write_text(
+                report.model_dump_json(indent=2) + "\n"
+            )
+            click.echo(f"\nReport written to {usage_output_path}")
+
         return
 
     # Compare-repo mode: independent early-exit path
