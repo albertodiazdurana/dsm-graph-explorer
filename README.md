@@ -3,13 +3,13 @@
 **Version:** 0.4.0
 **Status:** Epoch 4 in progress (Sprint 14 complete)
 
-Repository integrity validator and graph database explorer for the [DSM (Agentic AI Data Science Methodology)](https://github.com/albertodiazdurana/take-ai-bite) framework.
+Repository integrity validator and graph database explorer for the [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite) framework and its engine, the Deliberate Systematic Methodology (DSM).
 
 ---
 
 ## Overview
 
-The [DSM framework](https://github.com/albertodiazdurana/take-ai-bite) is a structured methodology for human-AI collaboration in data science and software engineering projects. As the framework grows, its documentation accumulates hundreds of cross-references between sections, appendices, and versioned documents. Keeping these references consistent manually becomes error-prone.
+The [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite) framework is a set of principles for human-AI collaboration. Its engine, the Deliberate Systematic Methodology (DSM), is a living, versioned methodology that governs the full lifecycle of human-AI collaboration: research, implementation, governance, and disclosure. As the framework grows, its documentation accumulates hundreds of cross-references between sections, appendices, and versioned documents. Keeping these references consistent manually becomes error-prone.
 
 DSM Graph Explorer automates this integrity checking: it parses DSM markdown files, extracts cross-references, validates them against actual section headings, and reports broken links and version mismatches. The project itself is built using DSM 4.0 (Software Engineering Adaptation), making it a dog-fooding exercise — using the methodology to build tooling that validates the methodology.
 
@@ -308,7 +308,7 @@ ruff check src/ tests/
 
 ## Methodology
 
-This project is built using the [Agentic AI Data Science Methodology (DSM)](https://github.com/albertodiazdurana/take-ai-bite). The DSM provides structured guidance for human-AI collaborative projects, covering everything from sprint cadence to feedback tracking. This project follows:
+This project is built using [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite), a framework for human-AI collaboration. Its engine, the Deliberate Systematic Methodology (DSM), governs the full lifecycle: research, implementation, governance, and disclosure. This project follows:
 
 - **DSM 4.0:** Software Engineering Adaptation — the track for building software with AI collaboration
 - **Section 3:** Development Protocol — TDD approach with pre-generation briefs
@@ -395,19 +395,21 @@ MIT License - See [LICENSE](LICENSE) file for details.
 ## Author
 
 **Alberto Diaz Durana**
-[GitHub](https://github.com/albertodiazdurana) | [LinkedIn](https://www.linkedin.com/in/albertodiazdurana/)
+[GitHub](https://github.com/albertodiazdurana) | [LinkedIn](https://www.linkedin.com/in/albertodiazdurana/) | [Website](https://takeaibite.de) | [Blog](https://blog.take-ai-bite.com)
 
 ---
 
 ## Acknowledgments
 
-Built as a dog-fooding project to validate and improve the DSM methodology framework. This project demonstrates applying data science methodology principles to software engineering tasks.
+Built as a dog-fooding project: using DSM to build tooling that validates DSM.
 
 ---
 
 ## Blog
 
-- [Validating 7,400 Lines of Documentation with Compiler Architecture](https://www.linkedin.com/posts/albertodiazdurana_technicalwriting-docsascode-documentation-activity-7425203346304835585-9fZJ) — How compiler architecture (parser → symbol table → resolver → reporter) applies to documentation validation.
+Published at [blog.take-ai-bite.com](https://blog.take-ai-bite.com):
+
+- [Validating 7,400 Lines of Documentation with Compiler Architecture](https://www.linkedin.com/posts/albertodiazdurana_technicalwriting-docsascode-documentation-activity-7425203346304835585-9fZJ), how compiler architecture (parser, symbol table, resolver, reporter) applies to documentation validation.
 
 ---
 

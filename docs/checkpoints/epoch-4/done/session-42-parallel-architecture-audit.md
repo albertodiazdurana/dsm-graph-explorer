@@ -1,3 +1,5 @@
+**Consumed at:** Session 43 start (2026-03-21)
+
 # Parallel Session: architecture-audit
 
 **Merged:** 2026-03-20
