@@ -3,6 +3,18 @@
 **Project:** DSM Graph Explorer
 
 ---
+
+## Session 44 (lightweight continuation)
+**Started:** 2026-03-26T10:00:00-03:00
+**Previous session artifacts:**
+- Checkpoint: session-43-light-checkpoint.md
+- MEMORY.md updated: no
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: session-43-light-checkpoint.md
+
+---
 **User:** /dsm-go (session start)
 
 <------------Start Thinking / 10:45------------>
@@ -94,4 +106,12 @@ Steps:
 4. Checkpoint in docs/checkpoints/epoch-4/
 5. Baseline mode marker
 6. Checkpoint commit + push
+
+
+**Output:** Light wrap-up complete.
+1. MEMORY.md updated (latest session line → Session 43)
+2. Session branch created: session-43/2026-03-21 (master is protected)
+3. Committed + pushed: 2f603c0 (session work) + e777998 (checkpoint)
+4. Checkpoint: docs/checkpoints/epoch-4/session-43-light-checkpoint.md
+5. Baseline mode marker: light
 
