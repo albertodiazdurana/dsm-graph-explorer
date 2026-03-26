@@ -388,7 +388,10 @@ This project is currently in active development. Contribution guidelines will be
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) file for details.
+This project uses dual licensing:
+
+- **Source code** (src/, tests/, scripts/): [MIT](LICENSE)
+- **Documentation** (docs/, README.md, guides): [CC BY-SA 4.0](LICENSE-DOCS.md)
 
 ---
 
