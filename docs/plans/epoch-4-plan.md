@@ -2,7 +2,7 @@
 
 **Project Type:** Software Engineering (DSM 4.0 Track)
 **Start Date:** 2026-03-13
-**Status:** IN PROGRESS (Sprint 14 complete)
+**Status:** IN PROGRESS (Sprint 15 implementation complete, EXP-009 pending)
 **Prerequisite:** Epoch 3 Complete ([epoch-3-plan.md](epoch-3-plan.md))
 **Project Lead:** Alberto Diaz Durana (with AI assistance)
 **Alignment:** DSM Central response received 2026-03-13 (v1.3.36-v1.3.39)
@@ -54,7 +54,7 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 - [x] Heading reference detection: `--heading-refs` CLI flag, cross-ref extraction by heading title (Sessions 38-39)
 - [x] Heading reference graph edges: `ref.type == "heading"` resolution in graph builder (Session 39)
 - [x] EXP-008: validate heading reference detection quality on real DSM data (Session 39, FAIL -> pre-filter applied)
-- [ ] Protocol usage frequency analysis: which DSM_0.2 sections are used by which spokes (Sprint 15)
+- [x] Protocol usage frequency analysis: which DSM_0.2 sections are used by which spokes (Sprint 15)
 
 **COULD (Future / Conditional):**
 - [ ] LLM second-pass validation (TF-IDF filters, LLM confirms)
@@ -63,6 +63,9 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 - [ ] Section rename tracking (`section-renames.yml`)
 - [ ] Web visualization (pyvis or similar)
 - [ ] FalkorDBLite documentation PR (from issue #85)
+- [ ] Agent-consumable knowledge summary: `--knowledge-summary` (BACKLOG-302, from EXP-002)
+- [ ] Parser validation against EXP-001 reference graph (286 edges, ground truth dataset)
+- [ ] Hop distance from entry point in `--graph-stats` (informed by EXP-001 two-tier threshold model)
 
 ### Success Criteria
 
@@ -80,7 +83,7 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 
 **Ecosystem:**
 - [x] GE resilient to DSM_0.2 structural changes (BL-090 Phase 1 already landed)
-- [ ] Protocol usage analysis available to inform BL-090 splitting decisions (if Sprint 15 reached)
+- [x] Protocol usage analysis available to inform BL-090 splitting decisions (Sprint 15)
 
 ---
 
@@ -270,7 +273,7 @@ updates, FalkorDB index creation, and FalkorDB export.
 **Duration:** 1-2 sessions
 **Objective:** Build analysis tooling that measures which DSM_0.2 sections are
 referenced by spoke projects, informing BL-090's splitting strategy.
-**Status:** PLANNED
+**Status:** IN PROGRESS (implementation complete, EXP-009 pending, boundary checklist pending)
 
 #### Design
 
@@ -280,48 +283,53 @@ which spokes? GE already parses markdown and resolves cross-references; extendin
 this to analyze spoke CLAUDE.md files for DSM_0.2 section references is a natural
 extension.
 
-The output is a usage frequency report: per section, which spokes reference it,
-how often, and in what context (reinforcement block, @-import, inline reference).
+Implementation evolved beyond the original plan into a four-layer methodology
+(Declared, Prescribed, Observed, Designed) with 6 new source modules and 6 new
+test files, reaching 664 tests at 91% coverage.
 
-#### Phase 15.1: Spoke CLAUDE.md Scanner
-
-**Tasks:**
-1. [ ] Create `src/analysis/protocol_usage.py`:
-   - [ ] `scan_spoke_references(spoke_path)`: extract DSM_0.2 section references
-         from CLAUDE.md reinforcement blocks
-   - [ ] `scan_at_imports(spoke_path)`: extract @-import paths targeting DSM files
-   - [ ] Handle different reference formats: section numbers, protocol names,
-         template references
-2. [ ] Write tests with fixture CLAUDE.md files
-
-#### Phase 15.2: Usage Frequency Report
+#### Phase 15.1: Section Index + Declared References
 
 **Tasks:**
-1. [ ] Create `src/analysis/usage_report.py`:
-   - [ ] `generate_usage_report(spoke_paths)`: aggregate across all spokes
-   - [ ] Per-section output: reference count, referencing spokes, reference context
-   - [ ] Classification suggestion: always-load (referenced by ≥50% of spokes) vs
-         on-demand (referenced by <50%)
-2. [ ] Add `--protocol-usage PATH [PATH...]` CLI option
-3. [ ] Rich table output for the report
-4. [ ] Write tests
+1. [x] Create `src/analysis/section_index.py`: build section inventory from DSM_0.2
+2. [x] Create `src/analysis/declared_refs.py`: extract declared references from spoke CLAUDE.md
+3. [x] Write tests for both modules
 
-#### Phase 15.3: Cross-Reference Density Mapping
+#### Phase 15.2: Prescribed + Observed References
 
 **Tasks:**
-1. [ ] Extend `protocol_usage.py` to measure intra-DSM_0.2 cross-references:
-       which sections reference each other most?
-2. [ ] Identify natural module boundaries: clusters of sections with high internal
-       cross-reference density and low external density
-3. [ ] Report: suggested module groupings for BL-090 splitting
+1. [x] Create `src/analysis/prescribed_refs.py`: extract prescribed protocol references
+2. [x] Create `src/analysis/observed_refs.py`: extract observed usage patterns
+3. [x] Write tests for both modules
+
+#### Phase 15.3: Usage Report + CLI
+
+**Tasks:**
+1. [x] Create `src/analysis/usage_report.py`: aggregate all layers into frequency report
+2. [x] Create `src/analysis/usage_diff.py`: compare usage across spokes
+3. [x] Add `--protocol-usage` and `--usage-compare` CLI options
+4. [x] Rich table output for reports
+5. [x] Write tests for both modules
+
+#### Phase 15.4: EXP-009 (Protocol Usage Validation)
+
+Defined with DSM Central input (Session 141): fourth layer (Designed), ground
+truth validation (7 sections), ≥60% threshold.
+
+**Tasks:**
+1. [ ] EXP-009 Stage A: run all 4 layers against real data (including transcripts)
+2. [ ] EXP-009 Stage B: transcript validation
+3. [ ] Document results in `data/experiments/EXP-009-*/`
 
 #### Sprint 15 Deliverables
 
-- [ ] `src/analysis/protocol_usage.py` (spoke scanner)
-- [ ] `src/analysis/usage_report.py` (frequency aggregation)
-- [ ] `--protocol-usage` CLI option
-- [ ] Classification suggestions for BL-090 splitting
-- [ ] Cross-reference density mapping
+- [x] `src/analysis/section_index.py` (section inventory)
+- [x] `src/analysis/declared_refs.py` (declared layer)
+- [x] `src/analysis/prescribed_refs.py` (prescribed layer)
+- [x] `src/analysis/observed_refs.py` (observed layer)
+- [x] `src/analysis/usage_report.py` (frequency aggregation)
+- [x] `src/analysis/usage_diff.py` (cross-spoke comparison)
+- [x] `--protocol-usage` and `--usage-compare` CLI options
+- [ ] EXP-009 execution and results
 
 **Sprint boundary checklist:**
 - [ ] Checkpoint document
@@ -329,7 +337,7 @@ how often, and in what context (reinforcement block, @-import, inline reference)
 - [ ] Decision log updated
 - [ ] Blog journal entry
 - [ ] README updated
-- [ ] Epoch plan updated
+- [x] Epoch plan updated
 - [ ] Hub/portfolio notified
 
 ---
@@ -338,6 +346,11 @@ how often, and in what context (reinforcement block, @-import, inline reference)
 
 **Duration:** 1-2 sessions
 **Objective:** TBD at Sprint 15 boundary. Candidates:
+- **`--knowledge-summary` (BACKLOG-302, from DSM Central EXP-002):** Agent-consumable
+  markdown export (~150-200 lines) derived from graph topology. Presentation layer
+  over existing graph infrastructure. See `docs/research/dsm-central-exp-002-knowledge-graph-feasibility.md`.
+- **GraphML None-value bug fix:** `export_graphml()` crashes on `None` attributes
+  (unnumbered headings). Small fix, independent of feature work.
 - LLM second-pass validation (if ecosystem priority shifts)
 - FalkorDBLite documentation PR (if maintainers respond to issue #85)
 - spaCy NER / sentence embeddings (if analysis features create demand)
@@ -349,6 +362,7 @@ how often, and in what context (reinforcement block, @-import, inline reference)
 2. Is there demand for LLM/NLP features from DSM Central or portfolio?
 3. Did FalkorDBLite maintainers respond to issue #85?
 4. Is the epoch scope satisfied?
+5. Does `--knowledge-summary` (BACKLOG-302) justify a Sprint 16, or carry to Epoch 5?
 
 If scope is satisfied, close Epoch 4 at Sprint 15 and carry remaining COULDs to Epoch 5.
 
@@ -387,8 +401,12 @@ entity inventories → cross-repo resolver → bridge graph
 src/
 ├── analysis/                    # NEW (Sprint 15)
 │   ├── __init__.py
-│   ├── protocol_usage.py       # Spoke CLAUDE.md scanner
-│   └── usage_report.py         # Frequency aggregation + classification
+│   ├── section_index.py        # DSM_0.2 section inventory
+│   ├── declared_refs.py        # Declared references (CLAUDE.md)
+│   ├── prescribed_refs.py      # Prescribed protocol references
+│   ├── observed_refs.py        # Observed usage patterns
+│   ├── usage_report.py         # Four-layer frequency aggregation
+│   └── usage_diff.py           # Cross-spoke comparison
 ```
 
 ---
@@ -446,7 +464,7 @@ This decision is deferred to the Sprint 16 planning gate.
 
 ---
 
-**Plan Status:** IN PROGRESS (Sprint 13 complete)
-**Last Updated:** 2026-03-16
+**Plan Status:** IN PROGRESS (Sprint 15 implementation complete, EXP-009 pending)
+**Last Updated:** 2026-04-02
 **Previous:** [epoch-3-plan.md](epoch-3-plan.md)
 **Alignment Source:** `_inbox/dsm-central.md` (2026-03-13)

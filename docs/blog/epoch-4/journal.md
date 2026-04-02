@@ -55,3 +55,44 @@ NetworkX format.
 Also processed the DSM Central feedback audit, which mapped all 42 of GE's
 backlog proposals to their processing status. A nice milestone: 33 out of 42
 proposals have been implemented in DSM Central. The feedback loop works.
+
+## 2026-04-02 — Sprint 15: When Reference Counting Hits Its Ceiling
+
+Sprint 15 asked a question that felt straightforward: which DSM_0.2 sections
+does a spoke project actually use? Build a tool, count references, classify
+always-load vs on-demand. Simple.
+
+The implementation was clean. Four extraction layers, each answering a different
+question: what does the project declare it needs (CLAUDE.md), what do the
+workflows prescribe (skill definitions), what does the agent actually reference
+in practice (transcripts), and what did DSM_0.2's own design intend (module
+dispatch table). Six modules, 67 tests, Rich table output, JSON export.
+
+Then EXP-009 ran it against real data. 177 sections indexed, 225 references
+extracted. The gap analysis was immediately useful: 56 core sections classified
+as always-load but rarely referenced, 9 module sections classified as on-demand
+but heavily used. That's exactly the signal BL-090 needs.
+
+But the ground truth validation scored 4 out of 7. Three universally-required
+protocols, the ones DSM Central said every spoke must use, showed zero or
+near-zero references.
+
+The investigation in Stage B revealed why. The four passing protocols are all
+procedural: "write a transcript," "create a branch," "build a section index."
+They generate observable, named actions. The three failing protocols are
+behavioral: "don't modify external repos," "avoid biased language," "proactively
+suggest improvements." Compliance is implicit. An agent following Read-Only
+Access produces the same transcript as one that's never heard of it, because the
+observable signal is the absence of violations.
+
+This is a real limitation, not a bug to fix. Reference counting measures
+protocol salience (how often something is explicitly named), not protocol
+compliance (whether the agent's behavior conforms). These are different
+questions, and the distinction matters: behavioral protocols should always-load
+because their effect is invisible when absent.
+
+The pass/fail score turned out to be the least interesting part. The real
+finding is that "which sections are used" has two meanings that need different
+measurement approaches. The procedural side works. The behavioral side needs
+content analysis, not string matching. That's a harder problem, and one I
+didn't see coming when the sprint started.

@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.4.0
-**Status:** Epoch 4 in progress (Sprint 14 complete)
+**Status:** Epoch 4 in progress (Sprint 15 complete)
 
 Repository integrity validator and graph database explorer for the [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite) framework and its engine, the Deliberate Systematic Methodology (DSM).
 
@@ -112,9 +112,18 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - CLI ref-change detection: automatic incremental update when git ref changes
 - `get_stored_ref()` for cache staleness detection
 
+**Implemented (Sprint 15 — Protocol Usage Analysis):**
+- Four-layer protocol usage methodology: declared (CLAUDE.md), prescribed (skill definitions), observed (transcripts), designed (module dispatch table)
+- Section index builder (`section_index.py`) for DSM_0.2 section inventory with designed classification
+- Three reference extractors: `declared_refs.py`, `prescribed_refs.py`, `observed_refs.py`
+- Usage aggregation (`usage_report.py`) with ground truth validation and gap analysis
+- Cross-spoke comparison (`usage_diff.py`) for multi-project analysis
+- CLI: `--protocol-usage PATH` and `--usage-compare OLD NEW` with Rich table output and JSON export
+- EXP-009: Protocol usage validation, CONDITIONAL PASS (procedural protocols 4/4, behavioral protocols require different measurement approach)
+
 **Future (Epoch 4 remaining):**
+- Agent-consumable knowledge summary (`--knowledge-summary`, BACKLOG-302)
 - Cross-reference resolution by heading title matching (NLP/TF-IDF)
-- Protocol usage frequency analysis
 - LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
 
 ---
@@ -136,6 +145,7 @@ dsm-graph-explorer/
 │   ├── graph/            # Graph builder, queries, export, diff (Sprint 7, 10)
 │   ├── git_ref/          # Git-ref resolver for temporal compilation (Sprint 10)
 │   ├── inventory/        # Entity inventory parser and export (Sprint 11)
+│   ├── analysis/         # Protocol usage analysis (Sprint 15)
 │   └── linter/           # Convention linting checks (Sprint 8)
 ├── tests/
 │   ├── test_parser.py    # Parser module tests
@@ -159,6 +169,12 @@ dsm-graph-explorer/
 │   ├── test_cli_compare.py    # Cross-repo CLI integration tests
 │   ├── test_linter.py       # Convention linting tests
 │   ├── test_heading_sections.py # Heading-based section tests
+│   ├── test_section_index.py   # Section index tests (Sprint 15)
+│   ├── test_declared_refs.py   # Declared references tests
+│   ├── test_prescribed_refs.py # Prescribed references tests
+│   ├── test_observed_refs.py   # Observed references tests
+│   ├── test_usage_report.py    # Usage report aggregation tests
+│   ├── test_usage_diff.py      # Usage diff comparison tests
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
 ├── _inbox/               # Hub-spoke communication
@@ -274,6 +290,17 @@ dsm-validate --compare-repo inventory-a.yml inventory-b.yml
 # Drift report (show diverged sections between repos)
 dsm-validate --compare-repo inventory-a.yml inventory-b.yml --drift-report
 
+# Protocol usage analysis (4-layer methodology)
+dsm-validate --protocol-usage /path/to/dsm-0.2/ --dsm-version v1.4.1 \
+  --claude-md .claude/CLAUDE.md \
+  --commands-dir ~/.claude/commands/ \
+  --transcripts .claude/transcripts/session1.md \
+  --transcripts .claude/transcripts/session2.md \
+  --usage-output usage-report.json
+
+# Compare usage reports across spokes
+dsm-validate --usage-compare old-report.json new-report.json
+
 # Combine semantic with other options
 dsm-validate /path/to/dsm-repo --semantic --strict --output report.md
 ```
@@ -375,7 +402,11 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
   - Phase 13.1: BL-042 heading-based section detection in graph builder (18 new tests)
   - BL-170 Part B: architecture audit (100% Private Project compatibility)
 - [x] **Sprint 14:** Incremental Graph Updates + FalkorDB Enhancements — update_files(), heading indexes, to_networkx(), CLI ref-change detection (547 tests, 95% coverage)
-- [ ] **Sprint 15:** Protocol Usage Analysis
+- [x] **Sprint 15:** Protocol Usage Analysis — four-layer methodology (declared, prescribed, observed, designed), 6 new modules, EXP-009 CONDITIONAL PASS (664 tests, 91% coverage)
+  - Phase 15.1: Section index + declared references (`section_index.py`, `declared_refs.py`)
+  - Phase 15.2: Prescribed + observed references (`prescribed_refs.py`, `observed_refs.py`)
+  - Phase 15.3: Usage report + CLI (`usage_report.py`, `usage_diff.py`, `--protocol-usage`, `--usage-compare`)
+  - EXP-009: Protocol usage validation, procedural protocols 4/4 pass, behavioral protocols 0/3 (methodology limitation)
 - [ ] **Sprint 16:** Reserved
 
 ---
