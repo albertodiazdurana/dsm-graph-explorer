@@ -159,6 +159,12 @@ def aggregate_usage(
         section_map = {s.section_id: s for s in sections}
         for gt_id in ground_truth_ids:
             usage = section_map.get(gt_id)
+            # Fallback: suffix match (GT IDs may lack number prefixes).
+            if usage is None:
+                for sid, s in section_map.items():
+                    if sid.endswith(gt_id):
+                        usage = s
+                        break
             if usage and usage.inferred_classification == "high":
                 gt_results[gt_id] = "pass"
             else:

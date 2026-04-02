@@ -1,11 +1,46 @@
 @~/dsm-agentic-ai-data-science-methodology/DSM_0.2_Custom_Instructions_v1.1.md
 
+<!-- BEGIN DSM_0.2 ALIGNMENT - do not edit manually, managed by /dsm-align -->
+## DSM Alignment (managed by /dsm-align)
+
+**Project type:** Application (DSM 4.0)
+**Participation pattern:** Spoke
+
+### Session Transcript Protocol (reinforces inherited protocol)
+- Append thinking to `.claude/session-transcript.md` BEFORE acting
+- Output summary AFTER completing work
+- Conversation text = results only
+- Use Session Transcript Delimiter Format for every block:
+  <------------Start Thinking / HH:MM------------>
+  <------------Start Output / HH:MM------------>
+  <------------Start User / HH:MM------------>
+- HH:MM is 24-hour local time when the block begins; no end delimiter needed
+- Append technique: read last 3 lines, use last non-empty line as anchor.
+  NEVER match earlier content for mid-file insertion.
+
+### Pre-Generation Brief Protocol (reinforces inherited protocol)
+- Three-gate model: concept (explain) → implementation (diff review) → run (when applicable)
+- Each gate requires explicit user approval; gates are independent
+
+### Inbox Lifecycle (reinforces inherited protocol)
+- After processing an inbox entry, move it to `_inbox/done/`
+- Do not mark entries as "Status: Processed" while keeping them in place
+
+### Punctuation
+Use "," instead of "—" for connecting phrases in any language.
+
+### App Development Protocol (reinforces inherited protocol)
+- Explain why before each action
+- Create files via Write/Edit tools; user approves via permission window
+- Wait for user confirmation before proceeding to next step
+- Build incrementally: imports → constants → one function → test → next function
+<!-- END DSM_0.2 ALIGNMENT -->
+
 # Project: DSM Graph Explorer
 
 **Type:** Software Engineering (DSM 4.0 Track)
 **Author:** Alberto Diaz Durana
 **Domain:** Repository Integrity Validation / Graph Database Exploration
-**Project Type:** Application (has `src/`, `tests/`, no `notebooks/`). Following DSM 4.0 accordingly.
 
 ---
 
@@ -25,19 +60,22 @@
 
 ```
 dsm-graph-explorer/
-├── .claude/              # AI agent configuration
-├── src/                  # Application source code
-├── tests/                # Test suite
+├── .claude/                 # AI agent configuration
+├── _inbox/                  # Hub-spoke communication transit
+│   └── done/
+├── src/                     # Application source code
+├── tests/                   # Test suite
+├── data/experiments/        # Capability experiment outputs
 ├── docs/
-│   ├── plan/
-│   │   ├── epoch-1-plan.md  # Epoch 1 roadmap (complete)
-│   │   └── epoch-2-plan.md  # Epoch 2 roadmap (next)
+│   ├── plans/               # Epoch roadmaps, backlog items
 │   ├── decisions/           # Architecture Decision Records
-│   ├── checkpoints/         # Milestone checkpoints
+│   ├── checkpoints/         # Milestone snapshots
 │   ├── handoffs/            # Session continuity notes
-│   ├── backlog/             # DSM-to-project alignment reports
-│   ├── feedback/            # Project-to-DSM feedback
-│   └── blog/                # Blog materials and drafts
+│   ├── feedback/            # Per-session DSM feedback files
+│   ├── research/            # Phase 0.5 research files
+│   ├── guides/              # User-facing documentation
+│   └── blog/                # Blog materials and drafts (per epoch)
+├── scripts/                 # Utility scripts
 └── pyproject.toml
 ```
 
@@ -48,13 +86,6 @@ dsm-graph-explorer/
 - **DSM repository**: `~/dsm-agentic-ai-data-science-methodology/`
 - **Portfolio**: `~/dsm-data-science-portfolio-working-folder/`
 
-## Key References
-
-- **DSM 4.0**: `DSM_4.0_Software_Engineering_Adaptation_v1.0.md` (primary)
-- **DSM 1.0**: `DSM_1.0_Data_Science_Collaboration_Methodology_v1.1.md`
-- **PM Guidelines**: `DSM_2.0_ProjectManagement_Guidelines_v2_v1.1.md`
-- **Getting Started**: `DSM_0_START_HERE_Complete_Guide.md`
-
 ---
 
 ## Working Style
@@ -63,49 +94,23 @@ I always want to understand what we are doing. Before generating any file I want
 
 ## Development Protocol
 
-This project uses Claude Code to write files directly. User reviews in IDE.
-
-**Collaboration workflow:** (1) Agent explains what and why, (2) Human reviews and approves, (3) Agent executes.
-
-- Explain **what** and **why** before creating or modifying each file — describe the purpose, the specific changes, and how they fit the current task. Wait for approval before executing.
-- For approval prompts, use `AskUserQuestion` tool with Yes/No options instead of plain text "Should I proceed?" questions.
-- Write files directly using Claude Code tools
-- Build modules incrementally — one module at a time, tests alongside
+- Do NOT use `AskUserQuestion` for approvals (modal blocks IDE reading). Plain text approvals only.
+- Build modules incrementally, one module at a time, tests alongside
 - Run `pytest tests/` after each module to verify before proceeding
 - Keep changes focused: one logical unit per step
-
-## Session Transcript Protocol (reinforces inherited protocol)
-- Append thinking to `.claude/session-transcript.md` BEFORE acting
-- Output summary AFTER completing work
-- Conversation text = results only
-- Use Reasoning Delimiter Format for every thinking block:
-  <------------Start Thinking / HH:MM------------>
-  [reasoning content]
-- HH:MM is 24-hour local time when thinking begins; no end delimiter needed
-
-## Pre-Generation Brief Protocol (reinforces inherited protocol)
-
-Before creating any artifact (code file, test file, configuration), explain:
-1. **What:** Brief description of the artifact
-2. **Why:** How it fits the current task or sprint goal
-3. **Key decisions:** Design choices being made
-4. **Structure:** High-level outline of contents
-
-Wait for approval before generating. Trivial artifacts (`.gitkeep`, minor config) need only a single-sentence brief.
 
 ## Development Approach
 
 - **TDD (Test-Driven Development)**: Write tests before implementation
 - **Incremental development**: Build one function at a time, test, then next
 - **Blog as deliverable**: Document journey throughout (Section 2.5.6-2.5.8)
-- **Three-file feedback system**: Track DSM methodology effectiveness
 
 ## DSM Alignment
 
-- Check `docs/backlog/` at session start for any DSM alignment reports
-- At sprint boundaries, follow the Sprint Boundary Checklist (DSM 2.0 Template 8):
+- Check `_inbox/` at session start for hub-spoke communication
+- At sprint boundaries, follow the Sprint Boundary Checklist:
   - [ ] Checkpoint document created (`docs/checkpoints/`)
-  - [ ] Feedback files updated (`docs/feedback/backlogs.md`, `docs/feedback/methodology.md`)
+  - [ ] Per-session feedback files written (`docs/feedback/YYYY-MM-DD_sN_*.md`)
   - [ ] Decision log updated with sprint decisions (`docs/decisions/`)
   - [ ] Blog journal entry written (`docs/blog/<epoch>/journal.md`)
   - [ ] Repository README updated (status, results, structure)
@@ -120,9 +125,3 @@ Following Section 2.5.6 (Blog/Communication Deliverable Process):
 - **Journal**: `docs/blog/<epoch>/journal.md` (daily observations)
 - **File naming**: `YYYY-MM-DD-title.md` for blog posts
 - **Steps**: Preparation → Scoping → Capture → Drafting → Review → Publication
-
-## Punctuation
-Use "," instead of "—" for connecting phrases in any language.
-The comma (,) is a punctuation mark used to separate elements in a list, set off introductory phrases, clarify meaning, or indicate a pause in a sentence.
-Semicolons (;) are used to connect closely related independent clauses—complete sentences that could stand alone—without using a coordinating conjunction like and or but.  They create a stronger pause than a comma but a softer break than a period. 
-Colon (:) is a punctuation mark used to introduce a list, explanation, quotation, or elaboration.  It appears after a complete independent clause to signal that what follows will clarify, expand on, or list related information.
