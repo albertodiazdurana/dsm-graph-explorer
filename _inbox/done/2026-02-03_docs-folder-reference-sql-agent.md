@@ -1,17 +1,17 @@
-# Reference: docs/ Folder Structure from sql-query-agent-ollama
+# Reference: dsm-docs/ Folder Structure from sql-query-agent-ollama
 
 **Source Project:** SQL Query Agent with Ollama
-**Purpose:** Document how each docs/ subfolder was used in practice
+**Purpose:** Document how each dsm-docs/ subfolder was used in practice
 **Date:** 2026-02-03
 
 ---
 
 ## Overview
 
-The sql-agent project used the following docs/ structure across 2 sprints:
+The sql-agent project used the following dsm-docs/ structure across 2 sprints:
 
 ```
-docs/
+dsm-docs/
 ├── plans/           # Development roadmaps
 ├── decisions/       # Architecture Decision Records (ADRs)
 ├── checkpoints/     # Milestone snapshots
@@ -24,7 +24,7 @@ docs/
 
 ---
 
-## docs/plans/
+## dsm-docs/plans/
 
 **Purpose:** Development roadmaps and sprint planning documents.
 
@@ -39,7 +39,7 @@ docs/
 
 ---
 
-## docs/decisions/
+## dsm-docs/decisions/
 
 **Purpose:** Architecture Decision Records — document significant technical choices with rationale.
 
@@ -63,7 +63,7 @@ docs/
 
 ---
 
-## docs/checkpoints/
+## dsm-docs/checkpoints/
 
 **Purpose:** Milestone snapshots capturing progress, metrics, and open questions.
 
@@ -89,7 +89,7 @@ docs/
 
 ---
 
-## docs/research/
+## dsm-docs/research/
 
 **Purpose:** Literature review, state-of-art research, experiment design documents.
 
@@ -103,7 +103,7 @@ docs/
 
 ---
 
-## docs/backlog/
+## dsm-docs/backlog/
 
 **Purpose:** DSM alignment reports — gateway reviews and cross-project learnings.
 
@@ -116,7 +116,7 @@ docs/
 
 ---
 
-## docs/feedback/
+## dsm-docs/feedback-to-dsm/
 
 **Purpose:** Three-file system for tracking DSM methodology effectiveness.
 
@@ -132,7 +132,7 @@ docs/
 
 ---
 
-## docs/blog/
+## dsm-docs/blog/
 
 **Purpose:** Blog content from raw materials to published posts.
 
@@ -164,7 +164,7 @@ docs/
 
 ---
 
-## docs/_references/
+## dsm-docs/_references/
 
 **Purpose:** External reference materials not created by the project.
 

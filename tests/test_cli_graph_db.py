@@ -8,7 +8,7 @@ Composition Challenge (Proposal #30):
            lint combo (no interaction), rebuild-alone (no-op), invalid path (FalkorDB's
            job), data verification (test_graph_store.py's 18 tests).
     How:   CliRunner from test_cli.py pattern, skipif(not FALKORDB_AVAILABLE), tmp_path
-           for DB files, project docs/ for real-data test.
+           for DB files, project dsm-docs/ for real-data test.
     When:  TDD — tests written before implementation.
 """
 
@@ -199,7 +199,7 @@ class TestGraphDbRealData:
     @pytest.mark.skipif(
         not PROJECT_DOCS.is_dir()
         or len(list(PROJECT_DOCS.glob("**/*.md"))) < 3,
-        reason="Project docs/ not available or too few files",
+        reason="Project dsm-docs/ not available or too few files",
     )
     def test_graph_db_real_data_integration(self, runner, tmp_path):
         db_path = tmp_path / "real_data.falkordb"

@@ -18,11 +18,11 @@ This document captures collaboration patterns refined during the sql-query-agent
 
 ### TRANSFER-1: DSM Feedback Protocol (Three-File System)
 
-**Source:** sql-query-agent-ollama/docs/feedback/
+**Source:** sql-query-agent-ollama/dsm-docs/feedback-to-dsm/
 
 **Pattern:** Use three distinct files to track DSM methodology effectiveness and propose improvements.
 
-**Location:** `docs/feedback/`
+**Location:** `dsm-docs/feedback-to-dsm/`
 
 | File | Purpose | When to Update |
 |------|---------|----------------|
@@ -55,11 +55,11 @@ This document captures collaboration patterns refined during the sql-query-agent
 
 ### TRANSFER-2: Blog and LinkedIn Workflow
 
-**Source:** sql-query-agent-ollama/docs/blog/
+**Source:** sql-query-agent-ollama/dsm-docs/blog/
 
 **Pattern:** Structured workflow from raw observations to published content with proper citation practices.
 
-**Location:** `docs/blog/`
+**Location:** `dsm-docs/blog/`
 
 **File naming convention:**
 - `blog-materials-s0X.md` — Raw observations collected during sprint X
@@ -117,9 +117,9 @@ This document captures collaboration patterns refined during the sql-query-agent
 **Pattern:** Standard checklist for sprint boundaries ensures nothing is missed.
 
 **Checklist:**
-- [ ] Checkpoint document created (`docs/checkpoints/`)
+- [ ] Checkpoint document created (`dsm-docs/checkpoints/`)
 - [ ] Feedback files updated (methodology.md, backlogs.md, blog.md)
-- [ ] Decision log entries for sprint decisions (`docs/decisions/`)
+- [ ] Decision log entries for sprint decisions (`dsm-docs/decisions/`)
 - [ ] Blog entry drafted or published
 - [ ] README updated with sprint deliverables
 - [ ] Tests passing
@@ -147,7 +147,7 @@ This document captures collaboration patterns refined during the sql-query-agent
 | # | Action | Priority | Status |
 |---|--------|----------|--------|
 | 1 | CLAUDE.md updated with Development Protocol | High | DONE (2026-02-03) |
-| 2 | Create `docs/blog/images/` folder when needed | Low | Process guidance (create when needed) |
+| 2 | Create `dsm-docs/blog/images/` folder when needed | Low | Process guidance (create when needed) |
 | 3 | Apply blog workflow for Sprint 2 content | Medium | Process guidance (ongoing) |
 | 4 | Use sprint boundary checklist at Sprint 2 completion | Medium | Process guidance (apply at boundaries) |
 

@@ -1,14 +1,14 @@
 # DSM Graph Explorer - Self-Validation Configuration
-# See docs/guides/config-reference.md for all options
+# See dsm-docs/guides/config-reference.md for all options
 #
-# Note: This repo's docs/ files reference DSM section numbers (e.g., "Section 2.5.6")
+# Note: This repo's dsm-docs/ files reference DSM section numbers (e.g., "Section 2.5.6")
 # that live in the DSM central repository, not here. These cross-repo references
-# are expected to show as unresolved. We set docs/ to INFO severity so they
+# are expected to show as unresolved. We set dsm-docs/ to INFO severity so they
 # don't block CI. README.md also references DSM sections, so it's set to WARNING.
 
 # Exclude files where cross-references are not meaningful
 exclude:
-  - docs/_references/*
+  - dsm-docs/_references/*
   - htmlcov/*
   - outputs/*
 
@@ -16,21 +16,21 @@ exclude:
 severity:
   - pattern: "README.md"
     level: WARNING
-  - pattern: "docs/plan/*.md"
+  - pattern: "dsm-docs/plan/*.md"
     level: INFO
-  - pattern: "docs/feedback/*.md"
+  - pattern: "dsm-docs/feedback-to-dsm/*.md"
     level: INFO
-  - pattern: "docs/checkpoints/*.md"
+  - pattern: "dsm-docs/checkpoints/*.md"
     level: INFO
-  - pattern: "docs/blog/**/*.md"
+  - pattern: "dsm-docs/blog/**/*.md"
     level: INFO
-  - pattern: "docs/decisions/*.md"
+  - pattern: "dsm-docs/decisions/*.md"
     level: INFO
-  - pattern: "docs/handoffs/*.md"
+  - pattern: "dsm-docs/handoffs/*.md"
     level: INFO
-  - pattern: "docs/research/*.md"
+  - pattern: "dsm-docs/research/*.md"
     level: INFO
-  - pattern: "docs/**/*.md"
+  - pattern: "dsm-docs/**/*.md"
     level: INFO
   - pattern: "*.md"
     level: WARNING

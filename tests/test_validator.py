@@ -406,7 +406,7 @@ class TestAssignSeverity:
     |------|----------------|-------------------|
     | DSM_1.0.md | DSM_*.md: ERROR | ERROR |
     | plan/draft.md | plan/*: INFO | INFO |
-    | docs/guide.md | (no match, default) | WARNING |
+    | dsm-docs/guide.md | (no match, default) | WARNING |
     | plan/DSM_draft.md | Both patterns match | First match wins |
     """
 
@@ -427,8 +427,8 @@ class TestAssignSeverity:
         assert result == Severity.INFO
 
     def test_unmatched_file_uses_default(self):
-        """docs/guide.md matches *.md fallback: WARNING."""
-        result = assign_severity("docs/guide.md", self.MAPPINGS)
+        """dsm-docs/guide.md matches *.md fallback: WARNING."""
+        result = assign_severity("dsm-docs/guide.md", self.MAPPINGS)
         assert result == Severity.WARNING
 
     def test_first_match_wins(self):

@@ -35,13 +35,13 @@ def _make_ref(ref_type: str, target: str, line: int) -> CrossReference:
 
 
 # Two-document corpus for multi-file tests
-DOC_A = _make_doc("docs/DSM_1.0.md", [
+DOC_A = _make_doc("dsm-docs/DSM_1.0.md", [
     _make_section("1.1", "Introduction", line=5, level=2),
     _make_section("1.2", "Scope", line=20, level=2),
     _make_section("1.2.1", "In Scope", line=30, level=3),
 ])
 
-DOC_B = _make_doc("docs/DSM_4.0.md", [
+DOC_B = _make_doc("dsm-docs/DSM_4.0.md", [
     _make_section("3.1", "Development Protocol", line=10, level=2),
     _make_section("3.2", "Testing Strategy", line=40, level=2),
 ])
@@ -71,7 +71,7 @@ class TestEmptyAndMinimal:
 class TestNodeCreation:
     def test_file_node_attributes(self):
         G = build_reference_graph([DOC_A], {}, {})
-        node = G.nodes["docs/DSM_1.0.md"]
+        node = G.nodes["dsm-docs/DSM_1.0.md"]
         assert node["type"] == "FILE"
         assert node["title"] == "DSM_1.0.md"
 
@@ -81,17 +81,17 @@ class TestNodeCreation:
             n for n, d in G.nodes(data=True) if d.get("type") == "SECTION"
         ]
         assert len(section_nodes) == 3
-        assert "docs/DSM_1.0.md:1.1" in section_nodes
-        assert "docs/DSM_1.0.md:1.2" in section_nodes
-        assert "docs/DSM_1.0.md:1.2.1" in section_nodes
+        assert "dsm-docs/DSM_1.0.md:1.1" in section_nodes
+        assert "dsm-docs/DSM_1.0.md:1.2" in section_nodes
+        assert "dsm-docs/DSM_1.0.md:1.2.1" in section_nodes
 
     def test_section_node_attributes(self):
         G = build_reference_graph([DOC_A], {}, {})
-        node = G.nodes["docs/DSM_1.0.md:1.1"]
+        node = G.nodes["dsm-docs/DSM_1.0.md:1.1"]
         assert node["type"] == "SECTION"
         assert node["title"] == "Introduction"
         assert node["number"] == "1.1"
-        assert node["file"] == "docs/DSM_1.0.md"
+        assert node["file"] == "dsm-docs/DSM_1.0.md"
         assert node["line"] == 5
         assert node["level"] == 2
         assert node["context_excerpt"] == ""
@@ -113,11 +113,11 @@ class TestNodeCreation:
         G = build_reference_graph([DOC_A, DOC_B], {}, {})
         all_nodes = list(G.nodes)
         # FILE nodes use file path
-        assert "docs/DSM_1.0.md" in all_nodes
-        assert "docs/DSM_4.0.md" in all_nodes
+        assert "dsm-docs/DSM_1.0.md" in all_nodes
+        assert "dsm-docs/DSM_4.0.md" in all_nodes
         # SECTION nodes use file:number
-        assert "docs/DSM_1.0.md:1.1" in all_nodes
-        assert "docs/DSM_4.0.md:3.1" in all_nodes
+        assert "dsm-docs/DSM_1.0.md:1.1" in all_nodes
+        assert "dsm-docs/DSM_4.0.md:3.1" in all_nodes
 
 
 # ---------------------------------------------------------------------------
@@ -132,15 +132,15 @@ class TestEdgeCreation:
             if d.get("type") == "CONTAINS"
         ]
         assert len(contains) == 3
-        assert ("docs/DSM_1.0.md", "docs/DSM_1.0.md:1.1") in contains
-        assert ("docs/DSM_1.0.md", "docs/DSM_1.0.md:1.2") in contains
-        assert ("docs/DSM_1.0.md", "docs/DSM_1.0.md:1.2.1") in contains
+        assert ("dsm-docs/DSM_1.0.md", "dsm-docs/DSM_1.0.md:1.1") in contains
+        assert ("dsm-docs/DSM_1.0.md", "dsm-docs/DSM_1.0.md:1.2") in contains
+        assert ("dsm-docs/DSM_1.0.md", "dsm-docs/DSM_1.0.md:1.2.1") in contains
 
     def test_resolved_reference_creates_edge(self):
         docs = [DOC_A, DOC_B]
         lookup = build_section_lookup(docs)
         # Section 3.2 (line 40) references Section 1.1
-        refs = {"docs/DSM_4.0.md": [_make_ref("section", "1.1", line=45)]}
+        refs = {"dsm-docs/DSM_4.0.md": [_make_ref("section", "1.1", line=45)]}
         G = build_reference_graph(docs, refs, lookup)
         ref_edges = [
             (u, v, d) for u, v, d in G.edges(data=True)
@@ -148,8 +148,8 @@ class TestEdgeCreation:
         ]
         assert len(ref_edges) == 1
         src, tgt, data = ref_edges[0]
-        assert src == "docs/DSM_4.0.md:3.2"
-        assert tgt == "docs/DSM_1.0.md:1.1"
+        assert src == "dsm-docs/DSM_4.0.md:3.2"
+        assert tgt == "dsm-docs/DSM_1.0.md:1.1"
         assert data["line"] == 45
         assert data["ref_type"] == "section"
 
@@ -157,7 +157,7 @@ class TestEdgeCreation:
         docs = [DOC_A]
         lookup = build_section_lookup(docs)
         # Reference to section 99.99 which doesn't exist
-        refs = {"docs/DSM_1.0.md": [_make_ref("section", "99.99", line=25)]}
+        refs = {"dsm-docs/DSM_1.0.md": [_make_ref("section", "99.99", line=25)]}
         G = build_reference_graph(docs, refs, lookup)
         ref_edges = [
             (u, v) for u, v, d in G.edges(data=True)
@@ -169,20 +169,20 @@ class TestEdgeCreation:
         """Reference at line 25 should be enclosed by section 1.2 (line 20), not 1.2.1 (line 30)."""
         docs = [DOC_A, DOC_B]
         lookup = build_section_lookup(docs)
-        refs = {"docs/DSM_1.0.md": [_make_ref("section", "3.1", line=25)]}
+        refs = {"dsm-docs/DSM_1.0.md": [_make_ref("section", "3.1", line=25)]}
         G = build_reference_graph(docs, refs, lookup)
         ref_edges = [
             (u, v) for u, v, d in G.edges(data=True)
             if d.get("type") == "REFERENCES"
         ]
         assert len(ref_edges) == 1
-        assert ref_edges[0][0] == "docs/DSM_1.0.md:1.2"
+        assert ref_edges[0][0] == "dsm-docs/DSM_1.0.md:1.2"
 
     def test_reference_before_first_section_creates_no_edge(self):
         """Reference at line 1 (before any section) has no enclosing section."""
         docs = [DOC_A]
         lookup = build_section_lookup(docs)
-        refs = {"docs/DSM_1.0.md": [_make_ref("section", "1.2", line=1)]}
+        refs = {"dsm-docs/DSM_1.0.md": [_make_ref("section", "1.2", line=1)]}
         G = build_reference_graph(docs, refs, lookup)
         ref_edges = [
             (u, v) for u, v, d in G.edges(data=True)
@@ -211,15 +211,15 @@ class TestMultiDocument:
         """Section in DOC_B references section in DOC_A."""
         docs = [DOC_A, DOC_B]
         lookup = build_section_lookup(docs)
-        refs = {"docs/DSM_4.0.md": [_make_ref("section", "1.2.1", line=42)]}
+        refs = {"dsm-docs/DSM_4.0.md": [_make_ref("section", "1.2.1", line=42)]}
         G = build_reference_graph(docs, refs, lookup)
         ref_edges = [
             (u, v) for u, v, d in G.edges(data=True)
             if d.get("type") == "REFERENCES"
         ]
         assert len(ref_edges) == 1
-        assert ref_edges[0][0] == "docs/DSM_4.0.md:3.2"
-        assert ref_edges[0][1] == "docs/DSM_1.0.md:1.2.1"
+        assert ref_edges[0][0] == "dsm-docs/DSM_4.0.md:3.2"
+        assert ref_edges[0][1] == "dsm-docs/DSM_1.0.md:1.2.1"
 
 
 # ---------------------------------------------------------------------------

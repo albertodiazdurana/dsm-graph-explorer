@@ -120,12 +120,12 @@ DSM_6, DSM_0.1, DSM_0.2) or in project deliverables.
 | Artifact | Role | Lives in |
 |----------|------|----------|
 | Backlog item | Defines scope, success criteria, priority | `plan/backlog/` |
-| Checkpoint | Snapshots milestone state, next steps | `docs/checkpoints/` |
-| Decision record | Records a decision and its rationale | `docs/decisions/` |
-| Plan | Structures phases, deliverables, timelines | `docs/plans/` |
-| Epoch/sprint log | Tracks sprint progress and boundaries | `docs/plans/` or project-specific |
-| Handoff | Enables session continuity | `docs/handoffs/` |
-| Blog artifact | Drafts, seeds, publication materials | `docs/blog/` |
+| Checkpoint | Snapshots milestone state, next steps | `dsm-docs/checkpoints/` |
+| Decision record | Records a decision and its rationale | `dsm-docs/decisions/` |
+| Plan | Structures phases, deliverables, timelines | `dsm-docs/plans/` |
+| Epoch/sprint log | Tracks sprint progress and boundaries | `dsm-docs/plans/` or project-specific |
+| Handoff | Enables session continuity | `dsm-docs/handoffs/` |
+| Blog artifact | Drafts, seeds, publication materials | `dsm-docs/blog/` |
 
 **Detection rule:** When the agent encounters any of these patterns in an
 enabling file, it must flag the issue and surface it to the user before

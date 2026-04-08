@@ -11,7 +11,7 @@ Fixture hierarchy:
     falkor_db   (session scope)  -- single FalkorDB subprocess
     graph       (function scope) -- unique named graph per test, auto-deleted
 
-See: docs/research/epoch-3-falkordblite-deep-dive.md Section 7 (Testing Patterns)
+See: dsm-docs/research/epoch-3-falkordblite-deep-dive.md Section 7 (Testing Patterns)
 """
 
 import uuid

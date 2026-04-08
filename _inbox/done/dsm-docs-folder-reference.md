@@ -1,21 +1,21 @@
 # DSM Docs Folder Structure Reference
 
 **Source Project:** SQL Query Agent with Ollama
-**Purpose:** Document how the `docs/` folder was organized in sql-agent as reference for dsm-graph-explorer
+**Purpose:** Document how the `dsm-docs/` folder was organized in sql-agent as reference for dsm-graph-explorer
 **Date:** 2026-02-04
 
 ---
 
 ## Overview
 
-The sql-agent project used a structured `docs/` folder following DSM 4.0 patterns. Each subfolder has a distinct purpose and lifecycle.
+The sql-agent project used a structured `dsm-docs/` folder following DSM 4.0 patterns. Each subfolder has a distinct purpose and lifecycle.
 
 ---
 
 ## Folder Structure
 
 ```
-docs/
+dsm-docs/
 ├── plans/                 # Roadmaps and sprint plans
 ├── research/              # State-of-art research, literature review
 ├── decisions/             # Architecture Decision Records (ADRs)
@@ -30,7 +30,7 @@ docs/
 
 ## Folder Details
 
-### `docs/plans/`
+### `dsm-docs/plans/`
 
 **Purpose:** Development roadmaps and sprint-level planning.
 
@@ -45,7 +45,7 @@ docs/
 
 ---
 
-### `docs/research/`
+### `dsm-docs/research/`
 
 **Purpose:** Literature review, state-of-art surveys, experiment design documentation.
 
@@ -59,7 +59,7 @@ docs/
 
 ---
 
-### `docs/decisions/`
+### `dsm-docs/decisions/`
 
 **Purpose:** Architecture Decision Records (ADRs) — document significant technical choices with rationale.
 
@@ -78,7 +78,7 @@ docs/
 
 ---
 
-### `docs/checkpoints/`
+### `dsm-docs/checkpoints/`
 
 **Purpose:** Milestone snapshots documenting state at key points.
 
@@ -99,7 +99,7 @@ docs/
 
 ---
 
-### `docs/backlog/`
+### `dsm-docs/backlog/`
 
 **Purpose:** DSM alignment reports — how well the project follows DSM, action items.
 
@@ -114,7 +114,7 @@ docs/
 
 ---
 
-### `docs/feedback/`
+### `dsm-docs/feedback-to-dsm/`
 
 **Purpose:** Three-file feedback system — track DSM effectiveness, propose improvements.
 
@@ -130,7 +130,7 @@ docs/
 
 ---
 
-### `docs/blog/`
+### `dsm-docs/blog/`
 
 **Purpose:** Blog materials from raw observations to published posts.
 
@@ -156,7 +156,7 @@ docs/
 
 ---
 
-### `docs/_references/`
+### `dsm-docs/_references/`
 
 **Purpose:** External reference materials not part of DSM workflow.
 
