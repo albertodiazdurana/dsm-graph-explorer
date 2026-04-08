@@ -580,7 +580,7 @@ def main(
     \b
     Examples:
       dsm-validate .                           # Validate current directory
-      dsm-validate docs/ --strict              # Strict mode for CI
+      dsm-validate dsm-docs/ --strict              # Strict mode for CI
       dsm-validate . --exclude 'plan/*'        # Exclude plan folder
       dsm-validate . -c myconfig.yml           # Use custom config file
     """

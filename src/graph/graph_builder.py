@@ -36,8 +36,8 @@ def _slugify(title: str) -> str:
 def _section_id(file_id: str, section: Section) -> str:
     """Generate a unique node ID for a section.
 
-    Numbered sections: file_path:number (e.g., "docs/DSM.md:2.1")
-    Heading sections:  file_path:h:slug (e.g., "docs/DSM.md:h:inclusive-language")
+    Numbered sections: file_path:number (e.g., "dsm-docs/DSM.md:2.1")
+    Heading sections:  file_path:h:slug (e.g., "dsm-docs/DSM.md:h:inclusive-language")
     """
     if section.number:
         return f"{file_id}:{section.number}"

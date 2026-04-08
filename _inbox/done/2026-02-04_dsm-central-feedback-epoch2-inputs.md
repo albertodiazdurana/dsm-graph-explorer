@@ -52,7 +52,7 @@ DEC-003's exclusion-first approach is confirmed correct. Recommended exclusion l
 ```yaml
 exclude:
   - CHANGELOG.md           # Historical drift (valid when written)
-  - docs/checkpoints/*     # Milestone snapshots
+  - dsm-docs/checkpoints/*     # Milestone snapshots
   - references/*           # Archive folder
   - plan/*                 # Planning docs with proposals
   - plan/archive/*         # Archived backlog items

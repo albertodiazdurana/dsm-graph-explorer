@@ -13,7 +13,7 @@ when a protocol listed in the dispatch table is needed.
 
 ## Session-End Inbox Push
 
-At session end (or at sprint boundaries), review `docs/feedback/` for per-session
+At session end (or at sprint boundaries), review `dsm-docs/feedback-to-dsm/` for per-session
 feedback files that are ripe enough to send to DSM Central. A file is ripe when
 its content is actionable:
 
@@ -28,11 +28,11 @@ its content is actionable:
 2. **Path validation:** Before writing, verify the resolved target path is DSM
    Central's inbox, not the project's own governance inbox. If the resolved path
    contains the current project name as a subdirectory (e.g.,
-   `contributions-docs/{project}/_inbox/`), the path is wrong; resolve
+   `contributions-dsm-docs/{project}/_inbox/`), the path is wrong; resolve
    `dsm-central` from the Ecosystem Path Registry or the `@` reference.
-3. Files that are not yet ripe stay in `docs/feedback/` for further drafting
+3. Files that are not yet ripe stay in `dsm-docs/feedback-to-dsm/` for further drafting
 4. After DSM Central processes the feedback, the source file moves to
-   `docs/feedback/done/`
+   `dsm-docs/feedback-to-dsm/done/`
 
 The DSM Central repo path is the parent directory of the
 `DSM_0.2_Custom_Instructions_v1.1.md` file referenced by the `@` import in this
@@ -42,16 +42,16 @@ project's CLAUDE.md.
 (structured, actionable, meets ripe criteria), write it to both the local
 per-session file and DSM Central's inbox simultaneously:
 
-- Methodology observations: `docs/feedback/YYYY-MM-DD_sN_methodology.md` + inbox
-- Backlog proposals: `docs/feedback/YYYY-MM-DD_sN_backlogs.md` + inbox
+- Methodology observations: `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_methodology.md` + inbox
+- Backlog proposals: `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_backlogs.md` + inbox
 
 Reserve the session-end review for rough notes that need structuring before
 they are ripe.
 
 **External Contribution exception:** For External Contribution projects, the
-agent works in the fork, which does not have `docs/feedback/`. Feedback files
-live in the governance folder: `{contributions-docs-path}/{project}/docs/feedback/`.
-All references to `docs/feedback/` in this section resolve to that governance
+agent works in the fork, which does not have `dsm-docs/feedback-to-dsm/`. Feedback files
+live in the governance folder: `{contributions-docs-path}/{project}/dsm-docs/feedback-to-dsm/`.
+All references to `dsm-docs/feedback-to-dsm/` in this section resolve to that governance
 path, not the fork's root. The pushing process, immediate push, and ripe criteria
 apply identically; only the file location changes.
 
@@ -214,7 +214,7 @@ lifecycle. Each session creates its own feedback file(s); processed files move
 to `done/`. This prevents accumulation of processed entries in long-lived
 append-only files.
 
-**File naming:** `docs/feedback/YYYY-MM-DD_sN_{type}.md` where type is
+**File naming:** `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_{type}.md` where type is
 `backlogs` or `methodology`. Only create a file when there is feedback to
 record; no empty files.
 
@@ -225,7 +225,7 @@ record; no empty files.
 | **Create** | Agent writes feedback to a session-scoped file during the session | Agent (spoke) |
 | **Notify** | At wrap-up, inbox notification to DSM Central references the file | Agent (spoke) |
 | **Process** | DSM Central reads the file, creates BL items or updates scores | Agent (hub) |
-| **Done** | Processed file moves to `docs/feedback/done/` | Agent (hub or spoke) |
+| **Done** | Processed file moves to `dsm-docs/feedback-to-dsm/done/` | Agent (hub or spoke) |
 
 **When to capture feedback:**
 1. Note which DSM section was referenced (e.g., "Section 2.2", "Appendix B.2")
@@ -233,7 +233,7 @@ record; no empty files.
 3. Log gaps or unclear areas encountered
 4. Reference: Section 6.4 (Checkpoint Protocol), Appendix E.12 (Validation Tracker)
 
-**Filing completeness:** Writing a feedback file to `docs/feedback/` is only
+**Filing completeness:** Writing a feedback file to `dsm-docs/feedback-to-dsm/` is only
 half the action. The file must also be pushed to DSM Central's inbox per the
 **Immediate push** rule in Session-End Inbox Push. Filing without notifying is
 incomplete; the feedback exists locally but is invisible to the hub. This applies
@@ -242,9 +242,9 @@ whether the file is written at session end or mid-session.
 **Feedback directory requirements:**
 
 Every project that produces feedback must have:
-- `docs/feedback/README.md` (describes the feedback protocol and file types)
-- `docs/feedback/done/` subdirectory for processed files
-- `docs/feedback/technical.md` (append-only, sprint-boundary cadence; see
+- `dsm-docs/feedback-to-dsm/README.md` (describes the feedback protocol and file types)
+- `dsm-docs/feedback-to-dsm/done/` subdirectory for processed files
+- `dsm-docs/feedback-to-dsm/technical.md` (append-only, sprint-boundary cadence; see
   Technical Progress Reporting below)
 
 **Anti-Patterns:**
@@ -265,9 +265,9 @@ effectiveness) and from handoffs (which ensure session continuity). Technical
 reports create a structured record of the actual engineering work across the
 ecosystem.
 
-**File:** `docs/feedback/technical.md` (append-only, dated entries)
+**File:** `dsm-docs/feedback-to-dsm/technical.md` (append-only, dated entries)
 
-This is the third file type in the `docs/feedback/` directory, alongside
+This is the third file type in the `dsm-docs/feedback-to-dsm/` directory, alongside
 per-session backlog and methodology files. Unlike those per-session files,
 `technical.md` is append-only: entries form a chronological engineering record
 that retains reference value after pushing. See DSM Feedback Tracking above
@@ -301,7 +301,7 @@ progress report updated" as a standard item.
 **Profile-relevant:** {new skills exercised, proficiency changes, or "None"}
 ```
 
-**Routing:** The wrap-up command scans `docs/feedback/technical.md` for entries
+**Routing:** The wrap-up command scans `dsm-docs/feedback-to-dsm/technical.md` for entries
 without a `**Pushed:**` date. For each unpushed entry, it appends an inbox
 notification to DSM Central and marks the source with `**Pushed:** YYYY-MM-DD`.
 
@@ -321,7 +321,7 @@ Sprint N: {brief title}
 **Scale:** {data scale}
 **Outcomes:** {metrics summary}
 
-**Full report:** `~/{project-path}/docs/feedback/technical.md`
+**Full report:** `~/{project-path}/dsm-docs/feedback-to-dsm/technical.md`
 ```
 
 **Why Priority: Low?** Technical progress reports are informational, not action
@@ -523,7 +523,7 @@ New reasoning lessons added via {[auto]/[STAA]} (Session N):
 Source file: {project}/.claude/reasoning-lessons.md
 ```
 
-**Central aggregation file:** `docs/reasoning-lessons-ecosystem.md` collects
+**Central aggregation file:** `dsm-docs/reasoning-lessons-ecosystem.md` collects
 `ecosystem` and `pattern` scope lessons from all spokes, with attribution to
 the originating project and session. The agent processes incoming lesson
 notifications during DSM Central session-start inbox processing: ecosystem
@@ -540,7 +540,7 @@ the agent:
 1. Reads the notification and checks each lesson against the aggregation file
    for duplicates
 2. Adds non-duplicate `ecosystem` and `pattern` lessons to
-   `docs/reasoning-lessons-ecosystem.md` with attribution
+   `dsm-docs/reasoning-lessons-ecosystem.md` with attribution
 3. Moves the inbox entry to `_inbox/done/`
 
 **Anti-Patterns:**
@@ -566,9 +566,9 @@ collaboration, AI methodology, or agentic AI patterns. This protocol
 adds a lightweight per-session learning step that brings external knowledge into
 the ecosystem.
 
-**File:** `docs/research/learning-log.md` (git-tracked, append-only)
+**File:** `dsm-docs/research/learning-log.md` (git-tracked, append-only)
 
-**Opt-in:** The protocol activates when `docs/research/learning-log.md` exists in
+**Opt-in:** The protocol activates when `dsm-docs/research/learning-log.md` exists in
 the project. If the file does not exist, all learning steps are skipped silently.
 The file includes a topic queue in its header; the agent selects from this queue
 when no session-specific topic is apparent.
@@ -652,12 +652,12 @@ Checkpoints capture milestone state. Once a newer checkpoint covers the same
 project scope, the older one is superseded.
 
 **Supersession rule:** When creating a new checkpoint, check
-`docs/checkpoints/` for older checkpoints that:
+`dsm-docs/checkpoints/` for older checkpoints that:
 
 1. Cover the same project phase or milestone scope
 2. Have had their "next steps" acted on (the work they anticipated is complete)
 
-Move superseded checkpoints to `docs/checkpoints/done/`. Add
+Move superseded checkpoints to `dsm-docs/checkpoints/done/`. Add
 `**Superseded by:** {newer checkpoint filename}` to the moved file's header.
 
 **Cadence:** Per-sprint, integrated into the Sprint Boundary Checklist.

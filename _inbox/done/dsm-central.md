@@ -67,7 +67,7 @@ principles map to five architectural constraints that make CQRS the necessary
 consequence, not an arbitrary design choice. This framing strengthens the
 "why" behind Graph Explorer's architecture.
 
-**Full research:** `~/dsm-agentic-ai-data-science-methodology/docs/research/Literate-CQRS-Knowledge/`
+**Full research:** `~/dsm-agentic-ai-data-science-methodology/dsm-docs/research/Literate-CQRS-Knowledge/`
 
 **Next step from DSM Central:** Advance Graph Explorer Sprint 7 to produce
 working compilation + queries, then write a blog post using concrete examples

@@ -200,7 +200,7 @@ class TestCheckBacklogMetadata:
             "**ID:** 1",
             "Description of the proposal.",
         ]
-        results = check_backlog_metadata("docs/feedback/backlogs.md", lines)
+        results = check_backlog_metadata("dsm-docs/feedback-to-dsm/backlogs.md", lines)
         assert len(results) == 1
         assert results[0].rule == LintRule.W003
         assert "Priority" in results[0].message
@@ -215,7 +215,7 @@ class TestCheckBacklogMetadata:
             "**Status:** Open",
             "**Priority:** High",
         ]
-        results = check_backlog_metadata("docs/feedback/backlogs.md", lines)
+        results = check_backlog_metadata("dsm-docs/feedback-to-dsm/backlogs.md", lines)
         assert results == []
 
     def test_skips_non_backlog_file(self):
@@ -223,7 +223,7 @@ class TestCheckBacklogMetadata:
             "## Proposal #1: Feature",
             "Missing all fields.",
         ]
-        results = check_backlog_metadata("docs/guides/readme.md", lines)
+        results = check_backlog_metadata("dsm-docs/guides/readme.md", lines)
         assert results == []
 
     def test_dash_list_field_format(self):
@@ -247,7 +247,7 @@ class TestCheckBacklogMetadata:
             "**ID:** 2",
             "No status or priority here.",
         ]
-        results = check_backlog_metadata("docs/feedback/backlogs.md", lines)
+        results = check_backlog_metadata("dsm-docs/feedback-to-dsm/backlogs.md", lines)
         assert len(results) == 1
         assert "#2" in results[0].context or "Second" in results[0].context
 

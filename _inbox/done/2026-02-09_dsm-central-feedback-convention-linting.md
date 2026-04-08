@@ -120,7 +120,7 @@ but for the initial implementation, `--lint` runs independently.
 | 2 | Implement `--lint` flag with 6 checks (spec above) | High | Pending |
 | 3 | Add test fixtures with known convention violations | Medium | Pending |
 | 4 | Update README with lint mode documentation | Medium | Pending |
-| 5 | Update docs/feedback/backlogs.md proposal #16 when implemented | Low | Pending |
+| 5 | Update dsm-docs/feedback-to-dsm/backlogs.md proposal #16 when implemented | Low | Pending |
 
 ---
 
@@ -131,7 +131,7 @@ Use this prompt when starting a Graph Explorer session to implement this feature
 ```
 Read .claude/CLAUDE.md for project conventions and interaction protocols.
 
-Read docs/backlog/2026-02-09_dsm-central-feedback-convention-linting.md for the
+Read dsm-docs/backlog/2026-02-09_dsm-central-feedback-convention-linting.md for the
 full feature specification. This is a hub-to-spoke feature request from DSM Central.
 
 The feature: add a --lint flag to the CLI that runs convention checks (emoji usage,

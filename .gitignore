@@ -82,5 +82,5 @@ outputs/reports/*.md
 *.log
 
 # references
-docs/_references
+dsm-docs/_references
 .claude/session-baseline.txt

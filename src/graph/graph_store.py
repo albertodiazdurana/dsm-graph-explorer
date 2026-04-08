@@ -46,11 +46,11 @@ graph_builder.py (networkx) and similarity.py (scikit-learn).
 
 References
 ----------
-- DEC-006: docs/decisions/DEC-006-graph-database-selection.md
-- DEC-007: docs/decisions/DEC-007-python-312-upgrade.md
+- DEC-006: dsm-docs/decisions/DEC-006-graph-database-selection.md
+- DEC-007: dsm-docs/decisions/DEC-007-python-312-upgrade.md
 - EXP-005: data/experiments/exp005_falkordb_integration.py (validated this API)
-- Epoch 3 plan: docs/plans/epoch-3-plan.md (Phase 9.2)
-- Deep-dive: docs/research/epoch-3-falkordblite-deep-dive.md
+- Epoch 3 plan: dsm-docs/plans/epoch-3-plan.md (Phase 9.2)
+- Deep-dive: dsm-docs/research/epoch-3-falkordblite-deep-dive.md
 """
 
 from __future__ import annotations

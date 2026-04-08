@@ -39,8 +39,8 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 **Implemented (Sprint 5 — CI & Documentation):**
 - GitHub Actions workflow (`.github/workflows/dsm-validate.yml`) for automated validation on push/PR
 - Pre-commit hook (`scripts/pre-commit-hook.sh`) for local validation of staged markdown files
-- User guides: [remediation guide](docs/guides/remediation-guide.md) and [config reference](docs/guides/config-reference.md)
-- Cross-repo reference handling: spoke repositories that reference DSM sections defined elsewhere can set those files to INFO severity, keeping findings visible without blocking CI (see [config reference](docs/guides/config-reference.md))
+- User guides: [remediation guide](dsm-docs/guides/remediation-guide.md) and [config reference](dsm-docs/guides/config-reference.md)
+- Cross-repo reference handling: spoke repositories that reference DSM sections defined elsewhere can set those files to INFO severity, keeping findings visible without blocking CI (see [config reference](dsm-docs/guides/config-reference.md))
 
 **Implemented (Sprint 6 — Semantic Validation):**
 - TF-IDF cosine similarity for detecting semantic drift in cross-references (`--semantic` flag)
@@ -48,7 +48,7 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - Corpus-scoped IDF weighting across all sections for proper vocabulary downweighting
 - Minimum token gate (3 tokens after stopword removal) to flag insufficient context rather than producing unreliable scores
 - Section number stripping before vectorization to avoid artificial similarity inflation
-- Configurable threshold (default 0.08, per [DEC-005](docs/decisions/DEC-005-semantic-validation-approach.md)) and min tokens via `.dsm-graph-explorer.yml`
+- Configurable threshold (default 0.08, per [DEC-005](dsm-docs/decisions/DEC-005-semantic-validation-approach.md)) and min tokens via `.dsm-graph-explorer.yml`
 - Graceful fallback: `--semantic` without scikit-learn prints a clear error and exits with code 2
 - Rich console output with drift warning (yellow) and insufficient context (dim) tables
 - EXP-003b real data validation: 1,191 cross-references analyzed, 128 labeled, threshold amended to 0.08 (Precision=1.000, Recall=0.496→recovered at 0.08)
@@ -178,7 +178,7 @@ dsm-graph-explorer/
 │   └── fixtures/         # Test data (sample DSM markdown)
 ├── data/experiments/      # Capability experiments (EXP-xxx)
 ├── _inbox/               # Hub-spoke communication
-├── docs/
+├── dsm-docs/
 │   ├── plans/            # Sprint and epoch plans
 │   ├── research/         # State-of-the-art review
 │   ├── decisions/        # Decision logs (DEC-001, ...)
@@ -237,7 +237,7 @@ pip install -e ".[dev,all]"
 dsm-validate /path/to/dsm-repo
 
 # Validate specific files
-dsm-validate docs/DSM_1.0.md docs/DSM_4.0.md
+dsm-validate dsm-docs/DSM_1.0.md dsm-docs/DSM_4.0.md
 
 # Save a markdown report
 dsm-validate /path/to/dsm-repo --output report.md
@@ -252,10 +252,10 @@ dsm-validate /path/to/dsm-repo --exclude 'plan/*' --exclude 'CHANGELOG.md'
 dsm-validate /path/to/dsm-repo --config .dsm-graph-explorer.yml
 
 # Check version consistency across files
-dsm-validate docs/ --version-files DSM_0.md --version-files README.md
+dsm-validate dsm-docs/ --version-files DSM_0.md --version-files README.md
 
 # Custom glob pattern
-dsm-validate /path/to/repo --glob "docs/**/*.md"
+dsm-validate /path/to/repo --glob "dsm-docs/**/*.md"
 
 # Semantic drift detection (requires scikit-learn)
 dsm-validate /path/to/dsm-repo --semantic
@@ -339,13 +339,13 @@ This project is built using [Take AI Bite](https://github.com/albertodiazdurana/
 
 - **DSM 4.0:** Software Engineering Adaptation — the track for building software with AI collaboration
 - **Section 3:** Development Protocol — TDD approach with pre-generation briefs
-- **Section 2:** Project Structure Patterns — in-repo `docs/` with checkpoints, decisions, and feedback
+- **Section 2:** Project Structure Patterns — in-repo `dsm-docs/` with checkpoints, decisions, and feedback
 - **Section 2.5.6-2.5.8:** Blog as Standard Deliverable — capturing the development journey
 - **Section 6.4-6.5:** Checkpoint, Feedback, and Gateway Reviews — systematic quality gates
 
-The three-file feedback system (`docs/feedback/`) tracks methodology effectiveness as the project progresses, generating actionable improvements back into the DSM itself.
+The three-file feedback system (`dsm-docs/feedback-to-dsm/`) tracks methodology effectiveness as the project progresses, generating actionable improvements back into the DSM itself.
 
-For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), [epoch-2-plan.md](docs/plans/epoch-2-plan.md) (complete), [epoch-3-plan.md](docs/plans/epoch-3-plan.md) (complete), and [epoch-4-plan.md](docs/plans/epoch-4-plan.md) (in progress) in this repository.
+For more details, see [epoch-1-plan.md](dsm-docs/plans/epoch-1-plan.md) (complete), [epoch-2-plan.md](dsm-docs/plans/epoch-2-plan.md) (complete), [epoch-3-plan.md](dsm-docs/plans/epoch-3-plan.md) (complete), and [epoch-4-plan.md](dsm-docs/plans/epoch-4-plan.md) (in progress) in this repository.
 
 ---
 
@@ -353,8 +353,8 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
 
 ### Epoch 1: Parser MVP & Validator (Complete)
 - [x] **Phase 0:** Environment Setup — repository, venv, pyproject.toml, docs structure
-- [x] **Phase 0.5:** Research & Grounding — validated approach against published best practices ([research](docs/research/e1_handoff_graph_explorer_research.md))
-- [x] **Sprint 1:** Parser MVP — markdown parser, cross-reference extractor, 52 tests at 98% coverage ([DEC-001](docs/decisions/DEC-001_parser_library_choice.md))
+- [x] **Phase 0.5:** Research & Grounding — validated approach against published best practices ([research](dsm-docs/research/e1_handoff_graph_explorer_research.md))
+- [x] **Sprint 1:** Parser MVP — markdown parser, cross-reference extractor, 52 tests at 98% coverage ([DEC-001](dsm-docs/decisions/DEC-001_parser_library_choice.md))
 - [x] **Sprint 2:** Validation Engine — cross-ref validator, version checker, report generator, 126 tests at 99% coverage
 - [x] **Sprint 3:** CLI & Real-World Run — CLI interface, 150 tests at 98% coverage, first DSM integrity report (448 → 6 errors after trailing period fix)
 
@@ -362,7 +362,7 @@ For more details, see [epoch-1-plan.md](docs/plans/epoch-1-plan.md) (complete), 
 - [x] **Sprint 4:** Exclusion & Severity — `--exclude` flag, YAML config, Pydantic models, severity levels (218 tests, 95% coverage)
 - [x] **Sprint 5:** CI Integration — GitHub Actions workflow, pre-commit hook, user guides (232 tests, 95% coverage)
 - [x] **Sprint 6:** Semantic Validation — TF-IDF cosine similarity, `--semantic` flag, drift detection, EXP-003b real data validation (250 tests, 95% coverage)
-  - Phase 6.0: EXP-003 threshold tuning → [DEC-005](docs/decisions/DEC-005-semantic-validation-approach.md) (threshold 0.10→0.08, min 3 tokens)
+  - Phase 6.0: EXP-003 threshold tuning → [DEC-005](dsm-docs/decisions/DEC-005-semantic-validation-approach.md) (threshold 0.10→0.08, min 3 tokens)
   - Phase 6.1: Parser context extraction (`Section.context_excerpt`, `CrossReference.context_before/after`)
   - Phase 6.2: TF-IDF implementation (`src/semantic/similarity.py`, corpus-scoped IDF)
   - Phase 6.3: CLI integration (`--semantic`, graceful fallback, Rich + markdown reports)
@@ -422,7 +422,7 @@ This project is currently in active development. Contribution guidelines will be
 This project uses dual licensing:
 
 - **Source code** (src/, tests/, scripts/): [MIT](LICENSE)
-- **Documentation** (docs/, README.md, guides): [CC BY-SA 4.0](LICENSE-DOCS.md)
+- **Documentation** (dsm-docs/, README.md, guides): [CC BY-SA 4.0](LICENSE-DOCS.md)
 
 ---
 

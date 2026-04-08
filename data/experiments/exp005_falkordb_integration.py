@@ -8,7 +8,7 @@ Gate experiment before implementing graph_store.py (Sprint 9, Phase 9.2).
 Validates that FalkorDBLite works correctly in this environment with
 DSM-like graph data before we commit to building the full integration layer.
 
-This experiment was defined in the Epoch 3 plan (docs/plans/epoch-3-plan.md,
+This experiment was defined in the Epoch 3 plan (dsm-docs/plans/epoch-3-plan.md,
 EXP-005 section) and is the acceptance gate for Phase 9.2. If any check fails,
 Phase 9.2 does not begin until the issue is resolved.
 
@@ -22,7 +22,7 @@ subprocess startup overhead (~100-500ms per FalkorDB() instance).
 
 The import path is `redislite.falkordb_client` (reflecting the RedisGraph /
 RedisLite heritage), not `falkordblite`. This is a known gotcha documented in
-the deep-dive research (docs/research/epoch-3-falkordblite-deep-dive.md, Section 6).
+the deep-dive research (dsm-docs/research/epoch-3-falkordblite-deep-dive.md, Section 6).
 
 Graph Architecture Being Validated
 -----------------------------------
@@ -39,9 +39,9 @@ The graph schema mirrors what graph_builder.py (Sprint 7) already produces:
 Decisions
 ---------
 - DEC-006: FalkorDBLite selected as graph database
-  (docs/decisions/DEC-006-graph-database-selection.md)
+  (dsm-docs/decisions/DEC-006-graph-database-selection.md)
 - DEC-007: Python 3.12 upgrade to meet FalkorDBLite requirement
-  (docs/decisions/DEC-007-python-312-upgrade.md)
+  (dsm-docs/decisions/DEC-007-python-312-upgrade.md)
 
 Test Matrix (from epoch-3-plan.md EXP-005)
 -------------------------------------------
@@ -92,10 +92,10 @@ References
 - FalkorDB docs:         https://docs.falkordb.com/
 - Cypher coverage:       https://docs.falkordb.com/cypher/cypher-support.html
 - RedisLite (heritage):  https://github.com/yahoo/redislite
-- Deep-dive research:    docs/research/epoch-3-falkordblite-deep-dive.md
-- Epoch 3 plan:          docs/plans/epoch-3-plan.md
-- DEC-006:               docs/decisions/DEC-006-graph-database-selection.md
-- DEC-007:               docs/decisions/DEC-007-python-312-upgrade.md
+- Deep-dive research:    dsm-docs/research/epoch-3-falkordblite-deep-dive.md
+- Epoch 3 plan:          dsm-docs/plans/epoch-3-plan.md
+- DEC-006:               dsm-docs/decisions/DEC-006-graph-database-selection.md
+- DEC-007:               dsm-docs/decisions/DEC-007-python-312-upgrade.md
 - Prior graph work:      src/graph/graph_builder.py (Sprint 7, Epoch 2)
 - EXP-004 results:       data/experiments/exp004_graph_performance.py
 """

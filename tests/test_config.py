@@ -64,8 +64,8 @@ class TestConfig:
 
     def test_config_filters_empty_exclude_patterns(self):
         """Empty patterns are filtered from exclude list."""
-        config = Config(exclude=["plan/*", "", "  ", "docs/*"])
-        assert config.exclude == ["plan/*", "docs/*"]
+        config = Config(exclude=["plan/*", "", "  ", "dsm-docs/*"])
+        assert config.exclude == ["plan/*", "dsm-docs/*"]
 
     def test_config_with_severity_mappings(self):
         """Config accepts severity mappings."""
@@ -143,7 +143,7 @@ exclude:
 severity:
   - pattern: "DSM_*.md"
     level: ERROR
-  - pattern: "docs/*"
+  - pattern: "dsm-docs/*"
     level: WARNING
 strict: true
 """
@@ -247,10 +247,10 @@ class TestMergeConfigWithCli:
         """CLI exclusions are added to config exclusions."""
         config = Config(exclude=["plan/*"])
 
-        merged = merge_config_with_cli(config, cli_exclude=("docs/*", "*.bak"))
+        merged = merge_config_with_cli(config, cli_exclude=("dsm-docs/*", "*.bak"))
 
         assert "plan/*" in merged.exclude
-        assert "docs/*" in merged.exclude
+        assert "dsm-docs/*" in merged.exclude
         assert "*.bak" in merged.exclude
 
     def test_cli_strict_true_overrides_config(self):
@@ -309,7 +309,7 @@ class TestConfigIntegration:
 # DSM Graph Explorer Configuration
 exclude:
   - CHANGELOG.md           # Historical drift
-  - docs/checkpoints/*     # Milestone snapshots
+  - dsm-docs/checkpoints/*     # Milestone snapshots
   - references/*           # Archive folder
   - plan/*                 # Planning docs with proposals
   - plan/archive/*         # Archived backlog items
@@ -317,7 +317,7 @@ exclude:
 severity:
   - pattern: "DSM_*.md"
     level: ERROR
-  - pattern: "docs/checkpoints/*"
+  - pattern: "dsm-docs/checkpoints/*"
     level: INFO
   - pattern: "plan/*"
     level: INFO

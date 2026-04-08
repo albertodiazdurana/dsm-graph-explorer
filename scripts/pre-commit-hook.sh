@@ -6,7 +6,7 @@
 #   chmod +x .git/hooks/pre-commit
 #
 # Installation (pre-commit framework):
-#   See docs/guides/remediation-guide.md for .pre-commit-config.yaml example
+#   See dsm-docs/guides/remediation-guide.md for .pre-commit-config.yaml example
 #
 # Requires: dsm-graph-explorer installed (pip install dsm-graph-explorer)
 
@@ -38,7 +38,7 @@ if [ $exit_code -ne 0 ]; then
     echo ""
     echo "Cross-reference validation failed. Fix errors before committing."
     echo "Run 'dsm-validate <file>' to see details."
-    echo "See docs/guides/remediation-guide.md for common fixes."
+    echo "See dsm-docs/guides/remediation-guide.md for common fixes."
 fi
 
 exit $exit_code

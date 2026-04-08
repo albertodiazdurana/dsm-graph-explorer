@@ -31,4 +31,4 @@ Step 3: "Fill with context").
   (backlog, handoffs, feedback) as nodes; serves as audit substrate with different config
 - BL-090 (Modularization): two steps removed (Sprint 7 → Sprint 8+ → BL-090); no design changes
 
-**Full analysis:** `~/dsm-agentic-ai-data-science-methodology/docs/decisions/2026-02-25_sprint7-architecture-alignment.md`
+**Full analysis:** `~/dsm-agentic-ai-data-science-methodology/dsm-docs/decisions/2026-02-25_sprint7-architecture-alignment.md`

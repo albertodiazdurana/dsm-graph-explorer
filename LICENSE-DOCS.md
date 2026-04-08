@@ -5,7 +5,7 @@ Copyright (c) 2025-2026 Alberto Diaz Durana
 This license applies to the documentation in this repository, including
 but not limited to:
 
-- All files in docs/
+- All files in dsm-docs/
 - README.md
 - Guides and user-facing documentation
 

@@ -15,7 +15,7 @@ At session start, identify the project type by examining the directory structure
 | `notebooks/` only, no `src/` | Data Science | DSM 1.0 (Sections 2.1-2.5) |
 | `src/`, `tests/`, `app.py` | Application | DSM 4.0 |
 | Both `notebooks/` and `src/` | Hybrid | DSM 1.0 for analysis, DSM 4.0 for modules |
-| `docs/`, markdown-only, no `notebooks/` or `src/` | Documentation | DSM 5.0 |
+| `dsm-docs/`, markdown-only, no `notebooks/` or `src/` | Documentation | DSM 5.0 |
 | `{contributions-docs-path}/{project}/` exists | External Contribution | DSM_3 Section 6.6 |
 
 **State the identified type at session start:**
@@ -35,7 +35,7 @@ isolation rules:
 | Indicator | Participation Pattern | Reference |
 |-----------|----------------------|-----------|
 | Git remote configured + DSM_3 Section 7 entry | Standard Spoke | Section 6.9 |
-| `contributions-docs/{project}/` exists or CLAUDE.md declares "External Contribution" | External Contribution | Section 6.6 |
+| `contributions-dsm-docs/{project}/` exists or CLAUDE.md declares "External Contribution" | External Contribution | Section 6.6 |
 | CLAUDE.md declares "Private" or "DSM private project pattern" | Private Project | Section 6.8 |
 | No indicator found | Assume Standard Spoke | Section 6.9 |
 
@@ -51,7 +51,7 @@ explicitly override every inherited DSM_0.2 protocol.
 
 ## Session-Start Version Check
 
-At session start in spoke projects, compare the DSM version in the header above against the version recorded in the most recent handoff (`docs/handoffs/`). If the versions differ:
+At session start in spoke projects, compare the DSM version in the header above against the version recorded in the most recent handoff (`dsm-docs/handoffs/`). If the versions differ:
 1. Note the update: "DSM updated from vX.Y.Z to vA.B.C since last session"
 2. Check the DSM CHANGELOG for changes between those versions
 3. Apply any updated protocols for this session
@@ -154,7 +154,7 @@ copy full feedback files, methodology documents, or backlog lists into the inbox
 When creating `_inbox/`, also create the `_inbox/done/` subdirectory for
 processed entries.
 
-**Migration:** If `docs/backlog/` or `docs/inbox/` exists (legacy conventions),
+**Migration:** If `dsm-docs/backlog/` or `dsm-docs/inbox/` exists (legacy conventions),
 move contents to `_inbox/` at project root, create the README.md, and remove the
 old directory.
 
@@ -182,13 +182,13 @@ import in this project's CLAUDE.md. Write the confirmation to
 **Source:** [this project name]
 
 Inbox system initialized. _inbox/ created at project root (or migrated from
-docs/inbox/). README.md with entry template installed. Ready to receive and
+dsm-docs/inbox/). README.md with entry template installed. Ready to receive and
 send inbox entries per DSM_3 Section 6.4.
 ```
 
 ## Session-End Inbox Push
 
-At session end (or at sprint boundaries), review `docs/feedback/` for per-session
+At session end (or at sprint boundaries), review `dsm-docs/feedback-to-dsm/` for per-session
 feedback files that are ripe enough to send to DSM Central. A file is ripe when
 its content is actionable:
 
@@ -203,11 +203,11 @@ its content is actionable:
 2. **Path validation:** Before writing, verify the resolved target path is DSM
    Central's inbox, not the project's own governance inbox. If the resolved path
    contains the current project name as a subdirectory (e.g.,
-   `contributions-docs/{project}/_inbox/`), the path is wrong; resolve
+   `contributions-dsm-docs/{project}/_inbox/`), the path is wrong; resolve
    `dsm-central` from the Ecosystem Path Registry or the `@` reference.
-3. Files that are not yet ripe stay in `docs/feedback/` for further drafting
+3. Files that are not yet ripe stay in `dsm-docs/feedback-to-dsm/` for further drafting
 4. After DSM Central processes the feedback, the source file moves to
-   `docs/feedback/done/`
+   `dsm-docs/feedback-to-dsm/done/`
 
 The DSM Central repo path is the parent directory of the
 `DSM_0.2_Custom_Instructions_v1.1.md` file referenced by the `@` import in this
@@ -217,16 +217,16 @@ project's CLAUDE.md.
 (structured, actionable, meets ripe criteria), write it to both the local
 per-session file and DSM Central's inbox simultaneously:
 
-- Methodology observations: `docs/feedback/YYYY-MM-DD_sN_methodology.md` + inbox
-- Backlog proposals: `docs/feedback/YYYY-MM-DD_sN_backlogs.md` + inbox
+- Methodology observations: `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_methodology.md` + inbox
+- Backlog proposals: `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_backlogs.md` + inbox
 
 Reserve the session-end review for rough notes that need structuring before
 they are ripe.
 
 **External Contribution exception:** For External Contribution projects, the
-agent works in the fork, which does not have `docs/feedback/`. Feedback files
-live in the governance folder: `{contributions-docs-path}/{project}/docs/feedback/`.
-All references to `docs/feedback/` in this section resolve to that governance
+agent works in the fork, which does not have `dsm-docs/feedback-to-dsm/`. Feedback files
+live in the governance folder: `{contributions-docs-path}/{project}/dsm-docs/feedback-to-dsm/`.
+All references to `dsm-docs/feedback-to-dsm/` in this section resolve to that governance
 path, not the fork's root. The pushing process, immediate push, and ripe criteria
 apply identically; only the file location changes.
 
@@ -387,7 +387,7 @@ lifecycle. Each session creates its own feedback file(s); processed files move
 to `done/`. This prevents accumulation of processed entries in long-lived
 append-only files.
 
-**File naming:** `docs/feedback/YYYY-MM-DD_sN_{type}.md` where type is
+**File naming:** `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_{type}.md` where type is
 `backlogs` or `methodology`. Only create a file when there is feedback to
 record; no empty files.
 
@@ -398,7 +398,7 @@ record; no empty files.
 | **Create** | Agent writes feedback to a session-scoped file during the session | Agent (spoke) |
 | **Notify** | At wrap-up, inbox notification to DSM Central references the file | Agent (spoke) |
 | **Process** | DSM Central reads the file, creates BL items or updates scores | Agent (hub) |
-| **Done** | Processed file moves to `docs/feedback/done/` | Agent (hub or spoke) |
+| **Done** | Processed file moves to `dsm-docs/feedback-to-dsm/done/` | Agent (hub or spoke) |
 
 **When to capture feedback:**
 1. Note which DSM section was referenced (e.g., "Section 2.2", "Appendix B.2")
@@ -406,7 +406,7 @@ record; no empty files.
 3. Log gaps or unclear areas encountered
 4. Reference: Section 6.4 (Checkpoint Protocol), Appendix E.12 (Validation Tracker)
 
-**Filing completeness:** Writing a feedback file to `docs/feedback/` is only
+**Filing completeness:** Writing a feedback file to `dsm-docs/feedback-to-dsm/` is only
 half the action. The file must also be pushed to DSM Central's inbox per the
 **Immediate push** rule in Session-End Inbox Push. Filing without notifying is
 incomplete; the feedback exists locally but is invisible to the hub. This applies
@@ -415,9 +415,9 @@ whether the file is written at session end or mid-session.
 **Feedback directory requirements:**
 
 Every project that produces feedback must have:
-- `docs/feedback/README.md` (describes the feedback protocol and file types)
-- `docs/feedback/done/` subdirectory for processed files
-- `docs/feedback/technical.md` (append-only, sprint-boundary cadence; see
+- `dsm-docs/feedback-to-dsm/README.md` (describes the feedback protocol and file types)
+- `dsm-docs/feedback-to-dsm/done/` subdirectory for processed files
+- `dsm-docs/feedback-to-dsm/technical.md` (append-only, sprint-boundary cadence; see
   Technical Progress Reporting below)
 
 **Anti-Patterns:**
@@ -438,9 +438,9 @@ effectiveness) and from handoffs (which ensure session continuity). Technical
 reports create a structured record of the actual engineering work across the
 ecosystem.
 
-**File:** `docs/feedback/technical.md` (append-only, dated entries)
+**File:** `dsm-docs/feedback-to-dsm/technical.md` (append-only, dated entries)
 
-This is the third file type in the `docs/feedback/` directory, alongside
+This is the third file type in the `dsm-docs/feedback-to-dsm/` directory, alongside
 per-session backlog and methodology files. Unlike those per-session files,
 `technical.md` is append-only: entries form a chronological engineering record
 that retains reference value after pushing. See DSM Feedback Tracking above
@@ -474,7 +474,7 @@ progress report updated" as a standard item.
 **Profile-relevant:** {new skills exercised, proficiency changes, or "None"}
 ```
 
-**Routing:** The wrap-up command scans `docs/feedback/technical.md` for entries
+**Routing:** The wrap-up command scans `dsm-docs/feedback-to-dsm/technical.md` for entries
 without a `**Pushed:**` date. For each unpushed entry, it appends an inbox
 notification to DSM Central and marks the source with `**Pushed:** YYYY-MM-DD`.
 
@@ -494,7 +494,7 @@ Sprint N: {brief title}
 **Scale:** {data scale}
 **Outcomes:** {metrics summary}
 
-**Full report:** `~/{project-path}/docs/feedback/technical.md`
+**Full report:** `~/{project-path}/dsm-docs/feedback-to-dsm/technical.md`
 ```
 
 **Why Priority: Low?** Technical progress reports are informational, not action
@@ -958,9 +958,9 @@ collaboration, data science methodology, or agentic AI patterns. This protocol
 adds a lightweight per-session learning step that brings external knowledge into
 the ecosystem.
 
-**File:** `docs/research/learning-log.md` (git-tracked, append-only)
+**File:** `dsm-docs/research/learning-log.md` (git-tracked, append-only)
 
-**Opt-in:** The protocol activates when `docs/research/learning-log.md` exists in
+**Opt-in:** The protocol activates when `dsm-docs/research/learning-log.md` exists in
 the project. If the file does not exist, all learning steps are skipped silently.
 The file includes a topic queue in its header; the agent selects from this queue
 when no session-specific topic is apparent.
@@ -1044,12 +1044,12 @@ Checkpoints capture milestone state. Once a newer checkpoint covers the same
 project scope, the older one is superseded.
 
 **Supersession rule:** When creating a new checkpoint, check
-`docs/checkpoints/` for older checkpoints that:
+`dsm-docs/checkpoints/` for older checkpoints that:
 
 1. Cover the same project phase or milestone scope
 2. Have had their "next steps" acted on (the work they anticipated is complete)
 
-Move superseded checkpoints to `docs/checkpoints/done/`. Add
+Move superseded checkpoints to `dsm-docs/checkpoints/done/`. Add
 `**Superseded by:** {newer checkpoint filename}` to the moved file's header.
 
 **Cadence:** Per-sprint, integrated into the Sprint Boundary Checklist.
@@ -1079,11 +1079,11 @@ DSM_6, DSM_0.1, DSM_0.2) or in project deliverables.
 | Artifact | Role | Lives in |
 |----------|------|----------|
 | Backlog item | Defines scope, success criteria, priority | `plan/backlog/` |
-| Checkpoint | Snapshots milestone state, next steps | `docs/checkpoints/` |
-| Decision record | Records a decision and its rationale | `docs/decisions/` |
-| Plan | Structures phases, deliverables, timelines | `docs/plans/` |
-| Epoch/sprint log | Tracks sprint progress and boundaries | `docs/plans/` or project-specific |
-| Handoff | Enables session continuity | `docs/handoffs/` |
+| Checkpoint | Snapshots milestone state, next steps | `dsm-docs/checkpoints/` |
+| Decision record | Records a decision and its rationale | `dsm-docs/decisions/` |
+| Plan | Structures phases, deliverables, timelines | `dsm-docs/plans/` |
+| Epoch/sprint log | Tracks sprint progress and boundaries | `dsm-docs/plans/` or project-specific |
+| Handoff | Enables session continuity | `dsm-docs/handoffs/` |
 
 **Detection rule:** When the agent encounters any of these patterns in an
 enabling file, it must flag the issue and surface it to the user before
@@ -1835,7 +1835,7 @@ at any scale and suggests research when unresolved uncertainty exists:
 | Planning unit | Research depth | Output |
 |--------------|---------------|--------|
 | Feature | ~10 minutes, inline in session | Decision noted in transcript |
-| Sprint | Targeted research doc in `docs/research/` | Findings inform sprint plan |
+| Sprint | Targeted research doc in `dsm-docs/research/` | Findings inform sprint plan |
 | Epoch/project | Full Phase 0.5 with checkpoints | Research file + validation gate |
 
 **Proactive suggestion:** When the agent detects uncertainty in a planning
@@ -1875,8 +1875,8 @@ build a concrete plan with actionable items (requirements, breakdown, tasks)?"
    for systematic codebase analysis). Cast a wide net before filtering.
 2. **Consume and cluster:** Read all sources and cluster findings by **topic**, not by
    source. This prevents siloed summaries and surfaces cross-source patterns. Move
-   consumed reference files to `docs/research/done/` as they are processed.
-3. **Synthesize:** Write a consolidated synthesis document in `docs/research/` organized
+   consumed reference files to `dsm-docs/research/done/` as they are processed.
+3. **Synthesize:** Write a consolidated synthesis document in `dsm-docs/research/` organized
    by topic cluster. Each cluster should have findings, evidence, and implications for
    the target outcome. Cite all sources with full metadata per DSM_0.1 Citation
    Standards: author, title, institution/publisher, date, and URL where available.
@@ -1900,7 +1900,7 @@ build a concrete plan with actionable items (requirements, breakdown, tasks)?"
 - **Citation scope restriction:** Upstream-facing documents cite public URLs only, never
   DSM internal file paths. Internal research files may cite DSM paths freely.
 
-**Deliverable:** `docs/research/{topic}_research.md` with findings, citations, and
+**Deliverable:** `dsm-docs/research/{topic}_research.md` with findings, citations, and
 implications for project design. Research should directly inform the sprint plan.
 
 **Research file header:** All research files should include:
@@ -1930,7 +1930,7 @@ claim. This gate is especially critical for upstream-facing documents where
 inaccurate claims damage contributor credibility.
 
 **done/ convention:** When research has been processed into its target outcome,
-complete this checklist before moving the file to `docs/research/done/`:
+complete this checklist before moving the file to `dsm-docs/research/done/`:
 
 1. Set `Status:` to `Done`
 2. Fill in `Date Completed:` with today's date
@@ -1939,7 +1939,7 @@ complete this checklist before moving the file to `docs/research/done/`:
 
 Do not move files to done/ without completing this checklist. This keeps the
 active research directory clean and provides traceability from research to
-outcome. See DSM_0.1 for the full done/ convention across all docs/ folders.
+outcome. See DSM_0.1 for the full done/ convention across all dsm-docs/ folders.
 
 **Research phase guard:** Research can expand without bound. To prevent unbounded
 exploration, checkpoint after each distinct cluster of findings:
@@ -1972,7 +1972,7 @@ session transcript.
 
 **Trigger:** When the agent conducts research involving web searches, external
 source analysis, or multi-source comparison to inform a task, write a structured
-document to `docs/research/` as part of the research process, not after. Use the
+document to `dsm-docs/research/` as part of the research process, not after. Use the
 standard research file header (Purpose, Target Outcome, Status, dates). The
 session transcript captures reasoning; the research artifact captures conclusions
 for future sessions.
@@ -1984,7 +1984,7 @@ config value) do not need a research artifact.
 **Relationship to Phase 0.5:** Phase 0.5 is a planned phase with checkpoints and
 validation gates. Ad-hoc research documentation is a lightweight trigger with no
 gate; the agent writes the artifact and continues. Both use the same file
-conventions (`docs/research/`, standard header, done/ convention).
+conventions (`dsm-docs/research/`, standard header, done/ convention).
 
 ---
 
@@ -2032,7 +2032,7 @@ dependencies upfront.
 ## First Session Prompt for New Projects
 
 When a new DSM spoke project is scaffolded, it starts with a preliminary plan in
-`docs/research/`. The first session in the project should follow a research-to-plan
+`dsm-docs/research/`. The first session in the project should follow a research-to-plan
 pipeline before any implementation begins. Send this prompt as an inbox entry to the
 spoke project's `_inbox/`. It is a hub-to-spoke action item (arrives, gets processed,
 gets deleted), not a session continuity document.
@@ -2045,16 +2045,16 @@ The prompt content:
 This is a DSM ecosystem project. Read `.claude/CLAUDE.md` for methodology
 and interaction protocols.
 
-Read the preliminary plan in `docs/research/` to understand the project
+Read the preliminary plan in `dsm-docs/research/` to understand the project
 goals and initial design direction.
 
 Based on the preliminary plan:
 1. Do extensive research to validate and expand on the plan. Document
-   findings with citations in `docs/research/`.
-2. Create a project plan in `docs/plans/` covering scope, phases,
+   findings with citations in `dsm-docs/research/`.
+2. Create a project plan in `dsm-docs/plans/` covering scope, phases,
    deliverables, and success criteria.
 3. Present the plan for review and approval before starting implementation.
-4. Create AI collaboration norms in `docs/guides/ai-collaboration.md`
+4. Create AI collaboration norms in `dsm-docs/guides/ai-collaboration.md`
    (see DSM_3 Section 6.7.3).
 ```
 
@@ -2088,7 +2088,7 @@ For evaluation phases, check Appendix C.1 for experiment templates before buildi
 custom evaluation harnesses.
 
 **Blog pipeline quick reference:** The blog content pipeline uses three document
-types in `docs/blog/`:
+types in `dsm-docs/blog/`:
 
 | Stage | File | Purpose |
 |-------|------|---------|
@@ -2481,7 +2481,7 @@ todo list, description, Y/N, create file, updated todo list, repeat.
 - Alert at 80% capacity (~160K tokens)
 - Provide session summary as Handoff for the following chat if nearing limit
 - Reference methodology Section 6.1 for session handoff templates
-- Store handoffs in `docs/handoffs/` within the project repository
+- Store handoffs in `dsm-docs/handoffs/` within the project repository
 - **Session close-out:** When the user says "wrap up" or the session is ending,
   follow Section 6.1.5 Session Close-Out Protocol (commit, push, handoff; plus
   hub or spoke-specific steps)
@@ -2550,7 +2550,7 @@ When approaching session limits, create handoff document with:
 - Key decisions made
 
 Reference: See Methodology Section 6.1 (Session Management) for handoff templates.
-Store handoffs in `docs/handoffs/` within the project repository.
+Store handoffs in `dsm-docs/handoffs/` within the project repository.
 
 ## Key References
 

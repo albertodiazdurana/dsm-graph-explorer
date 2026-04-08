@@ -15,10 +15,10 @@
 | 1 | Phase deliverables meet Definition of Done | PASS | 52 tests, 98% coverage, parser MVP complete |
 | 2 | Decision log updated with sprint decisions | PASS | DEC-001 recorded (parser library choice) |
 | 3 | Feedback files updated with observations | PASS | backlogs.md (5 items), methodology.md (avg 4.7/5) |
-| 4 | Checkpoint document created | PASS | docs/checkpoints/2026-02-01_sprint1-complete.md |
+| 4 | Checkpoint document created | PASS | dsm-docs/checkpoints/2026-02-01_sprint1-complete.md |
 | 5 | No methodology deviations without rationale | PASS | All deviations documented |
 | 6 | Tests passing | PASS | 52 passed, 0 failures |
-| 7 | Blog journal entry written | PASS | docs/blog/journal.md updated for Sprint 1 |
+| 7 | Blog journal entry written | PASS | dsm-docs/blog/journal.md updated for Sprint 1 |
 
 **Gateway 2 Result: PASS**
 
@@ -54,12 +54,12 @@ the template content (e.g., the pre-generation brief is now in the template).
 ### ACTION-2: Reconcile feedback file naming (Minor)
 
 **Finding:** The feedback files use correct 3-file naming (`backlogs.md`,
-`methodology.md`, `blog.md` in `docs/feedback/`), which aligns with the
+`methodology.md`, `blog.md` in `dsm-docs/feedback-to-dsm/`), which aligns with the
 v1.3.19 standard. No action needed -- this is already correct.
 
-The project also has `docs/feedback/blog.md` and `docs/blog/journal.md` as
-separate files. This is acceptable: `docs/blog/journal.md` is the actual blog
-content, while `docs/feedback/blog.md` tracks DSM's blog process effectiveness.
+The project also has `dsm-docs/feedback-to-dsm/blog.md` and `dsm-docs/blog/journal.md` as
+separate files. This is acceptable: `dsm-docs/blog/journal.md` is the actual blog
+content, while `dsm-docs/feedback-to-dsm/blog.md` tracks DSM's blog process effectiveness.
 
 **Priority:** None -- correctly structured.
 
@@ -87,7 +87,7 @@ content, while `docs/feedback/blog.md` tracks DSM's blog process effectiveness.
 - That project scored the notebook collaboration protocol as the lowest DSM section (2.5/5). While this is a DSM 4.0 project and doesn't use notebooks, be aware that the Custom Instructions template now includes this protocol -- it won't affect your workflow but will be visible in the `@` referenced template.
 
 **[Cross-Project] From both projects:**
-- Both projects independently added a research phase before implementation. DSM now formalizes this as "Phase 0.5" in the Custom Instructions. Your project's research document (`docs/research/handoff_graph_explorer_research.md`) is a good example of this pattern.
+- Both projects independently added a research phase before implementation. DSM now formalizes this as "Phase 0.5" in the Custom Instructions. Your project's research document (`dsm-docs/research/handoff_graph_explorer_research.md`) is a good example of this pattern.
 
 ---
 

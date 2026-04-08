@@ -27,8 +27,8 @@ Edges:
 
 References
 ----------
-- Epoch 3 plan: docs/plans/epoch-3-plan.md (Phase 12.1)
-- DEC-006: docs/decisions/DEC-006-graph-database-selection.md
+- Epoch 3 plan: dsm-docs/plans/epoch-3-plan.md (Phase 12.1)
+- DEC-006: dsm-docs/decisions/DEC-006-graph-database-selection.md
 """
 
 from __future__ import annotations

@@ -6,7 +6,7 @@
 
 ## Summary
 
-DSM Central audited all 42 backlog proposals from `docs/feedback/backlogs.md` and mapped each one to its processing status.
+DSM Central audited all 42 backlog proposals from `dsm-docs/feedback-to-dsm/backlogs.md` and mapped each one to its processing status.
 
 **Results:**
 - **33 implemented:** Traced to specific BLs in `plan/backlog/done/` (BL-038 through BL-181)
@@ -17,7 +17,7 @@ DSM Central audited all 42 backlog proposals from `docs/feedback/backlogs.md` an
 
 | BL# | GE Proposal | Priority |
 |-----|-------------|----------|
-| 213 | #18: Rename docs/feedback/ to docs/feedback-to-dsm/ | Medium |
+| 213 | #18: Rename dsm-docs/feedback-to-dsm/ to dsm-docs/feedback-to-dsm-to-dsm/ | Medium |
 | 214 | #23: Add experiments/ to DSM 4.0 project structure | **Implemented** |
 | 215 | #33: Epoch Plan Update in Sprint Boundary Checklist | **Implemented** |
 | 216 | #36: Ecosystem Alignment Gate at Epoch Boundaries | Medium |
@@ -27,11 +27,11 @@ DSM Central audited all 42 backlog proposals from `docs/feedback/backlogs.md` an
 
 ## Action Required: Feedback Structure Migration
 
-GE's monolithic `docs/feedback/backlogs.md` (42 proposals) and `docs/feedback/methodology.md` (47 entries) predate the per-session feedback lifecycle (BL-153). For Sprint 14 onward:
+GE's monolithic `dsm-docs/feedback-to-dsm/backlogs.md` (42 proposals) and `dsm-docs/feedback-to-dsm/methodology.md` (47 entries) predate the per-session feedback lifecycle (BL-153). For Sprint 14 onward:
 
-1. Monolithic files already archived to `docs/feedback/done/` as legacy files
+1. Monolithic files already archived to `dsm-docs/feedback-to-dsm/done/` as legacy files
 2. Use per-session files going forward: `YYYY-MM-DD_sN_backlogs.md` and `YYYY-MM-DD_sN_methodology.md`
-3. Each session's feedback file moves to `docs/feedback/done/` only after DSM Central confirms processing via inbox ("Done" handshake)
+3. Each session's feedback file moves to `dsm-docs/feedback-to-dsm/done/` only after DSM Central confirms processing via inbox ("Done" handshake)
 
 ## Methodology Scores Analysis
 
@@ -39,7 +39,7 @@ DSM Central analyzed all 47 methodology entries by score. Of 21 entries scoring 
 
 **Score trajectory:** Epoch 1-2 averaged ~3.0; Epoch 3 averaged ~4.7. The feedback loop is working.
 
-Full analysis: `dsm-central/docs/research/2026-03-17_ge-methodology-low-scores.md`
+Full analysis: `dsm-central/dsm-docs/research/2026-03-17_ge-methodology-low-scores.md`
 
 ## Per-Session Feedback Protocol (Strengthened)
 
@@ -51,4 +51,4 @@ The per-session feedback protocol in DSM_0.2.A was strengthened this session:
 
 Sprint 14 starts clean with per-session files only.
 
-Full audit: `dsm-central/docs/research/2026-03-17_ge-feedback-processing-audit.md`
+Full audit: `dsm-central/dsm-docs/research/2026-03-17_ge-feedback-processing-audit.md`

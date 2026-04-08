@@ -25,17 +25,17 @@ class TestNormalizePath:
     def test_relative_to_base(self):
         """Makes path relative to base."""
         base = Path("/repo")
-        filepath = Path("/repo/docs/file.md")
+        filepath = Path("/repo/dsm-docs/file.md")
         result = normalize_path(filepath, base)
-        assert result == "docs/file.md"
+        assert result == "dsm-docs/file.md"
 
     def test_non_relative_path_unchanged(self):
         """Non-relative path is returned as-is."""
         base = Path("/other")
-        filepath = Path("/repo/docs/file.md")
+        filepath = Path("/repo/dsm-docs/file.md")
         result = normalize_path(filepath, base)
         # Should contain the full path since it's not relative to base
-        assert "docs/file.md" in result
+        assert "dsm-docs/file.md" in result
 
 
 class TestShouldExclude:
@@ -61,7 +61,7 @@ class TestShouldExclude:
     def test_directory_pattern(self):
         """Directory pattern matches files in directory."""
         assert should_exclude("plan/file.md", ["plan/*"]) is True
-        assert should_exclude("docs/file.md", ["plan/*"]) is False
+        assert should_exclude("dsm-docs/file.md", ["plan/*"]) is False
 
     def test_nested_directory_not_matched_by_single_star(self):
         """Single * doesn't match nested directories."""
@@ -71,7 +71,7 @@ class TestShouldExclude:
     def test_double_star_matches_any_depth(self):
         """** pattern matches any directory depth."""
         assert should_exclude("archive/file.md", ["**/archive/*"]) is True
-        assert should_exclude("docs/archive/file.md", ["**/archive/*"]) is True
+        assert should_exclude("dsm-docs/archive/file.md", ["**/archive/*"]) is True
         assert should_exclude("a/b/archive/file.md", ["**/archive/*"]) is True
 
     def test_multiple_patterns_or_logic(self):
@@ -104,11 +104,11 @@ class TestFilterFiles:
         files = [
             Path("README.md"),
             Path("CHANGELOG.md"),
-            Path("docs/guide.md"),
+            Path("dsm-docs/guide.md"),
         ]
         result = filter_files(files, ["CHANGELOG.md"])
         assert Path("README.md") in result
-        assert Path("docs/guide.md") in result
+        assert Path("dsm-docs/guide.md") in result
         assert Path("CHANGELOG.md") not in result
 
     def test_filters_multiple_patterns(self):
@@ -117,12 +117,12 @@ class TestFilterFiles:
             Path("README.md"),
             Path("plan/draft.md"),
             Path("CHANGELOG.md"),
-            Path("docs/guide.md"),
+            Path("dsm-docs/guide.md"),
         ]
         result = filter_files(files, ["plan/*", "CHANGELOG.md"])
         assert len(result) == 2
         assert Path("README.md") in result
-        assert Path("docs/guide.md") in result
+        assert Path("dsm-docs/guide.md") in result
 
 
 class TestEXP001ExclusionPatternValidation:
@@ -131,22 +131,22 @@ class TestEXP001ExclusionPatternValidation:
     Test matrix:
     | Pattern | Input Files | Expected Excluded |
     |---------|-------------|-------------------|
-    | `CHANGELOG.md` | `CHANGELOG.md`, `docs/CHANGELOG.md` | Only `CHANGELOG.md` |
+    | `CHANGELOG.md` | `CHANGELOG.md`, `dsm-docs/CHANGELOG.md` | Only `CHANGELOG.md` |
     | `plan/*` | `plan/foo.md`, `plan/bar/baz.md` | `plan/foo.md` only |
-    | `**/archive/*` | `archive/x.md`, `docs/archive/y.md` | Both |
+    | `**/archive/*` | `archive/x.md`, `dsm-docs/archive/y.md` | Both |
     | Multiple | All above combined | Union of all |
     """
 
     def test_exp001_exact_filename_excludes_only_root(self):
         """CHANGELOG.md excludes only root-level file, not nested."""
         # Pattern: CHANGELOG.md
-        # Expected: Only CHANGELOG.md excluded, not docs/CHANGELOG.md
+        # Expected: Only CHANGELOG.md excluded, not dsm-docs/CHANGELOG.md
         pattern = ["CHANGELOG.md"]
 
         assert should_exclude("CHANGELOG.md", pattern) is True
-        # Note: docs/CHANGELOG.md should NOT be excluded by plain "CHANGELOG.md"
+        # Note: dsm-docs/CHANGELOG.md should NOT be excluded by plain "CHANGELOG.md"
         # because it's a different path
-        assert should_exclude("docs/CHANGELOG.md", pattern) is True  # filename matches
+        assert should_exclude("dsm-docs/CHANGELOG.md", pattern) is True  # filename matches
 
     def test_exp001_directory_star_excludes_direct_children_only(self):
         """plan/* excludes direct children, not nested subdirectories."""
@@ -160,11 +160,11 @@ class TestEXP001ExclusionPatternValidation:
     def test_exp001_double_star_excludes_any_depth(self):
         """**/archive/* excludes archive at any depth."""
         # Pattern: **/archive/*
-        # Expected: Both archive/x.md and docs/archive/y.md excluded
+        # Expected: Both archive/x.md and dsm-docs/archive/y.md excluded
         pattern = ["**/archive/*"]
 
         assert should_exclude("archive/x.md", pattern) is True
-        assert should_exclude("docs/archive/y.md", pattern) is True
+        assert should_exclude("dsm-docs/archive/y.md", pattern) is True
 
     def test_exp001_multiple_patterns_union(self):
         """Multiple patterns exclude union of all matches."""
@@ -173,27 +173,27 @@ class TestEXP001ExclusionPatternValidation:
 
         files = [
             Path("CHANGELOG.md"),
-            Path("docs/CHANGELOG.md"),
+            Path("dsm-docs/CHANGELOG.md"),
             Path("plan/foo.md"),
             Path("plan/bar/baz.md"),
             Path("archive/x.md"),
-            Path("docs/archive/y.md"),
+            Path("dsm-docs/archive/y.md"),
             Path("README.md"),
-            Path("docs/guide.md"),
+            Path("dsm-docs/guide.md"),
         ]
 
         result = filter_files(files, patterns)
 
-        # Should remain: plan/bar/baz.md, README.md, docs/guide.md
+        # Should remain: plan/bar/baz.md, README.md, dsm-docs/guide.md
         assert Path("README.md") in result
-        assert Path("docs/guide.md") in result
+        assert Path("dsm-docs/guide.md") in result
         assert Path("plan/bar/baz.md") in result
 
         # Should be excluded
         assert Path("CHANGELOG.md") not in result
         assert Path("plan/foo.md") not in result
         assert Path("archive/x.md") not in result
-        assert Path("docs/archive/y.md") not in result
+        assert Path("dsm-docs/archive/y.md") not in result
 
 
 class TestDSMRepoExclusionPatterns:
@@ -203,7 +203,7 @@ class TestDSMRepoExclusionPatterns:
         """Test exclusion patterns from validated DSM config."""
         patterns = [
             "CHANGELOG.md",
-            "docs/checkpoints/*",
+            "dsm-docs/checkpoints/*",
             "references/*",
             "plan/*",
             "plan/archive/*",
@@ -211,7 +211,7 @@ class TestDSMRepoExclusionPatterns:
 
         # Files that should be excluded
         assert should_exclude("CHANGELOG.md", patterns) is True
-        assert should_exclude("docs/checkpoints/sprint1.md", patterns) is True
+        assert should_exclude("dsm-docs/checkpoints/sprint1.md", patterns) is True
         assert should_exclude("references/old-doc.md", patterns) is True
         assert should_exclude("plan/backlog.md", patterns) is True
         assert should_exclude("plan/archive/old.md", patterns) is True
@@ -219,4 +219,4 @@ class TestDSMRepoExclusionPatterns:
         # Files that should NOT be excluded
         assert should_exclude("README.md", patterns) is False
         assert should_exclude("DSM_1.0.md", patterns) is False
-        assert should_exclude("docs/guide.md", patterns) is False
+        assert should_exclude("dsm-docs/guide.md", patterns) is False
