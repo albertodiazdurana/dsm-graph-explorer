@@ -2,7 +2,7 @@
 
 **Project Type:** Software Engineering (DSM 4.0 Track)
 **Start Date:** 2026-03-13
-**Status:** IN PROGRESS (Sprint 15 implementation complete, EXP-009 pending)
+**Status:** COMPLETE (Sprints 13-16 delivered, retrospective in `dsm-docs/checkpoints/epoch-4/epoch-4-retrospective.md`)
 **Prerequisite:** Epoch 3 Complete ([epoch-3-plan.md](epoch-3-plan.md))
 **Project Lead:** Alberto Diaz Durana (with AI assistance)
 **Alignment:** DSM Central response received 2026-03-13 (v1.3.36-v1.3.39)
@@ -38,7 +38,7 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 |--------|-------|
 | DSM Central alignment response | BL-090 priority, version updates v1.3.36-39 |
 | Epoch 3 carry-forwards | 3 SHOULDs not completed |
-| Epoch 3 COULDs | LLM/NLP features (deferred) |
+| Epoch 3 COULDs | ~~LLM/NLP features~~ dropped (DEC-009) |
 | Open Source Contribution Pipeline | FalkorDBLite issue #85 open, blog + PR pending |
 
 ### Scope (MoSCoW)
@@ -57,9 +57,9 @@ This positions GE as an ecosystem optimization tool, not just a validator.
 - [x] Protocol usage frequency analysis: which DSM_0.2 sections are used by which spokes (Sprint 15)
 
 **COULD (Future / Conditional):**
-- [ ] LLM second-pass validation (TF-IDF filters, LLM confirms)
-- [ ] spaCy NER for entity extraction
-- [ ] Sentence transformer embeddings
+- ~~LLM second-pass validation~~ dropped (DEC-009: no local LLM dependencies)
+- ~~spaCy NER for entity extraction~~ dropped (DEC-009)
+- ~~Sentence transformer embeddings~~ dropped (DEC-009)
 - [ ] Section rename tracking (`section-renames.yml`)
 - [ ] Web visualization (pyvis or similar)
 - [ ] FalkorDBLite documentation PR (from issue #85)
@@ -151,9 +151,10 @@ but may be problematic for generic single-word headings (e.g., "Overview").
 **Environment:** Python 3.12, DSM repository (`~/dsm-agentic-ai-data-science-methodology/`),
 real DSM_0.2 split (v1.3.69 modular format).
 
-**Decision gate:** If false positive rate exceeds 20%, scope TF-IDF fuzzy filtering
-or heading length threshold as a pre-filter before the feature is promoted. If true
-positive rate is below 80%, revisit the extraction heuristic.
+**Decision gate:** If false positive rate exceeds 20%, scope heading length
+threshold as a pre-filter before the feature is promoted. If true positive rate
+is below 80%, revisit the extraction heuristic. (TF-IDF fuzzy filtering
+removed per DEC-009.)
 
 ---
 
@@ -273,7 +274,7 @@ updates, FalkorDB index creation, and FalkorDB export.
 **Duration:** 1-2 sessions
 **Objective:** Build analysis tooling that measures which DSM_0.2 sections are
 referenced by spoke projects, informing BL-090's splitting strategy.
-**Status:** IN PROGRESS (implementation complete, EXP-009 pending, boundary checklist pending)
+**Status:** COMPLETE (EXP-009 CONDITIONAL PASS, boundary checklist complete)
 
 #### Design
 
@@ -332,39 +333,141 @@ truth validation (7 sections), ≥60% threshold.
 - [ ] EXP-009 execution and results
 
 **Sprint boundary checklist:**
-- [ ] Checkpoint document
-- [ ] Feedback files updated
-- [ ] Decision log updated
-- [ ] Blog journal entry
-- [ ] README updated
+- [x] Checkpoint document (`dsm-docs/checkpoints/epoch-4/done/session-45-sprint-15-checkpoint.md`)
+- [x] Feedback files updated (`dsm-docs/feedback-to-dsm/done/2026-04-02_s45_*.md`)
+- [x] Decision log updated (Sprint 15 was analysis-focused, no new DECs, verified)
+- [x] Blog journal entry (`dsm-docs/blog/journal.md`, Sprint 15 entry 2026-04-02)
+- [x] README updated (Sprint 15 complete, four-layer methodology, EXP-009, 664 tests)
 - [x] Epoch plan updated
-- [ ] Hub/portfolio notified
+- [x] Hub/portfolio notified (`2026-04-02_dsm-graph-explorer_sprint-15-complete.md` in both Central and portfolio done/)
 
 ---
 
-### Sprint 16: Reserved
+### Sprint 16: Knowledge Summary Export (DSM Central BL-302 Phase 1)
 
-**Duration:** 1-2 sessions
-**Objective:** TBD at Sprint 15 boundary. Candidates:
-- **`--knowledge-summary` (BACKLOG-302, from DSM Central EXP-002):** Agent-consumable
-  markdown export (~150-200 lines) derived from graph topology. Presentation layer
-  over existing graph infrastructure. See `dsm-docs/research/dsm-central-exp-002-knowledge-graph-feasibility.md`.
-- **GraphML None-value bug fix:** `export_graphml()` crashes on `None` attributes
-  (unnumbered headings). Small fix, independent of feature work.
-- LLM second-pass validation (if ecosystem priority shifts)
-- FalkorDBLite documentation PR (if maintainers respond to issue #85)
-- spaCy NER / sentence embeddings (if analysis features create demand)
-- Epoch 4 close-out (if scope is satisfied by Sprints 13-15)
-**Status:** RESERVED
+**Duration:** 1-2 sessions (completed in S47, 1 session)
+**Objective:** `--knowledge-summary PATH` CLI command producing agent-consumable
+markdown (~150-200 lines) derived from graph topology. Presentation layer over
+existing graph infrastructure (Sprint 14).
+**Status:** COMPLETE (BL-302 Phase 1 delivered, validated against DSM Central: 811 files → 253-line summary)
+**Origin:** DSM Central EXP-002 (PARTIAL PASS), BL-303 (P1-P4 priority guidance)
+**Research:** `dsm-docs/research/dsm-central-exp-002-knowledge-graph-feasibility.md`,
+DSM Central `dsm-docs/research/2026-04-13_external-repos-deep-research.md` (BL-355)
 
-**Decision gate:** At Sprint 15 boundary, evaluate:
-1. Did Sprints 13-15 complete on schedule?
-2. Is there demand for LLM/NLP features from DSM Central or portfolio?
-3. Did FalkorDBLite maintainers respond to issue #85?
-4. Is the epoch scope satisfied?
-5. Does `--knowledge-summary` (BACKLOG-302) justify a Sprint 16, or carry to Epoch 5?
+**Decision gate answers** (from Sprint 15 boundary):
+1. Sprints 13-15 complete on schedule ✓
+2. No LLM/NLP demand from ecosystem, deferred to Epoch 5
+3. FalkorDBLite maintainers have not responded to issue #85, deferred to Epoch 5
+4. Epoch scope not yet satisfied, BL-302 justifies Sprint 16
+5. `--knowledge-summary` justified as High priority from Central EXP-002 + BL-303
 
-If scope is satisfied, close Epoch 4 at Sprint 15 and carry remaining COULDs to Epoch 5.
+#### Scope: P1 + P2 + GraphML Bug Fix
+
+| Priority | Component | Description | Implementation |
+|----------|-----------|-------------|----------------|
+| P1 | Document hierarchy | Tree view with module relationships | Walk CONTAINS edges, render indented tree |
+| P1 | Hub documents | Top-N by reference connectivity, 1-line purpose | Sort by in-degree, extract title + purpose |
+| P2 | Cross-reference hotspots | Sections referenced 10+ times | Filter REFERENCES edges by count |
+| P2 | Orphan detection | Files with zero incoming references | Find file nodes with in-degree == 0 |
+| Fix | GraphML None-value | `export_graphml()` crashes on `None` attributes | Replace `None` with empty string |
+
+**Design rationale:** "Knowledge compilation over retrieval," pre-synthesize
+navigation aids rather than requiring agents to query raw data per session.
+Validated independently by Karpathy's LLM Wiki design, PageIndex tree navigation,
+and code-review-graph's structured output approach.
+
+#### Deliverables
+
+1. `src/analysis/knowledge_summary.py` — summary generator module (4 components)
+2. Markdown formatter — structured output designed for LLM consumption
+3. `--knowledge-summary PATH` CLI flag integration
+4. GraphML None-value bug fix in `export_graphml()`
+5. Tests for all components, validated against DSM Central graph (4,703+ nodes)
+
+#### Acceptance Criteria
+
+- [ ] `--knowledge-summary PATH` produces markdown output (~150-200 lines)
+- [ ] Document hierarchy shows file-to-section tree structure
+- [ ] Hub documents lists top-10 by connectivity with 1-line descriptions
+- [ ] Cross-reference hotspots lists sections with 10+ incoming references
+- [ ] Orphan detection lists files with zero incoming references
+- [ ] Output is agent-consumable (structured markdown, no visual formatting)
+- [ ] GraphML None-value bug is fixed
+- [ ] Tests pass, coverage maintained above 80%
+- [ ] Validated against DSM Central repository
+
+#### Risks
+
+1. **Output length:** 150-200 line target may be insufficient for large repos.
+   Mitigation: configurable top-N thresholds, test with real data early.
+2. **Hub scoring stability:** Rankings may shift as repo evolves, causing churn.
+   Mitigation: use relative rankings, not absolute counts.
+
+#### Related Work
+
+| Repo | Pattern | Applicable to |
+|------|---------|---------------|
+| code-review-graph (9.2k stars) | Leiden community detection, MCP integration | Future Phase 2-3 |
+| Karpathy LLM Wiki (5k+ stars) | Knowledge compilation, lint operations | Core design, future lint |
+| PageIndex (25k stars) | Tree-based hierarchical navigation | P1 hierarchy |
+
+#### Deferred Requirements (organized by theme, for Epoch 5+ planning)
+
+**Theme A: Intrinsic-ToC / Knowledge Summary evolution (BL-302 Phase 2-3+)**
+- BL-302 Phase 2: concept clusters via Leiden algorithm (ref: code-review-graph)
+- BL-302 Phase 3: navigation by project type (needs DSM-specific config input)
+- Data/format separation: split data functions from markdown formatters when a
+  second output format is concretely needed (JSON, other). See DEC-009 rationale.
+- Cross-repo references in ToC entries (Layer 3 of Intrinsic-ToC vision)
+- Non-markdown metadata enrichment: filesystem stats, pyproject.toml, test
+  metrics injected into the knowledge summary
+- Temporal/methodology metadata: when components were built, which DSM
+  principles applied (from git history, session transcripts, decision records)
+- Parseable key-value entry format for machine extraction (`refs-in:`, `path:`)
+- Full lint operation: expand orphan detection into contradiction detection,
+  missing cross-references, stale claims (ref: Karpathy wiki lint concept)
+- Research ref: `dsm-docs/research/2026-04-13_intrinsic-toc-vision.md`
+
+**Theme B: Ecosystem graph / Avatar (Layer 3-4 of vision)**
+- Avatar materialization: persistent cross-repo graph connecting all spoke ToCs
+- Code ontology parsing: AST-based graphs from Python source (ref: code-review-graph Tree-sitter)
+- Code-to-document relationships: which code implements which spec section
+- Test-to-requirement tracing: which tests validate which requirements
+- MCP exposure of knowledge summary as agent tool
+- Research ref: `dsm-docs/research/2026-04-13_intrinsic-toc-vision.md` §4, §10
+
+**Theme C: Graph infrastructure**
+- Hop distance from entry point in `--graph-stats` (EXP-001 two-tier threshold)
+- Parser validation against EXP-001 reference graph (286 edges, ground truth)
+- Bidirectional edge analysis (EXP-001 suggestion)
+- Web visualization (pyvis or similar)
+- Research ref: `_inbox/done/dsm-central-reachability-experiment.md`
+
+**Theme D: Open source contribution pipeline**
+- FalkorDBLite documentation PR (awaiting maintainer response to issue #85)
+- Blog post for the contribution story ("experiment becomes upstream docs")
+- Research ref: `dsm-docs/blog/epoch-3/journal.md` (Contribution-Ready section)
+
+**Theme E: Parser extensions**
+- Section rename tracking (`section-renames.yml`)
+- TF-IDF fuzzy matching for heading references (pre-filter only, no local LLM per DEC-009)
+
+#### Sprint 16 Deliverables
+
+- [x] `src/analysis/knowledge_summary.py` (5 functions: hierarchy, hub documents, hotspots, orphans, orchestrator)
+- [x] `--knowledge-summary PATH` CLI option
+- [x] GraphML None-value bug fix in `export_graphml()`
+- [x] Tests (25 new, full suite 689 passed, 91% coverage)
+- [x] Validated against DSM Central (811 files, 8,991 sections → 253-line summary)
+
+**Sprint boundary checklist:**
+- [x] Checkpoint document (`dsm-docs/checkpoints/epoch-4/session-47-sprint-16-checkpoint.md`)
+- [x] Feedback files (methodology entries 59-62, backlogs proposals #52-55)
+- [x] Decision log (DEC-009: no local LLM dependencies)
+- [x] Blog journal entry (`dsm-docs/blog/journal.md`, Sprint 16 entry)
+- [x] README updated (Sprint 16 complete, --knowledge-summary, 689 tests)
+- [x] Epoch plan updated
+- [x] Hub/portfolio notified (Central: `2026-04-14_dsm-graph-explorer_s47-findings.md`, portfolio: `2026-04-14_dsm-graph-explorer_sprint-16-complete.md`)
 
 ---
 
@@ -417,9 +520,9 @@ No new mandatory dependencies anticipated. Sprint 15's analysis features use
 existing parsing and cross-reference infrastructure. Sprint 14's incremental
 updates use file hashing (stdlib `hashlib`).
 
-If Sprint 16 pursues LLM features, a new optional dependency group would be
-needed (e.g., `[llm]` with `ollama` for local inference + RAG pipeline).
-This decision is deferred to the Sprint 16 planning gate.
+Local LLM/NLP dependencies (spaCy, sentence-transformers, ollama) have been
+dropped per DEC-009: the consuming AI agent is the LLM, local models are
+redundant. No `[llm]` optional dependency group will be created.
 
 ---
 

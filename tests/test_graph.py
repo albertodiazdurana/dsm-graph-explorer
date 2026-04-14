@@ -369,3 +369,21 @@ class TestGraphExport:
         H = nx.read_graphml(str(path))
         assert H.number_of_nodes() == G.number_of_nodes()
         assert H.number_of_edges() == G.number_of_edges()
+
+    def test_export_handles_none_attributes(self, tmp_path):
+        """GraphML export succeeds when nodes have None attribute values.
+
+        Unnumbered headings have number=None. NetworkX's GraphML writer
+        rejects NoneType; export_graphml sanitizes them to empty strings.
+        """
+        doc = _make_doc("file.md", [
+            _make_section(None, "Unnumbered Heading", line=1),
+            _make_section("2.1", "Numbered Section", line=10),
+        ])
+        G = build_reference_graph([doc], {}, {})
+        path = tmp_path / "none_attrs.graphml"
+        export_graphml(G, str(path))
+        assert path.exists()
+        # Read back and verify all nodes preserved
+        H = nx.read_graphml(str(path))
+        assert H.number_of_nodes() == G.number_of_nodes()

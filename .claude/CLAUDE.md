@@ -22,19 +22,36 @@
   existing `validate-transcript-edit.sh` PreToolUse hook enforces *shape*.
   IDE monitoring and session-start behavioral activation are user
   affordances, not enforcement. The hook is the mechanism.
-- Turn-boundary self-check: if your first tool call this turn was not a
-  transcript append and the turn requires any tool calls, the protocol was
-  violated. Recover by appending a `[RETROACTIVE]` entry with the current
-  HH:MM (never backdate) and a note explaining the gap; do not edit history.
+- Turn-boundary self-check: every turn begins with a transcript append. If
+  your first tool call this turn was not a transcript append, the protocol
+  was violated. This includes pure-reasoning turns (decision analysis,
+  recommendation, trade-off comparison) that would otherwise touch no files,
+  the transcript append is the one required tool call. The only exemption
+  is content-trivial turns (one-word acknowledgments, single-fact
+  confirmations with no new reasoning). Recover by appending a
+  `[RETROACTIVE]` entry with the current HH:MM (never backdate) and a note
+  explaining the gap; do not edit history.
 - Process narration: thinking blocks narrate reasoning as it unfolds,
   including considered-and-rejected paths, doubts, loops, and reversals.
   Clean post-hoc summaries hide inefficiency signals that are the primary
   input to reasoning-efficiency analysis. Brevity is not the goal,
   auditability is.
+- Unconditional activation: if `.claude/session-transcript.md` exists in
+  the project, the protocol is active. No skill needs to activate it. The
+  presence of the file is the activation signal. This rule is independent
+  of `/dsm-go` Step 6 and applies to continuation sessions that defer
+  from `/dsm-light-go` to `/dsm-go` mid-flight.
+- Heredoc anti-pattern: when appending to the transcript via Bash, never
+  use single-quoted heredoc (`<< 'EOF'`) if the content contains shell
+  expansions like `$(date +%H:%M)`. Capture the timestamp into a variable
+  first and use unquoted heredoc, or prefer the Edit-tool append path
+  (read last 3 lines, anchor on last non-empty line).
 
 ### Pre-Generation Brief Protocol (reinforces inherited protocol)
-- Three-gate model: concept (explain) → implementation (diff review) → run (when applicable)
+- Four-gate model: collaborative definition (confirm threads → dependencies → packaging) → concept (explain) → implementation (diff review) → run (when applicable)
 - Each gate requires explicit user approval; gates are independent
+- What/why/how thinking block: before Gate 1, answer what the artifact is, why it is needed, and how it will be built, in the session transcript thinking block
+- Skill self-reference: before claiming any behavior of a DSM skill (`/dsm-go`, `/dsm-wrap-up`, `/dsm-align`, etc.), read `scripts/commands/{skill-name}.md` or `~/.claude/commands/{skill-name}.md`. Do not answer "does skill X do Y?" from memory.
 
 ### Inbox Lifecycle (reinforces inherited protocol)
 - After processing an inbox entry, move it to `_inbox/done/`
