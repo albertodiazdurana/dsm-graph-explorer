@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.4.0
-**Status:** Epoch 4 in progress (Sprint 15 complete)
+**Status:** Epoch 4 in progress (Sprint 16 complete, BL-302 Phase 1 delivered)
 
 Repository integrity validator and graph database explorer for the [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite) framework and its engine, the Deliberate Systematic Methodology (DSM).
 
@@ -121,10 +121,20 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 - CLI: `--protocol-usage PATH` and `--usage-compare OLD NEW` with Rich table output and JSON export
 - EXP-009: Protocol usage validation, CONDITIONAL PASS (procedural protocols 4/4, behavioral protocols require different measurement approach)
 
-**Future (Epoch 4 remaining):**
-- Agent-consumable knowledge summary (`--knowledge-summary`, BACKLOG-302)
-- Cross-reference resolution by heading title matching (NLP/TF-IDF)
-- LLM second-pass: tiered approach where TF-IDF filters, LLM confirms borderline cases
+**Implemented (Sprint 16 — Knowledge Summary Export, BL-302 Phase 1):**
+- `knowledge_summary.py` module with 5 functions: document hierarchy, hub documents, cross-reference hotspots, orphan files, combined summary
+- CLI: `--knowledge-summary PATH` produces agent-consumable markdown (~150-250 lines) from graph topology
+- GraphML None-value bug fix (`export_graphml()` sanitizes None attrs for unnumbered headings)
+- Validated against DSM Central: 811 files, 8,991 sections, 1,254 refs → 253-line summary
+- 689 tests, 91% coverage (25 new tests)
+- DEC-009: No local LLM dependencies (GE's value is structural analysis; the consuming agent is the LLM)
+
+**Future (Epoch 5 / deferred):**
+- BL-302 Phase 2: concept clusters via Leiden community detection
+- BL-302 Phase 3: navigation by project type
+- Ecosystem graph / Avatar (Layer 3 of Intrinsic-ToC vision)
+- Code ontology parsing (Layer 4)
+- See `dsm-docs/plans/epoch-4-plan.md` Deferred Requirements (5 themes)
 
 ---
 
@@ -403,11 +413,11 @@ For more details, see [epoch-1-plan.md](dsm-docs/plans/epoch-1-plan.md) (complet
   - BL-170 Part B: architecture audit (100% Private Project compatibility)
 - [x] **Sprint 14:** Incremental Graph Updates + FalkorDB Enhancements — update_files(), heading indexes, to_networkx(), CLI ref-change detection (547 tests, 95% coverage)
 - [x] **Sprint 15:** Protocol Usage Analysis — four-layer methodology (declared, prescribed, observed, designed), 6 new modules, EXP-009 CONDITIONAL PASS (664 tests, 91% coverage)
+- [x] **Sprint 16:** Knowledge Summary Export — `--knowledge-summary` CLI, `knowledge_summary.py` module (5 functions), GraphML bug fix, DEC-009 (no local LLM), validated against DSM Central (811 files → 253 lines) (689 tests, 91% coverage)
   - Phase 15.1: Section index + declared references (`section_index.py`, `declared_refs.py`)
   - Phase 15.2: Prescribed + observed references (`prescribed_refs.py`, `observed_refs.py`)
   - Phase 15.3: Usage report + CLI (`usage_report.py`, `usage_diff.py`, `--protocol-usage`, `--usage-compare`)
   - EXP-009: Protocol usage validation, procedural protocols 4/4 pass, behavioral protocols 0/3 (methodology limitation)
-- [ ] **Sprint 16:** Reserved
 
 ---
 
@@ -448,6 +458,6 @@ Published at [blog.take-ai-bite.com](https://blog.take-ai-bite.com):
 ---
 
 **Last Updated:** 2026-03-17
-**Current Status:** Epoch 4 in progress (Sprint 14 complete: incremental graph updates + FalkorDB enhancements)
+**Current Status:** Epoch 4 in progress (Sprint 16 complete: knowledge summary export, BL-302 Phase 1 delivered, DEC-009)
 **Tests:** 547 passed, 95% coverage
 **DSM Feedback:** 47 methodology entries, 42 improvement proposals (legacy files archived; per-session format from Sprint 14)

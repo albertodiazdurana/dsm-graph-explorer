@@ -427,6 +427,13 @@ def _print_usage_diff(diff: "DiffReport") -> None:
     help="Build reference graph and print summary statistics.",
 )
 @click.option(
+    "--knowledge-summary",
+    "knowledge_summary_path",
+    type=click.Path(),
+    default=None,
+    help="Build reference graph and write agent-consumable knowledge summary (markdown) to PATH.",
+)
+@click.option(
     "--lint",
     is_flag=True,
     default=False,
@@ -552,6 +559,7 @@ def main(
     semantic: bool,
     graph_export_path: str | None,
     graph_stats: bool,
+    knowledge_summary_path: str | None,
     lint: bool,
     graph_db_path: str | None,
     rebuild: bool,
@@ -1066,7 +1074,7 @@ def main(
         )
 
     # Graph operations (opt-in)
-    if graph_export_path or graph_stats or graph_db_path:
+    if graph_export_path or graph_stats or graph_db_path or knowledge_summary_path:
         # Check falkordblite availability early if --graph-db requested
         if graph_db_path and not FALKORDB_AVAILABLE:
             click.echo(
@@ -1122,6 +1130,17 @@ def main(
         if graph_export_path:
             export_graphml(G, graph_export_path)
             click.echo(f"Graph exported to {graph_export_path}")
+
+        if knowledge_summary_path:
+            from analysis.knowledge_summary import generate_knowledge_summary
+            summary = generate_knowledge_summary(G)
+            with open(knowledge_summary_path, "w", encoding="utf-8") as f:
+                f.write(summary)
+            line_count = len(summary.splitlines())
+            click.echo(
+                f"Knowledge summary written to {knowledge_summary_path} "
+                f"({line_count} lines)"
+            )
 
         # Persist to FalkorDB (opt-in via --graph-db)
         if graph_db_path:
