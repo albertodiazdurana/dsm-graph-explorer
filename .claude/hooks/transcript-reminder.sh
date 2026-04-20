@@ -6,13 +6,23 @@
 # Detects whether the current Claude Code instance is a parallel session
 # (started via /dsm-parallel-session-go) or the main session, by walking
 # the parent process chain to find the `claude` process PID and comparing
-# it against CLAUDE_PID recorded in .claude/parallel-session-baseline.txt.
+# it against any CLAUDE_PID recorded in .claude/parallel-sessions.txt.
 #
-# Fail-safe: any error, missing baseline, stale PID, or mismatch emits
+# Multi-entry registry (BL-371): the file may contain multiple parallel
+# session sections, each with its own CLAUDE_PID. A prompt is from a
+# parallel session if MY_CLAUDE_PID matches ANY PID in the registry,
+# regardless of that section's State (active or wrapped — a wrapped
+# session should stop emitting the parallel reminder by killing the
+# Claude process; if the process is still alive, the reminder still
+# applies).
+#
+# Fail-safe: any error, missing registry, stale PIDs, or no match emits
 # the main reminder. The script always exits 0; it must never block a
 # prompt submission.
 #
 # Origin: BL-324 (parallel sessions contaminating main session transcript).
+# BL-371: registry renamed singular→plural, detection updated for
+# multi-entry.
 
 set +e
 
@@ -23,14 +33,13 @@ PARALLEL_REMINDER="REMINDER (DSM_0.2 §7, parallel mode): This is a parallel ses
 emit_main() { echo "$MAIN_REMINDER"; exit 0; }
 emit_parallel() { echo "$PARALLEL_REMINDER"; exit 0; }
 
-BASELINE=".claude/parallel-session-baseline.txt"
-[ -f "$BASELINE" ] || emit_main
+REGISTRY=".claude/parallel-sessions.txt"
+[ -f "$REGISTRY" ] || emit_main
 
-PARALLEL_PID=$(grep '^CLAUDE_PID:' "$BASELINE" 2>/dev/null | awk '{print $2}' | head -1)
-[ -n "$PARALLEL_PID" ] || emit_main
-
-# Stale baseline: recorded PID is no longer running
-kill -0 "$PARALLEL_PID" 2>/dev/null || emit_main
+# Collect all CLAUDE_PID values recorded in the registry (one per section).
+# Newline-separated.
+REGISTRY_PIDS=$(grep '^CLAUDE_PID:' "$REGISTRY" 2>/dev/null | awk '{print $2}')
+[ -n "$REGISTRY_PIDS" ] || emit_main
 
 # Walk parent chain to find this hook's `claude` process
 MY_CLAUDE_PID=""
@@ -49,8 +58,17 @@ done
 
 [ -n "$MY_CLAUDE_PID" ] || emit_main
 
-if [ "$MY_CLAUDE_PID" = "$PARALLEL_PID" ]; then
-  emit_parallel
-fi
+# If my PID is among the registry PIDs AND that PID is still alive,
+# this is a parallel session. Dead PIDs in the registry (stale wrapped
+# entries from a prior session that didn't get cleaned up) are ignored
+# for the match test; they still exist for the audit trail.
+while IFS= read -r reg_pid; do
+  [ -z "$reg_pid" ] && continue
+  if [ "$MY_CLAUDE_PID" = "$reg_pid" ]; then
+    # Extra safety: ensure the PID is live (belt + braces; hook survives
+    # stale registry entries).
+    kill -0 "$reg_pid" 2>/dev/null && emit_parallel
+  fi
+done <<< "$REGISTRY_PIDS"
 
 emit_main
