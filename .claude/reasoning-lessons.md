@@ -23,3 +23,13 @@ Categories: [pattern], [ecosystem], [infrastructure], [skill], [methodology]
 - [STAA] S47 [pattern]: At session/sprint start, when a checklist has N independent unknowns, batch the read-only checks in one parallel tool call. Verified efficient in S47 Sprint 15 boundary check.
 - [STAA] S47 [pattern]: A single "y" advances one gate. Four-gate PGB means each concept/implementation/run gate is independent; prior approval does not carry forward.
 - [STAA] S47 [methodology]: Sessions that exercise multiple boundary/gate protocols tend to surface gaps in clusters (S47: 5 proposals). Reserve end-of-session time for consolidated feedback writing.
+
+## S48 (2026-04-20)
+
+- [auto] S48 [pattern]: User direct instruction beats mode default. When user requests collaboration gates mid-Auto-mode, gates win; "minimize interruptions" is the default, not the override.
+- [auto] S48 [infrastructure]: /dsm-align across a major DSM version jump (v1.4.17 → v1.6.0) must re-chmod +x hooks regardless of byte-diff result. Hooks present but mode 644 = silent S180 failure; chmod is idempotent, apply unconditionally.
+- [auto] S48 [methodology]: Counter-evidence table (per BL-385 §8.2.1) works well paired with rebuttals in a single row. Six counter-claims weighed vs. rebuttals on the TOON decision kept the Gate 2 presentation auditable without sprawl.
+- [auto] S48 [pattern]: "Phase 1.5" BL naming signals prep-step sequencing between Phase 1 and Phase 2 without ambiguating Phase 2's scope. Useful when a format/infrastructure migration gates the next planned phase.
+- [auto] S48 [methodology]: Earn-the-assertion before writing a DEC. Reading Central's 364-line research file before writing DEC-010 surfaced methodology caveats (tokenizer proxy uncertainty, author-authored benchmarks, ±3% projection margin) that shaped counter-evidence. Accepting the headline claim on faith would have lost this nuance.
+- [auto] S48 [pattern]: Dedicated small sprint beats mixed sprint when boundary clarity matters. Sprint 17 = TOON migration alone (1-1.5 sessions) preserves DEC-010 C3 validation gate as a clean boundary. Sprint size is not the sole criterion; boundary clarity is.
+- [auto] S48 [infrastructure]: Pre-existing uncommitted files in session baseline get enumerated with origin trace in commit scope, not silently included. Honest commit messaging exposes the STAA content as "previously uncommitted" rather than hiding its provenance.
