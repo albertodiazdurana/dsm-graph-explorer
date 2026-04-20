@@ -17,3 +17,9 @@ Categories: [pattern], [ecosystem], [infrastructure], [skill], [methodology]
 - [auto] S47 [infrastructure]: Graph query functions should be separable from output formatters by necessity (future MCP/JSON), but only split when the second format is actually built. Today, returning markdown directly is acceptable.
 - [auto] S47 [methodology]: Three-file atomic feedback (local methodology + local backlogs + brief Central notification) works. Central gets pointers, not duplicates; spokes keep the full record.
 - [auto] S47 [pattern]: User-initiated protocol-gap discovery is valuable. Entries 59-63 all surfaced from "you didn't do X, why not?" challenges. The resulting proposals capture systemic gaps, not one-off mistakes.
+- [STAA] S47 [ecosystem]: Scope-ownership check before artifact creation. When creating a backlog/plan file, ask "who originated the request?" (hub vs. spoke). Implementation location is not ownership location.
+- [STAA] S47 [pattern]: Completion of the last deliverable of a named scope unit (sprint, epoch) is itself a gate, not just a session endpoint. Check scope-unit closure before suggesting session wrap-up.
+- [STAA] S47 [pattern]: When vision expands mid-implementation, split the conceptual capture (vision doc) from the code change (minimal fix). Do not retrofit bounded deliverables to expanded vision.
+- [STAA] S47 [pattern]: At session/sprint start, when a checklist has N independent unknowns, batch the read-only checks in one parallel tool call. Verified efficient in S47 Sprint 15 boundary check.
+- [STAA] S47 [pattern]: A single "y" advances one gate. Four-gate PGB means each concept/implementation/run gate is independent; prior approval does not carry forward.
+- [STAA] S47 [methodology]: Sessions that exercise multiple boundary/gate protocols tend to surface gaps in clusters (S47: 5 proposals). Reserve end-of-session time for consolidated feedback writing.

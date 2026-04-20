@@ -154,6 +154,7 @@ dsm-graph-explorer/
 - **Project path**: `~/dsm-graph-explorer/`
 - **DSM repository**: `~/dsm-agentic-ai-data-science-methodology/`
 - **Portfolio**: `~/dsm-data-science-portfolio-working-folder/`
+- **Main branch**: `master`
 
 ---
 
