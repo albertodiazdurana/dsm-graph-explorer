@@ -104,7 +104,8 @@ structured files and follows links, using its own reasoning to traverse.
 
 ## 4. Architecture Layers
 
-The Intrinsic-ToC is the first layer of a four-layer architecture:
+The Intrinsic-ToC is the first layer of a layered architecture (four primary
+layers plus a proposed Layer 4.5, the Semantic Concept Layer):
 
 ### Layer 1: Static Intrinsic-ToC (Sprint 16)
 
@@ -166,8 +167,38 @@ Knowledge graphs built from code, not just markdown:
 - Test-to-requirement tracing (which tests validate which requirements)
 - Unified knowledge trees merging document structure with code structure
 
-Related work: code-review-graph uses Tree-sitter to parse 19+ languages into
+Related work: "code-review-graph" uses Tree-sitter to parse 19+ languages into
 AST-based graphs with function/class/import nodes and call/inheritance edges.
+
+### Layer 4.5: Semantic Concept Layer (proposed)
+
+A sister layer to Layer 4. Where Layer 4 extracts structure from code, Layer 4.5
+extracts structure from *meaning*: abstract concepts as first-class graph nodes,
+independent of the file, section, or code that expresses them.
+
+A concept ("DEC-009", "Intrinsic-ToC", "session baseline") is not a file or a
+section, it is an idea that recurs across many of them. This layer adds a fourth
+node type (concepts) to the existing three (files, sections, terms), with edges:
+
+- `defined-in`: concept → its authoritative definition
+- `used-in`: concept → every place it is referenced
+- `depends-on`: concept → concepts it builds on (e.g., DEC-010 depends-on DEC-009)
+
+Two products motivate it:
+
+- **Discoverability:** navigate from an idea to all its materializations across
+  repos, without grepping for a string.
+- **Drift / contradiction detection:** flag inconsistent or drifted definitions.
+  For example, `dsm-version` appears in `CHANGELOG.md`, `.claude/last-align.txt`,
+  and `MEMORY.md`; when they disagree, that is concept drift a concept node would
+  surface automatically instead of relying on a human to notice.
+
+**Extraction policy (DEC-009):** author-declared concepts are the default,
+structural, no model inference. Extracted candidates are allowed only as
+author-review-gated suggestions, never written automatically. This keeps the
+automatic path purely structural, consistent with "the agent IS the query engine."
+
+Registered as BL-GE-001; design space explored in `2026-04-23_semantic-concept-layer.md`.
 
 ## 5. Intrinsic vs Relational Data
 

@@ -1,9 +1,0 @@
-
-## parallel-49.1/QA/jetbrains-spectrum-fit-analysis
-Type: QA
-Task: Analyze how Graph Explorer and DSM Central relate to JetBrains Spectrum role; produce interview-supporting analysis file
-Scope: read-only + /home/berto/dsm-data-science-portfolio-working-folder/job-openings-2026/jetbrains-spectrum/spectrum-fit-analysis.md
-Session branch: session-49/2026-04-23
-Created: 2026-04-23T01:43:41+02:00
-CLAUDE_PID: 530998
-State: active

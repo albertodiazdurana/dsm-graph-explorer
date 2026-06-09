@@ -17,6 +17,12 @@
 - HH:MM is 24-hour local time when the block begins; no end delimiter needed
 - Append technique: read last 3 lines, use last non-empty line as anchor.
   NEVER match earlier content for mid-file insertion.
+- NEVER use Edit `replace_all: true` on `.claude/session-transcript.md`. The
+  append-anchor rule assumes a unique last-line anchor; `replace_all` duplicates
+  content at every match and explodes the file (observed: IronCalc S17 reached
+  95 MB). Recovery from a botched transcript Edit is a `[RETROACTIVE]`
+  Bash-heredoc append, never a `replace_all` cleanup. The
+  `validate-transcript-edit.sh` hook blocks this case (check 0/3).
 - Per-turn enforcement: a `UserPromptSubmit` hook in `.claude/settings.json`
   injects a reminder every turn. The hook enforces *occurrence*; the
   existing `validate-transcript-edit.sh` PreToolUse hook enforces *shape*.
@@ -52,9 +58,10 @@
 - Each gate requires explicit user approval; gates are independent
 - What/why/how thinking block: before Gate 1, answer what the artifact is, why it is needed, and how it will be built, in the session transcript thinking block
 - Skill self-reference: before claiming any behavior of a DSM skill (`/dsm-go`, `/dsm-wrap-up`, `/dsm-align`, etc.), read `scripts/commands/{skill-name}.md` or `~/.claude/commands/{skill-name}.md`. Do not answer "does skill X do Y?" from memory.
+- Chunked drafting for prose deliverables (per DSM_0.2 §8.10): for project plans, proposals, reports, research papers, blog posts, and similar structured prose, the four gates take a specific shape: Gate 1 confirms purpose / audience / outcome / length / scope; Gate 2 proposes a TOC with per-section length budgets; Gate 3 drafts ONE section at a time with per-section user review and approval before the next; Gate 4 reviews the full assembled document for consistency. Full-file Write at Gate 3 is reserved for final assembly after all sections are individually approved. Triggered by document type, not length.
 
 ### Inbox Lifecycle (reinforces inherited protocol)
-- After processing an inbox entry, move it to `_inbox/done/`
+- After processing an inbox entry, move it to `_inbox/done/YYYY-MM-DD_{source}.md` (dated to avoid overwriting a prior cycle's archive of the same source). Bare `_inbox/done/{source}.md` names are append-only rolling archives; `mv`/`git mv` onto an existing bare name silently overwrites it (S211 incident: −323 lines). The date prefix makes same-source collisions impossible by construction. Forward-only: existing bare-name archives are left as-is.
 - Do not mark entries as "Status: Processed" while keeping them in place
 
 ### Actionable Work Items (reinforces DSM_3 planning pipeline)
@@ -63,7 +70,8 @@
 - Before suggesting implementation of anything that looks like a plan, verify that a formal BL exists in `dsm-docs/plans/`. If not, route through research → formalize → plan first.
 
 ### Punctuation
-Use "," instead of "—" for connecting phrases in any language.
+Use comma "," instead of Em Dash "—" for connecting phrases in any language.
+Never use space coma space (" , "). The correct format is no spaces before the comma, and one space after: ", ".
 
 ### Code Output Standards (reinforces Earn Your Assertions)
 - Show actual values: shapes, metrics, counts, paths
