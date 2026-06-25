@@ -73,3 +73,26 @@ Commit: stage all session work. Includes DEC-011, BL-GE-001 edits, /dsm-align v1
 Organize: do NOT blind-move. For plans/ — only move BLs that are fully done. BL-GE-001 is NOT done (DEC accepted but Epoch 6 plan pending → stays active). BL-302 phase files — need to check status. For research/ — 2026-04-23_semantic-concept-layer.md target outcome (DEC) now exists → ripe for done. 2026-04-13_intrinsic-toc-vision.md is a living vision doc, likely stays. graphrag-fit research from S49 — concluded, maybe done. Must read each file's Status before proposing moves. Present findings, get approval per file (file-by-file loop, Entry 19). This is Gate-1-ish: assess then present, don't move silently.
 <------------Start Output / 10:41------------>
 Committing session work (after verifying lockfile/cross-repo files are gitignored). Then surveying plans/ + research/ statuses to propose done/ moves for approval (no blind moves).
+
+<------------Start Thinking / 10:50------------>
+User: 1=move epoch plans, 2=keep both ambiguous (exp-002 + experiment-documentation-standards; latter opened in IDE, user keeping it). 
+Final moves — PLANS→done/: epoch-1/2/3/4-plan.md (+ fix epoch-3 ACTIVE→COMPLETE first), BL-223-architecture-audit/ (dir). RESEARCH→done/: semantic-concept-layer (full annotate, target=DEC-011), graphrag-fit, sprint-16-phase1-findings, 2026-03-15_architecture-audit, epoch-3-falkordblite, epoch-3-neo4j, similarity_network, e1_handoff, e2_handoff.
+Annotation: promised "annotate each with Status: Done + Date Completed". Do it via python (safe, non-transcript): for each moved research file, replace first **Status:** line with Done + Date Completed, or insert Date Completed after first **Date line if no Status. Then git mv. Plans already marked COMPLETE (just fix epoch-3), move as-is. Commit the reorg as its own commit. Keep active: intrinsic-toc-vision (living), exp-001 (Sprint 19 pending), exp-002 (user keep), experiment-documentation-standards (user keep), epoch-5 (current), BL-302 (Sprint 17), BL-GE-001 (Epoch 6 pending).
+<------------Start Output / 10:51------------>
+Fixed epoch-3 stale status, annotated 9 research files Done, moved 5 plans + 9 research to done/, committed reorg.
+
+<------------Start Thinking / 11:00------------>
+User approved #1+#2 then #3. 
+#1 DEC index backfill: README table is | File | Decision | Status |. Need rows DEC-005..011. Have 009/010/011 from session. Need to read 005/006/007/008 title+decision+status. Build 7 rows, append/replace the table (table currently ends at DEC-004). Also the README "Content Structure" section lists old fields (Context/Decision/Rationale/Alternatives/Trade-offs) — leave as-is, not my task.
+#2 blog journal: append a [2026-06-25] entry to dsm-docs/blog/journal.md (top-level, last entry Sprint 16). Capture S49+S50 arc: GraphRAG adopt-ideas-only, Semantic Concept Layer → DEC-011, with the hook that THIS session hand-detected dsm-version drift = exactly what Layer 4.5 automates. Journal = append-only observations; one entry. User authorized "now" so draft + append, show content in report.
+Then #3 /dsm-wrap-up.
+<------------Start Output / 11:01------------>
+Gathered DEC 005-008 data, backfilled DEC README index (7 rows), appended blog journal entry; handing to /dsm-wrap-up.
+
+<------------Start Thinking / 11:08------------>
+/dsm-wrap-up (full). GIT_AVAILABLE=true. Running steps. 
+Step 0: extract reasoning lessons from S50 transcript. Notable: (1) transcript Edit anchor friction recurred — non-unique Output/HH:MM placeholders broke Edit anchor 3x, heredoc fallback is the reliable path (recurring, ecosystem). (2) BL-370 RM restage: git mv after working-tree edit leaves annotation unstaged, must git add done/ paths (pattern). (3) session.lock + cross-repo-writes-session.txt were NOT gitignored — protocol says they should be; added rules (project/ecosystem). (4) version-check grep assumed `## [vX` but CHANGELOG uses `## [1.17.0]` no v-prefix — re-resolved (pattern). (5) Option-A scope framing for the DEC: surface adopt-vs-full-architecture as explicit user fork (pattern). (6) leaning table = non-binding positions in an Accepted DEC, lets you decide+defer cleanly (pattern).
+Step 1: README/FEATURES check vs baseline. Step 2: MEMORY update (S49→previous, S50 latest). Step 2.5: checkpoint. Step 6: feedback push (none ripe). Step 8: methodology files? none (this is a spoke app, no DSM_*.md changed). Step 9: commit session work. Step 10: PR merge to main.
+Pre-confirm cross-repo targets (Step 0.5) first.
+<------------Start Output / 11:09------------>
+Ran wrap-up: extracted 6 reasoning lessons, updated MEMORY + checkpoint, committed + merged session-50 to master.

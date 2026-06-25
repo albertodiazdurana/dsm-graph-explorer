@@ -3,8 +3,8 @@
 <!-- Do not edit; auto-generated from .claude/reasoning-lessons.md by /dsm-wrap-up Step 0 or /dsm-staa Step 8 -->
 
 **Source:** `.claude/reasoning-lessons.md`
-**Last regenerated:** 2026-06-09T13:47+02:00
-**Source mtime at regeneration:** 2026-06-09T13:47+02:00
+**Last regenerated:** 2026-06-25T17:16+02:00
+**Source mtime at regeneration:** 2026-06-25T17:16+02:00
 
 ---
 
@@ -56,3 +56,12 @@
 - An interrupting question consumes no gate. When a presented-but-unapproved concept gate is interrupted by an unrelated question, re-confirm that gate after resolving the interruption; do not read a later "continue" as approval of it. Also re-present concept gates when resuming after a multi-week conversation gap, since approvals do not survive across conversations.
 - Count dsm-docs/ subfolders and _inbox/ separately; _inbox is a repo-root sibling, not a dsm-docs member. Folding it in produced the recurring "8/9 (pass)" miscount that /dsm-align corrected to complete.
 - A logged lesson does not self-enforce; recurring failure modes need a mechanism. The S48 "close the wrap-up loop in one pass" lesson recurred immediately (S49 sat unwrapped 6 weeks), and what caught it was /dsm-go's branch#>MEMORY# resumption detection, not the lesson. Escalate recurring failure modes to an enforceable check rather than re-logging them.
+
+## S50 (2026-06-25)
+
+- The transcript Edit-anchor failure recurs whenever a turn writes its `<Start Output / HH:MM>` marker before doing the work, leaving an unfilled placeholder; the same placeholder string then appears twice and breaks the Edit tool's last-non-empty-line anchor (and its "new_string must start with old_string" check). The reliable fallback is a Bash-heredoc append. Better still: write the Output marker line only when you actually have the summary.
+- `git mv` after an unstaged working-tree edit yields status `RM` (rename staged, modification not) — the rename is staged against the pre-edit blob. Restage the destination path (`git add done/...`) so the annotation is in the commit, not just the move. Verify with `git show :path | grep`. (BL-370/BL-444 restage rule, generalizes beyond checkpoints.)
+- Ephemeral per-session local state must be gitignored. This spoke had `session.lock` (BL-431) and `cross-repo-writes-session.txt` (BL-391) untracked-but-not-ignored, so `git add -A` would have committed them; added explicit `.gitignore` rules. Note `last-align.txt`/`last-align-report.md` ARE tracked here despite the spec calling them gitignored — follow the repo's established tracking, not the spec default.
+- Do not assume a marker's format before parsing it. The DSM CHANGELOG version heading is `## [1.17.0]` (no `v` prefix); the `## [v` grep returned nothing and the version check had to re-resolve. Resolve the actual heading shape, then compare.
+- For a large decision artifact, surface the scope fork explicitly rather than picking silently. DEC-011 offered adopt+minimal-experiment-scope (Option A) vs full-architecture commitment (Option B); a non-binding "leanings" table let an Accepted DEC decide the model and defer the schema details in one document, mirroring DEC-009's anti-over-commitment lesson.
+- "Worked on" is not the archival criterion; completion is. When organizing plans/research to done/, survey each file's Status line first, fix stale statuses (epoch-3 said ACTIVE two epochs late), keep living docs (vision) and pending-validation research (EXP-001 → Sprint 19) active, and annotate archived research with Date Completed.
