@@ -84,3 +84,7 @@ outputs/reports/*.md
 # references
 dsm-docs/_references
 .claude/session-baseline.txt
+
+# ephemeral per-session local state (BL-431 lockfile, BL-391 cross-repo confirmations)
+.claude/session.lock
+.claude/cross-repo-writes-session.txt
