@@ -3,7 +3,8 @@
 **Date:** 2026-04-23
 **Session:** 49
 **Author:** Alberto Diaz Durana (with AI assistance)
-**Status:** Active research
+**Status:** Done
+**Date Completed:** 2026-06-25 (S50; target outcome DEC-011 accepted)
 **Purpose:** Explore the design space for the Semantic Concept Layer (Layer 4.5) ahead of a decision
 **Target Outcome:** A DEC deciding whether and how to adopt concept nodes in the knowledge graph
 **Related:** [BL-GE-001](../plans/BL-GE-001_semantic-concept-layer.md), [Intrinsic-ToC Vision §4.5](2026-04-13_intrinsic-toc-vision.md), [DEC-009](../decisions/DEC-009-no-local-llm-dependencies.md)

@@ -4,6 +4,7 @@
 **Session:** 47
 **Sprint:** 16 (BL-302 Phase 1)
 **Status:** Phase 1 complete, findings documented
+**Date Completed:** 2026-06-25 (archived to done/, S50)
 **Target Outcome:** Empirical validation that graph topology can produce
 agent-consumable markdown summaries at realistic repository scale
 **Prerequisite:** [Intrinsic-ToC Vision](2026-04-13_intrinsic-toc-vision.md)

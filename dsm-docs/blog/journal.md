@@ -75,3 +75,35 @@ output." Sprint 16 is GE turning inward: the tool that analyzes repositories
 now produces output specifically structured for the kind of agent that will
 read it. The `key: value` format (`path:`, `sections:`) is the concrete
 manifestation, parseable without natural language understanding.
+
+### [2026-06-25] Sessions 49-50: Concepts as nodes, and a drift the graph could have caught
+
+Two research-and-decision sessions, no production code, but the shape of the
+next epoch got decided.
+
+**GraphRAG, weighed and declined (S49).** Three parallel research agents
+surveyed GraphRAG for the Intrinsic-ToC graph. Verdict: adopt the ideas, not
+the stack. The decisive datum was not a benchmark average but a single fact,
+Leiden clustering was already on the Sprint 18 roadmap, so the one technique
+worth borrowing was already coming. The full stack ($33K indexing, 34%
+entity-miss, 41x build time) also contradicts DEC-009 (no local LLM
+dependencies). Convergence plus one decisive fact beat a scorecard.
+
+**A fourth node type (S49 research, S50 decision).** The graph has three node
+types: files, sections, terms. The Semantic Concept Layer (Layer 4.5) proposes
+a fourth, the concept, an idea that recurs across files and repos but is not
+itself any of them (`DEC-009`, `Intrinsic-ToC`, `session baseline`). S49
+explored the design space; S50 closed it with DEC-011, adopt for Epoch 6, with
+one firm commitment (a `dsm-version` drift-detection slice) and the rest of the
+schema recorded as non-binding leanings. Decide the model, defer the details
+until the minimal slice teaches us, the same lesson DEC-009 taught about not
+over-committing architecture early.
+
+**Narrative thread:** "The tool watching itself." DEC-011's headline product is
+drift detection, surfacing when a concept's value disagrees across the files
+that mention it. The worked example is `dsm-version`. The irony wrote itself:
+*this very session* opened with the agent detecting, by hand, that
+`last-align.txt` said v1.14.0 while the DSM CHANGELOG said 1.17.0, then running
+`/dsm-align` to reconcile it. That hand-check is exactly the query a concept
+node would answer. The session that decided to build the drift detector spent
+its first ten minutes being the drift detector.

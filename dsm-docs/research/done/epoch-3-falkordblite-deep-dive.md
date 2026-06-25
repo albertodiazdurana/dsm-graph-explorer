@@ -6,6 +6,7 @@
 **Purpose:** Resolve implementation-level unknowns for the selected graph database (DEC-006)
 **Prerequisite:** [Landscape research](epoch-3-neo4j-landscape-research.md), [DEC-006](../decisions/DEC-006-graph-database-selection.md)
 **Status:** Complete
+**Date Completed:** 2026-06-25 (archived to done/, S50)
 
 ---
 

@@ -1,12 +1,12 @@
 # BL-GE-001: Semantic Concept Layer (Layer 4.5)
 
-**Status:** Proposed
+**Status:** DEC accepted (DEC-011, S50) → Epoch 6 plan pending
 **Priority:** Medium
 **Date Created:** 2026-04-23
 **Origin:** GE S49 (user proposal, 2026-04-23)
 **Author:** Alberto Diaz Durana
-**Target:** Research-gated → DEC → Epoch 6 plan (not in Epoch 5 sprint scope)
-**Related:** [Intrinsic-ToC Vision §4.5](../research/2026-04-13_intrinsic-toc-vision.md), [DEC-009](../decisions/DEC-009-no-local-llm-dependencies.md), future research file (`2026-04-23_semantic-concept-layer.md`), future DEC
+**Target:** Research-gated → DEC → Epoch 6 plan (not in Epoch 5 sprint scope). Research + DEC gates cleared S50; next gate is the Epoch 6 plan.
+**Related:** [Intrinsic-ToC Vision §4.5](../research/2026-04-13_intrinsic-toc-vision.md), [DEC-009](../decisions/DEC-009-no-local-llm-dependencies.md), [DEC-011](../decisions/DEC-011-semantic-concept-layer-adoption.md), research file (`2026-04-23_semantic-concept-layer.md`)
 
 ---
 
@@ -78,4 +78,4 @@ Surface when a concept is defined inconsistently, or when its meaning has drifte
 - [ ] Layer 4.5 section added to the Intrinsic-ToC vision file (Step B).
 - [ ] Research file `2026-04-23_semantic-concept-layer.md` created with the design-space exploration (Step C).
 - [ ] `plans/README.md` documents the `BL-GE-{NNN}` naming convention (Step D).
-- [ ] A DEC is drafted once research concludes (downstream, separate work item).
+- [x] A DEC is drafted once research concludes (downstream, separate work item). — [DEC-011](../decisions/DEC-011-semantic-concept-layer-adoption.md), accepted S50 (2026-06-25).

@@ -3,6 +3,7 @@
 **Date:** February 4, 2026
 **Project:** https://github.com/albertodiazdurana/dsm-graph-explorer
 **Status:** Epoch 2 Planning
+**Date Completed:** 2026-06-25 (archived to done/, S50)
 **Prerequisite:** Epoch 1 Complete (Parser MVP, Validator, CLI)
 
 ---
