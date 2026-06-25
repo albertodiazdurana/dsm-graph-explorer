@@ -3,6 +3,7 @@
 **Date:** February 1, 2026  
 **Project:** https://github.com/albertodiazdurana/dsm-graph-explorer  
 **Status:** Phase 0 complete, Phase 1 in progress
+**Date Completed:** 2026-06-25 (archived to done/, S50)
 
 ---
 

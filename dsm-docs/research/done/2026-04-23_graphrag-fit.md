@@ -4,6 +4,7 @@
 **Session:** 49
 **Author:** Alberto Diaz Durana (with 3 parallel Sonnet research agents)
 **Status:** Research document, INPUT to planning pipeline (not an actionable BL)
+**Date Completed:** 2026-06-25 (archived to done/, S50)
 **Scope:** Assess whether GraphRAG is worth adopting for DSM across three targets:
 (a) DSM methodology corpus, (b) DSM Graph Explorer repo, (c) Ecosystem Graph / Avatar Layer 3.
 

@@ -3,6 +3,7 @@
 **Purpose/Question:** How do different embedding models agree/disagree on document similarity, and what strategies handle model disagreement?
 **Target Outcome:** Epoch 4 architecture input (LLM second-pass design, similarity edge methodology)
 **Status:** Done
+**Date Completed:** 2026-06-25 (archived to done/, S50)
 **Date Created:** 2026-02-25
 **Date Completed:** 2026-02-25
 **Outcome Reference:** Informs Epoch 4 roadmap (LLM second-pass) and deferred Sprint 7 feature (similarity edges on graph)
