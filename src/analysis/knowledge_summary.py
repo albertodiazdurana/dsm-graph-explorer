@@ -9,6 +9,42 @@ topology. Four components:
 
 Origin: DSM Central BL-302 (agent-consumable-knowledge-graph-export),
 BL-303 (navigation architecture vision, P1-P4 priority guidance).
+
+TOON Schema (BL-302 Phase 1.5, DEC-010)
+---------------------------------------
+Emitted when ``--format toon``. **Flat tabular arrays only** (no nested
+sub-arrays), so per-record cost stays linear and the DEC-010 C3 token
+measurement remains comparable to Central BL-367's -14.6% projection.
+Delimiter: comma. A field is double-quoted iff it contains the delimiter, a
+double-quote, or a newline; embedded double-quotes are doubled (CSV-style).
+Empty sections emit a zero-cardinality header (e.g. ``hub[0]{...}:``) with no
+rows, preserving the schema contract. The document hierarchy is split into two
+flat arrays (``directories`` aggregates + ``hierarchy`` shown files) because a
+nested dir->files form is not flat-tabular::
+
+    summary:
+      files: <int>
+      sections: <int>
+      cross_references: <int>
+
+    directories[D]{path,files,sections,shown,more}:
+      <dir>,<file_count>,<total_sections>,<files_shown>,<files_remaining>
+
+    hierarchy[F]{dir,title,sections,path}:
+      <dir>,<file_title>,<section_count>,<file_path>
+
+    hub[H]{rank,file,incoming_refs,top_section}:
+      <rank>,<file_path>,<incoming_ref_count>,<"number: title">
+
+    hotspots[S]{refs,file,section,title}:
+      <incoming_refs>,<file_path>,<section_number_or_(unnumbered)>,<title>
+
+    orphans[O]{file,sections}:
+      <file_path>,<section_count>
+
+where ``shown = min(top_files_per_dir, file_count)`` and
+``more = max(0, file_count - top_files_per_dir)``. The ``file`` columns carry
+the file path (node id), not the display title, for navigability.
 """
 
 from collections import defaultdict
