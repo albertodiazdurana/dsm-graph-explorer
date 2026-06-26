@@ -52,6 +52,46 @@ from collections import defaultdict
 import networkx as nx
 
 
+def _quote(value, delim: str = ",") -> str:
+    """Quote a field for TOON output, CSV-style.
+
+    Returns the bare string form unless it contains the delimiter, a
+    double-quote, or a newline, in which case it is wrapped in double-quotes
+    with embedded double-quotes doubled.
+    """
+    s = str(value)
+    if delim in s or '"' in s or "\n" in s:
+        return '"' + s.replace('"', '""') + '"'
+    return s
+
+
+def emit_table(name: str, fields, rows, delim: str = ",") -> str:
+    """Emit a flat tabular TOON array.
+
+    The ``name[N]{f1,f2,...}:`` header declares cardinality and field names
+    once; each row follows on its own 2-space-indented line with
+    delimiter-joined, quoted values. Empty ``rows`` emits the header alone
+    (``name[0]{...}:``), preserving the schema contract.
+    """
+    header = f"{name}[{len(rows)}]{{{delim.join(fields)}}}:"
+    if not rows:
+        return header
+    lines = [header]
+    for row in rows:
+        lines.append("  " + delim.join(_quote(v, delim) for v in row))
+    return "\n".join(lines)
+
+
+def emit_summary(files: int, sections: int, cross_references: int) -> str:
+    """Emit the non-tabular TOON ``summary:`` header block."""
+    return (
+        "summary:\n"
+        f"  files: {files}\n"
+        f"  sections: {sections}\n"
+        f"  cross_references: {cross_references}"
+    )
+
+
 def generate_hierarchy(
     G: nx.DiGraph, top_files_per_dir: int = 3
 ) -> str:
