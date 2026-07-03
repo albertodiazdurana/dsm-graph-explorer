@@ -3,16 +3,13 @@
 <!-- Do not edit; auto-generated from .claude/reasoning-lessons.md by /dsm-wrap-up Step 0 or /dsm-staa Step 8 -->
 
 **Source:** `.claude/reasoning-lessons.md`
-**Last regenerated:** 2026-06-25T17:16+02:00
-**Source mtime at regeneration:** 2026-06-25T17:16+02:00
+**Last regenerated:** 2026-07-03T14:24+02:00
+**Source mtime at regeneration:** 2026-07-03T14:24+02:00
 
 ---
 
-- Concept gate granularity matters. Passing the concept gate at the BL level does not cover module-level design decisions (thresholds, condensation rules, output budgets). When an artifact has parameters that affect output, those parameters are concept-gate material.
-- "Don't design for hypothetical future requirements" applies to implementation even when vision documents span future phases. Plans should have vision; code should target reachable deliverables. Distinguish vision (document) from architecture-enabling-future (don't implement without concrete need).
 - Boundary protocols (sprint, epoch) need automatic triggers, not just checklists. Verbal "substantially complete" is not procedural closure. Three related gaps surfaced in a single session: sprint trigger, checkbox reconciliation, epoch boundary absence.
 - Verification (reading) and documentation (writing) are asymmetric. After verifying items complete, explicit write-back is required to prevent stale state. Applies to sprint checklists, MEMORY.md stale claims, last-align.txt markers.
-- The agent IS the query engine. No MCP, no local LLM needed for the navigable-ToC pattern. Design outputs so Claude (or any LLM) can search patterns, extract values, follow links like a human reads a book's ToC. DEC-009 codifies this.
 - When uncertain whether to refactor for future flexibility, check: is the second use case concrete? If no, defer. The hierarchy-fix-only approach worked; the data/format split would have been speculative work.
 - Graph query functions should be separable from output formatters by necessity (future MCP/JSON), but only split when the second format is actually built. Today, returning markdown directly is acceptable.
 - Three-file atomic feedback (local methodology + local backlogs + brief Central notification) works. Central gets pointers, not duplicates; spokes keep the full record.
@@ -27,7 +24,6 @@
 
 ## S48 (2026-04-20)
 
-- User direct instruction beats mode default. When user requests collaboration gates mid-Auto-mode, gates win; "minimize interruptions" is the default, not the override.
 - /dsm-align across a major DSM version jump (v1.4.17 → v1.6.0) must re-chmod +x hooks regardless of byte-diff result. Hooks present but mode 644 = silent S180 failure; chmod is idempotent, apply unconditionally.
 - Counter-evidence table (per BL-385 §8.2.1) works well paired with rebuttals in a single row. Six counter-claims weighed vs. rebuttals on the TOON decision kept the Gate 2 presentation auditable without sprawl.
 - "Phase 1.5" BL naming signals prep-step sequencing between Phase 1 and Phase 2 without ambiguating Phase 2's scope. Useful when a format/infrastructure migration gates the next planned phase.
@@ -65,3 +61,15 @@
 - Do not assume a marker's format before parsing it. The DSM CHANGELOG version heading is `## [1.17.0]` (no `v` prefix); the `## [v` grep returned nothing and the version check had to re-resolve. Resolve the actual heading shape, then compare.
 - For a large decision artifact, surface the scope fork explicitly rather than picking silently. DEC-011 offered adopt+minimal-experiment-scope (Option A) vs full-architecture commitment (Option B); a non-binding "leanings" table let an Accepted DEC decide the model and defer the schema details in one document, mirroring DEC-009's anti-over-commitment lesson.
 - "Worked on" is not the archival criterion; completion is. When organizing plans/research to done/, survey each file's Status line first, fix stale statuses (epoch-3 said ACTIVE two epochs late), keep living docs (vision) and pending-validation research (EXP-001 → Sprint 19) active, and annotate archived research with Date Completed.
+- Partial answer to a multi-item prompt — proceed on your recommendation but state the assumption. When the user answers some sub-questions and is silent on the one you flagged as the key decision (S50: "1. accepted, 2. yes" with no word on the A/B scope fork), do not silently assume on the flagged item and do not re-block for an answer they are clearly ready to move past; proceed with the recommended option and state the assumption explicitly so they can correct it. Distinct from surfacing the fork (that is the prior step); this is handling the silence on it.
+- A missing status marker degrades to the conservative signal, producing a false positive for already-done work. The STAA-for-S49 reminder fired though S49's STAA was done Jun 9, because last-staa.txt was absent and /dsm-go Step 5.7 degrades a missing marker to "remind". Completed work whose marker is absent reads as undone; the marker is the mechanism (echoes S49 #58). Write the marker even retroactively to clear the false-positive class.
+- S50's wasted cycles were entirely tooling-mechanical, not reasoning — and disclosure lessons transferred cleanly. Near-zero reasoning reversals; every friction point was infrastructure (transcript Edit-anchor failure ×2 → heredoc fallback; `## [v` grep miss). Meanwhile two S49 [STAA] lessons executed un-prompted: "protocol-mandated ≠ automatic" (surfaced the expensive /dsm-align rather than auto-running it) and "state shortcuts proactively" (wrap-up enumerated all skipped steps + the Step 8.5 /humanizer deviation with reasons). Surfacing/disclosure lessons transfer across sessions; the recurring failures are mechanical and need mechanisms (hooks, marker-writing), not re-logged lessons.
+
+## S52 (2026-07-03)
+
+- A mid-flow skill switch (/dsm-go → /dsm-light-go) leaves the earlier skill's session-start side effects already applied. /dsm-go had archived+reset the transcript and derived a new session number (S52) before Step 5.9 discovered type:light and offered the switch. The light-go "inherit the number, don't archive/reset" rule assumes a DIRECT entry; on a switch entry those effects are already done and can't cleanly undo. Reconcile explicitly (keep S52, note the archive is safe, state the deviation) rather than silently forcing the inherit rule.
+- A capability experiment can double as an adjudicated cross-model review. Design the brief so the reviewing model's findings are verifiable (structured schema, cite file:line), then INDEPENDENTLY REPRODUCE the load-bearing claim rather than accept it. All 14 Fable-5 findings survived Opus adjudication; the one that changed the sprint (the C3 token gate) I re-ran myself and it matched to the token. The adjudication table is the trust boundary that makes a fresh model's output actionable.
+- Delegate token-cheap gathering to a cheaper model, reserve the expensive model for analysis. A one-line brief directive ("delegate cheap tasks to lighter models, reserve yourself for the analytical/critical part") produced the intended split: Fable put ~65-70% of ~270-300K tokens on Haiku gatherers and spent its own budget on judgment. Making the wider read-set affordable was what justified going wide.
+- Run a falsifiable validation gate EARLY, before the artifact it guards is frozen. DEC-010's C3 token gate was runnable in under a minute and FAILED (+1.74% Central / +7.58% GE vs required −10%). The plan sequenced P2 (golden-fixture freeze) before P3 (the gate); that ordering would have enshrined a schema that cannot ship. Gate-before-freeze whenever the gate has no real dependency on the freeze.
+- Character savings ≠ token savings under BPE. The implemented TOON emits FEWER characters but MORE tokens than the markdown it replaced, because comma-adjacent long paths tokenize poorly. Root cause: measured-schema ≠ implemented-schema (BL-367 projected −14.6% for a single-table schema; the built schema split into two tables with a redundant path column). Re-measure format decisions AFTER implementation, not only at research time.
+- When an assessment reopens a decision, formalize the finding and the halt but DEFER the direction decision. Annotated DEC-010 (amendment, not a new DEC), recorded the course correction in BL-302, wrote a handoff enumerating the forks — separating "record the reckoning" from "decide the response", so the next session decides with full context instead of the current one deciding under time pressure.

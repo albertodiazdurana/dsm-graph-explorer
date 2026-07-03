@@ -1,10 +1,29 @@
 # DEC-010: Migrate Knowledge-Summary Output to TOON
 
-**Status:** Accepted
+**Status:** Accepted, implementation HALTED 2026-07-03 (C3 gate failed, see Amendment below)
 **Date:** 2026-04-20
 **Session:** S48
 **Author:** Alberto Diaz Durana
 **Related:** DEC-009 (no local LLM dependencies), Central BL-367 (format research), GE BL-302 Phase 1 (Sprint 16)
+
+---
+
+## Amendment (2026-07-03, Session 52): Implementation HALTED
+
+The C3 validation gate this decision established was run during Sprint 17
+(capability experiment EXP-010, Fable 5 assessment with Opus adjudication) and
+**FAILED**. The implemented TOON schema measures token-POSITIVE, +1.74% on the
+DSM Central corpus and +7.58% on GE's own corpus (tiktoken `cl100k_base`, relative
+paths, same-day paired baseline), against the required −10% savings. The implemented
+schema (two flat tables with a redundant `path` column, node-id paths instead of
+titles) differs from the one BL-367 projected −14.6% for, so that projection did not
+transfer. TOON migration is **halted pending a redesign decision (Session 53)**.
+
+This decision's C3 kill-switch worked exactly as designed: measured savings <10% →
+halt and revisit the research assumptions. See BL-302 "Sprint 17 Course Correction"
+and `data/experiments/EXP-010-fable-repo-plan-assessment/` (EXP-010.md §5, results.md
+findings F1-F14). The redesign direction (fix-and-retry / reopen this decision /
+agent-navigation experiment first) is deferred, not decided here.
 
 ---
 

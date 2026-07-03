@@ -1,12 +1,46 @@
 # BL-302 Phase 1.5: TOON Migration for Knowledge-Summary Output
 
-**Status:** Open
+**Status:** HALTED (Sprint 17 course correction, 2026-07-03), see next section
 **Priority:** High
 **Date Created:** 2026-04-20
 **Origin:** DEC-010 (this project) + DSM Central BL-367 (format research) + GE S47 Q3
 **Author:** Alberto Diaz Durana
 **Target:** Sprint 17 (Epoch 5)
 **Related:** [DEC-010](../decisions/DEC-010-toon-migration-format.md), BL-302 Phase 1 (Sprint 16, shipped), Phase 2 (Leiden clusters, Epoch 5)
+
+---
+
+## Sprint 17 Course Correction (2026-07-03, Session 52)
+
+**P2 HALTED. The DEC-010 C3 validation gate was run early (per EXP-010) and FAILED.**
+
+Independent capability experiment EXP-010 (Fable 5 assessment, Opus adjudication)
+measured the implemented TOON schema with tiktoken `cl100k_base`:
+- GE `dsm-docs/` corpus (relative paths): markdown 2,903 vs TOON 3,123 tokens, TOON **+7.58%**.
+- Full DSM Central corpus (relative, same-day paired): markdown 6,952 vs TOON 7,073, TOON **+1.74%**.
+- The gate requires **−10%** savings. The implemented schema is token-POSITIVE on every corpus measured.
+
+**Root cause:** the implemented schema differs from the one BL-367 projected −14.6% for.
+Two flat tables (`directories` + per-file `hierarchy`) repeat the directory in every
+row and carry a `path` column that duplicates dir+basename, and `hub`/`orphans` carry
+long node-id paths instead of short titles. TOON emits fewer characters but MORE tokens
+(BPE: comma-adjacent long paths tokenize poorly).
+
+**Required before any TOON retry (enumerated, not yet decided):**
+1. Redesign the `hierarchy`/`directories` schema to remove path redundancy (drop `path`, reconstruct from dir+basename, reconsider title-vs-path per table).
+2. Make `_quote` spec-conformant (backslash escapes, quote colons/numeric-like/empty/edge values). The current emitter is CSV-dialect, not spec-TOON, and two unit tests enshrine the violation.
+3. Add orphan/hotspot overflow totals (TOON silently drops them, markdown reports "... and N more").
+4. Add deterministic tie-breaks to the hub/hotspot sorts before any golden freeze.
+5. Fix the P3 gate protocol: same corpus snapshot, same invocation (relative paths, recorded command), same day, paired. The frozen 9,309-token baseline is stale (corpus grew) and invocation-dependent.
+6. Add a strict-mode reference-decoder round-trip test (pin the TOON reference implementation as a dev-only dependency).
+
+**Direction deferred to Session 53**, three forks: (a) fix-and-retry TOON, (b) reopen
+DEC-010 (the token metric may be the wrong gate, no experiment tests whether agents
+navigate better with the Intrinsic-ToC at all), (c) run an agent-navigation experiment
+first, then decide.
+
+**Evidence:** `data/experiments/EXP-010-fable-repo-plan-assessment/` (EXP-010.md §5
+adjudication table, results.md findings F1-F14).
 
 ---
 
