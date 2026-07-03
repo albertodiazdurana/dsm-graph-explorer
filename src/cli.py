@@ -431,7 +431,14 @@ def _print_usage_diff(diff: "DiffReport") -> None:
     "knowledge_summary_path",
     type=click.Path(),
     default=None,
-    help="Build reference graph and write agent-consumable knowledge summary (markdown) to PATH.",
+    help="Build reference graph and write agent-consumable knowledge summary to PATH.",
+)
+@click.option(
+    "--format",
+    "knowledge_summary_format",
+    type=click.Choice(["markdown", "toon"]),
+    default="markdown",
+    help="Output format for --knowledge-summary: markdown (default) or toon.",
 )
 @click.option(
     "--lint",
@@ -560,6 +567,7 @@ def main(
     graph_export_path: str | None,
     graph_stats: bool,
     knowledge_summary_path: str | None,
+    knowledge_summary_format: str,
     lint: bool,
     graph_db_path: str | None,
     rebuild: bool,
@@ -1133,13 +1141,15 @@ def main(
 
         if knowledge_summary_path:
             from analysis.knowledge_summary import generate_knowledge_summary
-            summary = generate_knowledge_summary(G)
+            summary = generate_knowledge_summary(
+                G, fmt=knowledge_summary_format
+            )
             with open(knowledge_summary_path, "w", encoding="utf-8") as f:
                 f.write(summary)
             line_count = len(summary.splitlines())
             click.echo(
-                f"Knowledge summary written to {knowledge_summary_path} "
-                f"({line_count} lines)"
+                f"Knowledge summary ({knowledge_summary_format}) written to "
+                f"{knowledge_summary_path} ({line_count} lines)"
             )
 
         # Persist to FalkorDB (opt-in via --graph-db)

@@ -1,3 +1,5 @@
+**Consumed at:** Session 51 start (2026-06-26)
+
 # Session 51 Checkpoint (light)
 
 **Date:** 2026-06-26

@@ -265,3 +265,130 @@ sprint-17 branch (unpushed) for safety; 3 commit session .claude changes (transc
 4 minimal checkpoint; 5 baseline mode:light marker; 6 checkpoint+baseline commit+push;
 7 last-wrap-up.txt type:light; 8 rm session.lock. Do NOT clear transcript. No reasoning-
 lessons/feedback/README (deferred). No co-author line.
+
+<------------Start Output / 19:08------------>
+Light wrap-up complete. MEMORY Latest-Session + Current lines updated (S51, Sprint
+17 P0+P1a, lightweight). Branch sprint-17/toon-migration pushed to origin (was
+unpushed). Session commit 20ea577 (transcript+marker+archived transcript), checkpoint
+commit 8f8d639. Checkpoint: dsm-docs/checkpoints/2026-06-26_s51_checkpoint.md.
+Baseline mode:light appended (gitignored, local — /dsm-light-go reads it locally).
+last-wrap-up.txt type:light. session.lock removed. Transcript preserved (not cleared)
+for the continuation session. Deferred (light): inbox/version/reasoning-lessons/
+feedback/full-MEMORY/README/contributor. Next session: /dsm-light-go → P1b.
+
+<------------Start Thinking / 14:52------------>
+/dsm-light-go resume. Safety gate: last-wrap-up.txt type:light → proceed normally.
+Branch `sprint-17/toon-migration` is a task branch (sprint-*), so the same-day
+cadence date-check is skipped (task branches may span days). GIT_AVAILABLE=true.
+Scaffold pre-check: dsm-docs/ is well-populated (known from project), expect 9/9.
+Session number: this is a task branch, not session-N/DATE form. Per MEMORY the
+current main session is S51; light continuation inherits S51. Need to run the
+remaining steps: scaffold count, branch verify, stale-branch prune, checkpoint
+read+move, git status, baseline write, transcript boundary marker, report.
+Task context (from MEMORY): Sprint 17 TOON migration BL-302 Phase 1.5. P0 (schema)
++ P1a (emitter helpers) done. Remaining: P1b (wire TOON path + --format routing),
+P2 (test migration + .toon golden), P3 (C3 validation gate). Last wrap-up says
+"Next session → P1b". So the suggested next step is P1b.
+
+<------------Start Output / 14:52------------>
+
+---
+
+## Session 51 (lightweight continuation)
+**Started:** 2026-06-26 14:52
+**Previous session artifacts:**
+- Checkpoint: 2026-06-26_s51_checkpoint.md
+- MEMORY.md updated: no (light wrap-up)
+
+**Context loaded:**
+- MEMORY.md (latest)
+- Checkpoint: 2026-06-26_s51_checkpoint.md
+
+---
+
+<------------Start Output / 14:53------------>
+/dsm-light-go complete. S51 continuation on sprint-17/toon-migration. Safety gate
+passed (type:light). Scaffold 8/9. Checkpoint 2026-06-26_s51_checkpoint.md read,
+annotated, moved to done/ + restaged. Baseline written (mode:light). Boundary
+marker appended. Reported state + recommended Builder config. Next: P1b (plan mode
+first) — extract _*_rows helpers, add TOON assembly, thread --format through CLI,
+keep markdown byte-identical. Awaiting user Y/N to start.
+
+<------------Start Thinking / 14:55------------>
+User said "go ahead" → start P1b. Per CLAUDE.md "Plan Mode for Significant Changes":
+this touches the 4 generators + CLI, so it is read-only exploration first, present a
+plan, no writes until approved. Reading list: src/analysis/knowledge_summary.py (full
+— P0 schema docstring + the 4 generators + P1a emitter helpers), tests/test_knowledge_summary.py
+(the 25 markdown tests that must stay byte-identical + the 12 P1a emitter tests), and
+the CLI entry point that calls generate_knowledge_summary (find where --knowledge-summary
+is wired so I know the call signature to thread --format through). Goal of P1b per
+checkpoint: (1) extract _*_rows(G) data helpers from the 4 generators, (2) add TOON
+assembly path using emit_table/emit_summary, (3) thread --format {markdown,toon} from
+CLI through generate_knowledge_summary(G, fmt=...), (4) keep markdown byte-for-byte
+identical. After reading, present the implementation plan for approval before editing.
+
+<------------Start Output / 15:00------------>
+Read knowledge_summary.py (full, 362 lines), test_knowledge_summary.py (336 lines,
+29 markdown tests across 5 classes + 3 P1a emitter classes), and cli.py wiring
+(--knowledge-summary at L429, call site L1134-1143, no --format option exists yet).
+Key findings for the plan: (a) markdown generators emit prose for empty/edge cases
+("No files in graph.", "No hub documents found") — TOON needs structured rows, so
+data extraction must be separated from prose formatting. (b) hub/orphan markdown use
+TITLE in their columns but the TOON schema mandates PATH (node id) for the file
+column — different columns per path, the rows helper must carry both file_node+title.
+(c) hotspots markdown caps at max_items with a "...N more above threshold" note; TOON
+flat schema has no overflow field, so that note is dropped in TOON (cardinality header
+reflects shown count) — design point to flag. (d) generate_knowledge_summary(G) is
+called by 4 integration tests with no fmt arg → default fmt="markdown" keeps them
+green. (e) --format has no existing collision (grep clean). Presenting plan: 4 shared
+_*_rows helpers feed BOTH paths, markdown refactored to consume them with 25-test
+regression gate run per section; TOON assembly in generate_knowledge_summary; --format
+Choice(markdown,toon) threaded through CLI. Awaiting approval before any edit.
+
+<------------Start Thinking / 15:05------------>
+Plan approved ("proceed"), all 3 flagged points accepted by default (no objection
+raised → hotspots overflow dropped in TOON, empty-graph emits [0] headers, --format
+left unguarded). Executing the 5-step sequence. Step 1: add 4 pure data helpers.
+Design each to return tuples matching the schema columns:
+- _hierarchy_rows(G, top) → (directories_rows, hierarchy_rows). dir rows:
+  (path, files, sections, shown, more) where shown=min(top,count), more=max(0,count-top).
+  hierarchy rows (one per shown file): (dir, title, sections, path).
+- _hub_rows(G, n) → list of (rank, file_path, incoming_refs, top_section), only c>0,
+  top-n. Reuses _top_section_for_file.
+- _hotspot_rows(G, threshold, max) → (rows, total) where rows are
+  (refs, file, section_label, title), capped at max; section_label = number or
+  "(unnumbered)". Return total too so markdown can render the overflow note.
+- _orphan_rows(G, max) → (rows, total), rows = (file_path, title, sections), sorted,
+  capped. title carried so markdown keeps its title display.
+Then step 2: refactor the 4 markdown generators to consume these, byte-identical,
+run 29 tests. Building helpers first, then refactor, then test. I'll keep the
+existing generators' prose branches (empty-graph, no-hub, no-hotspot, no-orphan).
+Note: _hierarchy needs the os import — currently imported inside the loop; move to
+module top (already has `from collections import defaultdict`). Will add `import os`
+at top to share. That's a cosmetic improvement, low risk.
+
+<------------Start Output / 15:25------------>
+P1b complete (steps 1-5). Added 4 pure data helpers (_hierarchy_rows → directories+
+hierarchy rows, _hub_rows, _hotspot_rows → (rows,total), _orphan_rows → (rows,total));
+refactored all 4 markdown generators to consume them; hoisted `import os` to module
+top. Markdown verified byte-identical: 37 knowledge-summary tests green after each
+section. Added _generate_toon_summary (summary block + 6 flat arrays in schema order,
+blank-line separated) and threaded fmt="markdown" default through
+generate_knowledge_summary. CLI: added --format Choice(markdown,toon) default markdown,
+threaded knowledge_summary_format param into main() signature + call site; echo now
+names the format. Spot-checks: test graph TOON correct (hotspots[0] zero-cardinality,
+top_section bare since no comma); empty graph emits all [0] headers; real-repo run
+--format toon → 188 lines, --knowledge-summary markdown default → 212 lines header
+identical. Full suite: 701 passed, 1 skipped, 91% coverage (was 689+12 P1a = 701).
+Not committed yet — task branch, awaiting user decision (commit P1b vs continue to P2).
+P2 = test migration + tests/fixtures/knowledge-summary.toon golden. P3 = C3 gate.
+
+<------------Start Thinking / 15:30------------>
+User said "wrap up". Variant choice: this session is mode:light (continuation),
+same-day, on task branch sprint-17/toon-migration, and work continues (P2, P3 of
+Sprint 17 remain — not a sprint boundary). Previous session was a light wrap-up.
+→ /dsm-light-wrap-up is the correct variant; it preserves the light chain and defers
+the heavy items (feedback push, full MEMORY, README, inbox, version). P1b is
+uncommitted; the wrap-up will commit it on the task branch. Deferred items are
+accumulating (checkpoint listed 7); I'll flag that the next natural boundary should
+be a full /dsm-go + /dsm-wrap-up cycle to clear them. Invoking the skill now.
