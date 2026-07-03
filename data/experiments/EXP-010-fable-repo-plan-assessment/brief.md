@@ -149,5 +149,14 @@ Then add, per axis, a short **narrative summary** answering the questions in
 Section 4, and a final **top-3 priorities** list (the three things you would do
 next if this were your project). Note anything you could NOT verify and why.
 
+**Process report (required).** Also briefly report *how* you did the work, so we
+can assess the workflow itself:
+- **How many agents / sub-agents** you used (yourself + any lighter models spawned).
+- **Which workflow** — what each agent did, how you split gathering vs. analysis,
+  and the order of operations.
+- **Token usage** — approximate total tokens, and the split between your own
+  (analytical) tokens and the delegated (cheap-gathering) tokens if you can
+  estimate it. If exact numbers aren't available, give your best estimate and say so.
+
 Remember: Opus will adjudicate each finding against the code. Make it easy to
 confirm you right (or wrong) — cite `file:line` and quote the relevant snippet.

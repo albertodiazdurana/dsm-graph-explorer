@@ -6,9 +6,13 @@
 
 **Model:** Fable 5 (`claude-fable-5`)
 **Run date:** _(fill: YYYY-MM-DD)_
-**Delegation used:** _(fill: which cheaper sub-agents you spawned and for what — Tier 2 gathering, etc.)_
 **Files actually read (Tier 1 direct / Tier 2 delegated):** _(fill)_
 **Anything you could NOT access:** _(fill, or "none")_
+
+### Process report (how the work was done)
+- **Agents / sub-agents used:** _(fill: yourself + count and type of any lighter models spawned)_
+- **Workflow:** _(fill: what each agent did, gathering-vs-analysis split, order of operations)_
+- **Token usage:** _(fill: approx total; split between your analytical tokens and delegated cheap-gathering tokens if estimable; say if these are estimates)_
 
 ---
 
