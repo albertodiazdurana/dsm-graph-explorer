@@ -91,6 +91,9 @@ from analysis.knowledge_summary import (
     generate_hotspots,
     generate_orphans,
     generate_knowledge_summary,
+    _quote,
+    emit_table,
+    emit_summary,
 )
 
 
@@ -268,3 +271,65 @@ class TestGenerateKnowledgeSummary:
         result = generate_knowledge_summary(G)
         assert isinstance(result, str)
         assert "# Knowledge Summary" in result
+
+
+# --- Sprint 17 (BL-302 Phase 1.5): TOON emitter helpers (P1a) ---------------
+# TDD: tests written before implementation.
+
+
+class TestQuote:
+    """CSV-style field quoting for TOON output."""
+
+    def test_bare_value_unquoted(self):
+        assert _quote("foo") == "foo"
+
+    def test_int_coerced_to_bare_string(self):
+        assert _quote(343) == "343"
+
+    def test_comma_triggers_quoting(self):
+        assert _quote("a,b") == '"a,b"'
+
+    def test_embedded_quote_doubled(self):
+        assert _quote('a"b') == '"a""b"'
+
+    def test_newline_triggers_quoting(self):
+        assert _quote("a\nb") == '"a\nb"'
+
+    def test_colon_does_not_trigger_quoting(self):
+        # Colon is not the delimiter, so a section label stays bare.
+        assert _quote("1.2: Session Start") == "1.2: Session Start"
+
+    def test_custom_delimiter_quotes_tab_not_comma(self):
+        assert _quote("a\tb", delim="\t") == '"a\tb"'
+        assert _quote("a,b", delim="\t") == "a,b"
+
+
+class TestEmitTable:
+    """Flat tabular TOON array emission."""
+
+    def test_basic_two_rows(self):
+        result = emit_table("hub", ["rank", "file"], [(1, "a.md"), (2, "b.md")])
+        assert result == "hub[2]{rank,file}:\n  1,a.md\n  2,b.md"
+
+    def test_empty_rows_emits_zero_cardinality_header(self):
+        result = emit_table("hub", ["rank", "file"], [])
+        assert result == "hub[0]{rank,file}:"
+
+    def test_row_values_are_quoted(self):
+        result = emit_table("t", ["a", "b"], [("x,y", "z")])
+        assert result == 't[1]{a,b}:\n  "x,y",z'
+
+    def test_rows_indented_two_spaces(self):
+        result = emit_table("t", ["a"], [(1,)])
+        body = result.split("\n")[1]
+        assert body == "  1"
+
+
+class TestEmitSummary:
+    """Non-tabular summary header block."""
+
+    def test_three_indented_fields(self):
+        result = emit_summary(3, 6, 4)
+        assert result == (
+            "summary:\n  files: 3\n  sections: 6\n  cross_references: 4"
+        )

@@ -1,4 +1,6 @@
 # Last /dsm-staa run
-analyzed_session: 49
-date: 2026-06-09
-note: STAA for S49 completed (user-confirmed S50); marker backfilled to suppress false-positive reminder.
+date: 2026-07-06
+analyzed_session: 53
+analyzed_transcript: .claude/session-transcript.md
+appended_lessons: 8
+pruned_lessons: 1

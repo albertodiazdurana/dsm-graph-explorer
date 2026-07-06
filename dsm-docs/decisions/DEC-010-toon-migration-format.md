@@ -1,10 +1,65 @@
 # DEC-010: Migrate Knowledge-Summary Output to TOON
 
-**Status:** Accepted
+**Status:** Accepted S48, migration **ABANDONED** 2026-07-06 (S53) — see Amendment 2. The Intrinsic-ToC is validated and kept in **markdown**; TOON is not adopted.
 **Date:** 2026-04-20
 **Session:** S48
 **Author:** Alberto Diaz Durana
 **Related:** DEC-009 (no local LLM dependencies), Central BL-367 (format research), GE BL-302 Phase 1 (Sprint 16)
+
+---
+
+## Amendment (2026-07-03, Session 52): Implementation HALTED
+
+The C3 validation gate this decision established was run during Sprint 17
+(capability experiment EXP-010, Fable 5 assessment with Opus adjudication) and
+**FAILED**. The implemented TOON schema measures token-POSITIVE, +1.74% on the
+DSM Central corpus and +7.58% on GE's own corpus (tiktoken `cl100k_base`, relative
+paths, same-day paired baseline), against the required −10% savings. The implemented
+schema (two flat tables with a redundant `path` column, node-id paths instead of
+titles) differs from the one BL-367 projected −14.6% for, so that projection did not
+transfer. TOON migration is **halted pending a redesign decision (Session 53)**.
+
+This decision's C3 kill-switch worked exactly as designed: measured savings <10% →
+halt and revisit the research assumptions. See BL-302 "Sprint 17 Course Correction"
+and `data/experiments/EXP-010-fable-repo-plan-assessment/` (EXP-010.md §5, results.md
+findings F1-F14). The redesign direction (fix-and-retry / reopen this decision /
+agent-navigation experiment first) is deferred, not decided here.
+
+---
+
+## Amendment 2 (2026-07-06, Session 53): Migration ABANDONED — markdown kept
+
+Session 53 took the fork EXP-010 recommended (agent-navigation experiment first)
+and ran **EXP-011** (`data/experiments/EXP-011-agent-navigation-toc/`): 24 fresh,
+isolated subagents answered 8 fixed navigation tasks under three arms — no-ToC,
+markdown-ToC, TOON-ToC — measuring task success and tool calls. Results:
+
+- **The Intrinsic-ToC is validated (H1).** ToC arms used ~6× fewer tool calls
+  (mean 0.63 vs 3.75) and were markedly more accurate (markdown 8/8, TOON 7/8 vs
+  no-ToC 4/8), with the gain concentrated on graph-derived questions
+  (hub/hotspot/orphans/section-count) the agent cannot cheaply or correctly
+  reconstruct. This is the first direct evidence that the ToC helps agent
+  navigation — the north-star claim was previously untested (EXP-010 F8).
+- **markdown strictly dominates the current TOON (H2).** Across all 8 tasks the two
+  ToC arms gave identical answers and identical tool-call counts on 7 of 8; the sole
+  difference is the orphan-count task, where markdown answered 112 (correct) and TOON
+  answered 15 (wrong — the F4 overflow-total loss, predicted exactly). TOON is
+  equal-or-worse on navigation **and** more expensive on tokens (F1). No task favored
+  TOON.
+
+**Resolution (Outcome 2 of EXP-011's pre-registered decision rule):** the TOON
+migration is **not adopted**. Keep the knowledge-summary in **markdown**. Fork (a)
+fix-and-retry is not pursued: its ceiling is a navigation *tie* with markdown while
+still owing a token win it is unlikely to achieve (F1). The `--format {markdown,toon}`
+flag and TOON emitter may remain in the codebase as dev/experimental surface, but
+markdown stays the default and the sole supported format; C1's "flip TOON to default"
+condition is **void**. C3 is settled (failed). Sprint 17's remaining phases (P2 golden
+freeze, default flip) are cancelled.
+
+Caveat: EXP-011 is n=8 (directional). It tested the *current* TOON emitter; a
+redesign could close the orphan and token gaps, but nothing in the data suggests TOON
+would ever *out-navigate* markdown, which is what a migration would need to justify
+its cost. Reopen only if such a hypothesis appears.
 
 ---
 
