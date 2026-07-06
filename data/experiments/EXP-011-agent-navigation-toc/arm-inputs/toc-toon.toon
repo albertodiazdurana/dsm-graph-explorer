@@ -1,0 +1,113 @@
+summary:
+  files: 116
+  sections: 1650
+  cross_references: 67
+
+directories[23]{path,files,sections,shown,more}:
+  dsm-docs/blog,2,9,2,0
+  dsm-docs/blog/epoch-1,5,97,3,2
+  dsm-docs/blog/epoch-2,4,56,3,1
+  dsm-docs/blog/epoch-3,1,13,1,0
+  dsm-docs/blog/epoch-4,2,11,2,0
+  dsm-docs/checkpoints,1,4,1,0
+  dsm-docs/checkpoints/done,19,148,3,16
+  dsm-docs/checkpoints/epoch-1/done,6,78,3,3
+  dsm-docs/checkpoints/epoch-2/done,2,29,2,0
+  dsm-docs/checkpoints/epoch-3/done,7,54,3,4
+  dsm-docs/checkpoints/epoch-4,2,21,2,0
+  dsm-docs/checkpoints/epoch-4/done,6,23,3,3
+  dsm-docs/decisions,13,140,3,10
+  dsm-docs/feedback-to-dsm,1,3,1,0
+  dsm-docs/feedback-to-dsm/done,12,166,3,9
+  dsm-docs/guides,2,36,2,0
+  dsm-docs/handoffs,1,4,1,0
+  dsm-docs/handoffs/done,5,158,3,2
+  dsm-docs/plans,5,62,3,2
+  dsm-docs/plans/done,4,169,3,1
+  dsm-docs/plans/done/BL-223-architecture-audit,2,32,2,0
+  dsm-docs/research,5,74,3,2
+  dsm-docs/research/done,9,263,3,6
+
+hierarchy[55]{dir,title,sections,path}:
+  dsm-docs/blog,journal.md,5,dsm-docs/blog/journal.md
+  dsm-docs/blog,README.md,4,dsm-docs/blog/README.md
+  dsm-docs/blog/epoch-1,materials.md,34,dsm-docs/blog/epoch-1/materials.md
+  dsm-docs/blog/epoch-1,journal.md,33,dsm-docs/blog/epoch-1/journal.md
+  dsm-docs/blog/epoch-1,blog-materials-sprints.md,17,dsm-docs/blog/epoch-1/blog-materials-sprints.md
+  dsm-docs/blog/epoch-2,materials.md,22,dsm-docs/blog/epoch-2/materials.md
+  dsm-docs/blog/epoch-2,journal.md,20,dsm-docs/blog/epoch-2/journal.md
+  dsm-docs/blog/epoch-2,2026-02-06-wsl-migration-post.md,11,dsm-docs/blog/epoch-2/2026-02-06-wsl-migration-post.md
+  dsm-docs/blog/epoch-3,journal.md,13,dsm-docs/blog/epoch-3/journal.md
+  dsm-docs/blog/epoch-4,materials.md,7,dsm-docs/blog/epoch-4/materials.md
+  dsm-docs/blog/epoch-4,journal.md,4,dsm-docs/blog/epoch-4/journal.md
+  dsm-docs/checkpoints,README.md,4,dsm-docs/checkpoints/README.md
+  dsm-docs/checkpoints/done,2026-02-06_sprint4-complete_checkpoint.md,16,dsm-docs/checkpoints/done/2026-02-06_sprint4-complete_checkpoint.md
+  dsm-docs/checkpoints/done,2026-02-24_sprint6-complete_checkpoint.md,15,dsm-docs/checkpoints/done/2026-02-24_sprint6-complete_checkpoint.md
+  dsm-docs/checkpoints/done,2026-02-28_sprint7-complete_checkpoint.md,14,dsm-docs/checkpoints/done/2026-02-28_sprint7-complete_checkpoint.md
+  dsm-docs/checkpoints/epoch-1/done,2026-02-03_sprint3-complete.md,17,dsm-docs/checkpoints/epoch-1/done/2026-02-03_sprint3-complete.md
+  dsm-docs/checkpoints/epoch-1/done,2026-02-04_trailing-period-fix.md,15,dsm-docs/checkpoints/epoch-1/done/2026-02-04_trailing-period-fix.md
+  dsm-docs/checkpoints/epoch-1/done,2026-02-01_sprint1-complete.md,13,dsm-docs/checkpoints/epoch-1/done/2026-02-01_sprint1-complete.md
+  dsm-docs/checkpoints/epoch-2/done,2026-02-04_sprint4-exclusion-complete.md,18,dsm-docs/checkpoints/epoch-2/done/2026-02-04_sprint4-exclusion-complete.md
+  dsm-docs/checkpoints/epoch-2/done,2026-02-04_epoch2-planning-complete.md,11,dsm-docs/checkpoints/epoch-2/done/2026-02-04_epoch2-planning-complete.md
+  dsm-docs/checkpoints/epoch-3/done,2026-03-09_epoch3-pre-planning-research.md,13,dsm-docs/checkpoints/epoch-3/done/2026-03-09_epoch3-pre-planning-research.md
+  dsm-docs/checkpoints/epoch-3/done,sprint-9-completion.md,11,dsm-docs/checkpoints/epoch-3/done/sprint-9-completion.md
+  dsm-docs/checkpoints/epoch-3/done,2026-03-10_session24_sprint9-phases-9.0-9.2.md,10,dsm-docs/checkpoints/epoch-3/done/2026-03-10_session24_sprint9-phases-9.0-9.2.md
+  dsm-docs/checkpoints/epoch-4,session-47-sprint-16-checkpoint.md,11,dsm-docs/checkpoints/epoch-4/session-47-sprint-16-checkpoint.md
+  dsm-docs/checkpoints/epoch-4,epoch-4-retrospective.md,10,dsm-docs/checkpoints/epoch-4/epoch-4-retrospective.md
+  dsm-docs/checkpoints/epoch-4/done,session-45-sprint-15-checkpoint.md,8,dsm-docs/checkpoints/epoch-4/done/session-45-sprint-15-checkpoint.md
+  dsm-docs/checkpoints/epoch-4/done,2026-03-13_session-34-epoch4-plan.md,4,dsm-docs/checkpoints/epoch-4/done/2026-03-13_session-34-epoch4-plan.md
+  dsm-docs/checkpoints/epoch-4/done,session-41-light-checkpoint.md,4,dsm-docs/checkpoints/epoch-4/done/session-41-light-checkpoint.md
+  dsm-docs/decisions,DEC-004_wsl_migration.md,22,dsm-docs/decisions/DEC-004_wsl_migration.md
+  dsm-docs/decisions,DEC-003_error_remediation_strategy.md,17,dsm-docs/decisions/DEC-003_error_remediation_strategy.md
+  dsm-docs/decisions,DEC-005-semantic-validation-approach.md,14,dsm-docs/decisions/DEC-005-semantic-validation-approach.md
+  dsm-docs/feedback-to-dsm,README.md,3,dsm-docs/feedback-to-dsm/README.md
+  dsm-docs/feedback-to-dsm/done,methodology-legacy.md,60,dsm-docs/feedback-to-dsm/done/methodology-legacy.md
+  dsm-docs/feedback-to-dsm/done,backlogs-legacy.md,46,dsm-docs/feedback-to-dsm/done/backlogs-legacy.md
+  dsm-docs/feedback-to-dsm/done,2026-04-13_s47_methodology.md,17,dsm-docs/feedback-to-dsm/done/2026-04-13_s47_methodology.md
+  dsm-docs/guides,remediation-guide.md,25,dsm-docs/guides/remediation-guide.md
+  dsm-docs/guides,config-reference.md,11,dsm-docs/guides/config-reference.md
+  dsm-docs/handoffs,README.md,4,dsm-docs/handoffs/README.md
+  dsm-docs/handoffs/done,wsl_migration_guide.md,60,dsm-docs/handoffs/done/wsl_migration_guide.md
+  dsm-docs/handoffs/done,2026-01-31_phase0-complete_handoff.md,51,dsm-docs/handoffs/done/2026-01-31_phase0-complete_handoff.md
+  dsm-docs/handoffs/done,2026-02-04_epoch1-complete_dsm-handoff.md,32,dsm-docs/handoffs/done/2026-02-04_epoch1-complete_dsm-handoff.md
+  dsm-docs/plans,BL-302-phase-1.5-toon-migration.md,18,dsm-docs/plans/BL-302-phase-1.5-toon-migration.md
+  dsm-docs/plans,epoch-5-plan.md,14,dsm-docs/plans/epoch-5-plan.md
+  dsm-docs/plans,epoch-5-sprint-17-plan.md,13,dsm-docs/plans/epoch-5-sprint-17-plan.md
+  dsm-docs/plans/done,epoch-2-plan.md,55,dsm-docs/plans/done/epoch-2-plan.md
+  dsm-docs/plans/done,epoch-3-plan.md,44,dsm-docs/plans/done/epoch-3-plan.md
+  dsm-docs/plans/done,epoch-4-plan.md,43,dsm-docs/plans/done/epoch-4-plan.md
+  dsm-docs/plans/done/BL-223-architecture-audit,findings.md,28,dsm-docs/plans/done/BL-223-architecture-audit/findings.md
+  dsm-docs/plans/done/BL-223-architecture-audit,README.md,4,dsm-docs/plans/done/BL-223-architecture-audit/README.md
+  dsm-docs/research,2026-04-13_intrinsic-toc-vision.md,32,dsm-docs/research/2026-04-13_intrinsic-toc-vision.md
+  dsm-docs/research,experiment-documentation-standards.md,17,dsm-docs/research/experiment-documentation-standards.md
+  dsm-docs/research,dsm-central-exp-001-reachability.md,12,dsm-docs/research/dsm-central-exp-001-reachability.md
+  dsm-docs/research/done,epoch-3-falkordblite-deep-dive.md,61,dsm-docs/research/done/epoch-3-falkordblite-deep-dive.md
+  dsm-docs/research/done,e2_handoff_graph_explorer_research.md,44,dsm-docs/research/done/e2_handoff_graph_explorer_research.md
+  dsm-docs/research/done,e1_handoff_graph_explorer_research.md,35,dsm-docs/research/done/e1_handoff_graph_explorer_research.md
+
+hub[4]{rank,file,incoming_refs,top_section}:
+  1,dsm-docs/blog/epoch-1/materials.md,52,3: Growth Through Feedback
+  2,dsm-docs/plans/done/BL-223-architecture-audit/findings.md,10,3.2: Access Path by Pattern
+  3,dsm-docs/checkpoints/epoch-1/done/2026-02-04_trailing-period-fix.md,3,2.3.7: Data Leakage Prevention
+  4,dsm-docs/research/done/e1_handoff_graph_explorer_research.md,2,2.4: Relation Extraction
+
+hotspots[2]{refs,file,section,title}:
+  22,dsm-docs/blog/epoch-1/materials.md,3,Growth Through Feedback
+  17,dsm-docs/blog/epoch-1/materials.md,2,Evolution: Agentic AI Focus
+
+orphans[15]{file,sections}:
+  dsm-docs/blog/README.md,4
+  dsm-docs/blog/epoch-1/2026-02-05-blog-draft.md,11
+  dsm-docs/blog/epoch-1/2026-02-05-linkedin-post.md,2
+  dsm-docs/blog/epoch-1/blog-materials-sprints.md,17
+  dsm-docs/blog/epoch-1/journal.md,33
+  dsm-docs/blog/epoch-2/2026-02-06-wsl-migration-post.md,11
+  dsm-docs/blog/epoch-2/README.md,3
+  dsm-docs/blog/epoch-2/journal.md,20
+  dsm-docs/blog/epoch-2/materials.md,22
+  dsm-docs/blog/epoch-3/journal.md,13
+  dsm-docs/blog/epoch-4/journal.md,4
+  dsm-docs/blog/epoch-4/materials.md,7
+  dsm-docs/blog/journal.md,5
+  dsm-docs/checkpoints/README.md,4
+  dsm-docs/checkpoints/done/2026-02-05_wsl-migration-verified_checkpoint.md,13

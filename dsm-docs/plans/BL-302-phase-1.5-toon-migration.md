@@ -1,6 +1,6 @@
 # BL-302 Phase 1.5: TOON Migration for Knowledge-Summary Output
 
-**Status:** HALTED (Sprint 17 course correction, 2026-07-03), see next section
+**Status:** CLOSED — TOON **not adopted** (S53, 2026-07-06, per EXP-011). The Intrinsic-ToC is validated and kept in **markdown**. See "Resolution" below.
 **Priority:** High
 **Date Created:** 2026-04-20
 **Origin:** DEC-010 (this project) + DSM Central BL-367 (format research) + GE S47 Q3
@@ -41,6 +41,26 @@ first, then decide.
 
 **Evidence:** `data/experiments/EXP-010-fable-repo-plan-assessment/` (EXP-010.md §5
 adjudication table, results.md findings F1-F14).
+
+### Resolution (2026-07-06, Session 53): fork (c) → TOON not adopted
+
+Session 53 ran fork (c): **EXP-011** agent-navigation A/B
+(`data/experiments/EXP-011-agent-navigation-toc/`), 24 fresh isolated subagents, 8
+navigation tasks, three arms (no-ToC / markdown-ToC / TOON-ToC).
+
+- **The Intrinsic-ToC helps navigation (H1):** ToC arms ~6× fewer tool calls
+  (0.63 vs 3.75 mean) and higher accuracy (markdown 8/8, TOON 7/8 vs no-ToC 4/8).
+  First direct evidence the ToC serves the north star (answers EXP-010 F8).
+- **markdown strictly dominates the current TOON (H2):** identical answers/tool-calls
+  on 7/8 tasks; TOON's only difference is answering the orphan-count task **wrong**
+  (15 vs 112, the F4 loss) — while also costing more tokens (F1). No task favored TOON.
+
+**Decision (confirmed by author): keep the ToC in markdown; do NOT adopt TOON.** The
+6-item fix list above is **not pursued** — a fixed TOON's ceiling is a navigation tie
+with markdown while still owing a token win it likely can't achieve. P2 (golden freeze)
+and P4 (default flip) are **cancelled**. DEC-010 Amendment 2 records the same. The
+`--format` flag / TOON emitter may stay as dev surface; markdown remains the default and
+sole supported format.
 
 ---
 

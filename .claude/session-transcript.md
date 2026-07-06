@@ -1,167 +1,143 @@
-# Session 52 Transcript
-**Started:** 2026-07-03T10:55:22+02:00
+# Session 53 Transcript
+**Started:** 2026-07-06T00:28:41+02:00
 **Project:** DSM Graph Explorer
 **Agent:** Claude Code
 **Model:** claude-opus-4-8[1m] (self-reported)
-**Fast mode:** off
 
 ---
 
-<------------Start Thinking / 10:55------------>
-Session 52 boot (/dsm-go, full). Continuation of Sprint 17 (BL-302 Phase 1.5, TOON migration) on Level 3 branch `sprint-17/toon-migration`.
+<------------Start Thinking / 14:55------------>
+S53 boot complete (steps 0-6). Session N=53 (max archive 24 / MEMORY 52 / remote-session 1, +1). Branch: resumed open Level 3 `sprint-17/toon-migration` (Step 0c precedence over the leftover `session-51/2026-06-25` Level 2 branch). Scaffold complete, lock absent, SPOKE. Version check: last-align v1.17.0 == Central 1.17.0 → /dsm-align SKIPPED. Default branch master==master. No open PR. Compact reasoning-lessons read in full (54 entries, not stale). Handoff `2026-07-03_s52_toon-redesign-decision.md` + checkpoint `2026-07-03_s52_checkpoint.md` consumed → done/. Transcript archived (2026-07-03T10:55-ST.md), baseline saved (19 lines), lockfile written. Inbox empty. Uncommitted: 3 .claude tracking files from the S51 STAA run (last-staa.txt, reasoning-lessons.md, reasoning-lessons-compact.md), not committed at wrap-up S52.
+STAA reminder (Step 5.7): S52 wrap-up recommended STAA:yes; last-staa analyzed_session=51 < 52 → do NOT suppress → remind user STAA for S52 is still pending.
+The session's job: decide the TOON redesign fork (a fix-and-retry / b reopen DEC-010 / c nav-experiment-first). EXP-010 recommends (c). This is a decision session, not implementation. Awaiting user direction.
 
-Boot checks completed (steps 0-6):
-- Git available; scaffold 8/9 dsm-docs + _inbox + reasoning-lessons present (complete).
-- Concurrent lock: ABSENT. Kickoff snippet errored on awk bug → verified manually: SPOKE (dsm-central → ~/dsm-agentic-ai-data-science-methodology/, != repo root). No kickoff needed.
-- Session N = max(archive 23, MEMORY 51, remote 1) + 1 = 52.
-- Branch: already on Level 3 `sprint-17/toon-migration` (takes precedence, Step 0c) — stayed on it, no new session branch.
-- Version: last-align v1.17.0 == CHANGELOG [1.17.0] → skipped /dsm-align.
-- Reasoning-lessons compact fresh (regen 10:47 > src 10:46), read in full.
-- Inbox empty; handoffs none; checkpoint 2026-07-03_s51 consumed → moved to done/.
-- Baseline saved (checksum lines hit ugrep regex quirk, body OK).
-- Transcript archived to 2026-06-25T17:26-ST.md; reset for S52; lockfile written.
+<------------Start Output / 14:56------------>
+Boot report delivered. S53 on `sprint-17/toon-migration`. Reminded user STAA-for-S52 is pending. Suggested work item: decide the TOON redesign fork (a/b/c), EXP-010 recommends (c) nav-experiment-first. Config rec: Deep (Opus, high effort, thinking on) since this is novel decision work. Awaiting user's fork choice.
 
-Open decision to surface: last-wrap-up type=light → Step 5.9 non-suppressible prompt to switch to /dsm-light-go. BUT the s51 checkpoint explicitly flags deferred items accumulating across a 2-session light chain and recommends the next boundary be a full /dsm-go + /dsm-wrap-up to clear them. So I'll surface the light-go option per protocol while noting a full cycle is now due.
+<------------Start Thinking / 15:02------------>
+User: "Continue from the 2026-07-03_s52_toon-redesign-decision.md that the fable model did." IDE also opened the intrinsic-toc-vision research file (context, maybe relevant to fork (b)/(c) which question whether the token metric is the right gate for the ToC vision).
+Interpreting "continue": the handoff's purpose IS the fork decision, and the checkpoint's resume steps say read EXP-010 §5 (adjudication) + results.md (F1-F14) BEFORE deciding. I've read the handoff but not the findings themselves. Earn-the-assertion (lesson S48 #30, S52 #77): don't recommend/act on a fork from the handoff's summary alone — read the actual findings so the decision brief is grounded. Do NOT silently auto-pick fork (c) despite the handoff's lean; the fork is the user's decision (reopens DEC-010). Plan-mode read-only exploration first.
+Next: read EXP-010.md (esp §5) + results.md, then present a sharpened decision brief and get the user's pick. Not implementing yet.
+Caveat on "continue": it could also mean "just proceed with recommended (c)". I'll read first, then present the decision compactly and ask, rather than assume — but I'll make (c) the lead recommendation so a "go" is a one-word confirm.
 
-Sprint 17 remaining: P2 (test migration + .toon golden), P3 (DEC-010 C3 validation gate >=10% savings), MUST docs (CLI --help/README/guides). Will present as suggested work items.
+<------------Start Thinking / 15:08------------>
+Read EXP-010.md (§5 adjudication) + results.md (F1-F14) in full. Grounded synthesis:
+- F1 root cause is concrete and reproduced to the token: two-table hierarchy schema repeats `dir` + carries a redundant full `path` column; hub/orphan swap short titles for long node-id paths. BPE hates comma-adjacent long paths (char-ratio 1.44). Fairest config (relative, same-day paired, Central): TOON +1.74% vs required −10%.
+- The decisive strategic finding is F8: NO Epoch-5 experiment tests whether an agent navigates better/cheaper with the ToC in ANY format. DEC-010's own counter-claim #1 concedes token savings ~0.7% of a 200K context; one disoriented file-read costs more than the whole migration saves. So S17 is optimizing a second-order proxy it currently pessimizes.
+Fork logic: (a) fix-and-retry could burn a sprint hitting −10% on a metric F8 says is second-order. (b) reopen DEC-010 with no new data = re-litigating on old info. (c) run the cheap nav A/B first → generates the missing datum, then decide (a) vs abandon. Both EXP-010 top-3 and the handoff lean (c). I concur.
+Key clean point: (c) does NOT require the fix list first — the current (defective) TOON emitter is a valid "TOON arm" for the nav experiment; its defects (bloat, orphan truncation) are exactly what the experiment would penalize. So no gating dependency on the 7-item fix list.
+This is the user's decision (reopens DEC-010). Present compact grounded brief, recommend (c), ask for pick. If (c): next step is EXP-011 design via PGB Gate 1 (collaborative definition), not file-writing. Plain-text approval only (no AskUserQuestion per CLAUDE.md).
 
-<------------Start Output / 10:56------------>
-S52 boot report delivered. SPOKE, session 52, on sprint-17/toon-migration. Version match (skip align). Inbox empty, checkpoint consumed, baseline saved, transcript reset. Surfaced Step 5.9 light→light-go prompt with checkpoint's recommendation that a full cycle is now due to clear 2 sessions of deferred items. Suggested work: P2 (test migration + .toon golden), P3 (C3 gate), docs. Awaiting user direction.
+<------------Start Output / 15:09------------>
+Read full EXP-010 (adjudication + F1-F14). Presented grounded 3-fork decision brief to user with (c) nav-experiment-first as lead recommendation, citing F8 as the decisive finding (no Epoch-5 experiment tests whether the ToC helps agents navigate at all) and F1's reproduced +1.74% token result. Noted (c) needs no fix-list prerequisite (current TOON emitter is a valid experiment arm). Awaiting user's fork pick before any file creation (EXP-011 design would go through PGB Gate 1).
 
-<------------Start Thinking / 10:58------------>
-User answered "light go" → accepts the Step 5.9 switch. Per /dsm-go Step 5.9, stop /dsm-go and invoke /dsm-light-go. Transcript is already reset for S52 and lockfile written, so light-go's minimal boot resumes on the existing state. Deferring to light-go means the accumulating deferred-items concern (my earlier note) carries into a 3rd light session — noting that so it doesn't silently vanish, but the user's explicit choice > my recommendation (S48 lesson: user direct > mode default).
+<------------Start Thinking / 15:15------------>
+User picked (c) nav-experiment-first. Next: design EXP-011 (agent-navigation A/B) via PGB Gate 1 (collaborative definition). Working-style: no file writing yet; scope with user first.
+What/why/how (pre-Gate-1):
+- WHAT: EXP-011, a capability experiment measuring whether an agent navigates a repo better/cheaper WITH an Intrinsic-ToC vs without, and whether format (markdown vs TOON) matters. Three arms: no-ToC (control) / markdown-ToC / TOON-ToC.
+- WHY: F8 — the north-star hypothesis (agents orient better with the ToC) is untested and unscheduled anywhere in Epoch 5; both the TOON bet (S17) and the Leiden bet (S18) are downstream of the answer. This is the prerequisite datum before deciding (a) fix-retry vs abandon.
+- HOW: fixed set of N navigation tasks with known ground-truth answers ("where is X decided?", "which file defines Y?", "what depends on Z?"); each task run in each arm by a fresh isolated agent (subagent/workflow, like EXP-010's separate-session model); measure task success, tool calls, tokens-to-answer.
+Design forks to surface at Gate 1 (genuinely the user's to weigh): (1) target repo — GE itself vs DSM Central (the C3 corpus); (2) run mechanism — Workflow harness spawning agents per (arm×task) vs manual separate sessions; (3) task count/set curation + who authors ground truth; (4) contamination/priming control (fresh sessions, blinding arms so ToC content is the only difference); (5) the current defective TOON emitter is the TOON arm (no fix-list dependency — established last turn).
+First: read experiment-documentation-standards.md to ground packaging (4-element structure) before claiming it. Then present Gate 1 proposal in plain text, get approval/adjustments. No files yet.
 
-<------------Start Thinking / 11:00------------>
-In /dsm-light-go now. Reconciling state, since I entered via /dsm-go which already ran full session-start machinery before the switch:
-- /dsm-go Step 5.5 already archived S51's transcript (cp → 2026-06-25T17:26-ST.md; content safe) and Step 6 reset the live file. Light-go says "don't archive/reset" but that's for a DIRECT light-go entry; the archive/reset already happened because /dsm-go Steps 5.5/6 precede the type:light discovery at Step 5.9. Can't cleanly undo; content is safely archived.
-- Session number: light-go says INHERIT (don't increment). But the full /dsm-go start already derived S52 (fresh start → new number), reset transcript to "Session 52", and wrote a lockfile:session 52. Reverting to S51 would create two S51 transcripts + lockfile rewrite = MORE incoherence. Keeping S52: a new calendar conversation began, /dsm-go machinery ran as a fresh start, S52 continues Sprint 17's task. Lower-incoherence choice; stating it transparently rather than silently.
-- Branch cadence gate: on `sprint-17/toon-migration` = task branch (sprint-*) → date check skipped (task branches span days). This branch is off session-51/2026-06-25 but sprint work legitimately spans days.
-- Scaffold 8/9 pass. Git available. Checkpoint already consumed+moved in /dsm-go (I have full S51 context). Main branch = master (not main).
-Remaining light-go actions: append mode:light to baseline, git status, stale-branch check (vs master), continuation marker, report + suggest P2.
+<------------Start Output / 15:20------------>
+[Retroactive marker — the prior turn's output summary was not appended before the response.] Read experiment-documentation-standards.md (7-element revised structure). Presented EXP-011 Gate 1 (collaborative definition): 3 arms (no-ToC / markdown-ToC / TOON-ToC), metrics (task success / tool-calls / tokens-to-answer), packaging under data/experiments/EXP-011-agent-navigation-toc/. Surfaced 2 open decisions (target repo GE-vs-Central; any arm/metric/task changes). Awaited user pick.
 
----
+<------------Start Thinking / 15:24------------>
+Gate 1 approved: target=GE, no changes. Move to Gate 2 (concept/internal design per Entry 59: thresholds, rules, exclusions).
+Design substance to nail before writing files:
+- Hypotheses with falsifiers. H1 (nav value): if ToC in context, then fewer tool-calls + fewer tokens-to-answer at >= success vs no-ToC, because ToC pre-indexes where things live. H2 (format): markdown vs TOON comparable on success/tool-calls, but TOON costs MORE context tokens (F1) so equal perf => markdown wins on total cost; falsifier = TOON materially better nav perf despite token premium.
+- Pre-registered success criteria/thresholds (Gap 1: avoid post-hoc rationalization).
+- Task-set design is the crux of fairness. Knowledge-summary ToC is STRUCTURAL (hierarchy files/sections, hub incoming-refs, hotspots outgoing-refs, orphans, cross-refs). Three categories: (a) ToC-answerable structural (hub/orphan/section-location) — ToC should shine; (b) ToC-narrows-search; (c) ToC-irrelevant semantic (control that ToC doesn't HURT). Answers must require THIS repo's current state, not model general knowledge (contamination guard).
+- Run mechanics: fresh subagent per (arm×task) via Agent tool. Tool-calls = hard metric; tokens-to-answer best-effort (per-Agent metering weak). Honest re limits.
+- 0-tool-call correct answer from a ToC arm = a WIN, metric captures it.
+- Decision rule (3 outcomes) mapping to abandon-TOON / markdown-wins / fix-and-retry.
+Present Gate 2 concept in plain text; full task list at Gate 3 in tasks.md. No files yet.
 
-## Session 52 (lightweight continuation of Sprint 17 light chain)
-**Started:** 2026-07-03 (light-go, entered via /dsm-go switch)
-**Previous session artifacts:**
-- Checkpoint: 2026-07-03_s51_checkpoint.md (consumed → done/)
-- MEMORY.md updated: yes (through S51 P1b)
+<------------Start Output / 15:26------------>
+Presented EXP-011 Gate 2 (concept/design): H1 nav-value + H2 format hypotheses with falsifiers; pre-registered success criteria (>=25% tool-call reduction gate); 3-category task design (ToC-answerable / ToC-narrows / ToC-irrelevant, ~8 tasks, contamination guard); run mechanics via fresh subagents with honest tool-calls-primary / tokens-approximate measurement; 3-outcome decision rule mapping to abandon-TOON / markdown-wins / fix-and-retry. Asked for approval to proceed to Gate 3.
 
-**Context loaded:**
-- MEMORY.md (latest, in context)
-- Checkpoint: 2026-07-03_s51_checkpoint.md (P1b done; P2/P3/docs remain)
+<------------Start Thinking / 15:30------------>
+Gate 2 approved. Gate 3 = draft files for diff review (file-by-file loop). But to author accurate ground-truth answers for the structural task categories, I need GE's ACTUAL ToC content (hub rankings, orphan list, section lists). So prep step first: generate markdown + TOON knowledge-summary of GE (matching EXP-010's scope = GE's own dsm-docs/), inspect output, establish ground truth. These are also the experiment inputs (the A1/A2 arm ToC artifacts).
+Need to know the tool's scope: does knowledge-summary cover .md only or also .py? That determines whether "which file implements the TOON emitter" (src/*.py) is a ToC-answerable (a) or ToC-irrelevant (c) task. Check cli.py knowledge-summary option + run it. EXP-010 invoked `dsm-validate dsm-docs --knowledge-summary --format {markdown,toon}` (relative paths, per F3 lesson). Use relative paths.
+Then draft tasks.md first (the substantive core needing most review), then EXP-011.md. One file at a time, STOP for approval each.
 
-**Deferred (light chain, now 3 sessions):** inbox check, version check (done in /dsm-go: match), reasoning-lessons extraction, feedback push, full MEMORY update, README/contributor checks. Next boundary should clear these via full /dsm-wrap-up.
+<------------Start Output / 15:45------------>
+Generated GE dsm-docs ToC (both formats) via .venv/bin/dsm-validate (python -m cli is a no-op — no __main__ guard). Reproduced F1 tokens exactly (md 2903 / TOON 3123, +7.58%). Established ground truth from markdown ToC + graph-stats + dir listings. Presented 8 concrete navigation tasks + answer key across 3 categories (T1-T3 ToC-answerable incl T3 orphan-truncation trap testing F4; T4-T6 ToC-narrows; T7-T8 src/semantic controls). Corrected two facts: decisions/ has 13 files but only 11 DEC-* records; orphan FILES ≈112 (distinct from 1638 orphan SECTIONS in graph-stats). User approved the set.
 
----
+<------------Start Thinking / 15:47------------>
+Gate 3 write. Two files under data/experiments/EXP-011-agent-navigation-toc/: tasks.md (8 tasks + answer key + grading + the frozen ToC arm inputs reference) and EXP-011.md (7-element design). Also copy the two generated ToC artifacts (ge-summary.md/.toon) into the experiment dir as the frozen A1/A2 arm inputs, so the experiment is reproducible (per feedback_experiment_reproducibility). Keep the exp folder self-contained. Write tasks.md first.
 
-<------------Start Output / 11:01------------>
-Light-go resume complete (S52, Sprint 17 continuation). No stale branches, checkpoint consumed, baseline marked mode:light, continuation marker appended. Presenting task state + suggesting P2 (test migration + .toon golden) as next step.
+<------------Start Output / 15:52------------>
+Wrote Gate 3 files: data/experiments/EXP-011-agent-navigation-toc/{tasks.md, EXP-011.md} + frozen arm-inputs/{toc-markdown.md, toc-toon.toon}. tasks.md = 8 tasks + pre-registered key + grading. EXP-011.md = 7-element design (Justification/Hypothesis with H1+H2+falsifiers/Success-Criteria >=25% gates/Environment with honest measurement limits/Results stub/Decision 3-outcome rule/References). Presenting for review before Gate 4 (run).
 
-<------------Start Thinking / 11:05------------>
-User: Fable 5 is on their license for a few days. What meaningful task to assign it to assess this repo + the plan?
+<------------Start Thinking / 15:54------------>
+Gate 4 = run. 3 arms x 8 tasks = 24 fresh subagents. Real token spend + it's multi-agent orchestration. Options: (i) Agent tool x24 in batches; (ii) Workflow — but Workflow needs explicit user opt-in ("ultracode"/"use a workflow"), not given, so default to Agent tool. Prudent: pilot first (T1 ToC-answerable + T3 orphan-trap, across all 3 arms = 6 runs) to validate the harness + measurement before spending all 24. Then run remaining 18. Confirm run plan with user before launching (cost gate). Each subagent: fresh context, given task + (arm-dependent) ToC text, tools Read/Grep/Glob/Bash, must report answer + I count tool_calls. Blind to arm. Present run plan, get go.
 
-Honesty check: I do NOT have a grounded profile of Fable 5's specific strengths (Claude 5 family per env, id claude-fable-5, but no reliable spec-level knowledge of its niche). I must not fabricate "Fable is best at X." What IS true: a *different model instance* gives an independent, uncorrelated read — that's the value regardless of its exact profile. DSM reasoning-lesson (S49) even endorses splitting agents by adversarial angle. Mechanism exists: Agent tool `model: fable` override, read-only, returns findings I relay.
+<------------Start Output / 16:02------------>
+User: go for 6-run pilot; use workflows if results can be better. They can (accurate tool_calls from agent transcripts vs unreliable self-report; structured schema; reproducible journal) → using Workflow.
 
-Task selection criteria: (a) verifiable by me/tests (so I can trust a fresh model's output), (b) well-timed, (c) no write access needed, (d) genuinely benefits from an outside perspective.
+<------------Start Thinking / 16:05------------>
+Building pilot workflow: 2 tasks (T1 most-refs, T3 orphan-count) x 3 arms (A0 none / A1 md / A2 toon) = 6 parallel agents, schema {answer, evidence, self_reported_tool_calls}.
+Key measurement decisions:
+- ToC injection: sandbox can't read files in-script; hand-inlining 16KB into args is fragile. Instead A1/A2 agents READ their committed arm-input file ONCE as provided context; I exclude that single arm-inputs/ read from the navigation tool_calls via the agent transcript. More reproducible (arm input = committed file).
+- Contamination guards in prompt: answer from ACTUAL current state not training knowledge; forbid running dsm-validate/--knowledge-summary/--graph-stats (else A0 could regenerate the ToC in 1 call and confound arms); minimize tool calls.
+- Blind: agents not told which arm; only difference is presence/absence of the arm-file reference.
+- agentType general-purpose (full file tools). Parallel (6, barrier fine).
+- After run: read transcriptDir journal/agent transcripts for ACTUAL tool_calls, subtract arm-inputs load read for A1/A2, grade vs key (T1: materials.md/52; T3: ~112, expect A2→15).
+Pilot validates harness before the 18-run remainder. Launch foreground? No — workflows run in background, I'll be notified. Launch and report when done.
 
-Highest-leverage + best-timed candidate: an independent review BEFORE P2. Rationale that's a real insight, not filler — P2 creates `knowledge-summary.toon` as a GOLDEN fixture, which FREEZES whatever the current emitter produces. Any schema/correctness bug in `_generate_toon_summary` or the 4 row helpers found AFTER P2 is enshrined and costs a fixture rewrite + test churn. So a correctness pass on the emitter now is time-critical. Pairs naturally with a plan/decision critique (DEC-010 C3 gate soundness, Sprint 17 scoping, Epoch-5 roadmap, the 3-session light-chain deferred-items risk).
+<------------Start Thinking / 16:22------------>
+Pilot done, 5/6 clean + 1 schema-fail (recoverable). Transcript tool_use counts match self-report EXACTLY (harness+measurement validated). Mapping: 3 arm-agents each had tool_use=2 (1 arm-read + 1 StructuredOutput) = 0 nav calls; A0-T1 = 7-1 = 6 nav; A0-T3 = 3-1 = 2 nav; failed agent (T3-A1) = 1 arm-read + 5 failed SO attempts.
+CRITICAL: the failed T3-A1 agent's SO_INPUT shows it GOT THE RIGHT ANSWER = 112 (15 + 97 more), it just omitted required evidence/self_reported_tool_calls fields (overloaded everything into `answer`). Schema-formatting failure, NOT navigation failure. Recover 112 from transcript.
+Grading vs key:
+- T1 (key materials.md/52): A0 WRONG (.claude/CLAUDE.md/72, measured a different thing — basename mentions across whole repo, 6 calls); A1 CORRECT 0 calls; A2 CORRECT 0 calls.
+- T3 (key ~112 orphan files, graph REFERENCES def): A0 = 97 (own link-parse method, diverges from graph count, 2 calls); A1 = 112 CORRECT (recovered, 0 nav); A2 = 15 WRONG (F4 undercount, 0 nav).
+Findings: (1) harness+measurement sound. (2) H1 supported on T1 — no-ToC spent 6 calls AND got a wrong answer; ToC arms correct at 0. (3) H2 STRONGLY supported on T3 — markdown 112 vs TOON 15: the F4 schema info-loss causes a real consuming-agent undercount, exactly as predicted (headline). (4) Bonus: A0's 97 vs ToC's 112 shows orphan-count is method-dependent → an authoritative ToC has value, and TOON breaking it matters.
+Schema fix for the 18-run batch: relax required to just [answer]; make evidence + self_reported_tool_calls optional (I get real counts from transcripts anyway). Re-run T3-A1 not needed (112 recovered) but batch uses fixed schema.
+Next: write results.md with pilot rollup, present to user, propose 18-run batch with fixed schema, get go.
 
-This is a recommendation turn (collaboration protocol: present options + recommendation, do NOT launch — that's a gate). Offer 2-3 ranked candidates, top pick = pre-P2 independent review (code + plan), state I'll draft the exact Fable prompt for approval before spawning. Don't overpromise Fable's abilities; frame output as verifiable-by-me. No AskUserQuestion (modal); plain text.
+<------------Start Output / 16:30------------>
+Wrote results.md with pilot rollup + 4 findings. Presented to user: harness validated; H1 supported (T1: no-ToC 6 calls + wrong vs ToC arms 0 calls correct); H2 strongly supported (T3: markdown 112 vs TOON 15, F4 info-loss → real undercount). User approved proceeding with 18-run batch.
 
-<------------Start Thinking / 11:12------------>
-User wants this formalized as an experiment: a folder with (1) EXP_xxx.md (scope+objective), (2) a brief file Fable reads, (3) a results file Fable writes. "Proceed with your suggestions." Also "Any additional Q or S?" → my feedback memory (feedback_ask_qs) says ALWAYS offer suggestions when asked this.
+<------------Start Thinking / 16:32------------>
+Launching batch workflow: 6 remaining tasks (T2 hotspot, T4 largest-dir, T5 intrinsic-toc-file, T6 decisions-count, T7 TOON-emitter-src [control], T8 C3-threshold+DEC [control]) x 3 arms = 18 agents. Relaxed schema: only `answer` required (evidence + self_reported_tool_calls optional) — fixes the T3-A1 schema-fail class. Same preamble/constraints/arm-injection. Pull actual tool_calls from transcripts after. T7/T8 are controls (ToC covers only dsm-docs/*.md) — expect no ToC advantage there. Launch background, report rollup + apply decision rule when done.
 
-This is a DSM Capability Experiment (Section 4: Tests vs Capability Experiments). Prior EXPs: EXP-007 (S13), EXP-009 (S15), EXP-001 (Sprint 19 pending). Need next number + folder convention. Must check filesystem before asserting (Earn Your Assertions). Semantic note to raise: prior EXPs test CODE capability; this tests a MODEL's (Fable 5's) capability to assess repo+plan — dual objective (assess repo/plan AND assess Fable). 
+<------------Start Output / 16:34------------>
+Batch workflow launched (wf_a383617e-e17): 18 agents (T2,T4,T5,T6,T7,T8 x A0/A1/A2), relaxed schema. Background; will report full rollup + apply the 3-outcome decision rule to EXP-011.md §6 on completion.
 
-Collaboration protocol: user gave structure + "proceed", but file-by-file gate still applies — I present the concrete plan (EXP number, folder path, 3 filenames, contents) + my Q/S, get approval on specifics, THEN create file-by-file. Don't create yet this turn.
+<------------Start Thinking / 16:52------------>
+Batch done 18/18, 0 errors. Graded (self-report tool_calls validated vs transcripts in pilot).
+Aggregate over 8 tasks (pilot+batch): tool_calls A0=30 (mean 3.75), A1=5 (0.625), A2=5 (0.625) -> ToC arms ~6x fewer, way past >=25% gate. Success: A1 8/8, A2 7/8 (only miss = T3 orphan/F4), A0 4/8 (+1 partial). No-ToC slower AND wrong more often.
+Per task: T2 A0 wrong(24/wrong file,13 calls) vs A1/A2 correct 0; T4 FLAWED (unscoped -> repo-wide _inbox/done 28, all arms tie 1 call, no discriminator); T5 A0 file-right/count-wrong(10) vs A1/A2 correct(32) 0; T6 all correct but all 1 call (ToC arms didn't trust ToC count); T7/T8 controls all correct, marginal edge to ToC arms.
+H1 STRONGLY supported. H2: ONLY A1-vs-A2 diff across 8 tasks is T3 (md 112 vs TOON 15). TOON STRICTLY DOMINATED by markdown (equal-or-worse answers + more tokens F1).
+Decision rule -> OUTCOME 2: markdown wins; NO-GO on TOON, keep ToC in markdown; ToC itself VALIDATED (do not abandon ToC). Nuance: tested current defective TOON; fixing it (fork a) only reaches tie-with-markdown while still needing a token win (F1 unlikely) -> case for TOON weak.
+Resolves S53 fork + touches DEC-010 = user's call. Write RESULTS facts now; present recommended NO-GO; get user confirm before DEC-010 amendment.
 
-Design decisions to settle with user (my Q/S):
-1. EXP number: recommend EXP-010 (continue series) despite the model-vs-code semantic shift. Check highest existing.
-2. Folder location: data/experiments/EXP-010-.../ (capability-experiment outputs live there per CLAUDE.md) vs dsm-docs/. Recommend data/experiments/.
-3. Does Fable WRITE its results file directly (Agent model:fable, general-purpose w/ write) or RETURN findings I paste? User said "file where fable should add results" → Fable writes directly to that one file; I verify after. Restrict its writes to results file by instruction; read-only on source.
-4. Structured findings schema (severity/file:line/claim/recommendation) so output is verifiable.
-5. Success criteria (PASS/CONDITIONAL/FAIL) for the experiment — DSM experiments need them.
-6. Timing: run BEFORE P2 (golden-fixture freeze rationale).
-Explore filesystem now for EXP numbering + experiment folder layout.
+<------------Start Output / 17:05------------>
+Wrote full-run results + per-arm rollup + findings + decision recommendation into results.md; updated EXP-011.md §5. Presented final: H1 confirmed (ToC ~6x fewer calls + higher accuracy), H2 markdown strictly dominates current TOON (identical except T3 F4 miss). Recommended Outcome-2 resolution: keep markdown ToC, NO-GO TOON, amend DEC-010. User CONFIRMED.
 
-<------------Start Thinking / 11:20------------>
-User answers: (0) Fable runs in a SEPARATE session — NOT via my Agent tool. Their prompt = "read file in path...". So brief.md must be fully self-contained (absolute paths, what+how) AND instruct Fable to delegate token-cheap gathering to lighter models, reserving Fable's own reasoning for the analytical/critical part. I don't spawn Fable. (1) dual objective yes. (2) Fable writes results.md directly. (3) assess if WIDER read set is advantageous — my call to recommend. (4) adversarial. (5) criteria good. (6) adjudication yes.
+<------------Start Thinking / 17:07------------>
+Formalize the confirmed decision. Earn-the-assertion: read DEC-010 + BL-302 course-correction block before editing. Then: (1) DEC-010 amendment — resolve HALTED->NO-GO/abandon TOON, keep markdown, cite EXP-011; (2) BL-302 Sprint 17 Course Correction -> resolved (TOON abandoned, ToC validated), fix-list mooted; (3) EXP-011 §6 final GO/NO-GO = NO-GO on TOON + ToC validated + forward refs; (4) EXP-011 §7 forward ref -> DEC-010 amendment. Then this is a good wrap point (Sprint 17 resolved). Read files first.
 
-On #3: user's delegation directive (cheap models gather, Fable analyzes) MITIGATES the token cost of a wider set → wider becomes advantageous, esp. for plan critique which needs DEC-010 + roadmap + vision + the Central BL-367 token-reduction claim to judge the C3 gate soundness. Recommend a TIERED set: Tier 1 deep-read (emitter, tests, TOON schema, cli routing, DEC-010, epoch-5-plan, S51 checkpoint) + Tier 2 delegated-context (BL-302 plan, DEC-009, intrinsic-toc vision, MEMORY, README, Central BL-367 research cross-repo). Delegation model fits perfectly: lighter models summarize Tier 2, Fable reasons over synthesis + Tier 1.
+<------------Start Output / 17:18------------>
+Formalized the confirmed decision across 4 files: DEC-010 (status line + Amendment 2 = migration ABANDONED, markdown kept, cites EXP-011 H1/H2); BL-302 (status CLOSED + Resolution section, fix-list not pursued, P2/P4 cancelled); EXP-011.md §6 (gate outcome NO-GO, ToC validated) + §7 forward refs; results.md resolution line. Sprint 17 is resolved: ToC validated, TOON not adopted. Natural wrap point — offering /dsm-wrap-up. Uncommitted work: EXP-011 experiment dir (design+tasks+results+arm-inputs), DEC-010/BL-302 amendments, + pre-existing S51 STAA .claude files. Note STAA-for-S52 still pending (separate conversation).
 
-Need REAL absolute paths before writing brief (Earn Your Assertions). Locating: TOON schema, DEC-010, epoch-5-plan, BL-302 plan, DEC-009, vision research, Central BL-367. Then present tiered recommendation → on approval create EXP-010.md first (file-by-file gate).
+<------------Start Thinking / 17:28------------>
+User asks: do we have all info to POST about this (process, multi-agent engagement, hypothesis, resolution/conclusion, structured metrics-backed). This is a readiness assessment, NOT a request to draft the post (blog = chunked-drafting, Gate 1 first). Answer: what's solid vs gaps.
+Map to sources: process=EXP-011 §3-4 + PGB 4-gate story + EXP-010→011 lineage; multi-agent=EXP-011 24 subagents (2 workflows) AND EXP-010 (Fable+9 Haiku+Opus adjudication) — two rich agent stories; hypothesis=EXP-011 §2 (H1/H2+falsifiers+pre-registered criteria §3); resolution=results.md tables + rollup + DEC-010 Amд2 + BL-302.
+GAPS to flag honestly: (1) tokens_to_answer NOT rigorously per-arm (weak metering) — we have static ToC cost (2903 vs 3123) + workflow-level subagent token totals, not per-arm nav tokens; (2) n=8, single-run-per-cell, directional not statistical; (3) T4 flawed/unscoped; (4) orphan "truth" method-dependent (112 vs 97) — frame carefully; (5) contamination note; (6) CRITICAL reproducibility gap: the workflow PROCESS metrics (agent counts, subagent tokens 159K+485K=644K, tool_uses 22+65, durations 320s+252s, run IDs) live only in ephemeral task-notifications, NOT in the experiment docs — should capture into results.md before posting.
+Also check blog scaffold: does dsm-docs/blog/epoch-5/ exist? Blog is per-epoch; capture/journal likely not created yet.
+Verdict: ~90% there; content is strong. Recommend capturing process-metrics + caveats into results.md (also good for the experiment record regardless of blog), then blog goes via its own Gate-1 process. Do NOT draft post now. Check blog dir, then answer with the have/gap breakdown + offer to close gaps.
 
-<------------Start Thinking / 11:30------------>
-User: "proceed" → tiered set approved, all 6 decisions locked. Create EXP-010.md (only this file this turn), then STOP for review before brief.md + results.md (file-by-file loop). Align to project's 4-element standard (Why / Hypothesis / Validation / References) + add: objective (dual), experiment design, read-set (tier 1/2), success criteria (PASS/COND/FAIL as agreed), adjudication placeholder. Metadata: EXP-010, 2026-07-03, S52, Sprint 17. Confirm test filename exists before referencing. Folder: data/experiments/EXP-010-fable-repo-plan-assessment/.
+<------------Start Output / 17:34------------>
+Assessed post-readiness: ~90% there. Mapped 4 requested elements (process/multi-agent/hypothesis/resolution) to sources — all strong. Flagged 6 gaps, chiefly: process metrics live only in ephemeral run notifications (not durable), tokens_to_answer not per-arm, n=8 single-run, T4 flawed, orphan-count method-dependent, no epoch-5 blog scaffold. Recommended capturing process metrics + caveats into results.md (useful regardless of blog); blog itself via its own Gate 1.
 
-<------------Start Output / 11:33------------>
-Created data/experiments/EXP-010-fable-repo-plan-assessment/EXP-010.md (4-element standard + dual objective, tiered read set, PASS/COND/FAIL criteria, adjudication table placeholder, references with real paths). Paths verified. STOP for review before creating brief.md (file-by-file gate).
+<------------Start Thinking / 17:36------------>
+User: capture process metrics + caveats into results.md now for next-session draft; ensure no info lost between sessions; then wrap up. Append a "Process metrics & caveats + blog source pointers" appendix to results.md with exact numbers from both run notifications (pilot 6 agents/159,031 tok/22 tool_uses/319,622ms; batch 18/485,069/65/251,524ms; combined 24/644,100/87/~9.5min), static ToC token costs (GE 2903/3123 +7.58%; Central 6952/7073 +1.74%), measurement method, EXP-010 precursor agent story, the 6 caveats, and a source-pointer index. This makes results.md self-sufficient for a next-session blog draft. Then hand to /dsm-wrap-up (which records blog-draft-pending in MEMORY/checkpoint). Write the appendix now.
 
-<------------Start Thinking / 11:40------------>
-User adds a 3rd angle: describe graph-explorer's HIGHEST-LEVEL objective to Fable, and ask Fable (a) is the current discovery/work aligned with it, (b) roadmap adjustments/suggestions to consider. This elevates the review to strategic-alignment, not just correctness+gate-soundness.
+<------------Start Output / 17:42------------>
+Wrote the "Process metrics & caveats (write-up / blog source material)" appendix to results.md: run/orchestration metrics table (24 agents, 644,100 subagent tokens, 87 tool-uses, ~9.5min, both run IDs), static ToC token-cost table (F1 reproduction), EXP-010 precursor agent story, 6 plainly-stated caveats, and a source-pointer index (incl. epoch-5 blog scaffold absent). results.md is now self-sufficient for a next-session blog draft. Proceeding to /dsm-wrap-up per user; wrap-up must record blog-draft-pending + STAA-for-S52-pending in MEMORY/checkpoint.
 
-The north-star content is the USER's vision — I must ground it in repo docs (vision research + README), not paraphrase from MEMORY, and present my draft for the user to confirm/correct before it anchors Fable (voice/vision-sensitive; CLAUDE.md "read source before answering"). 
-
-Plan: read 2026-04-13_intrinsic-toc-vision.md + README.md → draft a "Project North Star" statement + the 2 alignment questions → present for approval. Then fold into brief.md (file 2) and add H4 (strategic alignment) + objective tweak to EXP-010.md (file 1, already created — small edit). Do NOT write brief.md yet; get north-star wording approved first.
-
-<------------Start Output / 11:52------------>
-North star approved as-is. Updated EXP-010.md: added H4 (strategic alignment) + "Three review axes" design bullet (code / plan / alignment, README-vs-vision tension explicit). Created brief.md (file 2): self-contained — role, token-economy/delegation directive, approved north-star statement, current-state context (P2 golden-freeze rationale, C3 gate), tiered read set with real paths incl. cross-repo BL-367, 3 review axes + questions, structured findings schema (ID/axis/severity/location/claim/evidence/recommendation/confidence) + per-axis narrative + top-3. STOP for review before results.md (file 3).
-
-<------------Start Output / 11:58------------>
-Created results.md (file 3): template matching brief.md schema — metadata (model/date/delegation/files-read), findings index table, repeatable per-finding blocks (F1/F2...), per-axis narratives (A/B/C), top-3 priorities, confidence/limits. EXP-010 scaffold complete (3 files). Sequencing note to surface: P2 should WAIT for Fable's Axis-A results — the whole design rationale is reviewing the emitter BEFORE the golden-fixture freeze. Offer: hand brief.md to Fable now, commit scaffold, hold P2.
-
-<------------Start Thinking / 12:02------------>
-User: "commit". Focused commit of the EXP-010 scaffold (3 files). Checkpoint rename is already staged from /dsm-go step 3.5 (legitimate session-start housekeeping) — include it, name it in the message. Per S48 lesson "pre-existing uncommitted files enumerated, not silently included": do NOT sweep in the pre-existing .claude churn (reasoning-lessons ×2, last-staa, last-wrap-up = prior-session uncommitted; session-transcript/baseline = active session bookkeeping). Leave those for wrap-up. Global CLAUDE.md: NO co-author line (overrides the git template default). Verify staged state, add 3 EXP files, commit scaffold + checkpoint move.
-
-<------------Start Output / 12:04------------>
-Committed 69b5090 on sprint-17/toon-migration: 4 files (+354) — 3 EXP-010 scaffold files + consumed-checkpoint rename to done/. Pre-existing .claude churn + archived transcript left uncommitted for wrap-up (S48 lesson: don't silently sweep). No co-author line (global override). EXP-010 ready to hand to Fable; P2 recommended to hold for Fable Axis-A adjudication.
-
-<------------Start Thinking / 12:08------------>
-User wants the exact Fable prompt. brief.md is self-contained → prompt is minimal. Separate session may have different cwd, so use ABSOLUTE path (/home/berto/dsm-graph-explorer/...) to be safe rather than repo-relative. Add one framing sentence so Fable treats brief.md as its full instruction set and actually writes results.md + uses delegation. Provide recommended + bare-minimum variants.
-
-<------------Start Thinking / 12:14------------>
-User: add a request for Fable to briefly report HOW the work was done — # agents, which workflow, # tokens. Feeds the secondary model-assessment/token-economy objective (H3 + model-fit note). Edit both committed files: brief.md Section 5 add a "Process report" required element; results.md metadata block add explicit fields (agents count, workflow description, token usage). Then update the recommended prompt with one clause. Files already committed → edits become new uncommitted changes, fine (commit at wrap-up or on request).
-
-<------------Start Output / 12:16------------>
-Added process-report requirement to brief.md §5 (# agents, workflow, token usage w/ analytical-vs-delegated split) + matching "Process report" fields in results.md metadata. Updated recommended Fable prompt to mention the process report. Edits uncommitted (post-69b5090); can fold into a follow-up commit or wrap-up.
-
-<------------Start Thinking / 12:19------------>
-User: "yes" → commit the two process-report edits. Focused: add only brief.md + results.md, leave .claude churn (S48 lesson). Message names the process-report addition + secondary-objective rationale.
-
-<------------Start Output / 12:20------------>
-Committed e0838e7: brief.md + results.md process-report additions (2 files, +14/-1). EXP-010 scaffold now whole across 69b5090 + e0838e7. Ready to hand to Fable. Good stopping point.
-
-<------------Start Thinking / 13:30------------>
-Fable results in. Headline: implemented TOON schema is token-NEGATIVE (+1.74% Central, +7.6% GE) → DEC-010 C3 gate (≥10% savings) FAILS today. 14 findings, F1-F3 high severity, empirically backed. This changes the sprint course (P2 freeze should not proceed; DEC-010 premise broken).
-
-My role now = ADJUDICATION (EXP-010 §5, the trust boundary). Do NOT accept on faith — Fable's own brief warned it I'd verify each finding against code. Fable is a strong independent model but findings are claims until I confirm. Given the stakes (reopening DEC-010, halting P2), rigorous verification of the load-bearing high-severity findings is warranted:
-- F1/F3: re-run the C3 measurement MYSELF (generate toon+markdown on GE corpus, count with tiktoken) — the token-negative claim is the crux.
-- F2: read emitter code for spec violations (CSV quote-doubling vs \", literal newlines, unquoted colons) + the test that enshrines a violation.
-- F4: orphan cap 15 vs 110 (silent overflow drop).
-- Lighter: F10-F14 code-readable claims; F6 (BL-367 schema mismatch); F8/F9 alignment (judgment, not code).
-- Positive F-verified: byte-identical refactor (Fable says confirmed via git 7b9c7c8) — spot-check.
-
-NOT spawning a Workflow (no ultracode/explicit opt-in). Will verify directly + maybe a couple parallel Agent reads. First: read results.md full + emitter + check tiktoken/venv. Then reproduce measurement. Then fill EXP-010 §5 adjudication table + recommend course correction (hold P2, likely reopen schema/DEC-010).
-
-<------------Start Output / 13:45------------>
-Adjudicated all 14 Fable findings + reproduced F1 independently (GE corpus, relative: md 2,903 vs toon 3,123 = +7.58%, matches Fable to the token; chars↓ tokens↑ confirms BPE). ALL 14 CONFIRMED (F2/F11 code-confirmed, spec-strictness PLAUSIBLE pending a decoder run; BL-367 internals second-hand). Verdict: PASS (strong), H1-H4 all satisfied, zero false positives. Filled EXP-010 §5 adjudication table + overall verdict + Fable-5 model-fit note. Headline decision: C3 gate FAILS → DEC-010's own kill-switch says halt; P2 golden-freeze must not proceed; schema needs redesign. Next = present to user, recommend formalizing the course correction (not immediate coding) since it reopens DEC-010/BL-302 premise.
-
-<------------Start Thinking / 13:55------------>
-User: formalize course correction + full wrap-up now; decide redesign NEXT session. So I record the finding + halt, but do NOT make the redesign decision (defer). DEC-010 gets annotated (not a new DEC — that's next session's call). Formalization artifacts:
-1. EXP-010.md → Status COMPLETE + outcome.
-2. BL-302 (dsm-docs/plans/BL-302-phase-1.5-toon-migration.md) → "Sprint 17 Course Correction (2026-07-03)" status block: P2 HALTED, C3 gate run early + FAILED (TOON +1.74% Central / +7.58% GE vs −10% required), required fixes enumerated, direction deferred to S53.
-3. DEC-010 → amendment note: C3 failed per EXP-010, migration halted pending redesign decision; status → Accepted (implementation halted).
-4. Handoff doc (dsm-docs/handoffs/) → next-session redesign decision: forks a/b/c + fix list + pointers.
-Then /dsm-wrap-up (autonomous) for commit/push/MEMORY/reasoning-lessons/feedback/blog/checkpoint + clears the 3-session light-chain deferred items.
-
-DEC-010/BL-302 are decision-sensitive → present the formalization CONTENT plan as one concept gate, get a single go-ahead, then execute all 4 + wrap-up. Don't over-gate (user already chose the path); don't under-gate (touching a DEC). Present plan now, no file writes yet.
-
-<------------Start Thinking / 14:05------------>
-Approved. Read BL-302 + DEC-010 headers/structure to annotate accurately, then: edit EXP-010 status, add BL-302 course-correction block, append DEC-010 amendment, write handoff. Then /dsm-wrap-up.
-
-<------------Start Output / 14:12------------>
-Formalization done (4 artifacts): EXP-010.md status→COMPLETE/PASS; BL-302 status→HALTED + "Sprint 17 Course Correction" block (C3 numbers, root cause, 6-item fix list, 3 forks deferred to S53); DEC-010 status→Accepted/impl-HALTED + Amendment section; handoff 2026-07-03_s52_toon-redesign-decision.md (decision packet, fix list, pointers). Now invoking /dsm-wrap-up for full close (commit/push/MEMORY/lessons/feedback/blog/checkpoint + clear 3-session light-chain deferrals).
-
-<------------Start Thinking / 14:20------------>
-Full wrap-up, S52, on sprint-17/toon-migration (Level 3 task branch, off session-51). KEY: Sprint 17 is HALTED not complete → do NOT merge to main (Step 10 skip); commit+push the sprint branch, work continues S53. Handoff already created this session (Step 5 skip). README/methodology/human-facing files NOT changed → Steps 1/8/8.5 skip. Gather state: remote, baseline HEAD, ecosystem paths (central/portfolio/mirror/contributions-docs), .claude/memory, parallel-sessions, feedback-to-dsm unpushed, git status, reasoning-lessons tail. Rich session for lessons: /dsm-go→light-go mid-flow reconciliation (session-number + archive/reset already done), the capability-experiment-as-adjudication design, Fable delegation model, all-14-confirmed + independent F1 reproduction, DEC-010 C3 kill-switch firing. STAA: likely yes (multi-option decision, course correction, unfamiliar territory = cross-model experiment).
+<------------Start Output / 17:55------------>
+/dsm-wrap-up (full) executed. Step 0: 6 S53 reasoning lessons appended (5 pattern, 1 infra) + compact mirror regenerated (63/63, 21KB, sanity-checks passed) + lesson notification pushed to Central inbox (dsm-graph-explorer.md). STAA recommended: yes (rich multi-option fork decision + first multi-agent A/B experiment). Step 0.5: 3 cross-repo targets pre-confirmed. Steps 1,3,4,5,6,7,8,8.5,11,11.5 skipped (no README/FEATURES/methodology/human-facing changes, no backup dir/profile/feedback/governance/mirror/parallel-registry). Step 2: MEMORY updated (Current→Sprint 17 RESOLVED, DEC-010 ABANDONED, Latest→S53, S52 compressed to previous, pending trimmed). Step 2.5: checkpoint 2026-07-06_s53 written (pending: blog draft + create blog/epoch-5 scaffold; STAA-for-S52 still pending; Sprint 18 next). Committing + PR-merge to master next.
