@@ -58,11 +58,24 @@ All four S47 open questions answered (see
 
 ### Sprint 18: BL-302 Phase 2 (Leiden Clustering)
 
-- Concept clusters from co-reference patterns
+- Graph scope exclusion prerequisite: `DEFAULT_EXCLUDES` so clustering runs on project
+  content, not dependencies. Added S55 after `--knowledge-summary` was observed emitting
+  16 of 57 directories from `.venv/` and `.pytest_cache/`
+- Concept clusters from co-reference patterns (structural only, per DEC-009)
 - Leiden algorithm via `networkx.community` or `leidenalg`
-- Integrate into `--knowledge-summary` output (TOON-native cluster nesting,
-  enabled by Sprint 17)
+- Integrate into `--knowledge-summary` **markdown** output, using the nesting the existing
+  `generate_hierarchy` emitter already produces
+- EXP-012 cluster-quality gate, run before any fixture freeze
 - Research: code-review-graph for implementation patterns
+- Scope detail: [BL-302 Phase 2](BL-302-phase-2-leiden-clustering.md)
+- Sprint plan: [epoch-5-sprint-18-plan.md](epoch-5-sprint-18-plan.md)
+- Effort: 1.5-2 sessions (6-12 hours)
+
+> **Corrected S55 (2026-07-21):** this entry previously read "TOON-native cluster nesting,
+> enabled by Sprint 17". Sprint 17 closed without adopting TOON, and the underlying claim
+> that the incumbent markdown cannot express nesting was refuted by measurement. Phase 2
+> has no format prerequisite. See
+> [BL-302 Phase 1.5 §Post-Closure Correction](BL-302-phase-1.5-toon-migration.md).
 
 ### Sprint 19: Hop Distance + EXP-001 Validation
 

@@ -64,6 +64,47 @@ sole supported format.
 
 ---
 
+## Post-Closure Correction (2026-07-21, Session 55): nesting premise refuted
+
+**Status is unchanged, this BL stays CLOSED.** The correction below refutes one
+*justification* inside a decision that was already abandoned on other grounds. It changes
+nothing about Phase 1.5's outcome. It is recorded because the claim was load-bearing for
+**Phase 2's** scope, where it survived Phase 1.5's closure and would have misdirected the
+next sprint.
+
+The third bullet under §Motivation reads:
+
+> Phase 2 (Leiden clusters) requires native nesting; TOON handles this, incumbent does not.
+
+**Both halves are false.** Both emitters were run against this repository in S55
+(227 files, 2,585 sections, 133 cross-references):
+
+- The markdown path (`generate_hierarchy`, `src/analysis/knowledge_summary.py:161-181`)
+  already emits two-level nesting: a bold directory header, then indented per-file
+  bullets, then an `... and N more` truncation line.
+- The TOON path (`_generate_toon_summary`) **flattens** the same data into
+  `directories[56]{path,files,sections,shown,more}` plus a second table repeating the
+  path column.
+
+So the incumbent does express nesting, and the implemented TOON expresses less of it.
+Measured alongside: markdown 230 lines / 17,734 bytes, TOON 206 lines / 18,032 bytes,
+fewer lines but more bytes, the same character-vs-token divergence that failed the
+DEC-010 C3 gate in S52.
+
+**Why it went unchallenged:** the claim was written as forward justification for a
+migration, at a point when no TOON emitter existed to check it against. By the time one
+did (S51 P1b), the claim had already done its work and nobody re-read it. It is the same
+shape as the C3 gate deferral, a cheap falsifiable check postponed past the point where
+its answer would have changed the plan.
+
+The original bullet is left in place rather than rewritten, so the record of what was
+believed at the time survives. Consequence is carried forward in
+[BL-302 Phase 2](BL-302-phase-2-leiden-clustering.md) §Correction to the inherited
+premise, and [epoch-5-plan.md](epoch-5-plan.md) §Sprint 18 is corrected to drop the TOON
+dependency.
+
+---
+
 ## Context
 
 BL-302 Phase 1 (Sprint 16) shipped `--knowledge-summary` with a mixed markdown format (inline bold key:value, pipe bullets, GFM tables). DEC-010 accepts Central's BL-367 research recommendation to migrate that output to TOON. This BL tracks the migration itself as a prep step before Phase 2 (Leiden cluster output) so Phase 2 is not built on the incumbent format.
@@ -75,6 +116,7 @@ BL-302 Phase 1 (Sprint 16) shipped `--knowledge-summary` with a mixed markdown f
 - Measured **-14.6% token reduction** vs incumbent (tiktoken `cl100k_base`, ±3% projection margin).
 - Parser effort drops 4/5 → 2/5 (four format paths collapse to one uniform schema).
 - Phase 2 (Leiden clusters) requires native nesting; TOON handles this, incumbent does not.
+  **[REFUTED S55, see §Post-Closure Correction above. Left in place as the historical record.]**
 - Producer/consumer single-pair state (GE → Central) makes now the cheapest migration window.
 
 Full justification and counter-evidence in [DEC-010](../decisions/DEC-010-toon-migration-format.md).
