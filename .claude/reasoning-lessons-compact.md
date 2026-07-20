@@ -3,8 +3,8 @@
 <!-- Do not edit; auto-generated from .claude/reasoning-lessons.md by /dsm-wrap-up Step 0 or /dsm-staa Step 8 -->
 
 **Source:** `.claude/reasoning-lessons.md`
-**Last regenerated:** 2026-07-06T02:20+02:00
-**Source mtime at regeneration:** 2026-07-06T02:20+02:00
+**Last regenerated:** 2026-07-09T18:24+02:00
+**Source mtime at regeneration:** 2026-07-09T18:21+02:00
 
 ---
 
@@ -95,3 +95,12 @@
 - Pilot a representative slice, including the trap case, to validate the harness and instrument before the full spend. Before the 18-run batch a 6-run pilot (T1 plus the T3 orphan-trap, times 3 arms) confirmed transcript tool-counts matched self-report and surfaced an over-strict-schema failure class that was fixed for the batch. Concrete payoff: the schema fix would otherwise have cost 18 agents.
 - "Do we have enough to X?" is a readiness assessment, not authorization to do X. Asked whether there was enough to post about the experiment, the agent answered have-vs-gaps (~90%, 6 gaps flagged) and did NOT draft the blog post, routing drafting through its own chunked-drafting Gate 1. Assess-vs-produce, distinct from decide-vs-implement.
 - Multi-agent orchestration metrics live only in ephemeral task-notifications, capture them into a durable record before session end. The workflow process metrics (24 agents, 644K subagent tokens, 87 tool-uses, durations, run IDs) existed nowhere but transient notifications, so the agent wrote them into a results.md appendix before wrap, keeping a next-session blog draft lossless. Pairs with feedback_experiment_reproducibility.
+
+## S54 (2026-07-09)
+
+- Screen first-party generated prose for DSM_0.2 §13 inclusive language (no weapons/military/killing metaphors) BEFORE presenting it, not after the user catches it. S54 shipped "kill" (blog title), "kill-switch", "tripwire", and "squad" into a blog draft; §13 binds the agent, names blog posts in scope, and lists "kill", so the miss was adherence, not methodology. Fix: a pre-present grep screen for the violence/military metaphor family.
+- A protected-branch merge of the agent's own PR needs specific authorization; a generic "proceed in priority order" does not clear it. The auto-mode classifier blocked the self-merge, matching the agent's own pre-committed plan to stop and confirm. Do the safe prep (commit + push), then gate the irreversible publish on an explicit, specific go.
+- Ground a "why didn't you use X?" reflection in the project's existing decisions, not invented rationale. The blog's "why not RAG" section was built on DEC-009 + the S49 GraphRAG-fit research (adopt-ideas-only, Leiden on the roadmap); earn-your-assertions applies to blog prose too.
+- When asked to file feedback conditional on a principle being missing or ill-framed, verify findability + framing first and refuse to manufacture the item when the condition is not met. S54's inclusive-language rule was both findable (DSM_0.2 §13) and well-framed, so no Central feedback was written.
+- To move the live session transcript across a post-merge branch switch when the working copy is dirty, copy it to scratchpad, `git checkout --` to revert, switch/pull/recreate the branch, then restore from scratchpad. `gh pr merge --delete-branch` aborts its local checkout on a dirty tracked transcript (the remote merge still succeeds).
+- File-first per-bite chunked drafting (write each section to an editable draft file, pause for review) let the user edit directly in-IDE and kept the four gates crisp across a 7-section blog post; interleaving Gate-2 TOC approval with per-section Gate-3 bites avoided full-document rewrites.
