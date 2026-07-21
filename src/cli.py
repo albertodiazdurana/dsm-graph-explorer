@@ -400,6 +400,13 @@ def _print_usage_diff(diff: "DiffReport") -> None:
     help="Exclude files matching pattern (repeatable). E.g., --exclude 'plan/*'",
 )
 @click.option(
+    "--no-default-excludes",
+    "no_default_excludes",
+    is_flag=True,
+    default=False,
+    help="Include dependency/cache dirs (.venv, site-packages, node_modules, .pytest_cache, .claude/transcripts) that are excluded by default.",
+)
+@click.option(
     "-c",
     "--config",
     "config_path",
@@ -562,6 +569,7 @@ def main(
     glob_pattern: str,
     version_files: tuple[str, ...],
     exclude_patterns: tuple[str, ...],
+    no_default_excludes: bool,
     config_path: str | None,
     semantic: bool,
     graph_export_path: str | None,
@@ -769,6 +777,7 @@ def main(
         base_config,
         cli_exclude=exclude_patterns,
         cli_strict=strict if strict else None,
+        cli_no_default_excludes=no_default_excludes,
     )
 
     base_path = Path(paths[0]).resolve() if paths else Path.cwd()
