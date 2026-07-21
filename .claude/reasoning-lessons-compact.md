@@ -3,8 +3,8 @@
 <!-- Do not edit; auto-generated from .claude/reasoning-lessons.md by /dsm-wrap-up Step 0 or /dsm-staa Step 8 -->
 
 **Source:** `.claude/reasoning-lessons.md`
-**Last regenerated:** 2026-07-21T00:40+02:00
-**Source mtime at regeneration:** 2026-07-21T00:40+02:00
+**Last regenerated:** 2026-07-21T02:48+02:00
+**Source mtime at regeneration:** 2026-07-21T02:48+02:00
 
 ---
 
@@ -107,3 +107,15 @@
 - Number Gate 4 findings and split them SAFE (apply inline) vs OPTIONAL (present for decision). S54's 6 findings drew a 9-word reply; also state your disambiguation of any compressed answer, since "5) keep" was ambiguous between two referents.
 - Derive "pending" items from machine markers, not carried-forward prose. S54 listed "STAA for S52" as pending at boot and at close while last-staa.txt read 53 and [STAA] S52 entries were already in the lessons file. Mirror of the S50 marker-absent case; both fail because the prose list and the marker are maintained separately.
 - S49's "mark resumption gaps explicitly" recurred: S54 spanned 2026-07-06 to 2026-07-09 with the final Output block stamped 18:22 after a 21:00 User block, no [RETROACTIVE] or gap marker. Recurring transcript-hygiene failures need a hook check (block timestamp vs file mtime), not another logged lesson.
+
+## S55 (2026-07-21)
+
+- A stale LOCAL ref is not evidence about a remote branch. `git log master..session-54` reported "2 commits ahead" and I read that as "unmerged", but the branch had already merged remotely via PR #12; only the local `master` ref was stale. A remote-side PR merge never moves a local ref. Cost: a wrong recommendation the user approved, caught only when `git push` was rejected with "tip is behind". For "is this branch merged", compare against `origin/<main>` or fetch first.
+- A forward-justification claim can outlive the decision it justified and misdirect downstream scope. BL-302 line 77 ("Phase 2 requires native nesting; TOON handles this, incumbent does not") was written before any TOON emitter existed to check it against; by the time one did, the claim had done its work and nobody re-read it. It survived the abandonment of TOON and still shaped Sprint 18. When inheriting scope, re-check its PREMISES, not just its status.
+- Prefer the seconds-long empirical check over the plausible inference. Two findings this session came from running something rather than reasoning about it: (a) `should_exclude` matches segment-by-segment, so a bare `.venv` pattern matches nothing nested, which would have shipped a DEFAULT_EXCLUDES list that excluded nothing while tests passed; (b) an unrelated-looking test failure was confirmed pre-existing by stashing and running it on clean HEAD. Both inferences would have gone the other way.
+- A green test can be green for the wrong reason, so interrogate unexpected passes during the red phase. `test_opt_out_disables_defaults` passed before implementation because Pydantic silently drops unknown kwargs (`extra` defaults to ignore), so the opt-out kwarg vanished and, with nothing yet excluded, the assertion held vacuously. In TDD, an unexpected PASS in the red phase is a defect signal, not good news.
+- Edit forward-looking claims contradicted by outcomes; preserve records of what was believed at the time. This asymmetry governed six artifacts: BL-302 line 77 kept its text plus a REFUTED marker, the epoch plan's S47 Q3 "Migrate to TOON" record was left untouched, while the Sprint 17 rationale two sections later was corrected. Same document, opposite treatment, because one is a record and the other is a plan.
+- When a change legitimately breaks an existing test, reframe what it asserts AND add a paired test preserving the original contract, rather than loosening the assertion. Two `test_config.py` tests asserted `merged.exclude == ["plan/*"]` exactly; each now checks user patterns stay first, with a new `use_default_excludes=False` test keeping exact equality. Loosening alone would have silently deleted a guarantee.
+- `--knowledge-summary` had been emitting dependency content since Sprint 16 (16 of 57 directories from `.venv`/`.pytest_cache`) and nobody noticed, because the defect is only visible in the tool's own output, which is read by agents rather than humans. Output consumed by machines needs periodic human inspection; no test failed and no user complained.
+- A success criterion can become unsatisfiable and sit unnoticed inside a definition of done. The epoch-5 plan required the DEC-010 C3 gate to PASS; the gate ran in S52 and failed, so the epoch could never be closed as written. Reframed to "the phase reached a recorded resolution", since a gate that correctly rejects its candidate is a successful gate. Re-read success criteria after any halt or abandonment.
+- Prevent staged-rename bundling with explicit pathspec commits rather than flagging it afterwards. The `/dsm-go` Step 3.5 checkpoint rename sat in the index across four commits and entered none of them, because every commit used `git commit -- <paths>`; it landed in the boot commit where it belonged. Directly closes the S51 #63 recurrence, where the same rename rode along twice despite being flagged.
