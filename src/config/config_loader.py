@@ -51,6 +51,36 @@ class LintConfig(BaseModel):
         return v
 
 
+DEFAULT_EXCLUDES: list[str] = [
+    "**/.venv/**",
+    "**/site-packages/**",
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/.pytest_cache/**",
+    "**/.claude/transcripts/**",
+]
+"""Directories excluded from validation and graph building by default.
+
+These are dependency, cache, and agent-session directories whose markdown is
+not project knowledge. Without them, `--knowledge-summary` on this repository
+emitted 16 of 57 directories from `.venv/` and `.pytest_cache/`, so clustering
+(BL-302 Phase 2) would have grouped dependency license files as project
+concepts.
+
+Every entry uses the `**/X/**` form deliberately. `should_exclude` matches
+segment-by-segment via `_match_segments`, which requires an equal segment
+count, so a bare `.venv` matches nothing nested and `.venv/*` matches only
+direct children. The short forms would silently exclude nothing.
+
+`build/` and `dist/` are intentionally absent: they are plausible dependency
+directories but equally plausible project directories, and a false exclusion
+loses content silently. `.claude/` is excluded narrowly, transcripts are
+dropped while `.claude/CLAUDE.md` stays indexed.
+
+Disable with `use_default_excludes: false` in config, or `--no-default-excludes`.
+"""
+
+
 class Config(BaseModel):
     """Configuration for DSM Graph Explorer validation."""
 
@@ -81,6 +111,10 @@ class Config(BaseModel):
     lint: LintConfig = Field(
         default_factory=LintConfig,
         description="Convention linting configuration",
+    )
+    use_default_excludes: bool = Field(
+        default=True,
+        description="Apply DEFAULT_EXCLUDES (dependency/cache/transcript dirs) on top of `exclude`",
     )
 
     @field_validator("exclude")
@@ -182,6 +216,7 @@ def merge_config_with_cli(
     config: Config,
     cli_exclude: tuple[str, ...] | None = None,
     cli_strict: bool | None = None,
+    cli_no_default_excludes: bool = False,
 ) -> Config:
     """Merge config file settings with CLI overrides.
 
@@ -191,6 +226,8 @@ def merge_config_with_cli(
         config: Base configuration from file.
         cli_exclude: Exclusion patterns from CLI (added to config patterns).
         cli_strict: Strict mode from CLI (overrides config if True).
+        cli_no_default_excludes: If True, suppress DEFAULT_EXCLUDES
+            (overrides the config's ``use_default_excludes``).
 
     Returns:
         New Config with merged settings.
@@ -198,10 +235,17 @@ def merge_config_with_cli(
     # Start with config values
     exclude = list(config.exclude)
     strict = config.strict
+    use_defaults = config.use_default_excludes and not cli_no_default_excludes
 
     # CLI exclusions are added to config exclusions
     if cli_exclude:
         exclude.extend(cli_exclude)
+
+    # Default exclusions are added last so user patterns stay visible first.
+    # Applied here rather than at the call site so every consumer of a merged
+    # Config (validation, graph build, knowledge summary) gets them.
+    if use_defaults:
+        exclude.extend(p for p in DEFAULT_EXCLUDES if p not in exclude)
 
     # CLI strict overrides config (only if explicitly set to True)
     if cli_strict is True:
@@ -215,4 +259,5 @@ def merge_config_with_cli(
         semantic_threshold=config.semantic_threshold,
         semantic_min_tokens=config.semantic_min_tokens,
         lint=config.lint,
+        use_default_excludes=use_defaults,
     )

@@ -286,12 +286,31 @@ class TestMergeConfigWithCli:
 
         merged = merge_config_with_cli(config)
 
+        # User patterns are preserved and stay first; DEFAULT_EXCLUDES are
+        # appended (BL-302 Phase 2 P1). Opt out with use_default_excludes=False.
+        assert merged.exclude[0] == "plan/*"
+        assert merged.strict is True
+
+    def test_no_cli_options_leaves_user_patterns_alone_without_defaults(self):
+        """With defaults opted out, merging is a true no-op."""
+        config = Config(exclude=["plan/*"], strict=True, use_default_excludes=False)
+
+        merged = merge_config_with_cli(config)
+
         assert merged.exclude == ["plan/*"]
         assert merged.strict is True
 
     def test_empty_cli_exclude_tuple(self):
         """Empty CLI exclude tuple doesn't affect config."""
         config = Config(exclude=["plan/*"])
+
+        merged = merge_config_with_cli(config, cli_exclude=())
+
+        assert merged.exclude[0] == "plan/*"
+
+    def test_empty_cli_exclude_tuple_without_defaults(self):
+        """Empty CLI exclude tuple doesn't affect config (defaults opted out)."""
+        config = Config(exclude=["plan/*"], use_default_excludes=False)
 
         merged = merge_config_with_cli(config, cli_exclude=())
 

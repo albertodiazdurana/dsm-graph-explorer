@@ -1,9 +1,9 @@
 # DSM Graph Explorer - Epoch 5 Plan
 
 **Project Type:** Software Engineering (DSM 4.0 Track)
-**Start Date:** TBD (scoped 2026-04-20, Sprint 17 kickoff pending)
-**Status:** PLANNING (SCOPED)
-**Prerequisite:** Epoch 4 Complete ([epoch-4-plan.md](epoch-4-plan.md)), see [epoch-4-retrospective.md](../checkpoints/epoch-4/epoch-4-retrospective.md)
+**Start Date:** 2026-06-25 (Sprint 17 kickoff; scoped 2026-04-20)
+**Status:** IN PROGRESS (Sprint 17 closed, Sprint 18 planned)
+**Prerequisite:** Epoch 4 Complete ([epoch-4-plan.md](done/epoch-4-plan.md)), see [epoch-4-retrospective.md](../checkpoints/epoch-4/epoch-4-retrospective.md)
 **Project Lead:** Alberto Diaz Durana (with AI assistance)
 
 ---
@@ -54,15 +54,31 @@ All four S47 open questions answered (see
 - Scope detail: [BL-302 Phase 1.5](BL-302-phase-1.5-toon-migration.md)
 - Effort: 1-1.5 sessions (4-9 hours)
 - Rationale for dedicated sprint: isolates the format migration + validation gate
-  from Phase 2 cluster work, so Leiden builds on TOON rather than on incumbent.
+  from Phase 2 cluster work.
+- **Outcome (S53):** TOON not adopted, markdown retained. The dedicated-sprint
+  structure worked as intended, the isolated C3 gate rejected the migration before
+  Phase 2 was built on it.
 
 ### Sprint 18: BL-302 Phase 2 (Leiden Clustering)
 
-- Concept clusters from co-reference patterns
+- Graph scope exclusion prerequisite: `DEFAULT_EXCLUDES` so clustering runs on project
+  content, not dependencies. Added S55 after `--knowledge-summary` was observed emitting
+  16 of 57 directories from `.venv/` and `.pytest_cache/`
+- Concept clusters from co-reference patterns (structural only, per DEC-009)
 - Leiden algorithm via `networkx.community` or `leidenalg`
-- Integrate into `--knowledge-summary` output (TOON-native cluster nesting,
-  enabled by Sprint 17)
+- Integrate into `--knowledge-summary` **markdown** output, using the nesting the existing
+  `generate_hierarchy` emitter already produces
+- EXP-012 cluster-quality gate, run before any fixture freeze
 - Research: code-review-graph for implementation patterns
+- Scope detail: [BL-302 Phase 2](BL-302-phase-2-leiden-clustering.md)
+- Sprint plan: [epoch-5-sprint-18-plan.md](epoch-5-sprint-18-plan.md)
+- Effort: 1.5-2 sessions (6-12 hours)
+
+> **Corrected S55 (2026-07-21):** this entry previously read "TOON-native cluster nesting,
+> enabled by Sprint 17". Sprint 17 closed without adopting TOON, and the underlying claim
+> that the incumbent markdown cannot express nesting was refuted by measurement. Phase 2
+> has no format prerequisite. See
+> [BL-302 Phase 1.5 §Post-Closure Correction](BL-302-phase-1.5-toon-migration.md).
 
 ### Sprint 19: Hop Distance + EXP-001 Validation
 
@@ -88,10 +104,15 @@ Options:
 
 ## Success Criteria
 
-- [ ] BL-302 Phase 1.5 (TOON migration) delivered; DEC-010 C3 validation
-      gate passed (≥10% measured token savings on DSM Central corpus)
+- [x] BL-302 Phase 1.5 **resolved** (Sprint 17). Superseded S55: the original
+      criterion required the DEC-010 C3 gate to PASS (≥10% token savings). It was
+      run in S52 and FAILED (+1.74% Central / +7.58% GE), TOON was not adopted,
+      and the phase closed with markdown retained. The criterion is satisfied by
+      the phase reaching a recorded resolution, not by the gate passing, a gate
+      that correctly rejects its candidate is a successful gate. See
+      [DEC-010](../decisions/DEC-010-toon-migration-format.md) Amendment 2.
 - [ ] BL-302 Phase 2 delivered (concept clusters in knowledge summary,
-      TOON-native nesting)
+      markdown output, structural only per DEC-009)
 - [ ] EXP-001 reference graph validation complete (pass/fail against 286 edges)
 - [ ] Cross-repo reference support in `--knowledge-summary`
 - [ ] 3 new experiments (validation gates for each significant feature)
@@ -102,8 +123,8 @@ Options:
 
 | Risk | Likelihood | Impact | Mitigation |
 |------|------------|--------|------------|
-| TOON ecosystem instability (spec drift, parser bugs) | Low | Low | Pin parser version; GE is the sole producer, regenerate on demand if spec changes (DEC-010 §Counter-evidence #2) |
-| DEC-010 C3 validation gate fails (<10% measured savings) | Low | Medium | Revisit schema design (BL-302 Phase 1.5 P0); research's ±3% margin is well below the 10% threshold |
+| ~~TOON ecosystem instability~~ | - | - | **Retired S55:** TOON not adopted (Sprint 17), no TOON dependency remains |
+| ~~DEC-010 C3 validation gate fails~~ | - | - | **Materialized S52.** The gate failed (+1.74% Central / +7.58% GE vs required -10%) and the migration was abandoned. Rated Low likelihood / Medium impact; the likelihood estimate was wrong |
 | Leiden clustering quality on sparse graphs | Medium | Medium | Start with EXP to validate; fall back to simpler approaches if quality is poor |
 | FalkorDBLite maintainer silence continues | High | Low | Merge/don't-merge not under our control; publish blog regardless |
 
@@ -114,8 +135,11 @@ Options:
 - Scoped as of 2026-04-20 (Session 48). Sprint 17 plan file to be created
   at Sprint 17 kickoff with DSM_2.0.C §1 Template 8 sections (BL-378);
   not created at epoch-scoping time to avoid pre-kickoff drift.
-- Sprint 17 restructured per DEC-010: TOON migration sequenced before
-  Leiden clusters so Phase 2 builds on the new format.
+- Sprint 17 restructured per DEC-010: TOON migration sequenced before Leiden
+  clusters so Phase 2 builds on the new format. **Superseded S55:** TOON was not
+  adopted and the premise that Phase 2 needed it was refuted by measurement.
+  Sprint 18 depends on no format work. See
+  [BL-302 Phase 1.5 §Post-Closure Correction](BL-302-phase-1.5-toon-migration.md).
 - Sprint ordering may still shift based on ecosystem priorities surfaced by
   DSM Central or portfolio (see [DSM Central responses above](#centrals-responses-2026-04-14-s47-inbox-response)).
 - Epoch 5 is expected to be 4 sprints; overflow (Sprint 21) only if scope expands.

@@ -220,3 +220,122 @@ class TestDSMRepoExclusionPatterns:
         assert should_exclude("README.md", patterns) is False
         assert should_exclude("DSM_1.0.md", patterns) is False
         assert should_exclude("dsm-docs/guide.md", patterns) is False
+
+
+class TestDefaultExcludes:
+    """Tests for DEFAULT_EXCLUDES (BL-302 Phase 2, P1).
+
+    The knowledge summary was observed emitting 16 of 57 directories from
+    `.venv/` and `.pytest_cache/` (S55). These tests pin the default
+    exclusion set and, critically, the pattern form it must use.
+    """
+
+    def test_default_excludes_importable(self):
+        """DEFAULT_EXCLUDES is exported from config_loader."""
+        from config.config_loader import DEFAULT_EXCLUDES
+
+        assert isinstance(DEFAULT_EXCLUDES, list)
+        assert len(DEFAULT_EXCLUDES) > 0
+
+    @pytest.mark.parametrize(
+        "path",
+        [
+            ".venv/lib/python3.12/site-packages/numpy-2.4.3.dist-info/licenses/numpy/random/LICENSE.md",
+            ".venv/lib/python3.12/site-packages/black-24.10.0.dist-info/licenses/AUTHORS.md",
+            ".venv/lib/python3.12/site-packages/scipy/fft/_pocketfft/LICENSE.md",
+            ".pytest_cache/README.md",
+            ".claude/transcripts/2026-03-13T07:01-ST.md",
+        ],
+    )
+    def test_dependency_noise_is_excluded(self, path):
+        """Paths observed polluting the S55 knowledge summary are excluded."""
+        from config.config_loader import DEFAULT_EXCLUDES
+
+        assert should_exclude(path, DEFAULT_EXCLUDES) is True
+
+    @pytest.mark.parametrize(
+        "path",
+        [
+            "README.md",
+            "dsm-docs/plans/epoch-5-plan.md",
+            "dsm-docs/blog/epoch-5/journal.md",
+            ".claude/CLAUDE.md",
+            "src/analysis/knowledge_summary.py",
+            "_inbox/README.md",
+        ],
+    )
+    def test_project_content_survives(self, path):
+        """Project content is not caught by the defaults."""
+        from config.config_loader import DEFAULT_EXCLUDES
+
+        assert should_exclude(path, DEFAULT_EXCLUDES) is False
+
+    def test_claude_config_survives_while_transcripts_excluded(self):
+        """`.claude/` is excluded narrowly: transcripts go, CLAUDE.md stays.
+
+        Resolves BL-302 Phase 2 Open Design Question 3. Agent session
+        transcripts are not project knowledge; CLAUDE.md arguably is.
+        """
+        from config.config_loader import DEFAULT_EXCLUDES
+
+        assert should_exclude(".claude/transcripts/x-ST.md", DEFAULT_EXCLUDES) is True
+        assert should_exclude(".claude/CLAUDE.md", DEFAULT_EXCLUDES) is False
+
+    def test_defaults_use_double_star_form(self):
+        """Every default uses the `**/X/**` form.
+
+        Regression guard on `_match_segments`, which requires an equal
+        segment count. A bare `.venv` or `.venv/*` pattern matches nothing
+        nested, so a defaults list written in the natural-looking short form
+        would silently exclude nothing at all.
+        """
+        from config.config_loader import DEFAULT_EXCLUDES
+
+        for pattern in DEFAULT_EXCLUDES:
+            assert pattern.startswith("**/"), f"{pattern} must start with **/"
+            assert pattern.endswith("/**"), f"{pattern} must end with /**"
+
+    def test_naive_patterns_do_not_match_nested_paths(self):
+        """Pins the semantics the `**/X/**` form exists to work around.
+
+        If a future refactor makes bare directory names match recursively,
+        this fails and the defaults should be revisited.
+        """
+        nested = ".venv/lib/python3.12/site-packages/x/LICENSE.md"
+        assert should_exclude(nested, [".venv"]) is False
+        assert should_exclude(nested, [".venv/*"]) is False
+        assert should_exclude(nested, ["**/.venv/**"]) is True
+
+
+class TestDefaultExcludesConfigIntegration:
+    """DEFAULT_EXCLUDES is applied through config merging (BL-302 P2, P1)."""
+
+    def test_merge_applies_defaults(self):
+        """merge_config_with_cli folds in the defaults by default."""
+        from config.config_loader import Config, merge_config_with_cli
+
+        merged = merge_config_with_cli(Config())
+        assert should_exclude(".venv/lib/x/LICENSE.md", merged.exclude) is True
+
+    def test_merge_preserves_config_patterns(self):
+        """User patterns survive alongside the defaults."""
+        from config.config_loader import Config, merge_config_with_cli
+
+        merged = merge_config_with_cli(Config(exclude=["outputs/*"]))
+        assert "outputs/*" in merged.exclude
+        assert should_exclude(".venv/lib/x/LICENSE.md", merged.exclude) is True
+
+    def test_merge_preserves_cli_patterns(self):
+        """CLI --exclude still merges alongside the defaults."""
+        from config.config_loader import Config, merge_config_with_cli
+
+        merged = merge_config_with_cli(Config(), cli_exclude=("scratch/*",))
+        assert "scratch/*" in merged.exclude
+        assert should_exclude(".venv/lib/x/LICENSE.md", merged.exclude) is True
+
+    def test_opt_out_disables_defaults(self):
+        """use_default_excludes=False restores the previous behaviour."""
+        from config.config_loader import Config, merge_config_with_cli
+
+        merged = merge_config_with_cli(Config(use_default_excludes=False))
+        assert should_exclude(".venv/lib/x/LICENSE.md", merged.exclude) is False

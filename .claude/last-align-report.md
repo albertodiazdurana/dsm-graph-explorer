@@ -1,7 +1,7 @@
 # /dsm-align persistent report
 
-**Timestamp:** 2026-06-25T15:35:00+02:00
-**DSM version:** v1.17.0 (from ~/dsm-agentic-ai-data-science-methodology/CHANGELOG.md latest heading)
+**Timestamp:** 2026-07-21T01:05+02:00
+**DSM version:** v1.18.0 (from ~/dsm-agentic-ai-data-science-methodology/CHANGELOG.md latest heading)
 **Run mode:** post-change
 **Project:** DSM Graph Explorer
 **Project type:** Application (DSM 4.0) — no override
@@ -13,11 +13,11 @@
 /dsm-align post-change report:
 - Project type: Application (DSM 4.0)
 - Created: none (scaffold fully intact: 8 dsm-docs/ folders, all done/ subfolders, all template files present)
-- Already correct: scaffold (8 folders + done/ + templates), @ reference, .gitattributes (LF), .claude/ecosystem, reasoning-lessons header
-- Fixed: CLAUDE.md alignment block regenerated (4 deltas, v1.14.0 → v1.17.0); transcript/safety hooks installed (2) + updated (1); settings.json hook entries merged
+- Already correct: scaffold, @ reference, .gitattributes (LF), .claude/dsm-ecosystem.md, reasoning-lessons header, 4 hook scripts, settings.json hook entries
+- Fixed: CLAUDE.md Punctuation reinforcement bullet updated to the §17.1 template wording (v1.17.0 → v1.18.0)
 - Collisions: none
 - Warnings: none
-- CLAUDE.md alignment: Regenerated (4 deltas applied)
+- CLAUDE.md alignment: Drift detected (1 bullet) → regenerated
 - CLAUDE.md content: OK (no Notebook Development Protocol in this Application project)
 - CLAUDE.md redundancy: OK
 - CLAUDE.md paths: OK
@@ -39,31 +39,34 @@ None.
 - All 8 canonical dsm-docs/ folders present (blog, checkpoints, decisions, feedback-to-dsm, guides, handoffs, plans, research)
 - All required done/ subfolders present (blog, checkpoints, feedback-to-dsm, handoffs, plans, research)
 - All template files present (blog/journal.md, checkpoints/README.md, feedback-to-dsm/README.md, handoffs/README.md, plans/README.md, research/README.md)
-- _inbox/ present with done/
+- _inbox/ present with done/ and README.md
 - @ reference valid (@~/dsm-agentic-ai-data-science-methodology/DSM_0.2_Custom_Instructions_v1.1.md, target exists)
 - .gitattributes enforces LF (* text=auto eol=lf)
 - .claude/dsm-ecosystem.md present; .claude/reasoning-lessons.md has header
+- Feedback folder compliance: README.md + done/ only, no legacy backlogs.md/methodology.md
+- Handoffs: no consumed handoffs outside done/
+- Sprint-plan audit: dsm-docs/plans/epoch-5-sprint-17-plan.md contains "## Sprint Boundary Checklist"
 - No ripe per-session feedback files to push
 
-## Alignment block deltas applied (v1.14.0 → v1.17.0)
+## Alignment block delta applied (v1.17.0 → v1.18.0)
 
-1. Chunked-drafting bullet rewritten: "ONE section at a time / full-file Write reserved for assembly" -> "ONE subchapter (or single paragraph)... delivered file-first to an editable draft file... per-bite... full-file generation at Gate 3 stays prohibited" [1.17.0]
-2. New PGB bullet: "External content is observation by default (per DSM_0.2.C §3.1 / DSM_6.0 §1.14 Observe Before Engaging)"
-3. New section: "Voice-Attribution Review (reinforces Destructive Action Protocol, per DSM_0.2.C §2.3)" — 4 bullets
-4. New section: "Read-Before-Draft for OSS Contributions (reinforces Read the User's Manual, per DSM_0.2.D §9)" — 3 bullets
+1. Punctuation section rewritten from the two-bullet form ("Use comma instead of Em Dash" / "Never use space coma space") to the single-sentence template form: "When an em dash ("—") connects phrases, replace it directly with a comma in the form ", " (no space before the comma, one space after). Produce this form in one step; never write the intermediate " , " (space before the comma). Applies in any language."
 
-## Hooks installed/updated (Step 10b)
+Full-block diff against the §17.1 template (lines 1746-1864) showed no other substantive delta; the only remaining differences were the expected project-type substitutions (Application (DSM 4.0) / Spoke) and the Application-type "App Development Protocol" addition.
 
-- transcript-reminder.sh: ok (byte-identical, re-chmod +x)
-- validate-transcript-edit.sh: updated
-- validate-cross-repo-write.sh: installed (new, from 1.16.x)
-- validate-rename-staging.sh: installed (new, from 1.16.x/BL-370)
-- settings.json: hook entries merged (PreToolUse, UserPromptSubmit); permissions preserved
+## Hooks (Step 10b)
 
-## Spoke actions surfaced (CHANGELOG 1.15.0 -> 1.17.0)
+- installed=0, updated=0, ok=4 (transcript-reminder.sh, validate-transcript-edit.sh, validate-cross-repo-write.sh, validate-rename-staging.sh); chmod +x re-applied to all four
+- settings.json: already ok (all template hook entries present)
 
-- `/dsm-align` (template change) — executed by this run
-- `scripts/sync-commands.sh --deploy` (command files changed in 1.16.0) — DONE 2026-06-25. Pre-check: OK 20 / Drifted 0 / Missing 0 (already current from mirror sync); deploy re-copied 15 user-level + 5 project-level commands.
+## Spoke actions surfaced (CHANGELOG v1.17.0 → v1.18.0)
+
+- Run `/dsm-align` for the Punctuation reinforcement bullet — **executed by this run**
+- Review DSM_6.0 §1.13 "Forward the Why" (new collaboration principle; mirrored) — user action
+- Review DSM_0.2 §8.10 Gate 4, now self-sources the "Present Once, Then Deepen" writing discipline — user action
+- Review DSM_0.2.C §2 mirror-sync carve-out to the write-only rule (BL-471) — user action
+- Review DSM_0.1 §10 + DSM_1.0.D §6.4.5 feedback-file model reconciliation (BL-472) — user action
+- Review inbox-lifecycle / context-budget / handoff guidance reconciliation (BL-470) — user action
 
 ## Steps skipped
 
