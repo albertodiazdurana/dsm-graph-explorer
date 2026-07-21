@@ -445,3 +445,161 @@ For the P1 proposal to be worth reviewing I need to read the actual code, not de
 Pattern semantics matter a lot here: the existing config uses glob-ish patterns like "dsm-docs/_references/*" and "htmlcov/*". If should_exclude does fnmatch against a relative path, then ".venv" alone will NOT match ".venv/lib/python3.12/.../LICENSE.md". I need to know the matching rule before proposing the constant, otherwise I propose DEFAULT_EXCLUDES entries that silently match nothing. That is the single highest-risk detail in P1 and it is cheap to check.
 
 Also the opt-out design: a CLI flag (--no-default-excludes) vs a config key. Read how config is constructed before proposing, since a config key needs a schema change.
+
+<------------Start Output / 01:53------------>
+
+Read "we can continue" as: do the housekeeping, then move to Sprint 18 P1. Stated rather than assumed. Did NOT read it as authorization to write implementation code, since the project protocol requires TDD and description-before-generation; P1 design goes to the user first.
+
+Mechanical prep done:
+- Commit 6bb8bd0-equivalent (boot commit): all 10 boot/STAA files plus the staged checkpoint rename. The rename landed HERE, in the boot commit where it belongs, which permanently clears the S51 #63 hazard for the rest of the session rather than my dodging it commit by commit. Working tree now clean.
+- Created Level 3 branch sprint-18/leiden-clustering off session-55, per the Branch Strategy I wrote into the sprint plan. Following my own plan rather than improvising, since a plan whose first instruction its author ignores is worthless.
+
+THE CHECK THAT JUSTIFIED ITSELF. I flagged pattern semantics as P1's highest-risk detail and it was right to check empirically rather than reason about it. Read src/filter/file_filter.py: _match_segments requires the SAME NUMBER OF SEGMENTS, so a bare pattern like ".venv" matches nothing nested, and ".venv/*" matches only direct children. Confirmed by running should_exclude directly:
+  ".venv"    vs .venv/lib/x/LICENSE.md  -> False
+  ".venv/*"  vs .venv/lib/x/LICENSE.md  -> False
+  "**/.venv/**" vs same                 -> True
+So the obvious-looking DEFAULT_EXCLUDES = [".venv", "node_modules", ...] would have silently excluded NOTHING, shipped green tests if the tests used the same wrong patterns, and left the defect exactly as it is. The working form is uniformly "**/X/**".
+
+Verified positive AND negative cases: the four noise paths match, while dsm-docs/plans/epoch-5-plan.md, README.md, and .claude/CLAUDE.md do NOT. That last one matters for ODQ 3, "**/.claude/transcripts/**" excludes the 27 transcripts while leaving .claude/CLAUDE.md indexed, which resolves ODQ 3 toward the narrow form on evidence rather than taste.
+
+Also located the right insertion point: config_loader.py merge_config_with_cli line 199, where exclude = list(config.exclude) already merges CLI --exclude patterns. Defaults belong there, one place, applying to every consumer, rather than at the cli.py call site.
+
+Next: put the P1 design to the user (constant contents, insertion point, opt-out shape, and the build/dist risk), then TDD from the test file.
+
+<------------Start User / 02:05------------>
+
+"Approve the design, test and run them red, then implement."
+
+<------------Start Thinking / 02:05------------>
+
+Design approved, and the TDD sequence is named explicitly: write tests, observe them fail, then implement. Silent again on my three sub-questions, so same handling, take my stated recommendations and name them:
+  - build/** and dist/** stay OUT (ambiguous, could be project dirs)
+  - ODQ 3 resolves to the narrow **/.claude/transcripts/** (evidence-backed: CLAUDE.md survives)
+  - tests first with negative cases
+
+Important TDD subtlety I need to get right. "Run them red" is only meaningful if the tests fail for the RIGHT reason. Two failure modes to avoid:
+  1. Tests that fail because of an import error or a missing symbol are not really red-for-the-right-reason, they are broken. The DEFAULT_EXCLUDES constant will not exist yet, so any test that imports it will fail at collection with ImportError, which is a weak red. I should structure tests so they fail on ASSERTION (behavior absent) where possible, and accept ImportError only for the constant-contents test where the symbol itself is the unit under test.
+  2. A test that passes accidentally before implementation would be worthless. The negative cases (README.md must survive) will pass trivially right now, since nothing is excluded yet. That is expected and fine, but I must not count them as evidence of red. The meaningful red is the positive cases and the end-to-end zero-.venv assertion.
+
+So I should report the red run honestly, distinguishing which tests failed and which passed-trivially, rather than showing a green-to-red count and implying all of it was meaningful.
+
+Also: writing tests that encode "**/X/**" patterns copies my own verified finding into the test. Good. But I should ALSO include a regression test that the naive form does NOT work, i.e. assert should_exclude(nested, [".venv"]) is False. That pins the semantics so a future refactor of file_filter that "helpfully" makes bare directory names match would surface here rather than silently changing exclusion behavior. That is the kind of test that earns its keep.
+
+Read tests/test_filter.py first for house style (class-based vs function-based, fixture usage, naming) rather than inventing a style.
+
+<------------Start Output / 02:11------------>
+
+P1 implemented TDD-style. Assumptions taken on the three unanswered sub-questions, all as recommended: build/dist left OUT, ODQ 3 resolved to the narrow **/.claude/transcripts/**, tests written with negative cases.
+
+RED PHASE, reported honestly. 17 failed / 2 passed. But most failures were ImportError (DEFAULT_EXCLUDES did not exist), which is a WEAK red, not behavioral proof. Two things worth naming rather than glossing:
+  - test_naive_patterns_do_not_match_nested_paths passed legitimately. It pins existing file_filter semantics and needs no new code, so a pass was correct.
+  - test_opt_out_disables_defaults passed for the WRONG reason. Investigated instead of accepting the green: Pydantic Config silently DROPS unknown kwargs (extra defaults to ignore), so Config(use_default_excludes=False) built a normal Config, and with no defaults implemented nothing was excluded, so the assertion held vacuously. A green that means nothing. Named it at the time rather than after.
+
+GREEN: 19/19 on the new tests.
+
+END-TO-END, acceptance criteria 1 and 2 both verified on the real repo:
+  before  57 dirs / 16 noise
+  after   40 dirs /  0 noise, 0 transcript dirs, .claude/CLAUDE.md STILL indexed (ODQ 3 working as designed)
+  --no-default-excludes  -> back to 57 / 16, so the opt-out genuinely restores prior behaviour rather than being decorative.
+
+FULL SUITE, and the important judgment call. First run: 3 failed / 717 passed. Two were in test_config.py asserting merged.exclude == ["plan/*"] exactly, so they encoded the OLD no-op merge behaviour and my change broke them by design. Third was test_cli_git_ref, which looked unrelated.
+
+I did NOT assume the git_ref failure was pre-existing. Stashed my changes, ran that test alone on clean HEAD, and it failed there too. Confirmed pre-existing, then restored. Cheap check, and the alternative was shipping a claim I had not earned, on a session where I have already been wrong once by trusting a comparison I had not actually run.
+
+For the two legitimately-broken tests I did NOT loosen them to pass. Changed each to assert exclude[0] == "plan/*" (user patterns preserved and first), and ADDED a paired test using use_default_excludes=False that keeps the original exact-equality assertion. So the strict no-op behaviour is still pinned, now under the opt-out, and coverage of the old contract is not lost. Weakening an assertion to accommodate a change would have quietly deleted a guarantee.
+
+FINAL: 721 passed, 1 failed (pre-existing git_ref), 1 skipped, coverage 91%, matching the baseline. Suite went 701 -> 721 tests.
+
+Not yet committed. CLI flag wired at cli.py:404 (option), :572 (signature), :780 (call site).
+
+<------------Start User / 02:26------------>
+
+"proceed"
+
+<------------Start Thinking / 02:26------------>
+
+Reading this as: commit P1. I offered "commit P1, then P2, or review the diff first", and a bare "proceed" against that pair most plausibly clears the commit. It does NOT clear starting P2 (S48 #31, one approval advances one gate), and P2 genuinely needs its own gate because it carries two live design questions: library choice (leidenalg vs networkx.community) and flat vs multi-resolution. Committing then presenting P2 is the right split.
+
+Before committing, one honesty check on scope. The sprint plan I authored lists as a MUST: "Docs: CLI --help and README note the cluster section and the default exclusions." What is actually done?
+  - CLI --help: DONE, the flag carries help text naming the excluded dirs.
+  - README note on default exclusions: NOT done.
+  - config-reference.md documenting DEFAULT_EXCLUDES and the opt-out: that is a SHOULD in the plan, also NOT done.
+So P1 is code-complete but not deliverable-complete. I should say so rather than commit under a message implying the phase is finished. Claiming P1 done and letting the doc debt surface at sprint close is exactly the pattern the boundary checklists exist to catch, and I would be the one who wrote that checklist two hours ago.
+
+Options: fold docs into this commit, or commit code now and track docs. Docs are a small, separable unit and the code is verified and green right now; committing verified work promptly is better than holding it hostage to prose. Commit code+tests, name the outstanding docs explicitly in the message and to the user.
+
+Commit scope: src/config/config_loader.py, src/cli.py, tests/test_filter.py, tests/test_config.py. Use explicit pathspecs again out of habit, though the tree is otherwise clean so bundling risk is low now. Also verify what git sees before committing rather than assuming the tree is what I think it is.
+
+<------------Start Output / 02:26------------>
+
+P1 committed: 03f82b8 on sprint-18/leiden-clustering, 4 files / +192. Scoped by explicit pathspecs, so the live transcript stayed out of the code commit.
+
+Deliberately did NOT claim P1 complete. The sprint plan I authored lists docs as a sprint MUST, and only part of it is done: the CLI --help text exists (it ships with the flag), but the README note and the config-reference.md entry do not. Recorded both as "Outstanding for this phase" in the commit message itself, so the debt is attached to the work rather than living only in conversation where it would evaporate. Letting a doc MUST surface at sprint close would be a self-inflicted version of exactly what the boundary checklist I wrote this session exists to catch.
+
+Chose to commit code now rather than hold verified, green work hostage to prose. Docs are separable and small.
+
+Commit message carries the reasoning that is expensive to reconstruct later: why merge_config_with_cli is the insertion point, why the "**/X/**" form is load-bearing, why build/dist are absent, why ODQ 3 resolved narrow, and why two pre-existing tests were changed rather than loosened. That last one especially, a reader six months out seeing "modified two existing assertions" needs to know a paired test preserved the original contract.
+
+Did not start P2. A bare "proceed" against a commit-or-review question clears the commit only, and P2 carries two live design questions (library choice, flat vs multi-resolution) that need their own gate.
+
+State: sprint-18/leiden-clustering at 03f82b8, 1 commit ahead of session-55, unpushed. Tree clean except the live transcript.
+
+<------------Start User / 02:38------------>
+
+"I agree"
+
+<------------Start Thinking / 02:38------------>
+
+Agrees with my recommendation: close out P1's docs before touching P2. Unambiguous this time, it endorses a specific named option.
+
+Two doc obligations:
+  1. README note on default exclusions (sprint MUST)
+  2. dsm-docs/guides/config-reference.md entry for DEFAULT_EXCLUDES + opt-out (sprint SHOULD)
+
+Both are prose about behaviour that now exists and is verified, so there is no design uncertainty, only accuracy. The risk here is different from the code phases: it is writing documentation that drifts from what the code actually does. So I must read the existing docs to find where these belong and match their conventions, and I must describe the ACTUAL behaviour, including the pattern-form subtlety, not an idealized version.
+
+Specifically I should be careful NOT to document the exclusions as a simple list of directory names, because a reader copying that into their own config's exclude: list would get patterns that silently match nothing. That is the single most likely way this documentation could actively harm someone. The docs must show the "**/X/**" form and say why.
+
+Read config-reference.md structure first, and find where README covers CLI options or configuration. Also check whether README documents --knowledge-summary output, since the directory count changing from 57 to 40 might be reflected in any example output shown there. A README showing stale example output would be a second, quieter form of doc drift, and I should look rather than assume it does not exist.
+
+<------------Start Output / 02:41------------>
+
+P1 docs committed: 5899984, 2 files / +64. P1 is now deliverable-complete, not just code-complete, so the sprint MUST is genuinely closed rather than deferred.
+
+config-reference.md: use_default_excludes row in the Fields table, a full field-detail section, the --no-default-excludes row in CLI Interaction, and a note on ### exclude that user patterns ADD to the defaults rather than replacing them. That last one matters because the old text implied exclude was the complete picture, and after this change it is not.
+
+README.md: feature-list entry pointing at the config reference, plus a usage example.
+
+The design choice in the docs: the field-detail section leads with a pattern-form comparison table (.venv / .venv/* / **/.venv/**) rather than just listing the working form. The failure mode here is SILENT, a reader who adds a bare directory name to their own exclude list gets a pattern matching nothing, with no error and no warning. Documenting only the correct form would have left them to rediscover the same trap I hit at design time. The table is the transferable part.
+
+VERIFIED THE DOCS AGAINST THE CODE rather than writing prose from memory. Asserted the documented pattern list equals DEFAULT_EXCLUDES (True), and executed all three pattern-table rows plus the config opt-out through should_exclude, confirming False/False/True/False as documented. Documentation drift starts as documentation that was never true; running the claims is cheap and this is a session where trusting an unverified claim already cost a wrong recommendation.
+
+Also checked the README for stale example output, since the directory count changed 57->40. The Sprint 16 line cites DSM Central figures (811 files -> 253 lines), not this repo, and Central has no .venv, so it is unaffected. Looked rather than assumed.
+
+Suite unchanged: 721 passed, 1 skipped, 1 pre-existing failure. Style screens clean.
+
+Sprint 18 P1 is DONE. Five commits this session. Next natural unit is P2 (Leiden), which needs its own design gate, or wrap-up.
+
+<------------Start User / 02:47------------>
+
+"wrap up"
+
+<------------Start Thinking / 02:47------------>
+
+Project CLAUDE.md is explicit: when the user says "wrap up", use /dsm-wrap-up. Invoking the skill rather than improvising a wrap sequence, since the skill owns the ordering (reasoning-lessons regeneration, compact mirror, checkpoint, feedback, MEMORY, branch merge, lockfile removal) and I have already demonstrated this session that reconstructing a protocol from memory produces errors.
+
+Pre-wrap state I should have straight before the skill runs:
+  - Branch: sprint-18/leiden-clustering (Level 3), 2 commits ahead of session-55/2026-07-21 (Level 2), which is 3 commits ahead of master. Nothing pushed.
+  - The Level 3 branch has all MUST deliverables for P1 checked off, so per the Branch Strategy I wrote into the sprint plan it merges back to the session branch. But the SPRINT is not complete, only P1 of four phases. So this is a phase boundary, not a sprint boundary. The Sprint Boundary Checklist does NOT fire; the Phase Boundary Checklist does.
+  - That distinction matters and I should surface it, because /dsm-wrap-up may look at "Sprint 18" activity and I do not want a half-sprint recorded as a closed one. MEMORY should say Sprint 18 IN PROGRESS, P1 complete, P2-P4 pending.
+  - Uncommitted: only the live transcript, which the wrap-up handles.
+
+Material for reasoning lessons this session, the genuinely transferable items rather than a session diary:
+  1. A stale LOCAL ref is not evidence about a remote branch. "git log master..branch" answered a question about local bookkeeping while I read it as answering a question about merge state. Cost: a wrong recommendation the user approved.
+  2. A forward-justification claim written before the thing it describes exists can survive into downstream scope long after the decision it justified is abandoned. Check the premises of an inherited scope, not just its status.
+  3. Prefer the empirical check over the plausible inference when the check is seconds long. Both the pattern-form finding and the pre-existing-test-failure finding came from running something I could have "reasoned" about and been wrong.
+  4. A green test can be green for the wrong reason. Pydantic silently dropping an unknown kwarg made an opt-out test pass vacuously.
+  5. Edit forward-looking claims contradicted by outcomes; preserve records of what was believed. The asymmetry that governed six artifacts.
+  6. Fix a broken test by reframing what it asserts plus adding a paired test for the original contract, rather than loosening it.
+
+Let the skill drive; supply these when it asks.
