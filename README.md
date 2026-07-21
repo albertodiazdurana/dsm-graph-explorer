@@ -32,6 +32,10 @@ DSM Graph Explorer automates this integrity checking: it parses DSM markdown fil
 **Implemented (Sprint 4 — Exclusion & Severity):**
 - YAML configuration file (`.dsm-graph-explorer.yml`) with Pydantic validation
 - File exclusion patterns (`--exclude` flag, repeatable, supports fnmatch globs)
+- Default exclusions for dependency, cache, and agent-session directories (`.venv`, `site-packages`,
+  `node_modules`, `.git`, `.pytest_cache`, `.claude/transcripts`), applied on top of `exclude`.
+  Disable with `use_default_excludes: false` or `--no-default-excludes`
+  (see [config reference](dsm-docs/guides/config-reference.md))
 - Severity levels (ERROR/WARNING/INFO) with config-based overrides by file pattern
 - `--strict` respects severity (only fails on ERROR)
 - Config file discovery (walks up directory tree)
@@ -257,6 +261,9 @@ dsm-validate /path/to/dsm-repo --strict
 
 # Exclude files by pattern (repeatable)
 dsm-validate /path/to/dsm-repo --exclude 'plan/*' --exclude 'CHANGELOG.md'
+
+# Include dependency/cache dirs that are excluded by default
+dsm-validate /path/to/dsm-repo --no-default-excludes
 
 # Use a config file
 dsm-validate /path/to/dsm-repo --config .dsm-graph-explorer.yml
