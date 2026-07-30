@@ -1,7 +1,7 @@
 # Sprint 18: BL-302 Phase 2 (Leiden Clustering)
 
 **Duration:** 1.5-2 sessions (6-12 hours; four phases, P1 small and well-bounded, P2 carrying the sprint's real uncertainty)
-**Goal:** Emit structural concept clusters in `--knowledge-summary` markdown, computed by Leiden community detection over a reference graph scoped to project content, validated by a cluster-quality gate run before any fixture freeze.
+**Goal:** Emit structural concept clusters in `--knowledge-summary` markdown, computed by Leiden community detection over a reference graph scoped to project content, validated by a degeneracy-floor gate run before any fixture freeze.
 **Prerequisites:** Sprint 17 closed ([BL-302 Phase 1.5](BL-302-phase-1.5-toon-migration.md), CLOSED, markdown retained per [DEC-010](../decisions/DEC-010-toon-migration-format.md) Amendment 2); BL-302 Phase 1 shipped (Sprint 16).
 
 **Work item (all phase detail lives here, this plan is the sprint-level wrapper):**
@@ -29,11 +29,11 @@ rather than inherited. Sprint 17 was a performance-only format refactor of an ex
 capability, so its experiment skip was justified. Sprint 18 adds **new user-facing
 capability**: a cluster section that did not previously exist. Per DSM 4.0 Section 4,
 tests establish correctness while capability experiments establish whether the capability
-is real, and "does Leiden over this graph produce clusters that correspond to recognizable
-project areas?" is a capability question that no unit test answers.
+is real, and "does the partition carry structure beyond the degree sequence, and does it
+survive a null?" is a capability question that no unit test answers.
 
-P4 is that experiment: **EXP-012 (cluster quality)**, next in sequence after EXP-011.
-Run it early, before any golden-fixture freeze. Sprint 17 sequenced its C3 gate after a
+P4 is that experiment: **EXP-012 (cluster degeneracy floor)**, next in sequence after
+EXP-011. Run it early, before any golden-fixture freeze. Sprint 17 sequenced its C3 gate after a
 freeze, and when the gate was finally run it failed, having nearly enshrined a schema that
 could not ship. That ordering is not repeated here.
 
@@ -52,7 +52,7 @@ See DSM_0.2 Three-Level Branching.
 - [ ] Explicit opt-out for callers that want dependency content included (BL-302 P2 §P1).
 - [ ] Leiden community detection over the cleaned reference graph, seeded for reproducible output (BL-302 P2 §P2).
 - [ ] Cluster section emitted in `--knowledge-summary` markdown, bounded with the existing `... and N more` truncation convention (BL-302 P2 §P3).
-- [ ] EXP-012 cluster-quality gate run and recorded **before** any fixture freeze (BL-302 P2 §P4).
+- [ ] EXP-012 degeneracy-floor gate run and recorded **before** any fixture freeze (BL-302 P2 §P4).
 - [ ] Tests alongside each phase; existing suite stays green (701 passed / 1 skipped baseline).
 - [ ] Docs: CLI `--help` and README note the cluster section and the default exclusions.
 
@@ -75,7 +75,7 @@ All phase detail (sub-tasks, design notes, acceptance criteria) lives in
 | P1: Graph scope exclusion | `DEFAULT_EXCLUDES` constant merged with `config.exclude` + opt-out | code | Zero `.venv`/`site-packages`/`.pytest_cache` dirs in output; excluded count reported |
 | P2: Leiden clustering | Community detection over the cleaned graph, seeded | code | Clusters computed reproducibly across runs at a fixed seed |
 | P3: Cluster emission | Bounded markdown cluster section | code | Output nests like `generate_hierarchy`; bounded regardless of repo size |
-| P4: Validation gate | EXP-012 cluster quality on a known-structure repo | experiment | Clusters map to recognizable project areas (else halt before freeze) |
+| P4: Validation gate | EXP-012 degeneracy floor vs degree-preserving null | experiment | Partition beats null by the pre-registered margin and does not collapse (else halt before freeze) |
 
 ---
 
