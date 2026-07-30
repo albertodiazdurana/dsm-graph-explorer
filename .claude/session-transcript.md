@@ -1,1008 +1,1653 @@
-# Session 56 Transcript
-**Started:** 2026-07-21T12:32:06+02:00
+# Session 57 Transcript
+**Started:** 2026-07-30T07:40:34+02:00
 **Project:** DSM Graph Explorer
 **Agent:** Claude Code
-**Model:** claude-opus-4-8[1m] (self-reported)
+**Model:** claude-opus-5[1m] (self-reported)
 **Thinking:** on
 
 ---
 
-<------------Start Thinking / 12:32------------>
-
-**/dsm-go boot (Steps 0-7) complete.**
-
-- Step 0.5 scaffold: 8/9 dsm-docs folders (`inbox` absent, non-blocking at >=5), `_inbox/` present, reasoning-lessons present. No FORCE_ALIGN.
-- Step 0.7: LOCK_ABSENT. Step 0.8: SPOKE (dsm-central -> ~/dsm-agentic-ai-data-science-methodology/).
-- Step 0a: N = max(archives 27, MEMORY 55, remote session branches 3) + 1 = **56**. On master, no open Level 3 or Level 2 local branches -> created `session-56/2026-07-21`.
-- Step 0d: fetch --prune removed the merged `origin/session-55/2026-07-21`. No stale local branches.
-- Step 1.5: compact reasoning-lessons mirror is CURRENT (source mtime 2026-07-21T11:19 == regeneration stamp), read in full. Most load-bearing for this session, the S55 block: re-check inherited PREMISES not just status (#100), prefer the seconds-long empirical check over plausible inference (#101), interrogate unexpected passes in the red phase (#102), and the open reconciliation item, the Sprint Boundary Checklist exists in two divergent forms (7-item in .claude/CLAUDE.md vs 9-item in the sprint-17/18 plans, #116). That one is directly relevant if Sprint 18 closes this session.
-- Step 1.8: last-align v1.18.0 == Central CHANGELOG latest `## [1.18.0]`. **Skip /dsm-align.** (Note: heading has no `v` prefix, per S50 lesson #55, resolved the actual shape rather than assuming.)
-- Step 2a.5: both ecosystem paths validated on disk.
-- Step 2a.6: gh default branch `master` == CLAUDE.md declared main branch. Pass.
-- Step 2a.7: no open PR for the new branch. Skip.
-- Step 2b: inbox has **1** pending entry, `2026-07-21_dsm-align-update.md`. Filenames only, not read (lazy-load).
-- Step 3: no consumable handoffs (only README + done/).
-- Step 3.5: read `2026-07-21_s55_checkpoint.md`, annotated + `git mv` to done/ + restaged (BL-370/BL-444 restage verified via `git show :path`). Per S55 lesson #107 I will keep this staged rename out of unrelated commits with pathspec-scoped commits, or land it in the boot commit where it belongs.
-- Step 3.6: Sprint 18 is IN PROGRESS (P1 of 4), not closed, so the sprint-closure hard gate does not fire. Sprint 18 plan does contain a `## Sprint Boundary Checklist` section (checked pre-emptively).
-- Step 5: baseline saved. Note: the untracked-file checksum line errored (`grep '^\?'` hit a ugrep regex-syntax error); harmless here because `git status --porcelain` reports zero untracked files. Disclosing rather than leaving it silent.
-- Step 5.5: archived prior transcript to `.claude/transcripts/2026-07-21T00:49-ST.md`.
-- Step 5.7: STAA reminder **suppressed** per BL-442, `last-staa.txt` analyzed_session=55 >= recommending session 55.
-- Step 5.8: branch 56 vs MEMORY 55 is the normal +1, not the incomplete-wrap-up signal (S55 wrapped fully, type: full). No recovery needed.
-- Step 5.9: last wrap-up type `full` -> no switch prompt.
-- Step 6: transcript reset to S56 header, session.lock written.
-
-Uncommitted at boot: 5 `.claude/` files (last-staa, last-wrap-up, reasoning-lessons + compact mirror, session-transcript) , these are S55 post-wrap STAA outputs that were never committed, plus this session's own transcript reset. Origin traced rather than silently swept in, per S48 lesson.
-
-No work chosen yet. Awaiting the user's direction.
-
-<------------Start Output / 12:32------------>
-
-Session 56 boot report delivered: branch `session-56/2026-07-21`, /dsm-align skipped (v1.18.0 match), 1 inbox entry pending, S55 checkpoint consumed, 5 uncommitted `.claude/` files from S55 post-wrap STAA. Suggested work items presented (Sprint 18 P2 decisions first). Awaiting user choice.
-
-<------------Start Thinking / 16:04------------>
-
-User replied with exactly the phrase "Suggested work items" , two words, the literal heading of my own list. Per S55 lesson #108 (widen the disambiguation channel when replies compress), I must state my read before acting rather than pick silently.
-
-Candidate reads:
-1. "Elaborate on the suggested work items" , they want more detail on each before choosing.
-2. "Work on the suggested work items" , proceed in the listed priority order.
-3. "That heading" as a topic selector , unclear which item.
-
-Cost-of-misread analysis (S54 lesson #88, gate on the cost, not on protocol):
-- If read (2) and I start item 1 (Sprint 18 P2), I immediately hit a wall: P2 is BLOCKED on two decisions that are the user's to make (leidenalg vs networkx.community; flat vs multi-resolution). So "proceed" cannot mean "start P2 unattended" , the first thing P2 needs is a Gate anyway. Low cost.
-- If read (1) and I elaborate, cost is one turn of prose. Low cost.
-- The genuinely irreversible/expensive path (adding an optional dependency, implementing a clustering pass) is gated regardless of which read is right.
-
-So the reads converge in practice: whichever they meant, my next correct action is the SAME , present item 1's blocking decision properly (that is Gate 1 material), and note that items 2-5 are unblocked and cheap. I do not need to block on clarification; I can act on the convergence and state the assumption (S50 lesson #57, handling silence/compression on a flagged item).
-
-Decision: do NOT re-ask "which one?" as a bare clarification. Instead:
-- State my read explicitly.
-- Sequence the list into what is blocked vs unblocked, since that distinction is the actionable content the flat list hid.
-- Put the two P2 decisions in front of the user as the real gate, with a recommendation each (per feedback_ask_qs: always offer suggestions).
-- Recommend a concrete opening move.
-
-One thing I should check before recommending on the library decision rather than asserting from memory (S55 #101, prefer the seconds-long empirical check): is networkx actually present, is leidenalg installed, and does the graph module already import a community function? And what does the Sprint 18 plan itself say about P2? I should read the plan's P2 section rather than paraphrase the checkpoint's two-line summary. Reading before asserting , the checkpoint is a summary, the plan is the source.
-
-Also worth noting: I have not read the inbox entry (lazy-load). Item 2 is cheap and clears pending state; it may also bear on nothing at all. Not going to read it unprompted.
-
-<------------Start Thinking / 16:05------------>
-
-Ran the checks before recommending. Three findings, the third of which overturns the sprint's framing of its own decision.
-
-**1. Dependency state (pyproject.toml + import probe).** `networkx>=3.2.0` is already in the `graph` optional extra and installed at **3.6.1**. `leidenalg` is NOT installed, and neither is `igraph`, which `leidenalg` requires. So the "new optional dependency" is really **two** packages, one of them (`python-igraph`) a C extension with a compiled build. That materially raises the cost side of the ledger versus how the checkpoint framed it.
-
-**2. Source read, not summary paraphrase.** The checkpoint's two-line summary of the P2 decision is thinner than the source. BL-302 Phase 2 §P2 says the library choice is "decided in-phase, weighing the optional-dependency cost, GE already treats graph libraries as optional extras" , that clause is a thumb on the scale toward staying inside the existing extras, and it was not visible in the checkpoint.
-
-**3. The inherited premise was wrong, and then my correction to it was also wrong.** This is S55 lesson #100 (re-check PREMISES) firing twice in one check.
-- The checkpoint frames the choice as `leidenalg` (true Leiden) vs `networkx.community` (**"already present, Louvain-family"**). I probed `networkx.algorithms.community` and found `leiden_communities`, `leiden_partitions`, `leiden`. First conclusion: premise refuted, networkx 3.6 ships Leiden, decision collapses, use networkx.
-- I did not stop there, I ran it. `c.leiden_communities(karate, seed=42)` raises `NotImplementedError: 'leiden_communities' is not implemented by 'networkx' backend. This function is included in NetworkX as an API to dispatch to other backends.` It is a **dispatch stub with no default implementation**; it needs an installable backend (nx-cugraph, graphblas, etc.).
-- `louvain_communities(karate, seed=42)` DOES run: 4 communities, modularity 0.4266.
-
-Had I stopped at `dir()`, I would have recommended "networkx already has Leiden, no new dependency" , confidently, wrongly, and it would have failed at implementation time in P2. `dir()` is the plausible inference; calling the function is the empirical check. Exactly S55 #101, and the failure mode it describes.
-
-**Net state of the decision:** genuinely a fork, but not the one written down. It is not "true Leiden free in networkx vs new dep". It is:
-- (a) real Leiden = `leidenalg` + `python-igraph`, two new optional deps, one compiled; or
-- (b) `louvain_communities`, zero new deps, runs today, seeded, but Louvain not Leiden, so the sprint/BL/plan titles all say "Leiden" and would need honest renaming or an explicit recorded deviation; or
-- (c) a networkx backend that implements the Leiden dispatch , also a new dep, and I have NOT verified which backends actually implement it, so I will not recommend (c) without checking.
-
-I will not pick this myself. It changes an artifact title, touches DEC-009's no-required-deps posture, and the BL explicitly reserves it as an in-phase decision , that is a Gate, and the user owns it.
-
-**Incidental finding, reported separately, not folded in** (S55 lesson #114): the Sprint 18 plan's MUST checklist still has both P1 items UNCHECKED (`epoch-5-sprint-18-plan.md:51-52`) although P1 shipped and merged in S55. That is the S55 #1 verification-vs-documentation write-back asymmetry recurring immediately. One-line fix, but it is a separate decision from the P2 fork, so I flag it rather than silently ticking boxes inside a different piece of work.
-
-**On the user's reply.** "Suggested work items" is two words echoing my own heading. Reads (1) elaborate and (2) proceed converge on the same next action, because item 1 is gated on decisions that are the user's, so "proceed" cannot mean "start P2 unattended". Acting on the convergence and stating the assumption rather than burning a turn on a bare "which one?".
-
-<------------Start Output / 16:05------------>
-
-Read "Suggested work items" as "elaborate and sequence them", stated the assumption. Investigated item 1 before recommending rather than paraphrasing the checkpoint. Reported: the P2 library fork as written in the checkpoint is FALSE in both directions (networkx ships `leiden_communities` but only as a backend dispatch stub, `NotImplementedError` without a backend; `leidenalg` needs `python-igraph` too, so it is two deps not one). Restated the real fork as (a) leidenalg+igraph, (b) louvain_communities with an honest rename, (c) unverified networkx backend. Did not pick, it is a Gate the user owns. Flagged separately: Sprint 18 plan MUST checklist lines 51-52 still unchecked though P1 shipped. Items 2-5 sequenced as unblocked. Awaiting the P2 decision.
-
-<------------Start Thinking / 17:40------------>
-
-User: "what would you recommend?" , direct request for a pick on the P2 library fork. Per feedback_ask_qs I should always offer a recommendation when asked, so no hedging back at them.
-
-But I stated two things last turn that I have NOT verified, and I am about to build a recommendation on top of both. Recommending now would repeat exactly the error I just caught myself making with `dir()` vs calling the function.
-
-Unverified claim 1: "`python-igraph` is a compiled C extension" , I used this as a COST argument against option (a). True as source, but irrelevant if PyPI ships manylinux wheels for cp312, which it very likely does. If wheels exist, `pip install leidenalg` is a plain binary install and the "compiled build / CI must build igraph" cost I asserted largely evaporates. I asserted a cost I did not price.
-
-Unverified claim 2: option (c), which networkx backends actually implement `leiden_communities`. I explicitly told the user I had not checked and would not recommend it unchecked. Cannot now silently drop it either , if (c) is a real cheap option it changes the answer.
-
-So: check both before answering. Two commands, seconds each, and one of them can overturn my leaning. This is the S55 #101 pattern a third time this session.
-
-Checks to run:
-- `pip index versions` / `pip download --no-deps --only-binary` for leidenalg and igraph on this interpreter, to see whether wheels resolve for cp312 linux without a build. If the sandbox has no network this fails for environmental reasons, which is NOT evidence about wheel availability , must distinguish those two outcomes and say so rather than reading a network error as "no wheel".
-- `nx.config.backends` / entry points to see what backends are installed and what the docs list for leiden dispatch.
-
-Then form the recommendation. Prior leaning was (a) because "Leiden" is load-bearing across four artifacts (sprint title, BL title, plan table, epoch plan). The deeper argument I should foreground: P4 is EXP-012, a cluster-QUALITY gate. Louvain's known weakness is exactly badly-connected communities, which is the defect Leiden was designed to fix and is precisely what a quality gate would catch. Choosing (b) risks failing your own P4 for a reason you deliberately imported. That is a stronger argument than "the titles say Leiden", and it is quality-based, not cosmetic.
-
-Counter-argument I owe them (BL-385 §8.2.1, surface strongest counter-evidence): on a graph this size, files/sections/terms in one repo, Louvain vs Leiden will likely produce near-identical partitions, and the badly-connected-community pathology shows up mostly at scale. So (b) may be empirically fine here. If the deps prove expensive, (b) plus a recorded rename is defensible and DEC-009-aligned. I should say this rather than only arguing my pick.
-
-<------------Start Thinking / 17:40------------>
-
-Both unverified claims now resolved, and the first one goes AGAINST my own prior argument.
-
-**Wheels: my cost argument was wrong.** `pip download --only-binary=:all:` resolved both on cp312 linux with no build:
-- `leidenalg-0.12.0-cp38-abi3-manylinux_2_27/2_28_x86_64.whl` (2.7 MB)
-- `igraph-1.0.0-cp39-abi3-manylinux_2_28_x86_64.whl` (5.7 MB)
-Both **abi3** wheels, so they are forward-compatible across Python minors, no per-version rebuild, no toolchain. My "compiled C extension, CI must build igraph" line last turn was an asserted cost I had not priced, and pricing it removed it. 8.4 MB of prebuilt binary is the entire cost. That was the main thing arguing against (a), and it is gone.
-
-Worth naming: this is the third time this session the same pattern has paid , `dir()` vs calling the function, and now "C extension" vs actually resolving the wheel. In both cases the plausible inference pointed the opposite way from the check. I also stated the cost to the user BEFORE verifying it, which is the part I should not repeat, I should price a cost before I use it as an argument, not after they ask me to commit to it.
-
-**Backends: (c) is dead.** `nx.config.backends` is empty, entry points list only `nx_loopback` (networkx's own test shim). So the `leiden_communities` dispatch has nothing to dispatch to here. Reviving (c) means installing a backend, and the backends that implement Leiden dispatch are heavier than `leidenalg` itself (nx-cugraph wants CUDA). (c) pays the same "new dependency" price as (a) for a less direct route. Eliminated, on evidence, as promised.
-
-**Recommendation: (a) `leidenalg` + `igraph` as a new optional extra.** Reasoning, strongest first:
-1. **P4 is a cluster-QUALITY gate (EXP-012).** Louvain's documented failure mode is internally disconnected communities, which is the exact defect Leiden was built to fix, and exactly the kind of thing a quality gate inspects. Choosing (b) means importing a known weakness into the sprint whose final phase is designed to detect that class of weakness.
-2. **Cost is now measured, not assumed:** two abi3 wheels, 8.4 MB, no build, and it lands in the existing `graph` extra pattern that GE already uses for networkx/falkordblite. DEC-009 forbids new REQUIRED deps and local LLMs, an optional extra is squarely inside that.
-3. **Artifact honesty:** sprint title, BL title, plan phase table and epoch plan all say Leiden. (b) forces either a four-artifact rename or a recorded deviation, which is real work and real confusion later.
-
-**Counter-evidence I owe them (BL-385 §8.2.1):** on a single-repo graph of files/sections/terms, Louvain and Leiden will probably produce near-identical partitions, since the badly-connected-community pathology mostly bites at scale. So (b) is not wrong, it is cheaper and defensible with an honest rename. If they would rather add zero dependencies, (b) is a legitimate pick and I should not oversell (a). What tips me is that the sprint deliberately built a quality gate, and (a) makes the gate's verdict about the graph rather than about a known algorithm limitation.
-
-**Not installing unilaterally.** Adding a dependency is a change to the project's dependency posture and touches DEC-009, so it is theirs to approve. I have only DOWNLOADED wheels to scratchpad to price the option, no install, no pyproject edit. Say so explicitly.
-
-<------------Start Output / 17:41------------>
-
-Priced both unverified claims before recommending. (1) My own "compiled C extension" cost argument against option (a) is REFUTED, both `leidenalg` 0.12.0 and `igraph` 1.0.0 resolve as prebuilt abi3 manylinux wheels on cp312, 8.4 MB total, no build, no toolchain. (2) Option (c) eliminated on evidence, `nx.config.backends` empty, only the `nx_loopback` test shim installed, so the Leiden dispatch has no backend to reach.
-
-Recommended **(a) leidenalg + igraph as a new optional extra**, on three grounds led by the P4/EXP-012 quality-gate argument (Louvain's known disconnected-community weakness is what that gate inspects), with measured dependency cost second and artifact-naming honesty third. Surfaced the counter-case that at this graph size Louvain likely partitions near-identically, so (b) plus an honest rename remains defensible.
-
-No install performed, no pyproject edit. Wheels downloaded to scratchpad only, to price the option. Awaiting approval.
-
-<------------Start Thinking / 18:27------------>
-
-"approve (a)" , read as: the LIBRARY CHOICE is approved (leidenalg + igraph as an optional extra). Restating per the S55 whole-session-cadence lesson, since this is another sub-three-word reply.
-
-**What this approval does NOT authorize.** S48 lesson: a single approval advances ONE gate. This was Gate 1, the collaborative-definition/decision gate on the fork I put to them. It does not carry into Gate 2 (concept, the internal design) or Gate 3 (implementation diff). Project CLAUDE.md is explicit: "Do not generate files before providing description and receiving approval." So the correct next move is to PRESENT the P2 concept, not to start editing pyproject.toml, even though I named those first steps myself last turn. Naming a next step in a recommendation does not pre-authorize it.
-
-Also relevant, S55 lesson #112: a plan authored earlier binds its author. The Sprint 18 plan I am executing specifies a **Level 3 branch** `sprint-18/leiden-clustering` off the session branch. That branch was created and merged in S55, so for S56 it needs recreating off `session-56/2026-07-21`. I should follow the branch strategy the plan states rather than working directly on the session branch because it is convenient.
-
-Housekeeping I need to sequence before content work, per S55 lesson #107 (prevent staged-rename bundling with an explicit boot commit rather than flagging it afterwards): there is a staged checkpoint rename from `/dsm-go` Step 3.5 plus 5 modified `.claude/` files from S55's post-wrap STAA. If I leave those in the index, they ride into the first content commit, which is precisely the failure that recurred twice in S51. Land them in a scoped boot commit FIRST, on the session branch, before cutting the Level 3 branch.
-
-Concept design to present at Gate 2, grounded in what the repo already does rather than invented:
-- Dependency: new `cluster` optional extra in pyproject.toml, matching the existing `graph`/`semantic` extras pattern. Question to settle, does it also join `all`? The existing `all` mirrors graph+semantic, so consistency says yes.
-- Import guarding: `graph/__init__.py` already guards `graph_builder`/`graph_queries` in try/except per the CI fix note in MEMORY. Same idiom for the clustering module, so the package still imports with the extra absent.
-- Reproducibility: `leidenalg.find_partition` takes `seed`. The MUST says "seeded for reproducible output", so the test asserts identical partitions across two runs at a fixed seed, not merely that it returns something.
-- Conversion: leidenalg operates on igraph objects, GE's graph is networkx (`to_networkx()` exists, added S14). So there is a networkx->igraph conversion step, which is where node-identity mapping can silently corrupt cluster membership. That is the real risk surface of P2 and deserves its own test, igraph uses integer vertex indices, GE nodes are string paths/ids.
-- Scope: P2 ENDS at "clusters computed reproducibly". Emission is P3. Do not let cluster formatting leak into P2, the plan's phase table is explicit.
-
-The conversion/node-identity point is the thing worth flagging hardest at Gate 2, it is not in the BL and I only see it because I know leidenalg is igraph-native. Surface it as an addition to the phase's design, not as a silent implementation detail.
-
-I should verify before asserting: does `to_networkx()` exist and what do node ids look like? And does the graph module actually guard imports the way MEMORY claims? Check both rather than paraphrase MEMORY, MEMORY is a summary and this is the third premise-check of the session.
-
-<------------Start Thinking / 18:28------------>
-
-Verified rather than paraphrased MEMORY. Findings that shape the Gate 2 concept:
-
-- `src/graph/__init__.py` guards `graph_builder`/`graph_queries` in a single try/except ImportError, setting names to `None` on failure, and uses a separate `FALKORDB_AVAILABLE` boolean flag for falkordb. **Two different idioms already coexist.** For a new optional extra I prefer the `FALKORDB_AVAILABLE`-style explicit flag over the None-assignment, since a `LEIDEN_AVAILABLE` constant is testable and gives a clean CLI error message. But this is a consistency choice in THEIR codebase, so it belongs at Gate 2, not decided silently.
-- `graph_store.to_networkx` returns `nx.DiGraph`; `build_reference_graph` also returns `nx.DiGraph`. Node ids are **strings**: file paths for FILE nodes, `node_id` for SECTION nodes. Edges are typed CONTAINS / REFERENCES.
-
-**This surfaces a design question the BL does not mention: the graph is DIRECTED, and community detection is defined over undirected graphs.** Modularity has a directed generalization and igraph supports it, but the standard, and what "clusters of related project areas" actually means here, is an undirected projection. Someone has to decide whether to `.to_undirected()` before partitioning, and whether CONTAINS (file->section structural containment) and REFERENCES (cross-document links) should carry the SAME weight. They almost certainly should not, CONTAINS is guaranteed-dense scaffolding that will dominate the partition and just recover the file tree, which would make the clusters trivially equal to directories and quietly fail EXP-012 by producing "recognizable areas" that are recognizable only because they ARE the folders.
-
-That is the sharpest thing I have found this turn and it is a genuine risk to the sprint's own quality gate. It goes to Gate 2 as an explicit sub-decision with a recommendation (undirected projection; weight REFERENCES above CONTAINS, or drop CONTAINS entirely and cluster the reference network proper), not as an implementation detail I choose alone.
-
-Second node-identity risk stands: leidenalg is igraph-native, igraph uses integer vertex indices, GE uses string ids. The nx->igraph conversion must round-trip membership back to string ids. Test-worthy, silent-corruption class.
-
-Gate 2 content is now assembled and grounded. Presenting, not implementing. Also proposing the boot commit as step 0 and the Level 3 branch per the plan's own Branch Strategy.
-
-<------------Start Output / 18:28------------>
-
-Read "approve (a)" as approving the LIBRARY CHOICE only (Gate 1). Did not implement, per the one-approval-one-gate rule and the project's do-not-generate-before-description rule. Presented Gate 2 (concept) instead.
-
-Verified against source rather than MEMORY: `src/graph/__init__.py` already uses two guard idioms (None-assignment for networkx, `FALKORDB_AVAILABLE` flag for falkordb); `build_reference_graph` and `to_networkx` both return `nx.DiGraph` with STRING node ids.
-
-Gate 2 raises two design questions the BL does not contain: (1) the graph is directed while community detection is undirected, and CONTAINS edges are dense structural scaffolding that would likely make clusters collapse onto the folder tree, trivially "passing" EXP-012 for the wrong reason, recommended undirected projection with REFERENCES weighted above CONTAINS or CONTAINS dropped; (2) leidenalg is igraph-native with integer vertex indices vs GE's string ids, so membership round-trip needs its own test. Also proposed a scoped boot commit first (staged checkpoint rename + 5 S55 STAA files) to prevent the S51 bundling recurrence, then the Level 3 branch the sprint plan itself specifies. Awaiting Gate 2 approval.
-
-<------------Start Thinking / 18:47------------>
-
-"your recommendation" , two words again. Read: **adopt my recommended answer on all three Gate 2 questions**, i.e. Gate 2 is APPROVED with my picks:
-1. Guard idiom -> `LEIDEN_AVAILABLE` explicit boolean flag (the falkordb idiom), not the None-assignment idiom.
-2. Edge weighting -> undirected projection, and **drop CONTAINS**, cluster the REFERENCES network proper.
-3. Sequence -> steps 0-4 as proposed.
-
-Checked the alternative read ("tell me what you recommend") and rejected it: I already stated an explicit recommendation for each of the three in the Gate 2 message, so there is nothing left to state. The only new information this reply carries is assent.
-
-**What this authorizes.** Gate 2 is the CONCEPT gate, so its approval authorizes the design, plus steps 0 and 1 of the sequence, which are housekeeping they explicitly approved (boot commit, Level 3 branch). It does NOT authorize Gate 3, the implementation diff. So: execute 0 and 1, then STOP and present the pyproject.toml + guard diff for review. Per project CLAUDE.md, build incrementally, imports -> constants -> one function -> test, and do not generate before description+approval.
-
-**One deviation from my own proposal I need to flag rather than silently take.** I proposed the boot commit as "staged checkpoint rename + 5 S55 STAA files". On reflection one of those 5 is `.claude/session-transcript.md`, which is THIS session's live transcript, currently mid-session. Committing it now freezes a partial transcript into a boot commit; the transcript belongs to the wrap-up commit, which is where every prior session has put it. So I will commit the checkpoint rename + the 4 S55 marker/lesson files (`last-staa.txt`, `last-wrap-up.txt`, `reasoning-lessons.md`, `reasoning-lessons-compact.md`) and deliberately LEAVE the transcript out.
-
-This narrows an approved action rather than widening it, which is the safe direction, but S55 lesson #114 says report the divergence rather than fold it in silently. Stating it.
-
-Residual risk of leaving the transcript uncommitted: it stays modified in the working tree and could bundle into a later content commit, which is the exact S51 failure I am trying to prevent. Mitigation is the same one that worked in S55, every content commit uses an explicit pathspec (`git commit -- <paths>`), never `git commit -a`. Committing to that for the rest of the session.
-
-Also need to check whether `.claude/session-baseline.txt` and `.claude/session.lock` are gitignored, they did not appear in `git status` earlier, which suggests yes, but "did not appear" is inference and I have been burned by inference three times today. Verify with `git check-ignore`.
-
-<------------Start Output / 18:48------------>
-
-Read "your recommendation" as Gate 2 APPROVED with my picks on all three questions (LEIDEN_AVAILABLE flag idiom; undirected projection dropping CONTAINS; sequence 0-4). Executed steps 0 and 1 only, then stopped at the Gate 3 boundary.
-
-Step 0, boot commit `da94f2c`, pathspec-scoped: S55 checkpoint rename to done/ + the 4 S55 post-wrap STAA files + the archived S55 transcript. Working tree now clean except the live transcript, which I deliberately excluded (narrowing my own proposal, flagged not folded). Verified `session-baseline.txt`, `session.lock` and `cross-repo-writes-session.txt` are gitignored (.gitignore:86,89,90) rather than inferring it from their absence in status. Also caught `.claude/transcripts/2026-07-21T00:49-ST.md` as untracked and included it, it had been invisible to the boot baseline because of the earlier ugrep checksum error.
-
-Mechanical note: `git commit -q -- <paths> << MSG` aborted with "empty commit message", a heredoc on stdin is not a message source; `git commit -F - -- <paths>` is. Cost one retry.
-
-Step 1, Level 3 branch `sprint-18/leiden-clustering` created off `session-56/2026-07-21`, per the sprint plan's own Branch Strategy.
-
-Stopped before touching pyproject.toml. Presenting the Gate 3 diff for review.
-
-<------------Start Thinking / 18:50------------>
-
-"approve" , read as: the presented `pyproject.toml` diff is approved as shown, including the three choices I explained (separate `cluster` extra rather than folding into `graph`; version floors not pins; `igraph` declared explicitly despite being transitive).
-
-Scope of this approval, being precise because I set the boundary myself last turn: I said the bite after approval is "apply the diff, `pip install -e '.[cluster]'`, import verification, then stop before the `LEIDEN_AVAILABLE` guard". So this authorizes exactly those three actions and no further. The guard is the next Gate 3 bite and gets its own diff.
-
-Applying the diff exactly as presented. If I find myself wanting to change anything about it while editing, that is a new diff needing re-approval, not a touch-up , the approved artifact is what was on screen.
-
-The install is a real environment mutation, but it is the explicit content of what was approved at Gate 1 (option (a)) and again here, so it is authorized. It is also reversible (`pip uninstall`), so it is not in the hard-to-reverse class needing separate confirmation.
-
-What I actually need to VERIFY after install, rather than assume:
-1. That `import leidenalg` and `import igraph` both work on this interpreter , the wheels resolved in a `pip download` earlier, but downloading is not installing and I should not let the earlier check stand in for this one. Same lesson as `dir()` vs calling.
-2. That leidenalg actually PARTITIONS something, not just imports. An import success proves the package landed; it does not prove the C extension loads and the algorithm runs. `find_partition` on a tiny known graph (igraph's built-in Zachary karate club, which I already used as the Louvain reference) is the real smoke test, and it lets me compare against the Louvain baseline I measured earlier (4 communities, modularity 0.4266) as a sanity anchor.
-3. That the SEED actually produces reproducible output. The MUST says "seeded for reproducible output" and I am about to build a test around that assumption. Better to learn now, before writing the red-phase test, whether `find_partition(..., seed=N)` is genuinely deterministic in this version, because if it is not, the P2 success criterion as written is unsatisfiable and that is a plan-level problem, not a test-writing problem. This is the S55 "success criterion can become unsatisfiable" lesson applied forward instead of retroactively.
-
-Point 3 is the one worth doing carefully. Checking it now costs seconds and de-risks the whole phase; discovering it during the red phase would look like a failing test and invite me to "fix" the test rather than recognise a plan defect.
-
-Not committing the pyproject change yet either , I will show what landed and let the commit be its own step, since the guard work belongs in the same logical commit as the extra it guards.
-
-<------------Start Output / 18:51------------>
-
-Applied the approved `pyproject.toml` diff verbatim, installed `.[cluster]`, and verified , but the first verification was **green for the wrong reason** and I caught it, per the S55 red-phase lesson.
-
-Installed: `leidenalg` 0.12.0, `igraph` 1.0.0, exit 0, both import.
-
-Smoke test on igraph's Zachary karate club: 4 communities, modularity 0.4198 (Louvain baseline measured earlier on the same graph: 4 communities, 0.4266). Seeded runs identical across 5 calls, so "seeded reproducible: True".
-
-**But the same test showed 1 distinct partition across 20 DIFFERENT seeds, and 1 across 10 UNSEEDED runs.** That is the tell: karate club is small and easy enough that Leiden converges to the same optimum every time regardless of seed. So the "reproducible" result was not evidence the seed is wired at all , a completely ignored seed parameter would produce exactly the same output. The control cases are what exposed it; had I only run the seeded-repeat check I would have certified a property I had not tested.
-
-Re-ran on `Erdos_Renyi(n=400, m=2400)`, where Leiden is genuinely stochastic: seed=42 gives 1 distinct partition across 8 runs, while 8 different seeds give **8 distinct partitions**. Seed is genuinely wired and determinism is real. The P2 success criterion "clusters computed reproducibly across runs at a fixed seed" is SATISFIABLE, confirmed before writing the test rather than discovering it as a mysterious red.
-
-Design consequence for the red-phase test: the reproducibility test must use a fixture where the algorithm is actually stochastic, or it will pass vacuously. Noting the modularity comparison as non-load-bearing, at n=34 the 0.4198 vs 0.4266 gap says nothing about Leiden vs Louvain quality.
-
-Nothing committed. Stopped before the `LEIDEN_AVAILABLE` guard as promised.
-
-<------------Start Thinking / 19:01------------>
-
-Asked to recommend a fixture for the reproducibility test, synthetic-stochastic vs the real repo reference graph, and to justify it.
-
-I could argue this from principle right now, and the principled answer looks obvious: unit tests should use a small deterministic fixture, real-repo graphs are slow and change every commit, therefore synthetic. That is the plausible inference. This session has punished the plausible inference three times (`dir()` vs calling; "C extension" vs the wheel; karate-club "reproducible" vs the seed controls). So I should not answer until I know the ONE fact that decides it.
-
-**The decisive datum: is this repo's real reference graph actually stochastic under Leiden?**
-
-That single fact resolves the question in either direction, and neither branch is guessable:
-- If the real graph IS stochastic (different seeds -> different partitions), then it is a VALID reproducibility fixture, and the argument becomes the ordinary speed/stability tradeoff, where synthetic wins.
-- If the real graph is NOT stochastic (converges to one partition regardless of seed, like karate club), then **the real graph is a vacuous fixture** , a reproducibility test built on it would pass even if the seed were never passed through. And that is a much more interesting finding, because it would mean the seeded-reproducibility MUST is untestable ON THE ACTUAL TARGET, and the test can only be meaningful on a synthetic fixture chosen precisely for its stochasticity. The recommendation would then be synthetic for a completely different and much stronger reason than "unit tests should be fast".
-
-Note the trap in the second branch: if the real graph converges deterministically, someone could argue "great, then we do not need a seed at all". That would be wrong, and I should pre-empt it. Determinism on today's graph is a property of today's graph, not a guarantee; the graph grows with the repo, and at some size it crosses into the stochastic regime, at which point unseeded output silently starts churning. The seed is insurance against a future graph, so it must still be wired and still be tested , on a fixture capable of detecting whether it is wired.
-
-So: build the real reference graph, run Leiden across several seeds, count distinct partitions. Also record node/edge counts, since graph SIZE is the thing that determines which regime it is in and I will want that number in the recommendation.
-
-Need to find how the graph is actually built. `build_reference_graph(documents, references, section_lookup)` needs parsed docs, so there is a pipeline upstream, probably what `--knowledge-summary` calls. Read the CLI path rather than reconstruct the pipeline by guesswork. Also remember the S55 P1 work, DEFAULT_EXCLUDES, so the graph I build must be the CLEANED one, the whole point of P1, otherwise I would be measuring a graph full of `.venv` content that P1 removed and my numbers would describe a graph the sprint no longer targets.
-
-Also, this is a DiGraph and Gate 2 approved undirected projection with CONTAINS dropped. To measure the regime honestly I should test the graph P2 will ACTUALLY cluster, that is REFERENCES-only, undirected, not the raw DiGraph. Measuring the wrong graph would give me a confident number about something we are not going to cluster.
-
-<------------Start Thinking / 19:03------------>
-
-Built the real graph before answering. It answers the fixture question and simultaneously **challenges the design I recommended and the user approved at Gate 2.**
-
-`dsm-validate . --graph-stats --graph-export` (the real cleaned pipeline, 187 files scanned, 45 excluded, so P1's DEFAULT_EXCLUDES are active):
-- Full graph: **2632 nodes** (187 FILE, 2445 SECTION), **2563 edges**
-- Edge split: **CONTAINS 2445, REFERENCES 118**
-- **Orphan sections: 2422 of 2445**
-
-Mechanical aside: `python src/cli.py` produces zero output and exit 0 for any argument including `--help`, silently. The installed `dsm-validate` entry point works fine. Cost three probes. Not chasing it now, but it is a real papercut worth a note, a CLI that silently no-ops when invoked by file path is a trap for anyone who does not know to use the entry point.
-
-**The finding that matters.** At Gate 2 I recommended, and the user approved, "drop CONTAINS, cluster the REFERENCES network proper". I argued CONTAINS was dense scaffolding that would make clusters collapse onto the folder tree. That argument was RIGHT about CONTAINS but I never checked what was left after removing it. What is left:
-- REFERENCES-only undirected: **120 nodes, 118 edges** , out of 2632 nodes. **95.4% of the graph is not in it.**
-- It fragments into **9 connected components**, sizes [88, 10, 7, 4, 3, 2, 2, 2, 2]. One giant component plus scraps.
-- Leiden on it: 15 clusters, modularity 0.7616, sizes [21,21,15,12,10,9,7,6,4,4,3,2,2,2,2].
-
-So the design I recommended clusters **4.6% of the repo's nodes** and silently drops 2445 sections and every file with no cross-references. A "table of contents" built on that describes almost none of the repository. The high modularity 0.7616 is not quality, it is largely an artifact of clustering a near-forest, disconnected components partition trivially well.
-
-I owe the user this correction explicitly. My Gate 2 argument was half-right, CONTAINS-dominant clustering would have recovered the folder tree, but the alternative I proposed has a worse failure, near-total coverage loss. The honest framing is that BOTH poles are bad and the real design space is in between: weighted CONTAINS (low weight, retaining coverage) rather than dropped CONTAINS. That is the option I dismissed in one clause at Gate 2 in favour of the cleaner-sounding one. Cleaner-sounding was wrong.
-
-Also relevant to P4/EXP-012: 2422 of 2445 sections are orphans. That is a pre-existing property of the corpus, not something clustering can fix, and it means ANY clustering design has to decide what happens to orphans. Not in the BL either.
-
-**On the actual fixture question**, now decidable on evidence:
-- Real graph, seed=42 across 8 runs: **1 distinct partition**. Unseeded across 8 runs: **1 distinct**. Eight different seeds: **8 distinct**.
-- So the real reference graph IS in the stochastic regime, different seeds genuinely give different partitions, meaning it CAN detect an unwired seed. Unlike karate club.
-- But it is unusable as a unit-test fixture for the ordinary reasons, it requires the full parse pipeline, and its partition changes whenever any document in the repo gains or loses a cross-reference, so a golden-membership assertion would break on unrelated doc edits.
-
-Recommendation, therefore: **synthetic stochastic fixture for the unit test, real graph for the P4 experiment**, and , crucially , the synthetic fixture must be validated as stochastic the same way, with the different-seeds control, or it repeats the karate-club vacuity. The seed/coverage finding above is the more important thing in this turn though, and I should lead with it rather than bury it under the fixture answer.
-
-<------------Start Output / 19:03------------>
-
-Built the real reference graph before recommending. Two results, and the second one overturns my own Gate 2 recommendation.
-
-**Fixture question (what was asked):** recommend a SYNTHETIC stochastic fixture for the unit test, real graph reserved for P4/EXP-012. Evidence: the real REFERENCES graph IS in the stochastic regime (8 seeds -> 8 distinct partitions, so it can detect an unwired seed), but it needs the full parse pipeline and its partition shifts whenever any document gains or loses a cross-reference, so golden-membership assertions would break on unrelated edits. The synthetic fixture must itself be validated with the different-seeds control or it repeats the karate-club vacuity.
-
-**The finding I did not go looking for, and which contradicts me:** at Gate 2 I recommended dropping CONTAINS and clustering the REFERENCES network. I checked what CONTAINS would do wrong, but never checked what remained after removing it. Real numbers: full graph 2632 nodes / 2563 edges, split CONTAINS 2445 vs REFERENCES **118**. The REFERENCES-only undirected graph is **120 nodes, 118 edges, 9 disconnected components** , it covers **4.6%** of the graph and drops 2445 sections. Modularity 0.7616 looks excellent but is largely an artifact of partitioning a near-forest.
-
-So my Gate 2 argument was half-right (CONTAINS-dominant clustering would have recovered the folder tree) and the alternative I recommended fails worse, near-total coverage loss. Correct design space is the middle option I dismissed in a clause: **low-weighted CONTAINS**, keeping coverage without letting scaffolding dominate. Reopening the Gate 2 decision rather than proceeding on an approved design I now believe is wrong.
-
-Also surfaced: 2422 of 2445 sections are orphans, a corpus property no clustering fixes, and no artifact says what clustering should do with them.
-
-Mechanical note: `python src/cli.py <anything>` silently produces no output and exit 0; only the installed `dsm-validate` entry point works. Cost three probes.
-
-<------------Start Thinking / 19:06------------>
-
-Asked to compare pros/cons of my (revised) recommendation AND evaluate alternatives. Reading this as authorization for the ~10-minute measured comparison I offered, plus an explicit instruction not to just defend my own pick , "evaluate alternatives" means generate real candidates, not two strawmen flanking my preference.
-
-Danger to guard against: I have now been wrong once on this exact decision. The temptation is to run a sweep that vindicates the revised recommendation. The honest design is to pick a metric that can FALSIFY low-weighted CONTAINS, and to include at least one alternative that is not a point on the weight axis at all.
-
-**The decisive metric.** Coverage and modularity are not enough. My original objection to CONTAINS was that clusters would just recover the folder tree, and my objection to REFERENCES-only is that it covers nothing. So the metric has to capture BOTH failure modes at once:
-1. Coverage , what fraction of the 2632 nodes lands in a non-trivial cluster.
-2. Folder-tree agreement , how close the partition is to "label each node by its directory". If clustering merely reproduces directories, it adds nothing over `ls`, and it would pass EXP-012 for the wrong reason. `igraph.compare_communities(..., method="nmi")` against directory labels measures exactly this. HIGH NMI is BAD here, that is the trivial-recovery failure. This is the metric that can falsify my recommendation, which is why it is the right one.
-3. Cluster count and size distribution , one giant cluster or 500 singletons are both useless for a ToC.
-
-**Alternatives to evaluate**, deliberately including a non-weight-axis option:
-- A: REFERENCES only (the approved-then-refuted design) , baseline.
-- B: CONTAINS at full weight , the folder-tree pole.
-- C: CONTAINS at low weights (0.01 / 0.05 / 0.1 / 0.25 / 0.5) , my revised recommendation, swept rather than asserted.
-- D: **file-level projection** , collapse sections into their parent file, edge between two FILES when any section-level reference links them. This is NOT a point on the weight axis and is the one I most want to test, because it dissolves the whole problem: coverage becomes all 187 files by construction, the graph is 187 nodes instead of 2632, and "clusters of related documents" is arguably what a ToC wants anyway. If D scores well it beats every point on the C sweep and my recommendation should lose.
-- E: orphan handling , since 2422 of 2445 sections have no reference edge, note what each option does with them rather than letting them vanish silently.
-
-Prediction before running, recorded so I cannot retrofit: I expect D to win on coverage-vs-triviality, and I expect the C sweep to show a sharp NMI transition where low weights keep NMI low but coverage jumps , if that transition does not exist, if NMI rises monotonically with coverage, then there is NO good weight and C is dead as a family.
-
-Directory labels: FILE nodes carry the path as node id; SECTION nodes should carry a `file` attribute (I saw `file=row[5]` in to_networkx and the builder sets similar). Verify the attribute name in the graphml rather than assume.
-
-<------------Start Thinking / 19:07------------>
-
-Sweep is in, and **my pre-registered falsification condition fired against my own recommendation.**
-
-I predicted a sharp NMI transition, low CONTAINS weights keeping folder-tree agreement low while coverage jumps, and said explicitly that if NMI instead rose flat/monotonically with coverage then "there is NO good weight and C is dead as a family". Result:
-
-| W | nodes | clusters | cov% | modularity | NMI-vs-directories |
-|---|---|---|---|---|---|
-| 0.0 | 120 | 15 | 4.3% | 0.7616 | 0.461 |
-| 0.01 | 2630 | 185 | 98.9% | 0.8119 | **0.767** |
-| 0.05 | 2630 | 179 | 98.9% | 0.8937 | 0.765 |
-| 0.1 | 2630 | 175 | 98.9% | 0.9239 | 0.762 |
-| 0.25 | 2630 | 177 | 98.9% | 0.9456 | 0.765 |
-| 0.5 | 2630 | 169 | 98.9% | 0.9547 | 0.755 |
-| 1.0 | 2630 | 167 | 98.9% | 0.9599 | 0.758 |
-
-NMI is **flat at ~0.755-0.767 across every nonzero weight**, including W=0.01 where CONTAINS is weighted 100x below REFERENCES. Coverage snaps from 4.3% to 98.9% between W=0 and W=0.01 and never moves again. There is no transition, no sweet spot, no tuning knob. The instant CONTAINS is present at ANY weight, it supplies the connectivity, and the partition is ~76% folder tree regardless. Weighting is not a dial between the two poles, it is a switch.
-
-So **C (low-weighted CONTAINS), the thing I recommended last turn and asked the user to consider, is dead**, and dead by the criterion I wrote down before running. That is two wrong recommendations in a row on this same decision. Worth saying plainly rather than presenting the sweep as "informative".
-
-Also note the sweep kills the pole B independently: 167-185 clusters is unusable for a table of contents no matter how good the modularity looks. Rising modularity across the sweep (0.81 -> 0.96) while NMI stays flat is a clean demonstration that **modularity is not measuring what we care about**, which is a result worth keeping for EXP-012's gate design , do not let P4 gate on modularity.
-
-**Alternative D, file-level projection**, my predicted winner: also fails, differently.
-- 187 file nodes, only **62 edges**. **145 of 187 files have zero cross-references.**
-- 146 components, one of size 42 and 145 singletons.
-- Clustering the 42 connected files: 5 clusters, sizes [16,9,9,4,4], modularity 0.4434, NMI-dir 0.506.
-- **Coverage 22.5% of files.** 8 seeds -> 5 distinct partitions, so it is stochastic.
-- Eyeballing the clusters, they are NOT folder-shaped, they mix `dsm-docs/research`, `.claude`, `dsm-docs/decisions`, `blog/journal` , the DSM_0.2.x cluster in particular is genuinely topical.
-
-So D produces the most MEANINGFUL clusters (lowest NMI at 0.506, recognizably topical membership) but covers only 22.5% of files and 42 nodes total. My prediction that D would win on coverage-vs-triviality was wrong on coverage and right on triviality.
-
-**The real conclusion, which is not any of A-D:** the corpus does not have enough cross-reference signal to cluster. 118 REFERENCES edges over 2445 sections; 2422 orphans; 145 of 187 files unreferenced. Every option is forced to choose between covering the repo by using structural containment (and thereby reproducing the folder tree, adding nothing over `ls`) or clustering real semantic links (and covering 4-22%). That is not a design flaw in the options, it is a property of the input.
-
-This is a **P4/EXP-012 finding arriving during P2**, and it is the sprint-level question: BL-302 Phase 2 assumes Leiden over this graph yields clusters mapping to recognizable project areas, and the measurement says the reference network is too sparse for that to be true at any useful coverage. I should NOT pick a design and proceed. I should put this to the user as a scope decision, exactly the S52 shape, formalize the finding, halt the phase, defer the direction.
-
-Options I can see for them, not for me to choose: (i) run EXP-012 NOW on D's 42-file result as the honest early gate the plan demands, (ii) enrich the graph with new edge types so there is signal to cluster (co-reference, shared-terms, the existing TF-IDF semantic layer) which is real scope growth, (iii) narrow P2/P3 to "cluster the connected reference core, explicitly out-of-scope for the rest", (iv) reconsider whether clustering serves the Intrinsic-ToC at all on this corpus.
-
-Do not draft the artifacts. Present, recommend, wait.
-
-<------------Start Output / 19:08------------>
-
-Ran the comparison with a pre-registered falsification condition, and it fired against my own recommendation.
-
-**C (low-weighted CONTAINS), my revised recommendation, is dead.** I predicted a sharp NMI transition giving a sweet spot; instead NMI-vs-directory-labels is FLAT at 0.755-0.767 across every nonzero weight including W=0.01 (CONTAINS 100x below REFERENCES), while coverage snaps 4.3% -> 98.9% between W=0 and W=0.01 and never moves. Weighting is a switch, not a dial. Also 167-185 clusters at every weight, unusable for a ToC. Second wrong recommendation in a row on this decision, stating it plainly.
-
-**Byproduct worth keeping for P4:** modularity climbs 0.81 -> 0.96 across the sweep while NMI stays flat, i.e. modularity does not measure what we care about. EXP-012 must not gate on modularity.
-
-**D (file-level projection), my predicted winner, also fails**, differently: 187 files but only 62 edges, 145 files have zero cross-references, 146 components (one of 42 + 145 singletons). Clustering the connected 42: 5 clusters [16,9,9,4,4], NMI-dir 0.506, stochastic (8 seeds -> 5 partitions). Best MEANING (clusters are genuinely topical, cutting across folders) but 22.5% file coverage.
-
-**Real conclusion, which is none of A-D:** the corpus lacks the cross-reference signal to cluster. 118 REFERENCES edges over 2445 sections, 2422 orphans, 145/187 files unreferenced. Every option must choose between covering the repo via structural containment (reproducing the folder tree, adding nothing over `ls`) or clustering real links (4-22% coverage). Property of the input, not of the options.
-
-This is an EXP-012/P4 finding surfacing during P2 and it questions BL-302 Phase 2's premise. Not picking a design or drafting artifacts, putting the scope decision to the user per the S52 formalize-and-halt-but-defer-direction shape.
-
-<------------Start Thinking / 19:18------------>
-
-"Let's try 1 and see. If it fails we try something else" , option 1 approved: run EXP-012 now on D's 42-file result, with an explicit expectation that failure is an acceptable outcome that routes to another option. Good framing from the user, it means I must NOT tune the experiment toward passing.
-
-That last point is the risk here. I have a stake in this: I proposed D, I proposed running the gate now, and I have been wrong twice today. If I design the answer key AFTER seeing D's clusters , which I have already seen and already described as "genuinely topical" , I will unconsciously write a key that D passes. I have literally already published a favourable qualitative read of those clusters. That is contamination, and pretending otherwise would be dishonest.
-
-Mitigations available:
-- Pre-register the criteria and the ground-truth key BEFORE running anything (S53 lesson: pre-registration makes the decision mechanical). Non-negotiable.
-- Get the key user-approved before I run, so the standard is not mine alone.
-- Better: have the ground truth come from something other than my own judgement of the output. The strongest version is an INDEPENDENT labelling, what areas does this repo have, derived from the repo's own structure/docs, fixed before looking at clusters.
-
-**The blocking ambiguity I must surface before running.** BL-302 Phase 2 §P4 states the gate as: "do the clusters correspond to recognizable project areas on a repository whose structure is known independently? A cluster set that **cuts across obvious boundaries**, or collapses to one giant cluster, fails the gate regardless of modularity score."
-
-Read literally, "cuts across obvious boundaries" = FAIL. But cutting across FOLDER boundaries is exactly what I have been treating as the SUCCESS signal all session , low NMI-vs-directories was my quality metric, and D's selling point was that it mixes `research/`, `.claude/` and `decisions/`. Under the literal reading, D fails on the very property I praised. Under the other reading, "obvious boundaries" means coherent topical boundaries, i.e. incoherent clusters fail, and folder-crossing is fine or even desirable.
-
-These give OPPOSITE verdicts on D. I cannot resolve this myself after the fact , whichever I pick will look like motivated reasoning, and it decides the experiment's outcome. This is the one thing I must put to the user before running, and it is cheap to ask.
-
-My own reading, stated as a recommendation not a fait accompli: the author meant "incoherent". The sentence pairs it with "collapses to one giant cluster" (a degenerate-output failure) and says "regardless of modularity score" (i.e. do not be fooled by a good number), so the whole clause is about degenerate/meaningless output, not about folder agreement. Also, a gate that required matching folders would make the entire feature pointless, since `ls` already does that. But it is the user's artifact and the user's call.
-
-Second design point: per feedback_experiment_reproducibility, EXP-012 must be a REPRODUCIBLE SCRIPT in `data/experiments/`, not the ad-hoc `python - << PY` I have been running. Everything I have measured so far this turn is throwaway; the experiment proper needs to be a committed script with fixed seed and recorded outputs. Check how EXP-010/EXP-011 were laid out and follow that convention rather than inventing one.
-
-Plan: surface the ambiguity + compact pre-registration for approval, then write the script and run. Not running first.
-
-<------------Start Output / 19:19------------>
-
-Did not run the experiment. Stopped to pre-register, because running first would have been contaminated: I proposed option D, I proposed running the gate now, and I have ALREADY published a favourable qualitative read of D's clusters ("genuinely topical"). Writing the answer key after that, and after seeing the output, would produce a key D passes. Pre-registration + user approval of the key is the only way this result is worth anything.
-
-Surfaced one blocking ambiguity in the gate as BL-302 Phase 2 §P4 writes it: "A cluster set that **cuts across obvious boundaries** ... fails the gate". Literal reading = crossing FOLDER boundaries fails, which would fail D on exactly the property I have been treating as the success signal all session (low NMI-vs-directories). Other reading = incoherent clusters fail, folder-crossing is fine. The two readings give OPPOSITE verdicts on D, so I cannot resolve it post-hoc without it being motivated reasoning. Put it to the user with my recommendation (the "incoherent" reading, since the clause pairs with "collapses to one giant cluster" and "regardless of modularity score", both about degenerate output, and a folder-matching gate would make the feature pointless against `ls`).
-
-Read the local convention rather than inventing one: experiments live in `data/experiments/EXP-NNN-slug/`, follow the 7-element standard in `dsm-docs/research/experiment-documentation-standards.md` (Justification, Hypothesis, Success Criteria, Environment, Results, Decision, References), and per feedback_experiment_reproducibility must be a committed reproducible script, not the throwaway heredocs I have been using this turn.
-
-Awaiting the gate-reading decision, then writing EXP-012.md (pre-run) + the script, then running.
-
-<------------Start Thinking / 19:22------------>
-
-User: "i am not sure. I would rather do some research and validate the choices against experience. What do you say?"
-
-Asked for my actual opinion, not compliance. So give one.
-
-**I agree, and I think their instinct is better than my last recommendation.** Concretely, my "run the gate now" argument was that the gate is cheap and the plan demands it early. That argument is still true but it answers the wrong question. EXP-012 as scoped tests "are D's 5 clusters any good". Even a clean PASS leaves the actual blocking problem untouched, 22.5% coverage, and I said as much myself in the caveat. So I would be spending the sprint's one pre-registered gate on a sub-question while the real question, "is this corpus clusterable at all, and is clustering even the right instrument for the Intrinsic-ToC", goes unexamined. Running an experiment that cannot change the decision is theatre.
-
-Second, self-assessment I should state rather than let them infer: I have made two wrong recommendations this session on this exact decision (drop CONTAINS; then low-weight CONTAINS), and BOTH failed the same way , I reasoned from a plausible model of the graph instead of measuring it. A third confident recommendation from the same faculty, on a harder question, deserves less weight than their hesitation. The measurements I have run are solid; the design judgements I have layered on top are 0 for 2.
-
-**But research must not repeat what the repo already knows.** S49 already ran a GraphRAG fit study, 3 adversarial agents, outcome adopt-ideas-only, and the decisive datum recorded in MEMORY was literally "Leiden clustering is already on the Sprint 18 roadmap". That is the closest prior art and it is IN THIS REPO. If I propose fresh research without reading it first I would be re-buying knowledge already paid for. Same for the Intrinsic-ToC vision doc (it defines what the ToC is FOR, which is what "is clustering the right instrument" has to be judged against) and DEC-011 / BL-GE-001 (the Semantic Concept Layer, which is arguably the thing that would SUPPLY the missing edges, and is already an accepted decision for Epoch 6).
-
-That last connection is worth flagging hard: my option (ii) last turn, "enrich the graph with new edge types", may not be scope growth invented by me. It may already be a decided, planned piece of work (Layer 4.5 / BL-GE-001). If so the honest finding is not "Sprint 18 needs more scope", it is "Sprint 18's premise depends on a layer scheduled for Epoch 6", which is a sequencing problem in the epoch plan and a much cleaner thing to hand the user.
-
-So the shape of my answer: agree, then propose research that STARTS with the internal prior art (cheap, already paid for, and likely decisive) and only then goes external for practitioner experience on sparse document-reference graphs. Do not just fan out to the web first, that is the expensive and less relevant half.
-
-External questions worth asking, once internal is read: what do practitioners actually do when a document corpus has near-zero explicit cross-links (GraphRAG's answer is to EXTRACT edges with an LLM, which DEC-009 forbids , so how do non-LLM systems solve it); is clustering even the standard instrument for a navigational index, or is it hubs/centrality/facets; what coverage do real doc-graph systems achieve.
-
-DSM-wise this is a Phase 0.5 research move and there is a skill for it, `/dsm-research-add` registers a research file in `dsm-docs/research/`. Per the skill-self-reference rule I should read the command before asserting what it does, if I am going to invoke it. And per Actionable Work Items, research is INPUT, it does not itself become the plan.
-
-Do not start researching yet , propose the scope, get agreement. Also flag: the pyproject/install change is uncommitted and P2 is now paused mid-flight, so there is loose state to decide about.
-
-<------------Start Thinking / 19:24------------>
-
-Went to internal prior art first, as planned, and it immediately paid off twice.
-
-**Find 1, the target-corpus question.** `dsm-docs/research/done/2026-04-23_graphrag-fit.md` line 19 already proposes this exact experiment, and specifies a DIFFERENT target than the one I have been measuring: "run Leiden on GE's existing **Central graph (4,703 nodes)**, surface top 5-10 clusters ..., human-evaluate coherence **without** LLM-authored summaries". I spent this whole turn measuring GE's own repo. GE is the TOOL; DSM Central is the intended TARGET corpus. So there was a live risk my entire measurement basis was scoped to the wrong repository, and I would not have seen it by reasoning, only by reading what S49 already wrote.
-
-Measured Central (read-only, cross-repo READ, no write, so no Cross-Repo Write gate):
-- **13,166 nodes** (996 files, 12,170 sections), 12,170 CONTAINS, **1,116 REFERENCES**, orphans **12,047 of 12,170**.
-- Sparsity ratio references/sections: Central **9.2%** vs GE 4.8%. Orphan rate: Central **99.0%** vs GE 99.1%.
-
-So the sparsity finding **generalizes and survives** , it is a property of DSM-style markdown corpora, not an artifact of GE's small repo. That is a stronger result than what I had, and it was worth checking rather than assuming either way.
-
-**Find 2, and this one changes the picture materially.** File-level projection (option D) on both:
-
-| | files | file-file edges | connected | clusters | modularity | **NMI-dir** |
-|---|---|---|---|---|---|---|
-| GE | 187 | 62 | 42 (22.5%) | 5 | 0.4434 | **0.506** |
-| Central | 996 | 525 | 264 (26.5%) | 9 | 0.4469 | **0.163** |
-
-Coverage is the same order (22.5% vs 26.5%, so the coverage ceiling is real and stable across corpora), but **NMI-vs-directories drops from 0.506 to 0.163 at scale**. On Central, Leiden's file clusters are almost entirely INDEPENDENT of the folder tree, 9 clusters of workable sizes (54/41/39/31/29/28/21/14/7). That is precisely the non-trivial, non-degenerate output the gate is looking for, and it is much more convincing than GE's 5 clusters at NMI 0.506.
-
-Reading this honestly: D looked mediocre on GE largely BECAUSE GE is small, and on the intended target it looks good on every axis except coverage. My "the corpus lacks signal to cluster" conclusion was overstated , the correct statement is narrower: **the reference network supports meaningful clustering of its connected core (~25% of files), and nothing else.** Coverage is the open problem; cluster quality on the covered part is no longer obviously in doubt.
-
-Also note the GraphRAG file records the same "human-evaluate coherence, no LLM summaries" gate design S49 already reasoned through, and EXP-002 line 67 lists "Concept Clusters , document groups from **co-reference patterns**", i.e. an edge-construction idea (shared referenced targets) already on record internally as a way to get more edges. My option (ii) from last turn was not novel; it is in the repo.
-
-**What I say to the user:** agree with researching, and report that the research has already started paying off, one internal file relocated the experiment's target corpus and one measurement materially improved D's standing. Also correct my own overstatement from last turn rather than let it stand.
-
-Still not proposing to run EXP-012 yet. The open question set is now sharper and worth a proper Phase 0.5 file.
-
-<------------Start Output / 19:24------------>
-
-Agreed with the user's instinct and said so plainly, including the reason: two wrong recommendations this session, both from reasoning ahead of measuring, so their hesitation deserves more weight than a third confident pick from me. Also conceded that running EXP-012 as scoped would have been theatre, it grades D's 5 clusters while the blocking problem (coverage) stays untouched regardless of verdict.
-
-Started with INTERNAL prior art rather than fanning out to the web, and it paid off immediately:
-1. `2026-04-23_graphrag-fit.md` line 19 already proposes this experiment and names a DIFFERENT target, "run Leiden on GE's existing **Central graph**". I had measured GE's own repo all turn. GE is the tool, Central is the target corpus.
-2. Measured Central read-only: 13,166 nodes, 1,116 REFERENCES, 12,047/12,170 orphans. Sparsity generalizes (9.2% vs GE's 4.8% ref/section; 99.0% vs 99.1% orphan rate), so that finding survives and is now corpus-independent rather than an artifact of a small repo.
-3. **D re-measured on Central materially improves:** 264 connected files (26.5%), 9 clusters sized 54/41/39/31/29/28/21/14/7, modularity 0.4469, **NMI-dir 0.163** vs GE's 0.506. On the intended target, clusters are nearly independent of the folder tree.
-
-Corrected my own overstatement from last turn: "the corpus lacks the signal to cluster" was too strong. Accurate version: the reference network supports meaningful clustering of its connected core (~25% of files) and nothing beyond it. Coverage is the open problem; cluster quality on the covered part is no longer in doubt.
-
-Also found my "enrich the graph" option was not novel, EXP-002 already lists "Concept Clusters , document groups from co-reference patterns". Proposed a scoped Phase 0.5 research file rather than more ad-hoc measurement.
-
-<------------Start Thinking / 19:28------------>
-
-"yes and support the research if necessary with online resources" , approved: open the research file, run the internal pass, and go external where it helps. "if necessary" is a restraint signal, not a blank cheque, so external work should be targeted at questions the internal pass cannot answer, not a general web sweep.
-
-**Signal I should not ignore:** the IDE tells me the user just opened `dsm-docs/decisions/DEC-009-no-local-llm-dependencies.md`. That is the constraint sitting directly under this problem , DEC-009 forbids local LLM dependencies, and LLM-based entity/edge extraction is exactly how GraphRAG manufactures the edges our corpus lacks. So the coverage problem and DEC-009 are the same problem wearing two hats: the missing 75% of files have no cross-references, and the industry-standard way to synthesize those links is precisely what DEC-009 rules out.
-
-I should treat the open file as context, not as an instruction , they may be re-reading it to check whether it truly forecloses the options, or just following along. I will read it and let the research address the constraint honestly, including whether any option requires revisiting DEC-009. I will NOT infer that they want DEC-009 reopened. If the research concludes the constraint is load-bearing on the outcome, I surface that as a finding for them to decide, per the S52 formalize-but-defer shape.
-
-**Plan.**
-Internal pass, me, reading in full:
-- DEC-009 itself (the constraint, and they just opened it)
-- `2026-04-23_graphrag-fit.md` (closest prior art, already partially read)
-- `2026-04-13_intrinsic-toc-vision.md` (defines what the ToC is FOR; "is clustering the right instrument" is unanswerable without it)
-- DEC-011 + BL-GE-001 (Semantic Concept Layer , my hypothesis that this is what supplies the missing edges, and that Sprint 18 has a sequencing dependency on Epoch 6 work)
-
-External pass, delegated, split by ADVERSARIAL ANGLE per the S49 lesson rather than three redundant surveys. The three questions the internal corpus genuinely cannot answer:
-1. Non-LLM edge construction , what do systems do when a document corpus has almost no explicit links, given LLM extraction is off the table? (co-citation/bibliographic coupling, lexical/TF-IDF similarity graphs, structural/tag edges)
-2. Is clustering even the right instrument for a NAVIGATIONAL index, versus hubs/centrality/facets/hierarchy? This is the one that could invalidate Sprint 18 wholesale, so it must be asked by someone briefed to argue against clustering.
-3. Coverage norms , what coverage do real document-graph systems achieve, and is ~25% connected-core normal or pathological? Also: is partial-coverage clustering an accepted product pattern.
-
-Three agents, one per angle, each told to return sources. Per S52, delegate the gathering, reserve judgement for myself , I do the synthesis, they do not decide anything.
-
-Before invoking `/dsm-research-add` I must READ the command file first, per the skill-self-reference rule in CLAUDE.md , do not assert what a DSM skill does from memory. Check whether it expects the file to exist already or creates it, and what index it registers into.
-
-Gate discipline: user approved OPENING the research file, so the file itself is authorized. Its CONTENT still goes through description-before-generation. Research first, then present the structure, then write.
-
-<------------Start Thinking / 19:29------------>
-
-Internal pass, four documents read. Three findings, and the second is the one I suspected but could not assert before.
-
-**1. DEC-009 has an explicit revisit clause, and we now satisfy its precondition.** Lines 53-55: "If a future use case genuinely requires local NLP (e.g., offline operation without an AI agent), this decision can be revisited **with a concrete problem statement**." Until today there was no concrete problem statement, DEC-009 §"Alternatives Considered" even rejects implementing one as an experiment because "no concrete hypothesis to test". The coverage measurement IS that concrete problem statement. So the door DEC-009 left open is now openable , which is NOT the same as saying it should be opened, and I must not slide from one to the other.
-
-**2. The coverage problem already has a designed, ACCEPTED solution , scheduled an epoch too late.** BL-GE-001 (Semantic Concept Layer, Layer 4.5, DEC-011 accepted S50) proposes exactly the edges the graph is missing:
-- `used-in` , concept -> every file/section that references it
-- `defined-in` , concept -> its authoritative definition
-- `depends-on` , concept -> concept
-
-A concept node touched by 30 files makes those 30 files mutually reachable. That is precisely the connectivity the 75% isolated files lack. And BL-GE-001 §Extraction Policy makes it **DEC-009-compliant by construction**: "Author-declared concepts are the default and primary mechanism ... No model inference, fully DEC-009-compliant", with extraction allowed only as review-gated suggestions.
-
-So the honest framing of Sprint 18's problem is now: **Sprint 18 (Epoch 5) clusters a graph whose density depends on a layer accepted for Epoch 6.** That is a sequencing defect in the epoch plan, not a scope explosion I am inventing, and it is a far cleaner thing to hand the user than "we need more edges". BL-GE-001 line 61 even names BL-302 as a dependency: "the concept layer extends the same graph the knowledge-summary work builds on."
-
-**3. A non-LLM densification tool ALREADY EXISTS in the codebase and is not wired to the graph.** `src/semantic/similarity.py`, TF-IDF via scikit-learn (Sprint 6, `semantic` optional extra): `build_corpus_vectorizer`, `compute_similarity`, `check_semantic_alignment`. Grepping `graph_builder.py` for semantic/tfidf/similar returns **nothing** , the similarity capability and the graph are entirely disconnected. TF-IDF is statistical, no model download, already an accepted dependency, so a similarity-edge layer would sit inside DEC-009 without reopening it at all.
-
-That reframes the whole external question set. I asked the agents "what do people do when a corpus has no links, given no LLM". Part of the answer may be sitting in `src/semantic/` unused. I should NOT pre-empt their findings, the threshold-selection and hairball failure modes are exactly what I need from the literature before proposing this, and my track record today says do not reason ahead of evidence. But I should flag the availability now.
-
-**Vision doc check, does clustering serve the ToC's purpose?** §2 lists "Connectivity: which files are hubs (most referenced), which are orphans, which sections are load-bearing" as intrinsic content, and §3 fixes agent-as-query-engine with no local LLM. Notably the vision's own connectivity vocabulary is **hubs/orphans/hotspots , centrality language, not clustering language.** Clusters enter via BL-302 Phase 2 and the GraphRAG borrowing (§ on the Leiden reference, line 299-300), not from the vision's statement of what the ToC is for. That is a genuine point against clustering being the necessary instrument, and it is exactly what the adversarial agent was briefed to probe. Recording it now so my read is on record BEFORE their report lands and cannot be accused of following it.
-
-Three external agents still running. Not writing the research file until they return , writing it now would mean writing conclusions and then collecting evidence, which is the inversion I have been penalised for twice today.
-
-<------------Start Output / 19:30------------>
-
-Internal research pass complete; three external agents running (non-LLM edge construction; adversarial "is clustering the right instrument"; coverage norms + orphan handling), split by angle per the S49 lesson rather than as redundant surveys.
-
-Internal findings:
-1. **DEC-009 has an explicit revisit clause** (lines 53-55) requiring "a concrete problem statement", and the coverage measurement now supplies one. Noting the door is openable, NOT arguing it should be opened.
-2. **The coverage problem already has an accepted solution scheduled an epoch too late.** BL-GE-001 / DEC-011 (Semantic Concept Layer, Layer 4.5) proposes `used-in` / `defined-in` / `depends-on` edges, which is exactly the connectivity the 75% isolated files lack, and its extraction policy is DEC-009-compliant by construction (author-declared default). BL-GE-001 already names BL-302 as a dependency. So the honest framing is a **sequencing defect**: Sprint 18 in Epoch 5 clusters a graph whose density depends on Layer 4.5 in Epoch 6.
-3. **A non-LLM densification tool already exists and is unwired.** `src/semantic/similarity.py` (TF-IDF, scikit-learn, Sprint 6) has `build_corpus_vectorizer` / `compute_similarity`, and `graph_builder.py` references it nowhere. Statistical, no model download, already an accepted optional extra, so similarity edges would sit inside DEC-009 without reopening it.
-4. **Vision-doc check:** the vision's own connectivity vocabulary is hubs / orphans / hotspots , centrality language, not clustering. Clustering enters via BL-302 Phase 2 and the GraphRAG borrowing, not from the statement of what the ToC is for. Recorded BEFORE the adversarial agent reports, so the read is on record independently.
-
-Not writing the research file until the external reports land, writing conclusions first and collecting evidence after is the inversion that already cost me twice today.
-
-<------------Start Thinking / 19:33------------>
-
-Adversarial agent returned (1 of 3; the edge-construction and coverage-norms agents are still running). It is a strong report and it converges with the vision-doc read I recorded BEFORE it landed, which is the useful kind of independent agreement: the vision speaks hubs/orphans/hotspots, and the agent's single strongest datum is that **Aider , the most mature system solving this exact problem shape , had the same graph and chose personalized PageRank, not community detection.** Independent arrival at "centrality, not clustering" from an internal doc and an external practitioner survey.
-
-It also hands me two things I can CHECK MYSELF rather than accept on authority. Given I am 0 for 2 on unverified design reasoning today, checking beats citing.
-
-**Check 1, cheap and already answerable: modularity vs CPM.** The agent asks which quality function we run and warns that if it is modularity, the resolution limit is live and "Leiden fixed it" is a false premise. Every measurement I have run this session used `la.ModularityVertexPartition`. So: modularity. The resolution limit IS live and unaddressed, on a 12,170-section graph. And I should be honest that I had absorbed exactly the false premise the agent names , I have been treating "Leiden > Louvain" as though it settled quality questions, when Traag 2019 fixes disconnected communities specifically, and resolution-limit-freeness is a property of the quality function (CPM has it, modularity does not), not of the optimizer.
-
-**Check 2, the decisive one: Peixoto's litmus test.** Degree-preserving edge shuffle of the real graph, cluster the shuffled version, and see whether the output looks as plausible as the real one. If a randomized graph with identical degree sequence yields a similar number of similarly-sized clusters at similar modularity, then our clusters are not evidence of topical structure , they are what modularity does to any graph with this degree sequence (Guimera 2004: random graphs have high modularity purely from fluctuations). This is the single most falsifying test available for the whole sprint premise, it costs seconds, and I have the graph loaded.
-
-Prediction, recorded before running, because I have been burned retrofitting: I expect the real graph to beat the null but NOT overwhelmingly , the Central file graph is 264 nodes / 525 edges and quite tree-like, and sparse near-forests partition well by construction. If real and null are indistinguishable, Sprint 18's premise is dead independent of coverage, and that is a much bigger finding than anything about weights or libraries. If real clearly beats null, clustering has real signal and the argument narrows back to coverage and stability.
-
-Design of the null: rewire preserving the degree sequence exactly (igraph `rewire` with the `simple` method keeps degrees), multiple replicates, compare cluster count / size distribution / modularity. Multiple replicates matter , a single null draw is itself a noisy sample and comparing against one draw would repeat the sin of comparing against one seed.
-
-I should ALSO note the agent's honest gap: it found no study on whether clusters help LLM agents navigate, and says both sides are extrapolating from human-subject research. But **this repo has already run that class of experiment**, EXP-011 was a 24-agent blind A/B on whether the ToC helps agent navigation. So the missing study is one the project knows how to build, and arguably should build for clusters rather than argue from analogy. That is an internal capability the external agent could not know about.
-
-Not synthesizing or recommending until the other two return. Running the litmus test now because it is measurement, not conclusion.
-
-<------------Start Thinking / 19:35------------>
-
-Litmus test run, and the result is the most important measurement of the session. Two of three agents are back (adversarial; edge-construction). Third still running.
-
-**Peixoto litmus, Central file-level graph, 264 nodes / 525 edges, degree-preserving rewire:**
-
-| metric | REAL | NULL (rewired) | verdict |
-|---|---|---|---|
-| modularity | 0.4331 | 0.4211 +/- 0.0045 (n=50) | z=2.68, 0/50 nulls exceed real, **excess 2.8%** |
-| cluster count | 10 | 12.5 | similar |
-| size distribution | 43,33,31,31,27,26,25,21,20 | 33,32,31,30,28,27,18,18,17 | **indistinguishable by eye** |
-| **NMI vs directories** | **0.1812** | **0.1881 +/- 0.0069** | **real is NOT above null** |
-
-Two conclusions, and I must not soften either.
-
-**1. My quality metric was worthless.** All session I used low NMI-vs-directories as the evidence that clustering was finding something real , I celebrated Central's 0.163 as "clusters are nearly independent of the folder tree" and treated it as D's strongest result. A degree-preserving RANDOM rewire produces NMI 0.188, i.e. the same or lower agreement with folders. Low NMI-dir was never a quality signal; it is what any graph with this degree sequence yields. I was measuring the absence of a property, not the presence of one, and reading it as success. This is the same error as the karate-club seed test, an observation that could not have come out the other way.
-
-**2. The topical signal is real but tiny.** Modularity does clear the null, 0/50 replicates reach it, z=2.68. So there IS structure beyond the degree sequence. But the excess is **2.8%**, and cluster count and size distribution are null-indistinguishable. Honest statement: the partition is ~97% explained by degree sequence alone. That is not "clusters correspond to recognizable project areas"; it is a faint signal on top of noise. Peixoto's warning lands exactly, we would be shipping confident-looking labels for something nearly indistinguishable from what random rewiring produces.
-
-Note I should NOT overstate this in the other direction either. 0/50 is a real result, not a null result. The correct framing is "signal present, effect size small", not "no signal".
-
-**Convergence across three independent sources, which is what makes this decisive rather than one more of my wrong calls:**
-- Internal vision doc: connectivity vocabulary is hubs/orphans/hotspots, clustering entered via GraphRAG borrowing.
-- Adversarial agent: Aider , the most mature system with this exact problem shape , had the same graph and chose personalized PageRank. "Nobody shipping in this space is clustering."
-- My own null test: the clustering signal is 2.8% over a degree-preserving null.
-
-Three unrelated lines of evidence pointing the same way. Contrast with my own earlier reasoning, which pointed three different ways in three turns.
-
-**Also confirmed from the adversarial report, checkable and checked:** we are running `ModularityVertexPartition`, so the resolution limit (Fortunato & Barthelemy 2007) is live and unaddressed on a 12,170-section graph, and I had absorbed the false premise that "Leiden fixes it". Traag 2019 fixes disconnected communities; resolution-limit-freeness belongs to the quality function (CPM has it, modularity does not). Both agents independently flag CPM.
-
-**Both agents independently prescribed the exact null test I ran** (edge agent §7 "Sanity check that must be run"; adversarial §7 "Peixoto's litmus test"). Convergent methodological advice, and it is the test that produced the decisive number.
-
-**Edge agent's constructive path**, if densification is pursued: BM25 kNN graph at k ~ log(n) (7-10 here), symmetrized, unioned with the real reference edges at higher weight; von Luxburg's explicit first choice; guaranteed density floor n*k rather than the unpredictable count from cosine thresholding. Critically it also confirms my BL-GE-001 reading from the other direction: **bibliographic coupling and co-citation are closed over the linked subgraph and CANNOT rescue the isolated 75%.** So second-order citation tricks are out, and only text-derived or author-declared edges can fix coverage. That is precisely the BL-GE-001 (author-declared concepts) vs TF-IDF/BM25 (statistical) fork, now with literature behind it.
-
-Not writing the research file or recommending until agent 3 lands. Reporting the litmus result now because it is decisive and the user should not wait for it.
-
-<------------Start Output / 19:35------------>
-
-Ran the Peixoto litmus test (degree-preserving rewire null model) that BOTH returned agents independently prescribed. Decisive result, reported to the user before the third agent lands.
-
-REAL vs NULL on Central's file graph (264 nodes, 525 edges, 50 null replicates):
-- modularity 0.4331 vs 0.4211 +/- 0.0045 -> z=2.68, 0/50 nulls reach real, **excess only 2.8%**
-- cluster count 10 vs 12.5; size distributions indistinguishable by eye
-- **NMI-vs-directories 0.1812 real vs 0.1881 null -> real NOT above null**
-
-Told the user plainly: **my quality metric was worthless.** I spent the session treating low NMI-vs-directories as evidence clustering found something real, and celebrated Central's 0.163. A random rewire scores the same. It measured the absence of folder-agreement, not the presence of topical structure , same error shape as the karate-club seed test, an observation that could not have come out the other way.
-
-Honest two-sided reading recorded: signal IS present (0/50 nulls reach real modularity) but the effect is 2.8%, so the partition is ~97% explained by the degree sequence alone.
-
-Also confirmed by direct check that we run `ModularityVertexPartition`, so the resolution limit is live on a 12,170-section graph, and I had absorbed the false "Leiden fixes the resolution limit" premise (Traag 2019 fixes disconnected communities; resolution-limit-freeness is a property of the quality function , CPM has it, modularity does not). Both agents independently recommend CPM.
-
-Three independent lines now converge on centrality-over-clustering: the internal vision doc's hubs/orphans/hotspots vocabulary, the adversarial agent's finding that Aider solved this exact problem shape with personalized PageRank, and my null test. Also noted the edge agent's finding that bibliographic coupling/co-citation are closed over the linked subgraph and cannot rescue the isolated 75%, which sharpens the coverage fork to author-declared concepts (BL-GE-001) vs statistical text edges (BM25 kNN at k~log n).
-
-<------------Start Thinking / 19:36------------>
-
-Third agent back. All three external reports plus the internal pass plus my own null test are now in. Synthesizing.
-
-**The convergence is unusually strong, and it comes from sources that could not have coordinated:**
-
-1. My null test: clustering signal is 2.8% over a degree-preserving null; my NMI-dir quality metric is null-indistinguishable.
-2. Adversarial agent: Aider, the most mature system of this exact shape, chose personalized PageRank over community detection. "Nobody shipping in this space is clustering."
-3. Coverage agent, and this is the one that lands hardest: **Microsoft GraphRAG , the flagship Leiden-over-documents system, does not use explicit document cross-references at all.** It builds a derived entity graph with an LLM and runs hierarchical Leiden over THAT. So the most prominent system doing the thing Sprint 18 wants to do independently judged explicit-link graphs too sparse to serve as the substrate, and replaced the substrate rather than tuning the algorithm.
-4. Internal vision doc: connectivity vocabulary is hubs/orphans/hotspots. Clustering entered the plan via the GraphRAG borrowing (S49), not from the ToC's own statement of purpose.
-
-Point 3 is the killer, and it closes a loop from S49. The GraphRAG fit research adopted "ideas only" , specifically Leiden , while rejecting the LLM extraction as DEC-009-incompatible. But the extraction was not incidental packaging around the Leiden idea; **it was what made the graph clusterable.** S49 took the algorithm and left behind the thing that fed it. That is the precise inherited-premise defect, and it is the same shape as the S55 finding about BL-302 line 77: a claim that was true in its original context, carried forward without its context.
-
-**Honest counterweights I must carry, not just the confirming evidence:**
-- Coverage agent found **no like-for-like benchmark** for documentation link density. So "26.5% is bad" is NOT established , there is no published documentation-corpus figure to compare against. Wikipedia's ~95% incoming-link coverage is the output of an active de-orphaning program with a 20-year backlog, not a natural property. I should stop implying 26.5% is anomalous; the honest statement is "low, honestly measured, and unbenchmarkable".
-- Shipping at partial coverage is the NORM (GitHub launched precise code nav supporting one language). So coverage alone was never a reason to halt. That weakens my own earlier framing.
-- Isolated nodes are already singleton clusters under Leiden; "covers only 25%" is partly a REPORTING choice, and OSLOM's "homeless nodes" is the citable precedent for making unassigned a first-class output class.
-- Growing the graph is documented to work: Burgess et al. +7% artificial / +17% Facebook ego networks.
-- The adversarial agent's own steelman #5 stands and nobody can refute it from literature: every usability study against clustering measured HUMANS browsing a UI. The consumer here is an agent, and **no study exists on whether clusters help LLM agents navigate.** The evidence gap cuts both ways.
-
-That last point matters procedurally: this project has already built exactly that missing experiment once, EXP-011, a 24-agent blind A/B on whether the ToC helps agent navigation. So the missing study is one GE knows how to run, and the honest resolution of clustering-vs-centrality is an EXP-011-shaped A/B, not an argument from human-subject literature.
-
-**Decision space I will present, without picking:**
-- A: pivot Sprint 18 to centrality/hubs (Aider pattern; the vision already asks for hubs/orphans/hotspots; cheap; abandons clustering)
-- B: grow the graph first, then cluster , BM25 kNN (statistical, DEC-009-safe, von Luxburg first choice, k~log n) or author-declared concepts (BL-GE-001, already accepted, Epoch 6). Resequences Epoch 5/6.
-- C: proceed on the connected core with CPM instead of modularity + consensus clustering + explicit disclosure, treating unassigned as homeless nodes
-- D: settle it empirically with an EXP-011-shaped agent A/B (ToC+clusters vs ToC+centrality vs ToC alone)
-
-My lean is that D subsumes the argument and A is the cheap default if D is not run, but I have been wrong twice today on this decision and the user explicitly asked to validate against experience rather than take my picks. So: present, recommend lightly, do not drive.
-
-Next artifact is the research file. `/dsm-research-add` needs topic, linked BL, sub-table. Linked BL is BL-302 (Phase 2), sub-table 2 (informs an active BL, not its primary deliverable). Propose and get the go rather than assuming, since the skill spec says it prompts.
-
-<------------Start Output / 19:36------------>
-
-All three external agents returned; synthesized with the internal pass and my null test. Presented to the user without picking a direction.
-
-Convergence from four independent sources that could not have coordinated: (1) my null test, clustering signal 2.8% over a degree-preserving null; (2) Aider chose personalized PageRank over community detection on the same problem shape; (3) **Microsoft GraphRAG does not use explicit document cross-references at all** , it builds a derived LLM entity graph and runs hierarchical Leiden over that; (4) the internal vision doc's own vocabulary is hubs/orphans/hotspots.
-
-Flagged the S49 loop-closure this implies: the GraphRAG fit research adopted "ideas only" (Leiden) while rejecting the LLM extraction as DEC-009-incompatible, but the extraction was **what made the graph clusterable**. The algorithm was taken and its substrate left behind. Same defect shape as the S55 BL-302 line-77 finding, a claim carried forward without the context that made it true.
-
-Carried the counterweights honestly rather than only the confirming evidence: no like-for-like documentation link-density benchmark exists, so "26.5% is bad" is NOT established; partial-coverage shipping is the norm (GitHub launched precise code nav with one language), which weakens my own earlier halt framing; isolated nodes are already singleton clusters so coverage is partly a reporting choice (OSLOM "homeless nodes" precedent); graph growth is documented to work (+7%/+17%, Burgess 2015); and no study exists on whether clusters help LLM AGENTS navigate, so the human-subject literature cuts both ways.
-
-Noted that GE has already built the missing experiment once (EXP-011, 24-agent blind A/B), so clustering-vs-centrality is resolvable empirically in-house rather than by analogy.
-
-Presented four options (pivot to centrality / grow the graph first / proceed on the core with CPM + consensus + disclosure / settle it with an agent A/B) and proposed filing the research via `/dsm-research-add` linked to BL-302, sub-table 2. Awaiting the user's direction.
-
-<------------Start Thinking / 21:55------------>
-
-"My lean: D" , read as a LEAN toward the agent A/B, matching my own, not yet an authorization to build it. Treating it as direction-setting, not as a green light on a 24-agent experiment. The word "lean" is doing work and I should honor it; EXP-011 cost 24 agents and ~644K subagent tokens, so this is not something to start on an inferred yes.
-
-**The objection I owe them before they harden the lean.** The null test says the cluster PARTITION is ~97% explained by the degree sequence. A fair challenge is: why spend a 24-agent experiment testing clusters we have already shown to be near-null?
-
-My answer is that this objection does not actually land, and I should say why rather than let it sit: **structure and utility are different questions.** The null test measured whether the partition carries topical signal beyond the degree sequence. EXP-011-shaped A/B measures whether an agent NAVIGATES better with the artifact. Those can come apart , a grouping that is largely degree-driven could still be navigationally useful (hubs cluster with what they reference, which is arguably what an agent wants), and conversely a statistically significant partition could be useless in context. EXP-011 itself is the precedent: it found the ToC helped navigation while TOON, which looked fine on structural grounds, lost on the actual consumer task. So the null result narrows the hypothesis, it does not answer the consumer question.
-
-But it DOES change what the experiment should be. Testing "clusters vs no clusters" alone would now be a weak design, because we have a specific, cheap, literature-backed rival: centrality. The Aider finding plus the vision doc's own hubs/orphans/hotspots vocabulary make PageRank the natural comparison arm. So the experiment is a three-arm A/B, and the centrality arm is the one that makes it decision-useful rather than merely confirmatory.
-
-**Practical asymmetry worth surfacing:** the centrality arm is nearly free. `networkx` already ships PageRank, networkx is already an installed optional extra, no new dependency, and the graph is already built. The cluster arm also exists (I can emit it today from the leidenalg work). So D's arms are cheap to BUILD; the cost is entirely in the agent runs. That is a good cost profile , the expensive part is the part that actually produces the datum.
-
-**Sequencing point I should raise rather than silently assume:** D restructures Sprint 18. P2/P3 were "compute clusters / emit clusters"; under D the sprint becomes "build both candidate artifacts, then run EXP-012 to decide which (if either) ships". That is a plan-level change to BL-302 Phase 2 and the sprint plan, and per the Actionable Work Items rule the plan is what makes work actionable , so the plan edit is not optional bookkeeping, it is the thing that authorizes the new shape.
-
-**Also still outstanding and cheap:** the research file. It is the RECORD of why the sprint pivoted, and it is the input that produced this decision. Writing it before the experiment is the correct order , if I run EXP-012 first and document later, the reasoning that selected the arms is reconstructed rather than recorded. They did not answer the two `/dsm-research-add` inputs, so I should re-surface them compactly rather than assume defaults, since the skill spec says it prompts for exactly those.
-
-**Loose state to flag:** `pyproject.toml` still uncommitted with the `cluster` extra; branch `sprint-18/leiden-clustering` now has a name that no longer matches what the sprint is likely to do. Not renaming anything unilaterally.
-
-Do not start building arms this turn. Confirm the shape, get the two research-file inputs, write the research file, then design EXP-012 with pre-registration.
-
-<------------Start Output / 21:55------------>
-
-Read "My lean: D" as direction-setting, not authorization to launch a 24-agent experiment; treating "lean" as the word it is and not starting the build.
-
-Raised the objection they will hit next, and answered it: the null result does NOT make D pointless, because structure and utility are separate questions. The null test measured whether the partition carries topical signal past the degree sequence; an agent A/B measures whether the artifact helps navigation. EXP-011 is the in-house precedent for them diverging (ToC helped, TOON lost on the consumer task despite looking fine structurally). The null result narrows the hypothesis rather than answering it.
-
-But argued the null result should CHANGE the design: "clusters vs no clusters" is now a weak two-arm test, because a cheap literature-backed rival exists. Three arms, ToC alone / ToC+clusters / ToC+centrality, with centrality as the arm that makes the experiment decision-useful rather than confirmatory.
-
-Verified the cost profile rather than asserting it: `nx.pagerank` and `nx.hits` are present in the already-installed networkx, so the centrality arm needs **no new dependency**, and the cluster arm exists from today's leidenalg work. Both arms are cheap to build; the spend is entirely in agent runs, which is the right shape. EXP-011's harness is reusable (arm-inputs/ + tasks.md, 5 tasks x 3 arms in that run).
-
-Flagged three things not to assume: (1) D restructures Sprint 18 from "compute/emit clusters" to "build both candidates, let EXP-012 decide", which is a plan-level edit to BL-302 Phase 2 and the sprint plan, and per Actionable Work Items the plan edit is what authorizes the new shape; (2) the research file should be written BEFORE the experiment or the arm-selection reasoning gets reconstructed instead of recorded, and the two `/dsm-research-add` inputs are still unanswered; (3) loose state , `pyproject.toml` uncommitted, and the branch name `sprint-18/leiden-clustering` no longer matches the likely sprint shape. Renamed nothing unilaterally.
-
-<------------Start Thinking / 21:56------------>
-
-"yes" , answering "Want me to start on the research file?". It follows a message where I also asked "link to BL-302, sub-table 2?", so I am reading the yes as covering BOTH: proceed, with those two inputs as proposed. Stating that read explicitly rather than silently assuming, since a bare "yes" after a two-part ask is exactly the compressed-reply case S55 flagged.
-
-**Protocol question I have to get right: does chunked drafting apply here?** CLAUDE.md: "Chunked drafting for prose deliverables ... for project plans, proposals, **reports, research papers**, ... Gate 2 proposes a TOC with per-section length budgets; Gate 3 drafts ONE subchapter at a time, delivered file-first to an editable draft file ... Triggered by document type, not length." A research findings file is squarely in that class. So I cannot simply write the whole document, even though every finding in it has already been presented and accepted in conversation.
-
-But I should not turn this into ceremony either. The honest split:
-- The **header stub + README registration** is mechanical scaffolding, not prose. `/dsm-research-add` step 5-7 literally specifies a template stub and a README row. That is authorized by the "yes" and is not a drafting bite.
-- The **body prose** is the gated part. So: create the stub, register it, then present the TOC with budgets for approval before writing any findings prose.
-
-That gives real forward progress this turn while keeping Gate 3 intact. Doing that.
-
-**Following the skill rather than my memory of it**, per the skill-self-reference rule , I read `dsm-research-add.md` earlier this session, so I have the actual spec: filename `YYYY-MM-DD_{kebab-case-topic}.md`, header stub with Date / Linked BL / Author / Status / Validation depth, then Purpose-Question / Sources / Findings. Sub-table 2 row format is `| {date} | [{topic}]({filename}) | BL-{N} | Active |`, inserted preserving date-ascending order. Step 7: `git add` both, do NOT commit.
-
-**Validation depth field , a real choice, not boilerplate.** The stub offers "Single-pass internal | Multi-pass (per DSM_0.2 §10.1)". This research had three independent external agents plus an internal pass plus my own null-model measurement, and several claims were cross-checked between sources (both agents independently prescribed the null test; CPM flagged by both). That is Multi-pass by any reading, and marking it Single-pass would understate the evidence base. Choosing Multi-pass.
-
-**One content decision I want to make deliberately when I do write:** the file must record what I got WRONG (the NMI-dir metric being null-indistinguishable, the drop-CONTAINS recommendation, the low-weight-CONTAINS recommendation), not just the conclusions. A research record that presents only the surviving findings hides the elimination path, and the elimination path is most of the value here , it is what stops the next session re-proposing weighted CONTAINS. Same principle as the S55 lesson about preserving records of what was believed at the time.
-
-Also: the sources list must carry the URLs and the evidence-quality flags the agents supplied, including their explicit gaps (no documentation link-density benchmark exists; no study on clusters helping LLM agents). Dropping the "we could not find X" items would turn honest gaps into apparent silence.
-
-Verify the README sub-table headings exist before inserting a row rather than assuming the shape , the S55 lesson about checking a convention against the target file BEFORE stamping it.
-
-<------------Start Output / 21:57------------>
-
-Read the bare "yes" as covering both parts of the previous ask: proceed with the research file, using BL-302 and sub-table 2 as proposed. Stated the assumption rather than silently taking it.
-
-Split the work by protocol: header stub + README registration is mechanical scaffolding (authorized), body prose is the gated part, so I created the stub and stopped before any findings prose. Chunked drafting applies here , CLAUDE.md names "reports, research papers" and is triggered by document type, not length , so Gate 2 (TOC with budgets) comes before Gate 3 bites.
-
-Created `dsm-docs/research/2026-07-21_cluster-quality-graph-density.md` with the skill's header stub, and set **Validation depth: Multi-pass** deliberately rather than as boilerplate (3 external agents + internal prior-art pass + local null-model run, with several claims independently converged).
-
-**Convention divergence found and NOT papered over**, which is exactly the S55 check-before-stamping lesson paying off: `/dsm-research-add` step 6 assumes five numbered sub-tables ("Tied to an active backlog item", "Informs an active BL", etc.) and a row format `| date | [topic](file) | BL-N | Active |`. **This repo's `dsm-docs/research/README.md` has none of that.** It has a single `## Files` table with `File | Purpose` columns, and it is stale , it lists only the two Epoch 1/2 handoff files and omits every research file added since, including the vision doc, the GraphRAG fit study and the semantic-concept-layer research.
-
-So "sub-table 2" was an instruction I could not follow as written. Matched the file's ACTUAL format instead of imposing the skill's assumed one, and surfaced the mismatch rather than restructuring the README unilaterally , restructuring is a separate decision and would have widened an approved edit, which is the S55 #114 failure.
-
-Staged both files, did not commit, per skill step 7. Presenting the outline with budgets for Gate 2.
-
-<------------Start Thinking / 22:12------------>
-
-"approve" , Gate 2 (outline + budgets) approved. Proceeding to Gate 3 bite 1: §2 "What was measured", ~400w plus two tables, written file-first so the user can edit in the IDE, then STOP for review before §3.
-
-One bite only. The approval was of the outline, not of the document; drafting straight through to §8 because the plan is approved would be the exact mistake the chunked-drafting protocol exists to prevent.
-
-**Content discipline for this section.** §2 is the measurement record, so it must contain numbers and provenance, not interpretation. Interpretation belongs in §3 (null test), §4 (external evidence) and §5 (eliminated designs). If I let conclusions leak into §2 the later sections become redundant and the file stops being auditable , a reader should be able to disagree with my conclusions while still trusting §2.
-
-**Reproducibility requirements for this section**, per feedback_experiment_reproducibility: the exact command, the exact library versions, the seed, and the partition type. Without those the tables are unreproducible assertions. Specifically: `dsm-validate <path> --graph-stats --graph-export`, leidenalg 0.12.0 / igraph 1.0.0 / networkx 3.6.1, seed 42, `ModularityVertexPartition`. The partition type matters because the resolution-limit finding in §4 hinges on it being modularity rather than CPM, so recording it here is what makes §4's criticism land against OUR configuration rather than a generic one.
-
-Also worth recording in §2, the environment papercut: `python src/cli.py` silently produces no output and exit 0 for any argument, only the installed `dsm-validate` entry point works. Anyone reproducing these numbers will hit it, so it belongs in the method note rather than in my head.
-
-**Numbers to carry, all from this session's runs, no recomputation from memory:**
-- GE: 187 files scanned / 45 excluded; 2632 nodes (187 FILE, 2445 SECTION); 2563 edges (2445 CONTAINS, 118 REFERENCES); 2422/2445 orphan sections.
-- Central: 996 files / 131 excluded; 13,166 nodes (996 FILE, 12,170 SECTION); 13,286 edges (12,170 CONTAINS, 1,116 REFERENCES); 12,047/12,170 orphan sections.
-- REFERENCES-only undirected on GE: 120 nodes, 118 edges, 9 components [88,10,7,4,3,2,2,2,2].
-- Weight sweep on GE, 7 rows, W 0.0 to 1.0.
-- File-level projection both corpora: GE 62 edges / 42 connected (22.5%) / 5 clusters / mod 0.4434 / NMI 0.506; Central 525 edges / 264 connected (26.5%) / 9 clusters / mod 0.4469 / NMI 0.163.
-
-Two tables as budgeted: one for corpus composition (GE vs Central side by side, which also makes the sparsity-generalizes point visible without me asserting it), one for the weight sweep.
-
-Punctuation rule: no em dashes, use ", " form. Applies to the prose I write into the file.
-
-<------------Start Output / 22:14------------>
-
-Gate 3 bite 1 drafted: §2 "What was measured", written file-first into the research file, ~640 words including three tables (budget was ~400w + 2 tables, so slightly over; the third table is the file-level projection comparison, which I judged worth the overrun since it carries the coverage figure that drives the whole decision , flagging the overrun rather than hiding it).
-
-Kept §2 to measurement only, no interpretation, so §3-§5 stay non-redundant and a reader can trust the numbers while disagreeing with my conclusions.
-
-Recorded reproducibility properly per feedback_experiment_reproducibility: exact command (`dsm-validate <path> --graph-stats --graph-export`), library versions (leidenalg 0.12.0 / igraph 1.0.0 / networkx 3.6.1), seed 42, and `ModularityVertexPartition`. Noted why the partition type is load-bearing, it is modularity not CPM, which is what makes §4's resolution-limit criticism apply to THIS configuration rather than generically. Also recorded the `python src/cli.py` silent-no-op papercut in the method note so the next person does not lose the same three probes.
-
-Two follow-ups handled rather than left:
-- Filled the two cells I had marked "not measured" by actually measuring them: Central file-level has **733 connected components** and **8 distinct partitions across 8 seeds**. Better to spend seconds than ship a table with holes.
-- Stripped the two em dashes that had survived in the header and Purpose sections from my earlier stub write, per the CLAUDE.md punctuation rule (", " form). Table cells that had collapsed to a bare "," were rewritten as "of which FILE" / "of which SECTION" etc., since a lone comma in a cell reads as a typo rather than as the intended sub-item marker.
-
-Stopped after one bite as the protocol requires. §3 (null-model test) is next, awaiting review.
-
-<------------Start Thinking / 23:21------------>
-
-"continue" , read as approval of §2 as drafted and a go for the next bite, §3 (null-model test), ~350w + table. One bite, then stop.
-
-**A consistency problem I need to handle honestly, not smooth over.** §2's file-level table reports Central as **9 clusters, sizes 54/41/39/31/29/28/21/14/7, modularity 0.4469**. My null-test run reports the real graph as **10 clusters, sizes 43/33/31/31/27/26/25/21/20, modularity 0.4331**. Same corpus, same seed, different numbers.
-
-The cause is real and mine: the §2 file-level run built a WEIGHTED graph (edge weight = count of section-level references between the two files), whereas the null-test run called `g.simplify()` and clustered the UNWEIGHTED graph, because degree-preserving rewiring operates on a simple graph. So the two runs cluster genuinely different objects.
-
-If I publish both tables without saying this, the file contradicts itself and a careful reader will catch it, which would undermine the whole document's credibility, including the parts that are solid. Options: (a) re-run the null test on the weighted graph so the numbers align, (b) state the difference explicitly in §3's method. (a) is not straightforward, degree-preserving rewiring of a weighted multigraph is a different and less standard null, and the standard Peixoto-style litmus is defined on the simple graph. So (b), and state it plainly as a scope limitation of the null test: **the null test validates the unweighted topology, and the weighted partition reported in §2 was not itself null-tested.** That is the honest boundary of what I measured.
-
-I should also be careful that this does not quietly weaken the headline finding. It does not: the NMI-vs-directories result (real 0.1812 vs null 0.1881) was computed inside the null-test run, so real and null there are like-for-like, both unweighted. The comparison that matters is internally consistent. What is NOT established is that the weighted partition would also fail the null, and I should say so rather than let the reader assume the result transfers.
-
-**Content for §3, interpretation now permitted (§2 deferred it here):**
-- Why this test: both external agents independently prescribed it; Peixoto's descriptive-vs-inferential litmus; Guimera 2004, random graphs have high modularity from fluctuations alone.
-- Method: `igraph.rewire`, 10x ecount rewiring attempts, degree sequence preserved exactly (verified, real degree sum 1050 = null degree sum 1050), 50 replicates for modularity, 10 for NMI.
-- Results table.
-- Two findings: signal present but small (0/50 nulls reach real, z=2.68, excess 2.8%); and the NMI-dir metric is null-indistinguishable, so it was never evidence of quality.
-- Seed stability, pairwise NMI mean 0.8612 min 0.7705 across 10 seeds on the real graph, which is a separate property worth recording because §4 will discuss regeneration churn.
-
-Must state the metric failure as my own error, not as an abstract observation. The document's value in §5 depends on that honesty being established here first.
-
-<------------Start Output / 23:22------------>
-
-Gate 3 bite 2 drafted: §3 "The null-model test", ~525 words against a ~350w + table budget. Over budget again, and this time the overrun is load-bearing rather than incidental, the scope-limitation paragraph and the two-findings prose are the substance of the section. Flagging it; happy to compress if the user prefers the budget held.
-
-**Caught and disclosed a contradiction between my own two tables rather than shipping it.** §2 reports Central file-level as 9 clusters / modularity 0.4469; the null test reports the real graph as 10 clusters / 0.4331. Same corpus, same seed. Cause: §2's run clustered the WEIGHTED file graph (weight = count of section-level references), while the null run called `simplify()` and clustered the UNWEIGHTED graph, because degree-preserving rewiring is defined on a simple graph. Two different objects, so two different numbers.
-
-Considered re-running the null on the weighted graph to make them align, and rejected it: degree-preserving rewiring of a weighted multigraph is a different and less standard null, and the Peixoto-style litmus is defined on the simple graph. Wrote the difference into §3's method as an explicit scope limitation instead, including the part that does NOT transfer: the real-vs-null comparison is internally like-for-like (both unweighted), but it is **not** established that the weighted partition would also fail the null, because that was not measured. Better to bound the claim than to let a reader assume it generalizes.
-
-Section content: why the test (Guimera 2004 on modularity in random graphs; Peixoto's litmus; both agents prescribing it independently), method with the degree-sum verification (1,050 = 1,050), results table, and two findings , signal present but 2.8%, and the NMI-dir metric invalid.
-
-Wrote finding 2 as my own error explicitly ("was treated during Session 56 as evidence ... reported as the strongest result"), not as an abstract observation, since §5's value as an elimination record depends on that honesty being established here.
-
-Also noted the file has been edited on disk outside my context (154 insertions / 4 deletions vs index, which includes my own bite). Will re-read before any edit that depends on surrounding content rather than assuming my copy is current.
-
-Stopped after one bite. §4 (external evidence) is next, the largest section at ~700w.
-
-<------------Start Thinking / 23:31------------>
-
-"continue" , §3 approved, drafting §4 (external evidence), the largest section at ~700w budget.
-
-**Density problem.** §4 has to carry four distinct evidence families (practice, algorithmic criticism, coverage norms, edge construction) plus the evidence gaps, from three agent reports totalling maybe 8,000 words. 700w means roughly 150w per family. So the discipline is selection, not compression: include only what CHANGES A DECISION here, and let §8 carry the full source list. Anything that is merely interesting goes out.
-
-Selection test applied , what actually bears on the Sprint 18 decision:
-- **Aider chose PageRank on the same problem shape.** Decision-relevant, it is the existence proof for the rival design.
-- **GraphRAG does not use explicit cross-references at all**, it derives an entity graph and runs hierarchical Leiden over that. Most decision-relevant single fact in the whole report, because it says the substrate, not the algorithm, is the thing to fix.
-- **Resolution limit applies to modularity, and Leiden does not fix it.** Decision-relevant because we ARE running ModularityVertexPartition, so this is a live defect in our configuration, not a general caveat. Traag 2019 fixes disconnected communities; resolution-limit-freeness is a property of the quality function, CPM has it.
-- **Degeneracy** (Good/de Montjoye/Clauset 2010), exponentially many high-scoring mutually-disagreeing partitions. Decision-relevant because it means emitting one partition presents an arbitrary draw as a finding.
-- **Instability under perturbation**, decision-relevant because the artifact regenerates per commit, and §3 already measured seed instability (pairwise NMI 0.86), so the two connect.
-- **No like-for-like documentation link-density benchmark exists.** Decision-relevant as a NEGATIVE: it means my own "26.5% is bad" framing was never established, and I should not let the file assert it.
-- **Partial-coverage shipping is normal** (GitHub launched precise code nav with one language). Decision-relevant because it removes coverage as an automatic blocker, which cuts against my earlier halt framing.
-- **Bibliographic coupling is closed over the linked subgraph**, cannot rescue the isolated 75%. Decision-relevant, it eliminates a whole family of cheap fixes.
-- **BM25 kNN at k ~ log n**, von Luxburg's explicit first choice, guaranteed density floor. Decision-relevant as the concrete statistical option.
-- **No study exists on whether clusters help LLM agents navigate.** Decision-relevant because it is why option D (the agent A/B) is the resolution rather than more literature.
-
-Cut, despite being interesting: Clusty/Vivisimo commercial history (market history, weak evidence), the Hearst human-subject clustering-vs-facets studies in detail (consumer here is an agent, so their transfer is exactly what is contested), Amsler networks, disparity filter, the PKDD 2006 link-supervised term weighting (agent itself flagged it doubtful at 1,116 edges), grep-beats-embeddings reporting (agent flagged unverified).
-
-**Evidence-quality flags must survive into the file.** The agents distinguished strong / moderate / thin / absent. Collapsing everything to flat citation would launder the unverified items into apparent fact, which is the opposite of what a research record is for. Carrying the flags inline, especially for the two "absent" findings, which are findings in their own right.
-
-Watch: do not let §4 drift into recommending. Options belong in §7. §4 reports what the evidence says; §5 records what it eliminates.
+<------------Start Thinking / 07:41------------>
+
+Session 57 boot via `/dsm-go`. Recording the session-start checks and the two
+judgment calls I made, so both are auditable rather than buried in tool output.
+
+Steps 0.5-0.8. Scaffold: 8 of 9 canonical `dsm-docs/` subdirs present, `inbox`
+absent (this project uses `_inbox/` at root, which exists). 8 >= 5 plus `_inbox/`
+plus `.claude/reasoning-lessons.md` => scaffold complete, FORCE_ALIGN not set.
+Lockfile: LOCK_ABSENT, no concurrent session. Kick-off: SPOKE (dsm-central =>
+~/dsm-agentic-ai-data-science-methodology/).
+
+Step 0a. N = max(ARCHIVE_COUNT 28, MEMORY 56, REMOTE_SESSION_COUNT 2) + 1 = 57.
+
+Step 0c, judgment call 1 (branch). I booted on `staa/2026-07-30-s56-lessons`,
+which is neither a session branch nor one of the Level 3 names Step 0c enumerates
+(`bl-*`, `sprint-*`). Reading the archived S56 transcript tail resolved the
+history: S56's wrap-up actually finished this morning at 06:41, merged PR #14 to
+master, then `/dsm-staa` ran at 06:52 on its own branch. So the STAA branch is
+completed leftover work, not work in flight.
+
+Per S55 lesson #113 I did NOT trust the local `master` ref. Fetched, then compared
+against `origin/master`: the STAA commit 027a702 is genuinely unmerged (local
+master == origin/master == 3c63aaa, so the ref was not stale this time, but the
+check cost one command and the wrong answer cost S55 a bad recommendation).
+
+Two paths for the session branch. (A) branch off the STAA HEAD, so 027a702 rides
+into the session PR. (B) merge the STAA branch to master first, then branch off
+master. I chose A. Reasons: it is non-destructive and reversible; it loses nothing;
+and B requires checking out master with a dirty tracked transcript, which is the
+exact abort the `dirty-transcript-branch-switch` memory records firing in S54 and
+S56. Cost of A: the reasoning-lessons commit bundles into the session PR rather
+than landing on master on its own. That is a history-tidiness cost, not a
+correctness one, and merging the STAA branch separately is the user's call, so I
+am surfacing it in the report rather than deciding it. Created
+`session-57/2026-07-30` off HEAD.
+
+Step 0d. `git fetch --prune` clean; no stale merged local branches. Step 0e
+chmod on hooks, Step 0f cross-repo confirmation file truncated.
+
+Step 1.5. Compact mirror is FRESH, not stale: source mtime 06:52:10 matches the
+`Source mtime at regeneration` field (06:52), mirror written 06:52:32. Read it in
+full, 107 entry lines across S48-S56. The categories that bear on this boot are
+the verification-discipline ones: S55 #113 (stale local ref), S56 #128 (dir()
+listing is not capability), S56 #131 (a metric a null also satisfies was never
+measuring quality). The last of those is what halted Sprint 18 and is the live
+constraint on whatever we pick up next.
+
+Step 1.8, judgment call 2 (align). `last-align.txt` reads v1.18.0; Central's
+CHANGELOG latest heading is `## [1.19.0] - 2026-07-28`. Versions differ, so the
+literal rule says run `/dsm-align`. Note the grep: `^## \[v` returns nothing here
+because Central writes `## [1.19.0]` with no `v` prefix, the S50 #55 miss; I
+re-grepped on `^## ` and got the real answer rather than concluding "unresolved".
+
+I considered whether S49 #52 ("protocol-mandated is not automatic, surface
+expensive actions in anomalous situations") applies. Its guard was an 8-version
+drift mid-resumption of an unwrapped session. Here the drift is one minor version
+and the session state is clean, so the guard is not satisfied and per S51 #62 I
+should re-evaluate the condition rather than cargo-cult the prior verdict. That
+argues for just running it. I am still holding it one turn: `/dsm-align` can push
+feedback and rewrite the CLAUDE.md alignment block, and I would rather the user
+know a 1.18.0 => 1.19.0 delta is pending than have the boot silently spend it. If
+they say go, it runs first thing.
+
+Steps 3 / 3.5. Handoff `2026-07-21_s56_sprint-18-premise-halt.md` and checkpoint
+`2026-07-21_s56_checkpoint.md` both predate this session => consumed. Annotated
+each, `git mv` to `done/`, then `git add` the destination to restage the
+POST-annotation content per BL-370/BL-444 (without it the commit ships the rename
+carrying pre-annotation bytes and the rename-staging hook can block a later
+commit).
+
+Step 3.6. Gate does not fire. MEMORY has Sprint 18 IN PROGRESS with P2 halted, not
+closed, so there is no sprint closure to check boundary artifacts against.
+
+Step 5.7. Suppressed correctly: no "STAA recommended" line in the archived
+transcript, and `last-staa.txt` already reads analyzed_session 56.
+
+Step 5.8. Reads as a trigger on the arithmetic (branch 57 > MEMORY 56) but is a
+false positive. That check exists to catch a RESUMED branch that ran ahead of
+MEMORY; branch 57 is one I created seconds ago, and `last-wrap-up.txt` says
+session 56 type full with a matching MEMORY entry. Not reconstructing anything.
+Flagging the reasoning rather than skipping silently, per S54 #108 (derive pending
+from markers, not from prose).
+
+Step 5.9. type: full => no prompt, continue with full `/dsm-go`.
+
+One thing to carry into whatever we pick up: the checkpoint's first pending item
+is "resolve the P4 gate ambiguity", and S56 #142 is explicit that its two readings
+give opposite verdicts and cannot be chosen after seeing results. That is a user
+decision, not an agent one, so I will not pre-empt it with a recommendation.
+
+<------------Start Output / 07:41------------>
+
+`/dsm-go` boot complete for Session 57. Branch `session-57/2026-07-30` created
+off the STAA HEAD (027a702 rides along, surfaced for the user's decision).
+Transcript archived to `.claude/transcripts/2026-07-21T12:32-ST.md` (29 total),
+baseline written, lockfile written. Handoff + checkpoint moved to `done/` and
+restaged. `/dsm-align` held for approval on a v1.18.0 => 1.19.0 delta.
+Reported state + 5 suggested work items from the S56 checkpoint.
+
+<------------Start User / 07:44------------>
+
+"Resolve the P4 gate ambiguity in BL-302 Phase 2"
+
+<------------Start Thinking / 07:44------------>
+
+Item 1 selected. Neither of the two held decisions from the boot report was
+answered (`/dsm-align`, the STAA branch). Both are independent of this work, so
+I proceed and re-surface them later rather than blocking. Noting that explicitly
+because S56 #139 says a hedge or a silence is a scope limit, and picking item 1
+is not authorization for the align run.
+
+Also noting the IDE opened `.claude/session-transcript.md`. Per S56 #140 that is
+ambient context, never an instruction. It is the file I am about to write to
+anyway, so it changes nothing.
+
+What is the task, precisely. The checkpoint says BL-302 Phase 2's P4 gate phrase
+"cuts across obvious boundaries" reads two ways that give OPPOSITE verdicts on
+the surviving design, and that this cannot be resolved after seeing results
+without motivated reasoning. So the deliverable is a disambiguation of a success
+criterion, decided before any run. That is a decision artifact, not code.
+
+What I must NOT do: pick the reading myself and present it as resolved. S56 #142
+is explicit that the agent proposed the design, proposed running the gate, and
+had already published a favourable qualitative read of its output, so any key it
+writes afterwards is one its own design passes. That contamination has not
+expired , it is the same agent lineage, same design, same session-chain. My job
+is to make the fork legible and let the user choose, per the Pre-Generation Brief
+four-gate model where this is a Gate-1/Gate-2 shaped question.
+
+Plan for this turn, read-only first:
+1. Read BL-302 Phase 2 in full, find the exact P4 wording and its surrounding
+   context (what P4 gates, what passes/fails hang off it).
+2. Read the S56 research file, especially §7 (the four options) and whatever
+   section records the ambiguity, to recover BOTH readings as S56 stated them
+   rather than as I reconstruct them now.
+3. Read the Sprint 18 plan for any second copy of the gate wording, since S55
+   #124 found the Sprint Boundary Checklist duplicated in two divergent forms in
+   exactly these files. If P4 is duplicated and the copies differ, that is a
+   finding in itself.
+4. Check DEC-010 / the epoch-5 plan only if they carry the gate text too.
+
+Then present the fork: reading A, reading B, what each implies for the surviving
+design, and what evidence bears on which was INTENDED. Intent is the key move ,
+this is not "which reading do we prefer now" (that is the motivated-reasoning
+trap) but "which did the author mean when the gate was written, before any
+result existed". Provenance beats preference. If provenance is genuinely silent,
+say so and let the user legislate.
+
+One more guard, S55 #114: the gate wording is a premise I am inheriting. Re-check
+whether the gate is still measuring something that matters at all, given the
+null-model finding invalidated the metric it may have been paired with. A gate
+whose subject died is not an ambiguity to resolve, it is a gate to retire. Hold
+that hypothesis open while reading.
+
+Do not verify by grep alone; read the file.
+
+<------------Start Thinking / 07:52------------>
+
+Read: BL-302 P2 in full (165 lines), sprint-18 plan §Experiment Gate + phase map,
+research file §7 (options + open questions), §3 (null results), §6 (what survives,
+metrics eliminated), §"inherited premise defect". Then went after provenance.
+
+PROVENANCE RESULT, and it is decisive in an unexpected direction. `git log -S "cuts
+across obvious boundaries"` returns exactly two commits: 3e05826 (S55, the
+formalization pass that authored the BL) and 20df631 (S56, the research file
+quoting it). So the phrase was written ONCE and never revised. Then I searched the
+S55 transcript for the authoring rationale. The only P4 reasoning on record is
+line 292: "do these clusters correspond to recognizable project areas?" is not
+answerable by a unit test, therefore experiment REQUIRED, therefore P4 IS EXP-012.
+Nothing about what "obvious boundaries" means.
+
+So intent-archaeology returns NOTHING. The author never noticed the ambiguity, so
+there is no intended reading to recover. This kills the move I planned in my first
+thinking block, "provenance beats preference". I planned to resolve this by finding
+what the author meant; the record is silent, so that method is unavailable. Saying
+so plainly rather than manufacturing a provenance argument out of thin material,
+because a confident intent claim here would be exactly the fabrication the Code
+Output Standards forbid.
+
+Which leaves: coherence analysis, and the user legislating. Fine, but I can still
+do real work rather than just handing back the fork.
+
+READING THE SENTENCE AGAIN, closely. "A cluster set that cuts across obvious
+boundaries, OR collapses to one giant cluster, fails the gate regardless of
+modularity score." S56 recorded two readings, folders (A) vs topical coherence (B).
+The conjunction is the thing neither reading accounts for. "Collapses to one giant
+cluster" is unambiguously a DEGENERACY test, the algorithm found nothing. Failure
+modes joined by "or" in one sentence usually share a kind. That gives a third
+reading nobody has written down:
+
+A' , the gate is a degeneracy / sanity screen. "Cuts across obvious boundaries"
+is the scattered-noise degeneracy, "collapses to one giant cluster" is the
+no-partition degeneracy, and they are the two ways the output can be trivially
+broken. Not a demand for folder agreement, and not a quality bar. "Regardless of
+modularity score" fits: a degeneracy screen overrides the algorithm's own number.
+So does "on a repository whose structure is known independently", you need a repo
+you know in order to NOTICE scrambling.
+
+Now the part I did not expect. I set out to disambiguate and instead all three
+readings fail, and the ambiguity is not why any of them fail.
+
+A (folders) is self-defeating. BL-302's own Motivation says the summary already
+answers "what is big" and "what is central", and clustering should answer "what
+belongs with what" from structure the graph carries. If the gate REQUIRES agreement
+with the folder tree, then the folder tree already answers it, and
+`generate_hierarchy` already emits it. A gate a new capability passes only by
+reproducing an existing output is not a gate on that capability. Separately its
+instrument, NMI-vs-directories, was eliminated as invalid in research §6.
+
+B (topical) is unfalsifiable as written. No null control, no answer key, a human
+or agent judging whether members "belong together". This is precisely the metric
+class S56 #131 killed: a quality metric a randomized null also satisfies was never
+measuring quality. On a graph 2.8% over null, post-hoc narratives will be found in
+null clusters too. And per S56 #142 I cannot author this key, having already
+published a favourable qualitative read of this design's output.
+
+A' (degeneracy) survives as a TEST, and here is the thing, it has effectively
+already been run. The degree-preserving null IS the degeneracy screen. Result:
+0/50 null replicates reached real modularity, z=2.68, so not pure noise; but
+cluster count (10 vs 12.5) and size distribution are not visibly distinguishable
+from null. Under A' the design scrapes a marginal pass on "not noise" and supplies
+no evidence at all for "recognizable project areas".
+
+CONCLUSION I did not anticipate: this is a replace, not a disambiguate. The gate
+was authored 2026-07-21 in S55, BEFORE the null-model evidence existed. Its defect
+is not ambiguous wording, it is that every reading is invalid (A), unfalsifiable
+(B), or already-answered-and-marginal (A'). Disambiguating yields a gate that still
+cannot do its job. This is S55 #114 firing a third time in this project, an
+inherited premise whose STATUS is fine and whose PREMISE has expired.
+
+SEQUENCING, and this cuts against the checkpoint's own ordering. What P4 should
+become depends on the direction decision: retire under A (no clusters to gate),
+survive-in-shape under B (plus §4's warning that thresholded similarity graphs
+inflate clustering coefficients, so a new graph needs its OWN null), live gate
+under C, and SUPERSEDED under D. Under D the gate is task performance in the A/B,
+which is §4's decisive evidence gap, and "obvious boundaries" plays no part. D is
+the current lean. So for the leading option, P4 needs replacing with a different
+gate rather than disambiguating, and "resolve P4 then choose direction" is partly
+backwards. S56 was still right that it must be settled before any run.
+
+BASE RATE, per S56 #137. This is the third recommendation on the Sprint 18 line
+from the same agent lineage; the prior two were user-approved and overturned by
+measurement. Honest calibration though: those two were empirical design claims
+about graph structure, reasoned rather than measured. This one is a reading of a
+sentence plus a coherence argument against BL-302's own Motivation section, which
+the user can check directly in about two minutes. Different failure surface. I say
+that as calibration, not as an exemption.
+
+DELIVERY. This is Gate 1/2 shaped. Present the analysis and the proposed
+resolution, do NOT write the plan edits yet, per Working Style "do not generate
+files before providing description and receiving approval". Per Actionable Work
+Items the edits to BL-302 §P4, Acceptance Criterion 5, and the sprint-18 phase-map
+row are what would make the new shape actionable, so name them as the pending
+write set.
+
+<------------Start Output / 07:56------------>
+
+P4 analysis delivered, no files written pending approval.
+
+Provenance searched and came back EMPTY: `git log -S` shows the phrase authored
+once in 3e05826 (S55) and never revised, and the S55 transcript records no
+deliberation on what "obvious boundaries" means. There is no intended reading to
+recover, so the user legislates.
+
+Found a third reading S56 did not record (A', degeneracy screen), argued from the
+"or collapses to one giant cluster" conjunction. Then found that all three readings
+fail for reasons unrelated to the ambiguity: A is self-defeating against BL-302's
+own Motivation and its instrument was eliminated as invalid; B is unfalsifiable
+and is the exact metric class S56 #131 killed; A' is valid but already answered,
+marginally, by the null test already run.
+
+Recommendation: REPLACE rather than disambiguate, resolving the gate's meaning to
+A' plus an explicit null control, and striking the "cuts across obvious boundaries"
+clause. Operationalization is direction-conditional; under the current lean (D) the
+gate is superseded by task performance, which makes the checkpoint's
+"resolve P4 first" partly backwards for the leading option.
+
+Base rate stated. Pending write set named: BL-302 P2 §P4, Acceptance Criterion 5,
+sprint-18 phase-map row P4.
+
+<------------Start User / 08:04------------>
+
+"align first if it's missing, then Resolve the meaning to A' (degeneracy floor,
+null-controlled), and strike the 'cuts across obvious boundaries' clause"
+
+<------------Start Thinking / 08:04------------>
+
+Reading the reply before acting on it, per S55 #117. Three parts.
+
+1. "align first if it's missing" , conditional authorization. The condition IS
+satisfied: `last-align.txt` reads v1.18.0, Central's CHANGELOG latest heading is
+`## [1.19.0] - 2026-07-28`. Both values verified by reading the files this session,
+not recalled. So `/dsm-align` runs, and it runs FIRST, before any plan edit. The
+ordering is not incidental, align can rewrite the CLAUDE.md alignment block and
+scaffold folders, and I would rather that land before my content edits than
+interleave with them.
+
+2. "Resolve the meaning to A' (degeneracy floor, null-controlled)" , approval of
+the recommended reading, quoted back near-verbatim including the parenthetical.
+That is a precise approval, not a bare "go", so I read it as covering both halves:
+the reading (A') AND the null control. Not treating it as broader than that.
+
+3. "strike the 'cuts across obvious boundaries' clause" , explicit, and it names
+the specific clause. So the strike is authorized on the wording itself.
+
+WHAT WAS NOT ANSWERED. I asked two things at the end and got neither: whether the
+direction-conditional operationalization goes in now or is deferred, and the STAA
+branch question from boot. Per S50 #54, do not silently assume on a flagged item
+and do not re-block for an answer the user is clearly ready to move past. So:
+proceed on my own recommendation and STATE the assumption.
+
+My call on the operationalization: record that it IS direction-conditional, with
+the four-way mapping, but do NOT pin the concrete null-control procedure for a
+direction that has not been chosen. Reason , pinning the procedure for C when the
+lean is D would be authoring a gate for an option nobody selected, and per the
+Actionable Work Items rule the BL is the actionable surface, so writing a
+speculative procedure there manufactures work. Recording the conditionality is
+what stops the ambiguity reappearing; recording a procedure is premature. I will
+say this is an assumption, in one line, so it is correctable.
+
+STAA branch question: unanswered, not blocking, carry it to wrap-up. Not raising
+it again mid-task.
+
+A guard on my own edit, S55 #118 (the record-vs-plan asymmetry). BL-302 §P4 is a
+PLAN, so the defective gate text gets corrected. But the old wording is also the
+thing S56's research file quotes and the thing this whole analysis is about, so
+deleting it outright would orphan those references. Correct treatment: replace the
+gate with the new one, and keep the struck clause visible in a short amendment note
+recording what it said and why it went. That is the same treatment BL-302 line 77
+got in S55 (text kept, REFUTED marker added), and it is already house style in
+this file, which carries a "Correction to the inherited premise (S55)" section.
+
+Also: check whether BL-302 already numbers its amendments before stamping one,
+S55 #121 fired on exactly this and cost a wrong link when skipped. Phase 1.5 has
+"Amendment 3"; this file has a prose-titled correction section, no numbers. Match
+the local format, do not import Phase 1.5's numbering.
+
+Sequence: /dsm-align now. Then re-read the three edit targets (they may have moved
+if align touched anything), then the edits one at a time per the file-by-file loop.
+
+<------------Start Thinking / 23:32------------>
+
+/dsm-align done. The interesting part is what the drift turned out to BE.
+
+I diffed the project's 121-line alignment block against the v1.19.0 template
+reconstructed from DSM_0.2 §17.1 (base template + the DSM 4.0 Application addition).
+Drift was isolated to exactly ONE section, App Development Protocol, 3 lines out,
+7 lines in. Everything else byte-identical. Then I read the CHANGELOG entry for
+1.19.0 and the drift is precisely BL-478, whose own spoke action reads "Run
+/dsm-align to update the reinforcement block".
+
+That resolved the gate question I was holding. I had been treating the block
+regeneration as needing its own approval, but the block is delimiter-managed
+("do not edit manually, managed by /dsm-align"), the user authorized the align run,
+and the methodology names this exact regeneration as the required action. Applied
+it, then verified byte-identity against the reconstructed template rather than
+trusting the edit. Verified.
+
+The content of BL-478 matters more than the mechanics, and it lands mid-session on
+me specifically. The old line said "Create files via Write/Edit tools; user approves
+via permission window". The new template says the opposite: the permission window
+approves a WRITE, never the CONCEPT, and never substitutes for the description stop,
+including when writes are auto-approved. Plus "one bite per stop" and "each file gets
+its own description stop". So the protocol I am operating under got stricter, in the
+middle of a task where I was about to make three file edits.
+
+S55 #126 says a plan authored earlier in the same session binds that session's
+execution. I just installed this rule myself, twenty minutes before the edits it
+governs. Ignoring it now would be the exact failure that lesson names. So the P4
+work gets a description stop per file, not one bundled diff.
+
+Does the concept gate still need clearing? No. The user's own words were "Resolve
+the meaning to A' (degeneracy floor, null-controlled), and strike the 'cuts across
+obvious boundaries' clause". That IS the concept, approved in their phrasing, not
+mine. What is NOT approved is the WORDING, which is Gate 3. So: present the §P4
+replacement text, stop, then the two mechanical follow-ons.
+
+Also caught by the redundancy scan, and it is not cosmetic: the project-specific
+`## Development Approach` section still says "Build one function at a time, test,
+then next". BL-478 explicitly calls that phrasing a REGRESSION. So the project's own
+CLAUDE.md now contradicts the block align just installed, in the direction the
+CHANGELOG names as wrong. Reported as a warning rather than fixed, because it sits
+outside the delimiters and is the user's content. Flagging it prominently though,
+since a contradiction between two sections of the same file is worse than either
+version alone.
+
+One more thing worth surfacing rather than filing: BL-476 adds §8.9.2, a
+non-suppressible consent gate for fan-out actions that can exhaust a usage window.
+Option D , the three-arm agent A/B , is exactly that shape, and its EXP-011
+precedent cost ~644K subagent tokens. So a methodology gate that did not exist when
+S56 wrote the options now sits directly across the current lean. That is a real
+input to the direction decision, not an align housekeeping note.
+
+Drafting the §P4 replacement now. Keeping the struck clause visible in an amendment
+rather than deleting it, per the record-vs-plan asymmetry, since research §7 quotes
+it. Matching this file's prose-titled correction format, NOT importing Phase 1.5's
+numbered-amendment convention , checked, this file has no numbered amendments.
 
 <------------Start Output / 23:32------------>
 
-Gate 3 bite 3 drafted: §4 "What the external evidence says", **942 words against a ~700w budget**, the third consecutive overrun and the largest. Running total 2,269w against a ~2,550w plan with §5-§8 still to write, so the document will land meaningfully over. Surfacing this as a pattern rather than a one-off: my section budgets have been systematically ~30% low. Options for the user , hold the budget and I compress §4 (the coverage-norms and edge-construction subsections are the compressible ones), or accept ~3,200w total and I stop re-flagging each section.
+/dsm-align complete, post-change. One fix applied (CLAUDE.md alignment block
+regenerated to v1.19.0), 31 items already correct, 0 collisions, 3 warnings, marker
+updated to v1.19.0, persistent report + inbox notification written.
 
-Selection discipline applied rather than compression: included only findings that change the Sprint 18 decision, and deliberately CUT material that was interesting but non-decisive , Clusty/Vivisimo commercial history (weak market evidence), the Hearst clustering-vs-facets human-subject studies in detail (their transfer to an agent consumer is exactly what is contested, so citing them heavily would beg the question), Amsler networks, the disparity filter, the PKDD 2006 link-supervised term weighting (the agent itself flagged it doubtful at 1,116 edges), and the grep-beats-embeddings reporting (agent flagged unverified).
+The drift was exactly BL-478 and the CHANGELOG's own spoke action for it was to run
+/dsm-align, which cleared the gate I had been holding. Verified byte-identity after
+the edit.
 
-Preserved the agents' evidence-quality flags inline (Strong / Moderate / Thin / Absent) rather than flattening everything into uniform citation, which would have laundered unverified items into apparent fact.
+Surfaced three things beyond the mechanics: the new App Development Protocol is
+stricter on file creation and binds my own next three edits; the project-specific
+`## Development Approach` section now contradicts it with phrasing BL-478 calls a
+regression; and BL-476's new §8.9.2 fan-out consent gate lands directly on Sprint 18
+option D.
 
-Two negative findings written as findings, not omissions: no like-for-like documentation link-density benchmark exists, so the file explicitly does NOT assert that 26.5% is anomalous (this retracts my own earlier framing); and no study exists on whether clusters help LLM agents navigate, which is why the question is empirically open rather than settled by literature.
+Next: §P4 replacement text presented for Gate 3 review, one file per stop.
 
-Kept §4 reporting-only, no recommendations , options belong in §7, eliminations in §5.
+<------------Start User / 23:38------------>
 
-Stopped after one bite. §5 (designs eliminated, including my own two wrong recommendations and the invalid metric) is next.
+"approve"
 
-<------------Start Thinking / 23:34------------>
+<------------Start Thinking / 23:38------------>
 
-"continue and accept necessary budget" , read as: proceed with §5, and the ~2,550w plan is released, write what the content needs. Not a licence to pad; "necessary" is the operative word, so the discipline shifts from word-count to relevance and I should still cut anything non-decisive.
+Restating my read before acting, per S55 #117, since this is a bare one-word reply
+and the turn before it contained several distinct things.
 
-Drafting §5 only, one bite. Considered folding §6 (S49 premise defect, ~200w) into this bite since it is short and thematically adjacent to elimination, and rejected it , the protocol says one subchapter at a time, and the user has consistently rewarded gate discipline this session. I will OFFER combining §6+§7 next as an explicit proposed deviation rather than just doing it.
+My read: "approve" clears the Gate 3 item I explicitly stopped on, the §P4
+replacement WORDING. It does not reach the other things in that message, which were
+reports and flags, not proposals: the two CLAUDE.md redundancy warnings, the
+7-vs-9 Sprint Boundary Checklist divergence, and the §8.9.2 note about option D.
+None of those were presented as an ask, so there is nothing there for an approval
+to land on. I also read it as leaving my stated assumption standing, that the
+concrete null-control procedure stays unpinned while the direction is open, since
+I flagged that as correctable and it was not corrected.
 
-**§5 content, the elimination record:**
-1. REFERENCES-only / drop CONTAINS , my Gate 2 recommendation, user-approved. Killed by coverage: 120 of 2,632 nodes, 4.6%, 9 disconnected components.
-2. Low-weighted CONTAINS , my revised recommendation. Killed by a PRE-REGISTERED falsification condition, which is the part worth recording: I predicted a sharp NMI transition giving a sweet spot, wrote down that flat NMI would mean the family is dead, and NMI came back flat at 0.755-0.767 across every nonzero weight. Weighting is a switch, not a dial.
-3. Full-weight CONTAINS , recovers the folder tree, 167 clusters, adds nothing over `ls`.
-4. File-level projection , NOT eliminated, but bounded. Best meaning of the options, and it is the arm that survives into §7, but its partition is the one §3 showed to be 2.8% over null, and it covers ~25%.
-5. Bibliographic coupling / co-citation as a coverage fix , eliminated by §4, closed over the linked subgraph.
-6. Two METRICS eliminated, which matters as much as the designs: NMI-vs-directories (null-indistinguishable, §3) and modularity as a quality gate (climbed 0.81 to 0.96 across the sweep while cluster meaning stayed flat).
+Scope check on the strike: the approved text removes "cuts across obvious
+boundaries" from the ACTIVE gate but preserves the original sentence inside the
+amendment as a blockquote. That is what I presented and what the record-vs-plan
+asymmetry requires, since research §7 quotes the clause and would otherwise point
+at nothing. Not silently widening to a full deletion.
 
-**The process finding I should state once, plainly, without moralising.** Both eliminated designs were mine, both were approved by the user on my recommendation, and both failed the same way: I reasoned about what the graph must look like instead of measuring it. The measurements were reliable all session; the design inferences layered on top were not. That belongs in the file because it is the reusable lesson, and because a future reader deciding whether to trust the surviving option should know the base rate of the reasoning that produced it.
+Applying to BL-302 §P4 only. Acceptance Criterion 5 is in the same file but is a
+separate bite and I said I would bring it after, so I am not folding it into this
+edit even though it would be one tool call cheaper. Folding it in is exactly the
+"approving a build sequence authorizes starting, not authoring every file in it"
+case, and the rule I installed an hour ago governs my own next edit or it is
+worthless.
 
-Guard: do not let §5 slide into recommending the file-level projection. It survives elimination, which is not the same as being chosen. §7 owns the options.
+One pre-write check before stamping, per S55 #121 (verify the convention against
+the target BEFORE writing, not in post-write verification). This file's existing
+correction is prose-titled, "Correction to the inherited premise (S55, 2026-07-21)",
+with no number. Phase 1.5 uses numbered amendments. I am matching the local
+prose-titled format and stamping "(S57)", not importing a number. Checked, not
+recalled.
 
-Also: §5 should make it structurally hard for a future session to re-propose weighted CONTAINS without re-reading the falsification condition. Stating the pre-registration explicitly, with the numbers, is what does that.
+After the edit: verify the struck clause still appears exactly once, inside the
+amendment blockquote, and that the active gate text no longer contains it. Then
+present the two follow-ons.
 
-<------------Start Output / 23:35------------>
+<------------Start Output / 23:41------------>
 
-Gate 3 bite 4 drafted: §5 "Designs eliminated, and why", 612 words. Budget released by the user, so reporting the count without re-litigating it. Running total 2,873w; §6, §7, §8 remain.
+BL-302 §P4 replaced as approved. Verified rather than assumed: the struck clause now
+appears only at line 148 (the amendment's title) and lines 150-152 (the preserved
+blockquote), and the active gate text no longer contains it. The new relative link to
+the research file resolves on disk.
 
-Recorded five eliminations with the evidence that killed each: drop-CONTAINS (4.6% coverage, 9 components), low-weighted CONTAINS (killed by its own pre-registered falsification condition, NMI flat 0.755-0.767 across all nonzero weights, plus 167-185 clusters), full-weight CONTAINS (recovers the folder tree, adds nothing over `ls`), bibliographic coupling as a coverage fix (closed over the linked subgraph), and two METRICS , NMI-vs-directories as invalid, modularity as a gate metric.
+Follow-on scan found the target set is LARGER than the three items I named at Gate 2.
+Acceptance Criterion 5 and sprint-plan row 78 were known. Sprint-plan line 78's success
+criterion still reads "Clusters map to recognizable project areas", which is Reading B,
+the unfalsifiable one now struck. Two more carry the same retired framing: sprint-plan
+line 35 ("P4 is that experiment: EXP-012 (cluster quality)") and line 55, the MUST
+deliverable. Reporting the widening rather than absorbing it silently, per S55 #123,
+and presenting all four for one decision.
 
-Wrote the weighted-CONTAINS entry so that re-proposing it requires confronting the pre-registration first ("Any proposal to revisit weighted CONTAINS should begin by re-reading the sweep in §2"). The point of the elimination record is to stop a future session re-spending this effort, and that only works if the falsification condition and its numbers are in the file rather than in a transcript.
+<------------Start User / 23:44------------>
 
-Held the line on file-level projection: recorded as "survives, bounded" with both bounding facts (26.5% coverage, 2.8% over null) and an explicit sentence that surviving elimination is not selection. Options stay in §7.
+"Approve all four"
 
-Included the process note , both eliminated designs were mine, both approved on my recommendation, both failed by reasoning about the graph instead of measuring it, and a reader should apply that base rate to the surviving option too. Wrote it factually and once, without moralising.
+<------------Start Thinking / 23:44------------>
 
-Protocol note: considered folding §6 (~200w, thematically adjacent) into this bite and did not, since the protocol is one subchapter at a time. Offering §6+§7 as a combined bite next as an explicit proposed deviation rather than taking it unilaterally.
+Unambiguous, names the count, matches the four I enumerated. No restatement needed
+beyond confirming the count matches.
 
-<------------Start Output / 23:35------------>
+Ordering. Item 1 is BL-302, items 2-4 are the sprint plan. Doing BL-302 first so the
+authoritative phase detail is correct before the wrapper that points at it, matching
+the division S55 established (phase detail lives in the BL, the sprint plan only
+points at it). If someone read the two files mid-edit, the BL should be the one that
+is already right.
 
-Reading "approve" as approving the proposed deviation: §6 and §7 drafted as one combined bite. Drafting now, then §8 (sources) closes the document.
+Item 4 is the one that needs care. It is not a label swap. Line 32-33 justifies the
+experiment requirement with "does Leiden over this graph produce clusters that
+correspond to recognizable project areas?" , that is Reading B, the unfalsifiable one.
+But the SURROUNDING argument (Sprint 18 adds new user-facing capability, DSM 4.0 §4
+says tests establish correctness while capability experiments establish whether the
+capability is real, therefore experiment REQUIRED) is sound and survives intact. So I
+replace the question, not the argument. Rewriting more than the question would be
+widening past what was approved.
 
-Content plan for the bite:
-- **§6, the S49 premise defect.** The GraphRAG fit study adopted "ideas only", specifically Leiden, while rejecting the LLM entity extraction as DEC-009-incompatible. But the extraction was not packaging around the algorithm, it was what produced a clusterable substrate. The algorithm was carried forward and the thing that fed it was left behind, and nobody re-checked the premise afterwards because it had already done its work. Same defect shape as the S55 BL-302 line-77 finding. Second instance in the file of "re-check inherited PREMISES, not just status". Also record the target-corpus drift: S49 named Central as the target, and S56 spent most of a session measuring GE before catching it.
-- **§7, options and open questions.** Four options (centrality pivot / grow the graph / proceed on the core with CPM + consensus + disclosure / agent A/B), each with what it costs and what it forecloses. Then the two structural questions that outlive the option choice: the DEC-009 revisit clause now has its concrete problem statement, though BL-GE-001's author-declared path may make revisiting unnecessary; and the BL-GE-001 sequencing question, Layer 4.5 is accepted for Epoch 6 and supplies precisely the edges Epoch 5's Sprint 18 needs.
-- Plus the **unresolved P4 gate ambiguity** , BL-302 Phase 2 says a cluster set that "cuts across obvious boundaries" fails, which reads either as "crossing folder boundaries fails" or "incoherent clusters fail", and those give opposite verdicts on the surviving design. It is genuinely unresolved and any experiment needs it settled before running, so it belongs in open questions rather than being quietly decided in prose.
+Guard against a real risk here: the replacement question must still be a CAPABILITY
+question, or the DSM 4.0 §4 justification stops following from it. "Does the partition
+carry structure beyond the degree sequence, and does it survive a null?" is
+capability-shaped and no unit test answers it, so the paragraph's logic holds.
 
-Discipline for §7: record the option space and the current lean, do NOT convert it into a plan. Per the Actionable Work Items rule research is INPUT; only `dsm-docs/plans/` makes work actionable. So §7 states that D is the current lean and that no DEC or plan edit has yet been made, rather than writing anything that could be mistaken for authorisation.
+Also re-reading line 36-38 while I am in that section, it carries the gate-before-
+freeze rationale. That is untouched by any of this and stays.
 
-<------------Start Output / 23:36------------>
-
-Gate 3 bite 5 drafted: §6 (inherited premise defect) + §7 (options and open questions) as the approved combined bite, 758 words. Total 3,623w; only §8 (sources) remains.
-
-§6 states the S49 defect precisely: the GraphRAG fit study separated Leiden from the LLM extraction on DEC-009 grounds, but the extraction was not packaging around the clustering idea, it was **what produced a clusterable substrate**. Keeping the algorithm and dropping the substrate left Leiden running over a graph that was never GraphRAG's input. Linked it to the S55 BL-302 line-77 finding as the second instance of a forward-looking claim outliving its context, and recorded the within-session instance too (S49 named Central as target; most of S56's measurement ran against GE before the discrepancy surfaced on re-reading).
-
-§7 records four options with costs and what each forecloses, and marks D as "**Current lean as of Session 56**, not yet recorded in a DEC or a plan edit" , deliberate phrasing so the research file cannot be mistaken for authorisation, per the Actionable Work Items rule.
-
-Five open questions recorded, including two that are mine to own rather than inherited:
-- The **P4 gate ambiguity** ("cuts across obvious boundaries") written as blocking-before-any-experiment, with the reason stated: the two readings give opposite verdicts on the surviving design and cannot be resolved after seeing results without motivated reasoning.
-- **Whether the weighted partition also fails the null** , the scope limitation from §3, carried forward as an explicit unmeasured item rather than left buried in a method note.
-- **Regeneration churn**, never measured, and §4 identifies it as the failure mode that would make the artifact unreviewable.
-
-Also recorded the DEC-009 question with its resolution leaning the non-obvious way: the revisit clause is now satisfiable, but both option-B paths (author-declared BL-GE-001 edges, statistical BM25) may sit INSIDE the existing constraint, so revisiting may be unnecessary rather than blocked. Worth stating explicitly since the opposite reading (coverage problem implies DEC-009 must be reopened) is the intuitive one and is probably wrong.
-
-Next and last: §8 sources, with URLs and the evidence-quality flags preserved.
-
-<------------Start Output / 23:47------------>
-
-Drafting §8 (sources), the last bite. Structure: internal repo sources first (they were decisive and are usually the ones omitted), then external grouped by the four evidence families, then tooling/provenance, then the explicit gaps.
-
-Two things I want right in this section rather than tidy:
-- **Carry the evidence-quality flags into the source list itself**, not only into §4's prose. A bare URL list flattens "peer-reviewed and directly applicable" and "unverified practitioner blog post" into the same visual weight, which is how a research record quietly launders weak evidence.
-- **Record provenance honestly.** These sources were gathered by three subagents, and I verified some claims directly (the null test, the leidenalg/igraph versions, the partition type, PageRank availability) but did NOT independently open every cited paper. Saying so is the difference between a citation list and an evidence claim I cannot back. Marking which claims I verified myself.
-
-Also listing sources that were consulted and deliberately NOT used in §4 (Hearst's clustering-vs-facets studies, Clusty market history, disparity filter, Amsler networks, PKDD 2006 term weighting), with the reason for exclusion. Otherwise a later reader re-finds them and assumes they were missed rather than weighed.
-
-After §8 the document is complete and Gate 4 (full-document consistency review) is due , that is the gate that catches cross-section contradictions, and I already know of one class to check: the §2 weighted vs §3 unweighted numbers, which I disclosed in §3 but should verify reads coherently end to end.
+Not touching line 42's Branch Strategy or anything else in the file. Four edits, then
+verify no site still carries "cluster quality" or "recognizable project areas" as an
+ACTIVE criterion, allowing that the BL's amendment blockquote legitimately preserves
+the old wording as a record.
 
 <------------Start Output / 23:48------------>
 
-§8 (sources) drafted; document complete at **4,447 words** across 8 sections. Staged, not committed.
+All four approved edits applied. BL-302 first (§P4 body already done, then Acceptance
+Criterion 5), then the sprint plan (capability question, EXP-012 name, MUST deliverable,
+phase-map row). Reflowed one line the edit had left short.
 
-Two deliberate choices in §8 rather than a plain URL dump:
-- **Evidence-quality flags carried into the source list itself** (Strong / Moderate / Thin), not only into §4's prose. A flat list gives a peer-reviewed PNAS paper and an unverified blog post identical visual weight, which is how a research record launders weak evidence.
-- **Verification status stated explicitly.** Listed what I verified directly this session (null-model results, graph stats, library versions, partition type, PageRank availability, wheel availability, the networkx Leiden dispatch stub) and said plainly that the cited papers were NOT individually re-read, they are reported at the confidence their gathering agent assigned. That is the line between a citation list and an evidence claim I cannot back.
+Post-edit sweep found TWO MORE active sites carrying the retired framing that were not
+in the approved four: sprint-plan line 4's **Goal** field ("validated by a
+cluster-quality gate") and BL-302 line 64's In-scope bullet ("An early validation gate
+on cluster quality"). Did NOT fold them in. That is the third widening opportunity this
+session and S55 #123 governs all of them the same way, quietly extending an approved
+diff is how a diff stops matching what was reviewed. Presented with exact replacement
+text so approval costs one word.
 
-Added a "Consulted and deliberately not used" subsection with reasons (Hearst's human-subject studies beg the contested question; Clusty history is market narrative; disparity filter and Amsler are post-decision techniques; three sources the gathering agent flagged unverified). Without it a later reader re-finds them and assumes they were missed.
+Verified the remaining matches are legitimate records, not stale actives: the BL's
+amendment blockquote (lines 148-151), the research filename in a link, and the S56
+handoff now in done/. Those stay.
 
-Closed with the two gaps as findings: no like-for-like documentation link-density benchmark exists, so the file does not claim 26.5% is anomalous; and no study exists on clusters helping LLM agents navigate, which is why §7 option D is an experiment rather than a literature question.
+<------------Start User / 23:52------------>
 
-Gate 4 mechanical checks run: 8 section headings present and ordered, zero em dashes, no dangling "to follow" drafting markers left behind, and all 9 internal file links resolve on disk. The prose-level consistency pass (cross-section contradictions, particularly the §2-weighted vs §3-unweighted numbers) is what remains, and that is the user's review to lead.
-
-<------------Start Thinking / 23:50------------>
-
-"document in detail, draft a handoff if necessary. then wrapup" , three instructions: (1) document in detail, (2) handoff if needed, (3) wrap up.
-
-**Is a handoff necessary?** Yes, clearly, and the closest precedent in this repo confirms the shape: `done/2026-07-03_s52_toon-redesign-decision.md`, written when S52's assessment reopened a decision and the session deliberately deferred the direction choice. S56 is the same situation , a measurement invalidated a sprint premise, the direction is a lean rather than a decision, and the plan still describes work we have concluded should not happen as written. That is exactly the state a handoff exists for. Following that precedent's naming: `YYYY-MM-DD_sNN_topic.md`.
-
-**What the handoff must carry to be useful cold**, since the next session may be a different model or a much later date:
-- The bottom line first, Sprint 18's premise is in doubt and P2 is halted mid-flight, so nobody resumes coding from the branch name.
-- The measured facts with numbers, not prose summaries, because the numbers ARE the finding.
-- What is decided vs what is a lean. D is a lean; no DEC, no plan edit. This distinction is the thing most likely to be lost.
-- The blocking items, in order: P4 gate ambiguity (blocks any experiment design), plan edit (blocks actionability), then EXP-012 design.
-- Loose physical state: uncommitted pyproject, branch named `sprint-18/leiden-clustering` which no longer matches the likely work, research file staged.
-- Pointers, absolute enough to follow, to the research file as the full record so the handoff does not duplicate 4,447 words.
-
-Per the S52 lesson about absolute paths in handoffs consumed by another session, use repo-relative paths consistently and name the repo, since a future agent may have a different cwd.
-
-**"Document in detail" , I read as the research file plus the handoff, not a third artifact.** The research file already documents the investigation in detail; the handoff documents the STATE. Writing a third summary document would duplicate both. If they wanted something else they will say so, and I should say what I interpreted so they can correct it.
-
-**Sequence:** write handoff, then commit everything in scoped commits (pyproject + research file + handoff separately or sensibly grouped), then invoke `/dsm-wrap-up`. The wrap-up skill runs autonomously and handles MEMORY, checkpoint, feedback, push. I should NOT hand-roll wrap-up steps ahead of it; let the skill do its job, and give it a clean tree to work from where possible.
-
-One judgement call: commit before or during wrap-up? `/dsm-wrap-up` commits pending changes as part of its checklist. But the pyproject change and the research file are logically distinct units and deserve their own messages rather than one omnibus "session wrap-up" commit. So commit them properly first, per the S55 pathspec discipline, and let wrap-up handle the residue (transcript, MEMORY, checkpoint).
-
-<------------Start Output / 23:51------------>
-
-Handoff drafted and everything committed in scoped commits. Ready to invoke `/dsm-wrap-up`.
-
-**Interpretation stated so it can be corrected:** read "document in detail" as the research file (the investigation) plus the handoff (the state), not a third artifact. A separate summary document would duplicate both.
-
-Handoff `dsm-docs/handoffs/2026-07-21_s56_sprint-18-premise-halt.md`, following the `done/2026-07-03_s52_toon-redesign-decision.md` precedent, which is the closest analogue (S52 also reopened a decision and deliberately deferred direction). Written to be useful COLD, since the next session may be a different model or much later:
-- Bottom line first, do not resume coding P2 from this branch, and the branch name is now misleading.
-- Measurements as numbers, not prose, because the numbers are the finding.
-- An explicit **decided vs leaning** split. Option D is a lean; no DEC, no plan edit. That distinction is the thing most likely to be lost across a session boundary, so it got its own section.
-- Three blocking items in dependency order, with the P4 gate ambiguity first because it blocks experiment design.
-- Loose state, including the misleading branch name, the unwired `src/semantic/similarity.py`, the untriaged S55 test failure, and the stale research README.
-
-Three scoped commits, each with a pathspec, no bundling (S55 discipline held all session):
-- `da94f2c` boot (earlier)
-- `db4a4f2` `pyproject.toml` cluster extra , message records WHY it is retained despite the halt (option D's cluster arm needs it), so a future reader does not delete it as orphaned
-- `20df631` research file + README row + handoff
-
-Working tree now clean except the live transcript, which belongs to wrap-up. Invoking `/dsm-wrap-up` next; letting the skill own MEMORY, checkpoint, feedback and push rather than hand-rolling those steps ahead of it.
+"STAA commit 027a702 gets a separate merge. Let's do this now. Then explain the
+bullet ## Development Approach"
 
 <------------Start Thinking / 23:52------------>
 
-`/dsm-wrap-up` invoked, autonomous, no pausing between steps. Steps 0, 0.5, 1, 2, 2.5 are independent so batching where possible.
+Two items, sequenced. Also noting what was NOT answered: the two extra sites (Goal
+field, In-scope bullet) got no verdict. Per S50 #54 I do not silently assume and do
+not re-block; they stay unedited and I re-surface once at the end, not mid-task.
 
-**Step 0 is the substantive one this session.** S56 was unusually rich in reasoning failures and recoveries, and the failures are the valuable part , three separate instances of the same shape (plausible inference beaten by a seconds-long check), plus two wrong recommendations that were user-approved before measurement overturned them. Extracting honestly means recording the misses, not curating a highlight reel of the recoveries.
+STAA MERGE, mechanism question first. Facts I need before choosing: 027a702's parent
+is 3c63aaa, which IS master. So master is a strict ancestor of the STAA branch and
+this is a FAST-FORWARD, not a real merge. That matters for three reasons.
 
-Candidate lessons, before I trim to the notable ones:
-1. `dir()` showed `leiden_communities` and I nearly recommended "networkx already has Leiden, no new dep"; CALLING it raised NotImplementedError (dispatch stub). Listing an attribute is not evidence the capability exists.
-2. I asserted "python-igraph is a compiled C extension" as a COST against option (a), then priced it and found abi3 manylinux wheels. Do not spend an unpriced cost as an argument.
-3. Karate-club seed test returned "seeded reproducible: True" while ALSO returning 1 distinct partition across 20 different seeds and 10 unseeded runs , the test could not have failed. Controls are what make a green meaningful.
-4. Pre-registering a falsification condition before the weight sweep is what killed my own recommendation cleanly; without it I would have read flat NMI as "no strong signal either way" and kept the design.
-5. The null-model test showed my quality metric (low NMI-vs-directories) was null-indistinguishable. A metric that a randomized graph also satisfies was never measuring quality.
-6. Reading internal prior art BEFORE external search found that S49 named DSM Central as the target corpus while I had spent the session measuring GE. Cheapest possible correction, and unreachable by reasoning.
-7. The inherited-premise defect: S49 adopted GraphRAG's Leiden while rejecting its LLM extraction, but the extraction was what produced a clusterable substrate. Second instance in this project of a claim outliving its context (S55's BL-302 line 77 was the first).
-8. Base-rate disclosure: after two wrong recommendations I told the user to weigh my third accordingly, and recorded the same caveat in the research file next to the surviving option.
-9. Convention check before stamping: `/dsm-research-add` assumes five numbered sub-tables; this repo's research README has none. Checking the target file first avoided imposing a structure that does not exist.
-10. Disclosed a contradiction between my own two tables (§2 weighted vs §3 unweighted) rather than letting a careful reader find it.
-11. Scoped pathspec commits held all session; the boot rename never bundled into content commits.
+First, a fast-forward needs no checkout of master, so the dirty-transcript abort that
+fired in S54 and S56 never comes up. `git push . staa/...:master` updates the local
+ref in place. Nine dirty paths stay untouched.
 
-Trimming: 1, 2, 3 are the same family (verify rather than infer) but each has a distinct trigger, so they stay separate , collapsing them would lose the specific tells. 4 and 5 are about metric/gate validity. 6 and 7 are about inherited context. 8, 9, 10 are disclosure discipline. 11 is mechanical and already logged in S55, so I will skip it rather than re-log a lesson that is already enforced by habit.
+Second, a fast-forward authors NO content. No merge commit message, no PR title, no
+PR body. That keeps this clear of Voice-Attribution Review entirely. The PR route
+would require me to write a title and body under the user's byline, which is its own
+content gate that "let's do this now" does not clear , the bundling rule says a
+voice-attributed send is never a sub-step of an approved action sequence. So the FF
+route is both simpler and avoids a gate I would otherwise have to stop at.
 
-Scope labels: the verify-vs-infer ones are `pattern` (generalize beyond this project). The null-model/metric-validity ones are `pattern` too, arguably `ecosystem` since they bear on any DSM experiment gate. Inherited-premise is `ecosystem` , it has now recurred twice in this project and the mechanism (scope inherited across sessions) is a DSM-wide planning concern. Convention-check is `pattern`. Corpus-target drift is `project`.
+Third, and this is the one to check rather than assume: session-57 was branched off
+027a702, so the STAA commit is already an ancestor of the session branch. After the
+FF, session-57's diff against master contains only session work and the STAA commit
+does not appear twice. That is exactly what "separate merge" should produce. But I
+should VERIFY the ancestry rather than reason about it , merge-base, not inference.
+S55 #113 is the standing warning here, and the failure mode was believing a ref
+without checking it.
 
-**STAA recommendation: yes**, clearly , multi-option decision reopened three times, unfamiliar territory (community detection literature, null models), and two course corrections that may be a recurring pattern rather than one-offs.
+Open question I cannot settle by reasoning: is master protected? House convention is
+PRs (S56 used PR #14). If master is protected, the direct push is rejected and I fall
+back to a PR, which then needs the body approved. Checking with gh rather than
+guessing, and if the push is rejected I stop and surface the fork rather than
+improvising a PR body.
 
-<------------Start Output / 23:55------------>
+Order: verify ancestry, check protection, FF local master, push origin master, verify
+origin/master moved and that session-57's diff shrank to session-only. Then delete
+the now-merged staa branch local + remote, but ONLY after confirming the merge landed.
 
-Session 56 wrap-up complete through Step 8. Sprint 18 P2 halted on a measured premise failure; research file + handoff + checkpoint written; feedback pushed to Central. Direction remains a lean (option D), deliberately not converted into a DEC or a plan edit.
+DEVELOPMENT APPROACH , that is an explain request, not an edit request. "Explain the
+bullet" means say what is wrong with it and why it matters, not fix it. Answering
+only, no edit, unless asked. The substance: it carries "Build one function at a time,
+test, then next", which BL-478 names as a regression, and the ordering inversion is
+the actual point , test-first vs function-first is a different collaboration protocol,
+not a wording preference.
+
+<------------Start Thinking / 23:56------------>
+
+Merge route settled by measurement, and it went against my preferred plan. Ancestry
+confirmed both ways: master IS an ancestor of the STAA branch (FF possible), and
+027a702 IS already an ancestor of session-57, so the FF produces exactly the wanted
+shape. But protection says `enforce_admins: true` with required_pull_request_reviews
+present. Admin permissions do not exempt. So the direct FF push is blocked and a PR
+is mandatory, house convention as well as enforcement.
+
+That reintroduces the gate the FF route would have avoided: a PR needs a title and a
+body, which are the user's words. Voice-Attribution Review applies, and the bundling
+rule is explicit that "let's do this now" authorizes the SEND, not the CONTENT. So I
+stop and surface the body rather than composing and firing it. Checked
+required_status_checks: null, so no CI gate will hold the merge once created.
+
+I can still deliver the second ask in the same turn, so the stop costs nothing. Doing
+that rather than sending a bare "blocked, approve this body please".
+
+DEVELOPMENT APPROACH, reading it verbatim before explaining it, since I was about to
+explain from the summary I already had. Good thing I read: the sharpest finding is
+NOT the template contradiction I had queued up. The section contradicts ITSELF.
+
+  - TDD: Write tests before implementation      <- test-first
+  - Incremental development: Build one function at a time, test, then next   <- test-after
+
+Bullet 1 and bullet 2 specify opposite orderings, and that was true BEFORE align ran
+and would be true with no template at all. BL-478 is what makes it visible, not what
+makes it wrong. That is a better explanation than "it drifted from the template",
+because it does not depend on the user accepting the template's authority.
+
+Also worth naming: bullet 2 and the Development Protocol section above it ("Build
+modules incrementally, one module at a time, tests alongside", "Run pytest after each
+module") both use MODULE as the unit. The new template defines the unit as a bite,
+the smallest increment the user can verify, explicitly one testable function for
+code. Module-sized steps are coarser than bite-sized ones, so the project text is not
+just differently ordered, it authorizes larger unreviewed jumps than the protocol now
+allows. That is the consequence worth stating, since the user asked what is wrong
+with it, not merely where it diverges.
+
+Explaining only. No edit proposed unless asked.
+
+<------------Start Output / 23:58------------>
+
+STAA merge: verified but NOT executed, stopped at the content gate. Fast-forward is
+mechanically available (master is a strict ancestor of 027a702, and 027a702 is already
+an ancestor of session-57, so the FF yields exactly the requested separation with no
+duplicate commit and no checkout of master). Blocked by `enforce_admins: true` plus
+required PR reviews, which admin rights do not bypass, so a PR is mandatory. PR title
+and body surfaced for approval per Voice-Attribution Review, since "let's do this now"
+authorizes the send and not the wording. No required status checks, so nothing will
+hold the merge once created.
+
+Development Approach explained. Read it verbatim first, which changed the answer: the
+strongest point is that the section contradicts ITSELF (bullet 1 test-first vs bullet 2
+test-after), independent of any template, and that both it and the Development Protocol
+above it use MODULE as the unit where the protocol now specifies a bite. Explanation
+only, no edit made or proposed.
+
+Still unanswered and not re-blocked: the two extra retired-framing sites.
+
+<------------Start User / 00:03------------>
+
+"let's fix this"
+
+<------------Start Thinking / 00:03------------>
+
+Compressed reply, ambiguous referent. Running the convergence test (S56 #143) before
+deciding whether to ask.
+
+Candidate readings of "this": (a) the Development Approach section I just explained,
+(b) that section PLUS Development Protocol, since I described them as one defect
+spanning two locations, (c) the STAA PR. Rule out (c) immediately , "fix" does not fit
+a body-approval request, and I ended the turn with "say the word if you want it
+edited", so "let's fix this" lands on the thing I offered to edit.
+
+(a) and (b) do NOT converge on the same action, so the convergence test fails and I
+cannot just pick. But re-blocking on "which one?" is also wrong, the user is three
+consecutive approvals into a working rhythm and I explicitly invited this instruction.
+
+Resolution, the same split I have used all session: apply what is directly authorized
+(Development Approach, the section they named in the previous turn and the one I
+offered to edit), and PROPOSE the adjacent one with exact text rather than folding it
+in. Development Protocol was never the section they asked about, it only entered
+because my explanation pulled it in. Editing it on "let's fix this" would be the
+fourth widening opportunity this session and S55 #123 governs it identically. Stating
+my read explicitly so a wrong split costs one word to correct.
+
+HOW to fix Development Approach. Two options.
+
+Option 1, reword bullet 2 to test-first. Preserves the section shape but leaves both
+bullets duplicating the alignment block, which is exactly what align warning #2
+flagged. Re-drift becomes possible again the moment the template moves.
+
+Option 2, delete bullets 1 and 2 entirely, keep bullet 3. The template already states
+test-first and the bite cadence CORRECTLY, so the project copy adds no information,
+costs context budget, and is the mechanism by which this contradiction appeared in the
+first place. A duplicated rule is a rule that can drift; a referenced rule cannot.
+
+Choosing option 2. Deletion is the more aggressive edit so it deserves the argument
+stated plainly rather than done quietly: I am removing the project's own words, and
+the justification is that the identical guidance now lives 40 lines above in a
+machine-maintained block. Bullet 3 (blog as deliverable) is genuinely
+project-specific, no DSM template carries it, so it stays and the section survives.
+
+Leaves a one-bullet section, which looks thin. Accepting that rather than padding it,
+a short honest section beats a long redundant one.
+
+After the edit, verify the file has no remaining "one function at a time" or "test,
+then next" phrasing outside the Development Protocol section I am deliberately not
+touching, so my report about what is left is accurate rather than assumed.
+
+<------------Start Output / 00:06------------>
+
+Development Approach fixed by deletion, not rewording. Bullets 1 and 2 removed (the
+self-contradicting pair), bullet 3 kept, and a two-line pointer added saying test-first
+and the bite cadence live once in the managed block and are deliberately not restated.
+Deletion chosen over rewording because a duplicated rule is a rule that can drift and
+that duplication is how the contradiction arose; a referenced rule cannot drift.
+
+Verified rather than assumed: grepped the whole file for the retired phrasings. Two
+matches remain, both at lines 191-192 in Development Protocol, which is the section I
+deliberately did not touch. Reported, not folded in, with exact replacement text so it
+costs one word. That is the fourth widening opportunity this session handled the same
+way.
+
+Also still open: the STAA PR body (approval pending) and the two retired-framing sites
+in the plan files.
+
+<------------Start User / 00:09------------>
+
+"resolve all pending"
+
+<------------Start Thinking / 00:09------------>
+
+Clears the enumerated three. Unambiguous because I had just listed them as a numbered
+set, so "all pending" has a definite referent rather than an open scope. Restating the
+set to be sure I do not silently add a fourth: (1) Development Protocol two-liner,
+(2) STAA PR body + create + merge, (3) the two retired-framing sites in the plan files.
+Nothing else joins that list on this instruction.
+
+Item 2 carries the Voice-Attribution question and it is now satisfied, but only
+because I surfaced the EXACT body last turn and it was item 2 of an enumerated set the
+user approved. That is approval of specific content, not a generic go, which is the
+distinction the rule turns on.
+
+Footer decision, and I want to get this right rather than default blindly. The user's
+global rule is "no co-author lines in commits". A Claude Code footer on a PR body is
+adjacent but not the same thing, and I said explicitly last turn that I was leaving the
+decision to them with the footer present unless they asked otherwise. They did not ask.
+So the stated default stands and the footer goes in. If I had NOT flagged it, adding it
+now would be slipping unapproved content into a voice-attributed send.
+
+ORDERING, and there is one real dependency to respect. The two file edits touch the
+working tree on session-57. The PR merges the staa branch into master. Those are
+independent, BUT after the merge lands, master moves, and I want to verify that
+session-57's diff against master shrinks to session-only work. That verification is
+cleaner if I know exactly what is in the working tree first. So: edits, then PR, then
+verify both at once.
+
+The FF claim needs re-verification after the merge rather than before. I confirmed
+ancestry earlier, but `gh pr merge --merge` creates a MERGE COMMIT even on a
+fast-forwardable branch, which means master will get a merge commit rather than
+literally fast-forwarding. That does not change the outcome that matters (027a702
+lands on master, session-57 keeps it as an ancestor, no duplicate), but I should not
+claim "fast-forwarded" afterwards if what actually happened was a merge commit. Check
+what master looks like after, and describe what happened rather than what I predicted.
+S56 #128's shape: the plan is not the result.
+
+Also: --delete-branch removes the staa branch remote and local. Safe here because its
+one commit will be on master. Verifying that before deleting, not after.
+
+<------------Start Output / 00:18------------>
+
+All three pending items resolved.
+
+(1) Development Protocol: two module-cadence bullets collapsed to one bite-cadence line.
+(2) The two retired-framing sites fixed (sprint-plan Goal, BL-302 In-scope). Swept all
+three files afterwards, the only remaining matches are the research FILENAME inside a
+link and the preserved amendment blockquote, both legitimate records.
+(3) STAA merged via PR #15.
+
+On the PR: did NOT merge on a pending signal. Two checks were pending at create time,
+waited for both (`Validate cross-references` 15s, `GitGuardian` 32s), merged only after
+green.
+
+Correcting my own prediction rather than restating it: I called this a fast-forward,
+and `gh pr merge --merge` created a MERGE COMMIT (36626f1) as it always does. The
+outcome I actually cared about held , 027a702 is on origin/master, verified with
+merge-base, not inferred , but "fast-forwarded" would have been the wrong word for what
+happened on master.
+
+Caught a consequence I had not planned for: after the merge, session-57 was BEHIND
+origin/master, and local master was stale at 3c63aaa. Both fixed. session-57
+fast-forwarded 027a702..36626f1 with the working tree untouched, verified by re-running
+git status and confirming all nine paths survived intact. That FF was safe only because
+session-57 had no commits of its own; had it carried any, this would have been a real
+merge with a dirty tree and I would have stopped instead.
+
+Nothing committed this session yet, by design , nine paths staged/dirty, surfaced for a
+commit decision rather than bundled.
+
+<------------Start User / 00:22------------>
+
+"commit now so it is organized. Split is cleaner. Then let's address the the Sprint 18
+direction decision. What are the options?"
+
+<------------Start Thinking / 00:22------------>
+
+Two things. Commit with the three-way split I proposed, then present the direction
+options. The second is an ASK-WHAT-THEY-ARE question, not a decide-it question, so the
+output is an option presentation, not a recommendation-and-go. Keeping that boundary,
+S53 #85's assess-vs-produce shape.
+
+COMMIT MECHANICS. Using explicit pathspec commits, `git commit -- <paths>`, not `git
+add` then bare commit. This is S55 #125: the checkpoint/handoff renames sat staged
+across four commits in S55 and entered none of them precisely because the pathspec form
+was used everywhere else. Here the renames are ALREADY staged from /dsm-go Step 3/3.5,
+so the boot commit must name them explicitly or they will keep floating.
+
+Verify before assuming: last-align-report.md and last-align.txt show as ` M` in git
+status, which means they are TRACKED, even though the /dsm-align spec calls them
+gitignored. Spec says one thing, filesystem says another, and the filesystem wins. Check
+.gitignore rather than trusting either. If tracked, they belong in the align commit.
+
+Live transcript held back deliberately, it belongs to the wrap-up commit. S56 #145 is
+the precedent and it also warns that the residual risk is the transcript bundling into a
+later content commit, with pathspec commits all session as the mitigation. That
+mitigation is exactly what I am doing, so the risk is closed rather than merely noted.
+
+Three commits: boot (2 renames + archived S56 transcript), align (CLAUDE.md + 2 markers
++ inbox entry), P4 (2 plan files). CLAUDE.md carries BOTH the template regeneration and
+the Development Approach/Protocol cleanup. Those are one causal unit , the cleanup exists
+because the regeneration exposed the contradiction , so one commit, and the message
+should say so rather than pretending it is only a template sync.
+
+No co-author lines, per the user's global rule.
+
+THE OPTIONS. They asked what they are, so accuracy of the SET matters more than my
+preference. Sourcing from research §7 rather than from memory of it, and I should carry
+forward what has CHANGED since S56 wrote them, because presenting a five-week-old option
+set as current would be the inherited-premise failure this whole session has been about.
+
+Two things have changed. First, §8.9.2 now exists and gates option D's fan-out shape
+explicitly, which did not exist when D was written or when it became the lean. Second,
+P4 itself changed an hour ago, and under D the gate is superseded rather than applied,
+which alters what D actually costs to run.
+
+Not re-recommending. S56 #137 told the user to weigh the agent's third recommendation
+against a bad base rate, and they answered by asking for the options rather than a
+pick. Honoring that. I will lay out the four, state what changed, and stop.
+
+<------------Start Output / 00:29------------>
+
+Three commits landed, working tree now carries only the live transcript, which is the
+intended end state.
+
+  034baf1  S57 boot: consume S56 checkpoint + handoff, archive S56 transcript
+  9799b4e  /dsm-align v1.18.0 -> v1.19.0: regenerate block, drop redundant local copies
+  4f3c607  BL-302 P2: resolve the P4 gate ambiguity to a null-controlled degeneracy floor
+
+All three used `git commit -- <pathspec>`, never `git add` plus a bare commit. That is
+what kept the staged checkpoint/handoff renames from floating across commits the way
+they did in S55, and what keeps the live transcript out of a content commit. Verified
+the marker files were TRACKED here before committing them, since the /dsm-align spec
+calls them gitignored and in this repo they are not, filesystem over spec.
+
+Commit 2 deliberately bundles the template regeneration with the CLAUDE.md cleanup,
+because the cleanup only exists as a consequence of the regeneration exposing the
+contradiction. Said so in the message rather than presenting it as a pure template sync.
+
+For the options answer I read DSM_0.2 §8.9.2 directly rather than working from the
+CHANGELOG summary I had. Worth it, the section is more specific than the summary: the
+trigger is fan-out specifically, it carries an explicit over-firing guard, and clause 3
+says a REPEAT fan-out in the same session re-fires the gate rather than riding the first
+acceptance. That last clause is what actually bites option D, which is a multi-arm
+design, not a single run.
+
+Presenting the four options with what has changed since S56 wrote them. Not
+re-recommending, they asked what the options are, and S56 #137 already put the agent's
+base rate on this decision line on the record.
+
+<------------Start User / 00:34------------>
+
+"what would you recommend and why?"
+
+<------------Start Thinking / 00:34------------>
+
+Direct request for a recommendation. Declining to give one would be false modesty
+dressed as caution , the base rate is a reason to SHOW MY WORK and state the caveat,
+not a reason to withhold. BL-385 §8.2.1 applies: a recommendation-style answer must
+surface the strongest COUNTER-evidence with sources checked, not just the supporting
+case.
+
+Reasoning toward a view before I write it.
+
+The case for A (centrality) looked strong on first pass, and I want to lay it out
+before I try to break it. Four supports. (1) Vision alignment: the Intrinsic-ToC
+vision's connectivity vocabulary is hubs/orphans/hotspots, and clustering is not in it,
+it arrived via S49's GraphRAG adoption whose premise is now refuted. (2) External
+convergence: Aider chose personalized PageRank on the same problem shape, and per S56
+#138 that convergence is evidence because my own read of the vision vocabulary was
+recorded BEFORE the agent reported. (3) Cost: networkx already ships pagerank and hits,
+graph already built, no dependency, no DEC-009 tension. (4) Sparsity behaviour, and
+this is the one I find most persuasive: centrality DEGRADES GRACEFULLY on a sparse
+graph, clustering does not. Ranking the connected 25% by centrality still yields a
+usable hub list. Clustering the same 25% yields groups 2.8% over null.
+
+Now try to break it. And there is a serious problem I nearly wrote past.
+
+BL-302 P2's own Motivation section says: "The current summary answers 'what is big' and
+'what is central'." If Phase 1 ALREADY emits hub documents and hotspots, then option A
+is not new capability, it is swapping a count-based hub list for a PageRank-ranked one.
+That would gut the sprint's experiment-required justification, which rests on "Sprint 18
+adds new user-facing capability", and it would make A a refinement rather than a
+direction.
+
+I am NOT going to resolve that by reasoning about it. This project has reversed
+conclusions repeatedly on exactly this move , S55 #115 (prefer the seconds-long
+empirical check), S56 #128 (dir() listing is not capability), S56 #132 (read the
+internal prior art). The question "what does --knowledge-summary already emit" is
+answerable by reading the source in about a minute. Reading knowledge_summary.py before
+I recommend anything.
+
+If Phase 1 already emits centrality-shaped output, A collapses to a refinement and the
+recommendation has to change. If it emits something cruder (raw reference counts, say),
+A stands as a real upgrade. I genuinely do not know which, and the answer changes the
+recommendation, so it gets checked first.
+
+Also want to check what the existing hub/hotspot computation actually IS, not just that
+it exists, because "hub" computed as in-degree is a different claim from "hub" computed
+as PageRank, and the gap between them is exactly what option A would be buying.
+
+<------------Start Thinking / 00:38------------>
+
+Read the source. `_hub_rows` ranks files by raw aggregated incoming REFERENCES count,
+plain in-degree. Hotspots likewise raw counts with a threshold. So Phase 1 DOES already
+ship hub/hotspot/orphan output, and option A is a refinement of an existing surface, not
+a new section. Good thing I checked, I was about to recommend A on a "closer to the
+vision vocabulary" argument without noticing the vocabulary is already implemented.
+
+But the check did something better than correct A's status. It exposed the thing I
+think is actually true and had not seen.
+
+Degree versus PageRank differ through RECURSIVE structure , being referenced by things
+that are themselves referenced. That requires paths. This graph has 118 REFERENCES
+edges over 2,445 sections. There is almost no path structure for PageRank to exploit,
+so PageRank should land very close to the degree ranking already shipped.
+
+Which means the SAME sparsity that gives clustering only 2.8% over null also flattens
+the difference between degree and PageRank. Both A and C are attempts to extract more
+signal from a substrate that does not contain it. And that propagates to D: if both
+treatment arms are weak by construction, the A/B is underpowered before it runs and
+most likely returns "no significant difference" , at EXP-011's ~644K tokens and with
+§8.9.2 re-firing per fan-out. Not theatre in S56 #141's sense (the outcome WOULD couple
+to the decision) but close: an experiment whose arms cannot separate.
+
+So the binding constraint is DENSITY, not algorithm choice. Only B attacks it.
+
+Checked the sequencing claim rather than repeating research §7's phrasing. BL-GE-001's
+Dependencies name BL-302 as "graph infrastructure", which Phase 1 already shipped. So
+BL-GE-001 does NOT depend on Phase 2, while Phase 2 needs exactly the used-in/defined-in
+edges BL-GE-001 would produce. There is no circularity, the order is simply inverted,
+and inverting it back is the fix. That is a stronger claim than research §7 made, and it
+is grounded in the file rather than inferred.
+
+Recommendation: re-sequence. BL-GE-001 ahead of BL-302 Phase 2. Close Phase 2 as
+blocked-on-substrate, not failed.
+
+Now the honest part, and it is load-bearing. My key supporting claim , PageRank will
+land close to degree on this graph , is an INFERENCE. I have not run it. This project
+has reversed my inferences about this exact graph twice by cheap measurement, and S55
+#115 and S56 #128 are both on record. So the argument that weakens A, and by extension
+C and D, is my weakest link, and it is measurable in minutes.
+
+Pre-registering the falsification condition BEFORE offering to run it, per S56 #130,
+because a condition written after seeing the output is one my recommendation passes.
+If PageRank materially reorders the top-10 hub list against the shipped degree ranking,
+the "sparsity flattens everything" argument weakens, A becomes a real upgrade rather
+than a cosmetic one, and my recommendation should be reconsidered. Writing the threshold
+down now, not after.
+
+Stating the base rate again, third recommendation on this line, two prior overturned.
+Not as ritual , this time I can name exactly which claim is most likely to be the one
+that breaks.
+
+<------------Start Output / 00:42------------>
+
+Recommendation given: re-sequence BL-GE-001 ahead of BL-302 Phase 2, close Phase 2 as
+blocked-on-substrate rather than failed.
+
+The reasoning changed mid-answer because of one source read. I was drafting a
+recommendation for A (centrality) on vision-alignment and external-convergence grounds,
+then read `knowledge_summary.py` and found `_hub_rows` already ranks by raw incoming
+reference count. Phase 1 ships hubs, hotspots and orphans today, so A is a refinement of
+an existing surface, not new capability.
+
+That correction produced the actual argument: degree and PageRank diverge through
+recursive path structure, and at 118 edges over 2,445 sections there is almost none, so
+the sparsity that holds clustering to 2.8% over null also flattens A's upgrade and
+leaves D's two treatment arms too weak to separate. Density is the binding constraint;
+only B attacks it.
+
+Verified the sequencing rather than repeating §7: BL-GE-001's Dependencies name BL-302
+as "graph infrastructure", already shipped in Phase 1, so BL-GE-001 does not depend on
+Phase 2 and the order is invertible with no circularity.
+
+Surfaced five counter-arguments per BL-385 §8.2.1, and named my own weakest link rather
+than leaving it for the user to find: the PageRank-flattening claim is unmeasured.
+Pre-registered the falsification threshold before offering to run it.
+
+<------------Start User / 00:47------------>
+
+"run this recommendation"
+
+<------------Start Thinking / 00:47------------>
+
+Ambiguous, and worth pausing on rather than grabbing the nearer reading.
+
+(a) Run the CHECK I just offered. My final line was literally "Want me to run it?", and
+"run" collocates with a measurement.
+(b) EXECUTE the recommendation, the BL-GE-001 re-sequence. "This recommendation" points
+at the recommendation, and the recommendation is the re-sequence, not the check.
+
+Convergence test per S56 #143. At first they look divergent, (a) means run PageRank,
+(b) means edit the epoch plan. But they are not divergent, because under (b) the check
+is a PRECONDITION I pre-registered myself, with a threshold that can kill the
+recommendation. Executing a re-plan while skipping the falsification test I wrote one
+turn earlier would be the precise failure S56 #142 describes, writing a standard and
+then not submitting to it. So under BOTH readings the correct next action is identical:
+run the check first.
+
+That is the convergence. Act on it, state the read, do not spend a turn on "which one?".
+If it was (b), the check is step one and I continue into the re-plan after reporting.
+If it was (a), I stop after reporting.
+
+DESIGN OF THE CHECK, and this needs care or it will be the third inference-shaped
+mistake on this graph.
+
+Fairness is the whole game. `_hub_rows` aggregates incoming REFERENCES over the SECTIONS
+a file CONTAINS, then ranks files. So the comparison must be file-level on both sides, or
+I am comparing a file ranking against a section ranking and the reordering would be an
+artifact of granularity rather than of the algorithm. Build a file-to-file projection by
+lifting each section-level REFERENCES edge to the files containing its endpoints, then
+run pagerank on that.
+
+Direction matters too. Hubs here are referenced-BY-many, so `_hub_rows` counts in-edges.
+PageRank flows importance ALONG edges to the target, so a reference edge u->v raises v.
+Same orientation. Good, no inversion needed, but I should confirm on the data rather
+than assume the edge direction convention in the builder.
+
+Corpus: run BOTH GE and DSM Central. S56 #132 is explicit that the S49 study named
+Central as the target corpus while most of S56's measurement was done on GE, and that
+the discrepancy was only caught on re-reading. Running one corpus would repeat that
+error. Central is also the denser of the two (1,116 edges vs 118), so if the flattening
+claim fails anywhere it fails there, which makes Central the stronger test of my own
+position.
+
+Threshold, restated before I look at output, unchanged from what I wrote: material
+reordering of the top 10 = 3+ positions changed OR any new entrant. Anything less and
+the flattening claim stands.
+
+One honest risk to name now: I am running a test designed to falsify my own
+recommendation, and I chose the threshold. If the result lands just under it I must not
+narrate it as a clean win. Recording that here so the transcript shows the caveat was
+anticipated, not retrofitted.
+
+<------------Start Thinking / 00:58------------>
+
+The check killed my claim. Both corpora exceed the pre-registered threshold. GE: 9/10
+positions changed, 0 new entrants. Central: 5/10 changed, 2 new entrants. Threshold was
+"3+ positions changed OR any new entrant". Both clear it. The flattening claim is
+WEAKENED and I say exactly that, no softening. Third recommendation on this line, third
+key claim overturned by measurement. That is a pattern now, not an incident.
+
+Caught a defect in MY OWN output before reporting it. The script printed "(degree refs:
+0)" for the two Central entrants, which reads as "these files have no references at all".
+False. `cnt` was built only from the top-10 rows, so `cnt.get(f,0)` returns 0 for any
+file outside it, a dictionary miss and not a measurement. Re-queried the full ranking:
+CLAUDE.md 29 refs at rank 12, DSM_1.0.C_Practices 25 at rank 15, against a 10th-place bar
+of 34. Near-miss files promoted a few places, not invisible files vaulting from nowhere.
+Reporting this as my error rather than quietly substituting corrected numbers, because
+the wrong version overstated the result IN MY OWN FAVOUR by making the reordering look
+more dramatic than it is.
+
+What it does to the recommendation. Three supports carried it.
+1. Clustering at 2.8% over null on 25% coverage. UNTOUCHED, measured, null-controlled,
+   from S56, independent of anything I claimed today. Strongest leg.
+2. PageRank collapses to degree, so A is cosmetic. REFUTED on both corpora.
+3. Therefore D's arms cannot separate. PARTIALLY REFUTED, the centrality arm is more
+   substantive than I said.
+
+So the re-sequence is not dead, its strongest leg is untouched, but the argument I used
+to dismiss A has failed and D looks better than I argued. Confidence drops, and this is
+now much closer to a real A-versus-re-sequence choice than I presented an hour ago.
+
+Resisting one temptation explicitly: r = 0.92 and the hub SET barely moves (0 new
+entrants on GE, 8/10 shared on Central). I could use that to argue reordering-without-
+set-change is not really material and rescue my position. That is the post-hoc
+renegotiation S56 #130 exists to prevent, and I wrote this threshold myself precisely so
+I could not do it. Reporting r and set-stability as CONTEXT, labelled as not escaping
+the verdict.
+
+And a point against my own earlier argument: whether a reshuffled-but-same-set hub list
+actually helps a consuming agent is exactly what option D would answer.
+
+Reproducibility: ran inline via heredoc because the cross-repo hook blocked the
+scratchpad path, correctly, it is outside the repo and unconfirmed this session.
+Offering to persist the script rather than leaving a result nobody can re-run.
+
+<------------Start Output / 01:02------------>
+
+Pre-registered check RUN and my claim FAILED, on both corpora. GE 9/10 positions
+changed, Central 5/10 with 2 new entrants, against a threshold of 3+ or any entrant.
+Reported as a refutation, not softened.
+
+Corrected an error in my own output before presenting it: the "(degree refs: 0)"
+annotation on the two Central entrants was a dictionary miss, not a measurement. True
+values 29 refs at rank 12 and 25 at rank 15, against a 10th-place bar of 34. The wrong
+version had overstated the reordering in my favour.
+
+Recommendation revised rather than withdrawn: leg 1 (clustering at 2.8% over null) is
+untouched and remains the strongest evidence; leg 2 is refuted; leg 3 partially. Net,
+option A is a genuine cheap upgrade rather than cosmetic, D's centrality arm is more
+substantive than I argued, and confidence in the re-sequence drops from recommended to
+narrowly preferred.
+
+Declined to rescue the position with r = 0.92 and set-stability; reported both as
+context explicitly labelled as not escaping the verdict.
+
+<------------Start User / 01:06------------>
+
+"I'm not sure how to proceed. Let's analyze what we want to aim for and based on that
+decide the next steps"
+
+<------------Start Thinking / 01:06------------>
+
+"I am not sure" is a hedge and S56 #139 says hedges are scope limits to honour
+literally. It is also, read plainly, evidence against my recommendation , the third one
+on this line, whose key claim I just watched fail. The user is not asking me to
+re-argue it. They are asking to go UP a level: establish the aim, then derive next
+steps from the aim rather than from the option space.
+
+That is a better move than anything I proposed, and I should say so rather than treat it
+as a delay. Every option A-D is a means. I have spent this whole thread comparing means
+against each other, and the S56 research did too. Nobody in this chain has re-derived
+the END since S49 introduced clustering, and S49's premise is the one already shown to
+be defective. Comparing means whose shared end is unexamined is exactly how BL-302 line
+77 and the GraphRAG adoption both went wrong. So: re-derive the aim from sources.
+
+Method, and it matters that I do not do this from memory. S56 #132 is explicit that
+internal prior art beat external research and that one file read relocated the whole
+experiment's target. The aim documents are on disk: the Intrinsic-ToC vision research
+file, the epoch-5 plan, DEC-009, the README, and BL-302's own Motivation. Reading them
+rather than reconstructing them, because my reconstructions are what have been failing
+all session.
+
+What I specifically want to extract, decided BEFORE reading so I am not just harvesting
+support for the re-sequence:
+  - What is the artifact FOR, stated in the vision's own words, and who consumes it?
+  - What does the vision say success looks like? Is there a stated criterion at all, or
+    has the whole line been running without one? That would explain a lot, including how
+    a gate as ambiguous as P4 survived.
+  - Does the vision ever ask for clustering, or only for the hubs/orphans/hotspots
+    vocabulary I noted earlier? I recorded that read before the adversarial agent
+    reported in S56, so it is on record and testable rather than convenient.
+  - What layer is the current work actually in, and does the layer ABOVE it depend on
+    this layer being finished?
+
+Then derive next steps from the aim. Expect the answer to be a criterion, not an option
+letter. If the aim turns out to have no measurable success criterion, then the correct
+next step is to write one, and every option A-D is premature until it exists , that
+would reframe the whole decision and would be worth more than picking a letter.
+
+Not pre-committing to that outcome. Reading first.
+
+<------------Start Thinking / 01:12------------>
+
+Read the vision doc §1-4 and §9, the epoch-5 success criteria, and verified
+`generate_knowledge_summary` against the vision's own condensation table. Four findings,
+and together they reframe the decision more than any comparison of A-D could.
+
+FINDING 1, the aim in the vision's own words. §1: an agent dropped into a repository
+needs to know "what is here, what is important, how things connect, and where to look
+for specific facts". §2: a README for LLMs, a structured index for orientation and
+navigation. That is the end. Everything since is means.
+
+FINDING 2, and this is the decisive one. §4 Layer 1 lists exactly what it maps: project
+structure, hub documents, cross-reference hotspots, orphan files. §2 defines
+Connectivity as "which files are hubs, which are orphans, which sections are
+load-bearing". CLUSTERING APPEARS NOWHERE. Not in the layer spec, not in the
+connectivity vocabulary, not in the condensation budget table.
+
+I recorded this read in S56 BEFORE the adversarial agent reported, per S56 #138, so it
+is a timestamped prior rather than a convenient rediscovery. But I under-used it then. I
+treated it as an argument for option A. It is much stronger than that: it means Sprint
+18 is OPTIONAL scope against the vision, not a completion of it. Clusters entered via
+S49's GraphRAG adoption, whose premise is already refuted.
+
+FINDING 3, verified not assumed. `generate_knowledge_summary` calls generate_hierarchy,
+generate_hub_documents, generate_hotspots, generate_orphans. All four vision components,
+plus the header. So Layer 1 AS SPECIFIED IS COMPLETE and has been since Sprint 16.
+Phase 2 is a fifth component nobody specified.
+
+FINDING 4, the aim's own success criterion, which I did not expect to find. §4 Layer 2:
+"The quality of Layer 2 depends entirely on how well Layer 1 is structured." So success
+is not a property of Layer 1's contents at all, it is Layer 2 navigation performance.
+That criterion EXISTS, it is stated in the vision, and it has already been measured once
+by EXP-011. Which means the project has a stated aim-level metric and Sprint 18 has been
+arguing about a component-level one.
+
+And vision §9 Q4 asks, unanswered: the graph indexes markdown only, when should it
+expand to Python source and configs, and this GATES LAYER 4. That is the density
+question, raised by the vision itself, a year before S56 measured 25% coverage. The
+sparsity is not a defect discovered in S56, it is a known consequence of an unanswered
+scoping question.
+
+So the aim points at coverage and cross-repo, not at clustering. Option B is the closest
+of the four, but its real justification is not "rescue clustering", it is "answer vision
+§9 Q4", which is a better reason and a different scope.
+
+DELIVERY. The user asked to analyse the aim and then decide next steps, so aim analysis
+is primary and grounded in quotes with citations, not paraphrase. I will derive next-step
+candidates FROM the aim rather than re-ranking A-D, and I will keep the recommendation
+light. Three failed key claims in a row means my job here is to lay out what the
+documents say and let them choose, not to produce a fourth confident pick. Marking
+clearly which statements are quoted from disk and which are my inference, since that
+boundary is exactly where I have been failing.
+
+<------------Start Output / 01:16------------>
+
+Aim re-derived from source rather than from the option space. Four findings.
+
+1. The aim (vision §1-2): an agent lands in a repo and learns what is here, what is
+   important, how things connect, where to look. A README for LLMs.
+2. Clustering appears NOWHERE in the vision , not in Layer 1's mapped components, not in
+   the connectivity vocabulary, not in the condensation budget. It entered via S49's
+   GraphRAG adoption, whose premise is already refuted. Sprint 18 is optional scope
+   against the vision, not a completion of it.
+3. Verified against code: `generate_knowledge_summary` emits all four specified
+   components. Layer 1 as specified has been COMPLETE since Sprint 16.
+4. The vision states an aim-level success criterion , "the quality of Layer 2 depends
+   entirely on how well Layer 1 is structured" , and EXP-011 already measured it. The
+   project has had a stated metric all along while Sprint 18 argued about a
+   component-level one.
+
+Also surfaced vision §9 Q4, unanswered since 2026-04: the graph indexes markdown only,
+and expanding it gates Layer 4. The 25% coverage measured in S56 is the consequence of
+that unanswered scoping question, not a newly discovered defect.
+
+Presented three aim-derived candidates rather than re-ranking A-D, with the
+recommendation kept deliberately light given three overturned claims in a row, and with
+quoted-from-disk statements marked separately from my inferences.
+
+<------------Start User / 01:20------------>
+
+"3 + 1"
+
+<------------Start Thinking / 01:20------------>
+
+Decision made, and it matches the lean I stated, which is worth noting rather than
+glossing: I should not treat agreement with my own lean as extra validation. The lean
+was light for a reason and the reason has not changed.
+
+Read: (3) close BL-302 Phase 2 as out-of-vision-scope, (1) answer vision §9 Q4, expand
+what the graph indexes, as the replacement work. Not (2) cross-repo, which stays an
+Epoch 5 criterion but is not what we pick up now.
+
+WHAT THIS ACTUALLY REQUIRES. This is a decide-vs-implement moment (S48 lesson): the
+right output is planning artifacts, not code. Nothing here is a build task yet.
+
+Closing side, three files at least:
+  - BL-302 Phase 2: Status OPEN -> resolved, with a Resolution section.
+  - epoch-5-sprint-18-plan.md: the sprint's shape changes entirely.
+  - epoch-5-plan.md: success criterion "BL-302 Phase 2 delivered" is now unsatisfiable
+    as written, exactly the S55 case where the C3 criterion had made the epoch
+    unclosable. The precedent for the fix already exists two bullets above it.
+
+Opening side:
+  - A new BL for graph expansion. Per the Actionable Work Items rule, vision §9 Q4 is a
+    QUESTION in a research file, which is INPUT, not an actionable item. So it routes
+    through formalize -> plan before any implementation. I must not skip that even
+    though the direction is now decided.
+  - BL numbering: local-origin items use BL-GE-{NNN}. BL-GE-001 exists. So BL-GE-002.
+    Verify rather than assume, S55 #121 fired on exactly this class.
+
+PRECEDENT TO READ FIRST. Phase 1.5 was closed in S53 without adoption, and this is the
+same shape: a phase that resolves by NOT shipping the thing. I should copy that closure
+form rather than invent one. Reading BL-302 Phase 1.5's resolution section before
+drafting anything. Also checking whether that closure needed a DEC , DEC-010 got an
+Amendment 2 rather than a new DEC, which suggests the analogous move here is a BL
+resolution plus possibly an amendment, NOT a new DEC. But I should check whether Sprint
+18's premise-halt is DEC-worthy on its own, since S56 explicitly wrote "no DEC" and left
+it open.
+
+Do NOT start writing. This is a Gate 1 moment: confirm the artifact set, the order, and
+the dependencies, then work one file per stop. The user's own protocol says collaborative
+definition comes before concept comes before implementation, and I have a five-artifact
+change here. Presenting the set for confirmation first.
+
+<------------Start Thinking / 01:26------------>
+
+Precedent read, and it is a clean template. Phase 1.5 closed with: a Status line naming
+what was NOT adopted plus session/date/experiment, and a `### Resolution (date, Session
+NN)` block inside a Course Correction section. I will match that form rather than invent
+one. Note its status line uses an em dash; new content I write uses commas per the
+project punctuation rule, so I match the STRUCTURE, not the punctuation.
+
+Checked whether a DEC authorises the clustering line. Only DEC-010 mentions clustering,
+and only in passing. So there is NO decision artifact to amend here, unlike Phase 1.5
+which had DEC-010 Amendment 2 as its counterpart. That is a real asymmetry with a
+consequence: the clustering direction entered through a research recommendation (S49)
+and a plan entry, never through a DEC. So closing it needs no DEC amendment, but it
+raises whether the CLOSURE itself deserves a DEC. S56 deliberately wrote "no DEC" and
+left it open. My read: the closure is a scope decision with epoch-level consequences and
+a precedent-setting rationale (vision scope beats inherited scope), which is DEC-shaped.
+Surfacing it as a question rather than deciding, since DEC-vs-no-DEC is exactly the sort
+of call the user has been making all session.
+
+Found something that supports the choice independently: epoch-5 plan Sprint 20 already
+reads "Cross-repo references materialized in Intrinsic-ToC entries". So candidate 2 is
+ALREADY PLANNED as Sprint 20. That is a point in favour of not picking it now, and I
+should report it because it means the user's "1" choice does not orphan candidate 2, it
+just leaves it where it already lives. Verified on disk rather than remembered.
+
+Two genuine forks I must NOT decide alone.
+
+FORK A, sprint numbering. Does Sprint 18 keep its number and get re-scoped to graph
+expansion, or does Sprint 18 close outright and the new work become a new sprint,
+pushing 19 and 20 down? This cascades through the epoch plan and the sprint-plan files,
+and either is defensible. Not mine to pick.
+
+FORK B, scope realism, and this one worries me. Vision §9 Q4 asks about indexing Python
+source, YAML configs, "and other file types". Expanding to Python source means a Python
+parser plus import/call extraction. That is plausibly an EPOCH, not a sprint. If I
+formalise BL-GE-002 as "answer §9 Q4" I risk writing an unbuildable BL, which is exactly
+the vision-directed-but-deliverable-scoped failure Entry 60 warns about. The right Gate 1
+move is to ask what the MINIMAL bite is. My instinct: config/YAML and cross-file links
+are far cheaper than Python AST work, and one narrow file-type expansion would test the
+density hypothesis without committing to Layer 4.
+
+Also need to state the BL-GE-001 boundary explicitly in the new BL, or the two will
+overlap. BL-GE-001 adds EDGES between concepts; graph source expansion adds NODES from
+new file types. Both raise density, by different mechanisms. Naming that boundary at
+authoring time is cheaper than untangling it later.
+
+BL-GE-002 confirmed as the next free number, only BL-GE-001 exists. Verified, not
+assumed.
+
+Stopping here and presenting Gate 1: five artifacts, two forks, one DEC question.
+
+<------------Start Output / 01:30------------>
+
+Gate 1 presented, nothing written. Read the Phase 1.5 closure precedent rather than
+inventing a form: Status line naming what was not adopted, plus a
+`### Resolution (date, Session NN)` block. Matching that structure.
+
+Three verified facts feeding the proposal:
+- No DEC authorises the clustering line (only DEC-010 mentions it, in passing), so unlike
+  Phase 1.5 there is no decision artifact to amend. Raises whether the closure itself
+  deserves a DEC, which S56 left open.
+- Sprint 20 in the epoch plan ALREADY reads "cross-repo references materialized in
+  Intrinsic-ToC entries", so candidate 2 is already planned and choosing 1 does not
+  orphan it.
+- BL-GE-002 is the next free local number.
+
+Surfaced two forks I will not decide alone: whether Sprint 18 is re-scoped or closed and
+replaced (cascades through the epoch plan), and what the minimal buildable bite of vision
+§9 Q4 is, since "index Python source" is plausibly an epoch rather than a sprint and
+formalising it whole would produce an unbuildable BL.
+
+Flagged the BL-GE-001 boundary to be stated at authoring time: that BL adds concept
+EDGES, this one adds NODES from new file types.
+
+<------------Start User / 01:34------------>
+
+"Fork A: new sprit / Fork B: good catch, your insticnt is right / draft DEC with full
+documentation"
+
+<------------Start Thinking / 01:34------------>
+
+Three answers. Reading each before acting, and noting two typos that do not create
+ambiguity: "sprit" is "sprint", "insticnt" is "instinct". Neither has a competing
+reading, so I treat them as approvals rather than querying them, same as S55's garbled
+"approve t".
+
+Fork A = new sprint. Sprint 18 closes outright rather than being re-scoped.
+
+This leaves a NUMBERING sub-question the answer does not settle. Sprint 19 (hop distance
++ EXP-001) and Sprint 20 (ecosystem) are planned but not started. If graph expansion is
+the next work, it is chronologically Sprint 19 and the other two shift down. The
+alternative, parking it at 21, contradicts the whole point of choosing it as the
+replacement, and it must precede Sprint 20 anyway because the user picked candidate 1
+over candidate 2.
+
+Checked the cost of renumbering rather than guessing at it: only sprint-17 and sprint-18
+plan FILES exist, so 19 and 20 live purely as epoch-plan sections with no artifacts.
+Renumbering is nearly free. Going with new sprint = 19, hop distance -> 20, ecosystem ->
+21, and stating it as an assumption rather than burying it, per S50 #54.
+
+Fork B = my instinct confirmed. So BL-GE-002 scopes to config/YAML and cross-file link
+extraction, and explicitly EXCLUDES Python AST work. The exclusion needs to be written
+into the BL as out-of-scope with the reason, not merely omitted, or it will creep back
+the way clustering did.
+
+DEC = draft with full documentation. That is the immediate deliverable and it reorders
+the artifact set: the DEC is the decision record the closure rests on, so it comes
+FIRST and artifacts 1-5 then cite it. Doing the DEC alone this turn, one bite per stop.
+
+Before drafting: read DEC-011, the most recent, for house structure. I have twice this
+session avoided a stamping error by checking a convention against the target instead of
+recalling it (S55 #121), and a DEC has a lot of surface, status vocabulary, numbering,
+section order, amendment convention. Reading rather than assuming.
+
+What "full documentation" has to carry, decided before I read the template so I do not
+just fill boxes:
+  - The decision itself, stated flatly.
+  - The evidence chain, and critically its PROVENANCE: which numbers are measured, which
+    are quoted from the vision, which are inference. That boundary is where I have failed
+    three times today and a DEC that blurs it would launder my errors into the record.
+  - Alternatives considered, which is genuinely A-D plus the re-sequence, with why each
+    was not chosen. Options are already recorded in the research file, so I cite rather
+    than restate.
+  - What this does NOT decide. Clustering is not refuted as a technique, it is
+    out-of-vision-scope on THIS substrate. Overstating it would be the same
+    forward-claim-outliving-its-context failure this project has hit twice.
+  - Consequences, including the epoch renumbering and the reframed success criterion.
+  - My own reliability on this line, three overturned claims. A DEC that omits that is
+    dishonest by silence given the decision partly rests on my analysis.
+
+<------------Start Output / 01:44------------>
+
+DEC-012 drafted, 1,591 words, status Proposed pending review. Structure matches DEC-011
+exactly (Context / Decision / Justification strongest-first / Counter-evidence per
+§8.2.1 / Conditions / Consequences pos-neg-neutral / References), verified by comparing
+heading lists rather than by recall.
+
+The choice that shapes the document: every justification carries a PROVENANCE tag,
+[QUOTED] / [VERIFIED IN CODE] / [MEASURED] / [SELF-REPORTED]. Three of my claims were
+overturned by measurement today, and a DEC that presented quoted vision text and my own
+inference in the same voice would launder those errors into the permanent record. Six
+justifications: five quoted or measured, one (the Layer 2 reading) explicitly marked
+interpretive.
+
+Counter-evidence section carries the PageRank result that refuted my own argument,
+including the pre-registered threshold and the numbers, and item 3 states plainly that
+the reasoning for declining option D is weakened by item 1. Item 5 records the
+three-for-three base rate as material counter-evidence rather than a footnote.
+
+Two things I decided rather than asked, both flagged in the document: sprint renumbering
+(new work becomes Sprint 19, hop-distance to 20, ecosystem to 21) with the cost checked
+first, only sprint-17 and sprint-18 plan FILES exist so 19 and 20 renumber for free; and
+Status: Proposed rather than Accepted, since "draft" is not acceptance.
+
+Verified before reporting: all six referenced paths resolve on disk, DEC-012 is a free
+number, zero em dashes.
+
+<------------Start User / 01:49------------>
+
+"Sprint renumbering: ok / Status: accept"
+
+<------------Start Thinking / 01:49------------>
+
+Two confirmations. Renumbering confirmed, so the assumption I flagged in the DEC stands
+as written and needs no edit. "Status: accept" flips DEC-012 Proposed -> Accepted.
+
+Scope of what acceptance authorises. I ended the last turn with "approve it and I'll
+take artifact 2 next", and they approved, so artifact 2 is authorised by my own framing
+rather than by inference. The CONCEPT gate for artifact 2 is therefore cleared twice
+over: the DEC is the decision, and the artifact table described the change. What remains
+is execution, so I apply it and show the diff rather than stopping again to read wording
+back. Stopping again here would be ceremony, not a gate.
+
+Still one bite per stop: artifact 2 only. Artifact 3 gets described at the end, not
+done.
+
+Header fields on acceptance: DEC-011 carries Date and Session of AUTHORING, and this DEC
+was authored and accepted in the same session on the same date, so only the Status line
+changes. Checked that rather than adding an "Accepted on" field that the house format
+does not have.
+
+ARTIFACT 2 DESIGN. Matching Phase 1.5's closure form, which I read earlier:
+  - Status line names what was NOT adopted, with session, date, and the authority, then
+    points to the Resolution.
+  - A `### Resolution (date, Session NN): <outcome>` block.
+Placement: Phase 1.5 puts its Course Correction at line 13, immediately after the header
+and BEFORE Context. Matching that, because a reader hitting a closed BL needs the
+outcome before the motivation. Phase 2 already has a "Correction to the inherited
+premise (S55)" section at line 30, so the new closure section goes ABOVE it, giving
+reverse-chronological corrections, newest first.
+
+What the Resolution must NOT do: restate the DEC. The DEC is the decision record; the BL
+should state the outcome, point at DEC-012, and say what happens to the phases. Anything
+more duplicates a document that can then drift, which is exactly the failure I fixed in
+CLAUDE.md two hours ago.
+
+One thing to get right: P1 SHIPPED. The BL must not read as though the whole phase
+produced nothing. P1 (DEFAULT_EXCLUDES) is in master and has independent value. The
+Resolution should say P1 stands, P2/P3 are cancelled, and P4 survives as reusable
+validation machinery rather than being deleted. That mirrors Phase 1.5, which recorded
+"P2 and P4 are cancelled" explicitly rather than silently dropping them.
+
+Also the Acceptance Criteria block needs a note, since criteria 3, 4 and 5 can no longer
+be met. Leaving them unmarked would leave the same unsatisfiable-criterion trap S55
+found in the epoch plan. Not rewriting them, they are a record of what was intended;
+annotating which are superseded.
+
+<------------Start Output / 01:56------------>
+
+DEC-012 accepted (Status flipped, no other header field changed, since authoring and
+acceptance share a session and date and the house format has no separate acceptance
+field).
+
+Artifact 2 applied to BL-302 Phase 2. Three changes:
+  - Status line rewritten to the Phase 1.5 form, naming what was not adopted, the
+    authority, and the phase dispositions in one line.
+  - New `## Sprint 18 Closure` section placed ABOVE the existing S55 correction, giving
+    reverse-chronological corrections, newest first, and matching Phase 1.5's placement
+    of its Course Correction before Context.
+  - Acceptance Criteria annotated rather than rewritten.
+
+Two deliberate restraints. The Resolution does NOT restate DEC-012's rationale, it points
+at it, because duplicating a decision record is how the two drift apart, the same defect I
+removed from CLAUDE.md earlier tonight. And the phase disposition table records that P1
+SHIPPED and P4 SURVIVES as machinery, so the BL cannot be misread as "the phase produced
+nothing", which would be false: DEFAULT_EXCLUDES is in master.
+
+Acceptance Criteria: annotated 3, 4 and 5 as unmet and unreachable rather than deleting
+them or leaving them silently open. Deleting destroys the record of intent; leaving them
+open reproduces the unsatisfiable-criterion trap S55 found in the epoch plan. The
+annotation names which criteria stand (1, 2, 6, 7, met by P1).
+
+Verified: 0 em dashes, DEC-012 relative link resolves from plans/, DEC-012 reads
+Accepted.
+
+<------------Start User / 02:00------------>
+
+"reconcile and proceed"
+
+<------------Start Thinking / 02:00------------>
+
+Note on mechanics: the Edit-tool append failed because the transcript's last non-empty
+line is "Accepted." and that string occurs twice, so the hook's unique-anchor rule and
+the Edit tool's uniqueness requirement are mutually unsatisfiable here. Falling back to
+the Bash heredoc path documented in CLAUDE.md, quoted form, which is correct because this
+block contains no shell expansions. Recording it rather than silently switching tools.
+
+Two instructions. Reconcile the 7-versus-9 Sprint Boundary Checklist divergence, then do
+artifact 3.
+
+Reconciliation is an AUTHORITY question, not a merge exercise, and I must not answer it
+by picking whichever list looks nicer. Three candidate authorities:
+  - .claude/CLAUDE.md project section, 7 items. Governs this repo.
+  - sprint-17 and sprint-18 plan files, 9 items each.
+  - DSM_2.0.C section 1 Template 8, the canonical template both should mirror.
+
+The third is the tiebreaker and I have not read it. S55 flagged this divergence and did
+NOT resolve it, mirroring the more recent in-repo instance and surfacing the conflict.
+Right at the time, but it leaves the authority question open. Reading Central's Template
+8 first, then comparing all three.
+
+Outcomes I hold open rather than pre-judging:
+  - 9 matches Template 8, CLAUDE.md's 7 is stale. Fix CLAUDE.md.
+  - Template 8 has 7, the plans added two. The plans are the drift.
+  - Template 8 differs from both, this repo legitimately extended it. Align on canonical
+    core plus explicitly marked local additions.
+  - The lists overlap but neither is a subset of the other, so it is not a count problem.
+
+That last one is the trap. I have said "7 vs 9" all session, inherited from S55's
+phrasing, and I have never diffed the ITEMS. Counting is not comparing. Item-level diff
+before proposing anything.
+
+Ordering dependency for artifact 3: if reconciliation changes the sprint plan's
+checklist, reconcile FIRST, then apply the closure edit, so I am not editing one file
+twice with two different intents.
+
+Care note: CLAUDE.md's DSM Alignment section is project-specific content OUTSIDE the
+align delimiters, so it is the user's content and align will never touch it. Same care as
+the Development Approach edit earlier, describe before applying.
+
+<------------Start Output / 02:12------------>
+
+Reconciliation done, and the framing everyone including me had been using was wrong.
+
+Read the canonical source first: DSM_2.0.C section 1 Template 8, lines 143-152. It is
+BYTE-IDENTICAL to the 9-item list in both sprint plans. So the plans were never the
+drift; CLAUDE.md was.
+
+But the "7 vs 9" framing, inherited from S55 and repeated by me all session, hid the
+actual defect. I diffed the ITEMS instead of counting them, and NEITHER LIST IS A SUBSET
+OF THE OTHER. CLAUDE.md was missing four canonical items (tests passing, smoke-tests
+currency, blog publication tracker, next-steps summary) AND carried two the template does
+not have (epoch plan updated, hub/portfolio notified). A pure "adopt the 9" fix would
+have silently destroyed two real local practices. Counting is not comparing, and this is
+the second time tonight that checking instead of inferring changed the answer.
+
+Resolution: canonical 9 adopted verbatim, 2 local additions kept and explicitly marked
+`**Local:**`, both lists now carry the same 11. Reconciliation notes written into both
+files so a future reader sees why 11 and not 9.
+
+Path check on the reconciled items surfaced a real gap: `dsm-docs/guides/smoke-tests.md`
+does NOT exist, so canonical item 5 has never been actionable in this repo. Reporting
+rather than creating the file, that is a separate decision.
+
+Artifact 3 applied. Status line on the sprint plan, and deliverable dispositions marked
+with a three-symbol legend rather than checked or deleted: [x] delivered, [~] cancelled
+with the phase, [-] no longer applicable. Two MUSTs were genuinely shipped (P1) and
+marking them unchecked would misrepresent the sprint as a total loss. The docs MUST is
+the interesting one, it splits: the cluster half is void, the default-exclusions half is
+still open and now carries forward to Sprint 19.
+
+Verified: Step 3.6's hard gate still passes (header matches, exactly one Sprint Boundary
+Checklist section), 11 items on both sides, and the only two em dashes in the edited
+files are pre-existing, one being the punctuation rule quoting itself.
+
+<------------Start User / 02:16------------>
+
+"let's wrap up, make sure to properly document so next session can pick it up"
+
+<------------Start Thinking / 02:16------------>
+
+Wrap-up requested, with an explicit emphasis on continuity documentation. Project
+CLAUDE.md says use /dsm-wrap-up when the user says wrap up, so that is the mechanism,
+not a hand-rolled close.
+
+Scope decision first: artifacts 4, 5 and 6 are NOT done. Do I rush them before wrapping?
+No. "Let's wrap up" ends the working phase, and three artifacts authored under time
+pressure at 02:16 is how sloppy plan documents get written. They become pending work,
+which is exactly what the handoff mechanism exists for. Saying so explicitly rather than
+letting a half-finished artifact set look like an oversight.
+
+The state to hand off is genuinely mid-transaction and that needs care: DEC-012 is
+ACCEPTED and BL-302 Phase 2 plus the sprint-18 plan are CLOSED against it, but the epoch
+plan still says Sprint 18 is the live sprint, still lists "BL-302 Phase 2 delivered" as a
+success criterion, and still numbers Sprint 19 as hop-distance. So the repo is currently
+INCONSISTENT with its own accepted decision. That is the single most important thing the
+next session must know, because reading the epoch plan alone would give the wrong picture
+entirely. Artifact 4 is therefore not merely "next", it is a consistency repair.
+
+Which feeds the pending-item form. DSM v1.19.0 shipped BL-475, causal-forward handoffs:
+each pending item states what the continuation requires and why, what it depends on,
+what order the dependencies force, and what breaks if it is skipped. That landed in the
+version I aligned to four hours ago, and /dsm-wrap-up Step 2.5 now authors pending lists
+in that form. I should make sure the pending items actually take that shape rather than
+being a bare list, since this is the first wrap-up in this repo after that requirement
+and the anti-padding clause says the form is longer by exactly the causal links the
+receiver would otherwise rebuild.
+
+Ordering constraint the next session must not get wrong: artifact 4 (epoch plan) before
+artifacts 5 and 6, because BL-GE-002 and the Sprint 19 plan both need the renumbering to
+exist first or they will reference a sprint number the epoch plan still assigns to
+hop-distance. That is a real dependency, not a preference, and it is exactly what
+causal-forward form is for.
+
+Other things the wrap-up must not lose:
+  - Option A (centrality) is unresolved-not-rejected, with a measured result behind it.
+  - The PageRank check was run inline and is NOT saved anywhere; the user's recorded
+    preference is that experiments be reproducible scripts. Either persist it or record
+    that it was not persisted.
+  - `dsm-docs/guides/smoke-tests.md` does not exist, so canonical checklist item 5 is
+    unactionable.
+  - Sprint boundary checklist is now 11 items and Sprint 18 is closing, so the boundary
+    should actually be run or explicitly deferred.
+  - Three overturned recommendations, which belongs in reasoning lessons.
+
+Invoking /dsm-wrap-up now and letting it drive; I supply the content it asks for.
