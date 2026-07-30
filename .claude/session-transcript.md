@@ -1651,3 +1651,45 @@ Other things the wrap-up must not lose:
   - Three overturned recommendations, which belongs in reasoning lessons.
 
 Invoking /dsm-wrap-up now and letting it drive; I supply the content it asks for.
+
+<------------Start Output / 01:52------------>
+
+/dsm-wrap-up complete except the merge, which is deliberately held.
+
+Steps run: 0 (12 lessons + compact mirror regenerated via the canonical §8.1 transform,
+92/92 entries, both sanity checks pass), 0.5 (3 cross-repo targets pre-confirmed), 2
+(MEMORY rewritten, 96 lines), 2.5 (checkpoint), 5 (handoff), 6 (4 backlog proposals
+pushed to Central, source moved to done/), 9 (two commits, pushed), 9.5 (CI green), 12
+(marker).
+
+Steps skipped with reasons: 1, 8, 8.5 (no README/FEATURES/methodology/human-facing
+diffs), 3 and 4 (files absent), 7 (no contributions-docs), 11 (no mirror entries), 11.5
+(no parallel registry).
+
+MERGE HELD, and this is a judgement rather than an omission. /dsm-wrap-up Step 10 says
+create and merge autonomously, but S54 #96 says a protected-branch merge of the agent's
+own PR needs SPECIFIC authorization, and the S56 transcript shows this project's wrap-up
+did not auto-merge either, it waited for a literal "merge" from the user. "Let's wrap up"
+is closer to S54's generic instruction than to specific merge authorization. So PR #16 is
+created and green, and the irreversible step waits. Surfacing the body too, since a PR
+body is voice-attributed content.
+
+Steps 12 done, 13 (lockfile removal) held with the merge, because removing the lockfile
+signals "session inactive" and the session is not closed while an authorization is
+outstanding.
+
+Two deliberate content choices in the handoff. It LEADS with the inconsistency rather
+than burying it: DEC-012 is accepted while epoch-5-plan.md still describes Sprint 18 as
+live, so a reader trusting that file alone gets the whole epoch wrong. And the pending
+items are causal-forward per BL-475, each naming its dependency, the order it forces, and
+what breaks if skipped, rather than a flat list. That requirement shipped in v1.19.0,
+which I aligned to four hours earlier this session, so this is its first application here.
+
+Recorded in the handoff rather than left to be rediscovered: the three-for-three base
+rate, that option A is unresolved-not-rejected with measured support, that the PageRank
+check exists nowhere on disk, and that smoke-tests.md does not exist so canonical
+checklist item 5 has never been actionable in this repo.
+
+STAA recommended: yes. Three overturned recommendations in one decision line, a
+pre-registered self-refutation, and a decision reached by re-deriving the aim rather than
+by comparing options, all of which resist the one-or-two-line [auto] summary form.
