@@ -1,5 +1,6 @@
 # Sprint 18: BL-302 Phase 2 (Leiden Clustering)
 
+**Status:** CLOSED WITHOUT DELIVERY (S57, 2026-07-31, per [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md)). Clustering is out-of-vision-scope on the current substrate. P1 shipped; P2/P3 cancelled; P4 retained as validation machinery. Replaced by **Sprint 19 (BL-GE-002, graph source expansion)**. Deliverable dispositions are marked below.
 **Duration:** 1.5-2 sessions (6-12 hours; four phases, P1 small and well-bounded, P2 carrying the sprint's real uncertainty)
 **Goal:** Emit structural concept clusters in `--knowledge-summary` markdown, computed by Leiden community detection over a reference graph scoped to project content, validated by a degeneracy-floor gate run before any fixture freeze.
 **Prerequisites:** Sprint 17 closed ([BL-302 Phase 1.5](BL-302-phase-1.5-toon-migration.md), CLOSED, markdown retained per [DEC-010](../decisions/DEC-010-toon-migration-format.md) Amendment 2); BL-302 Phase 1 shipped (Sprint 16).
@@ -48,13 +49,18 @@ See DSM_0.2 Three-Level Branching.
 ## Deliverables
 
 ### MUST (sprint fails without these)
-- [ ] `DEFAULT_EXCLUDES` merged with `config.exclude`, so `--knowledge-summary` emits zero `.venv/`, `site-packages/`, or `.pytest_cache/` directories (BL-302 P2 §P1).
-- [ ] Explicit opt-out for callers that want dependency content included (BL-302 P2 §P1).
-- [ ] Leiden community detection over the cleaned reference graph, seeded for reproducible output (BL-302 P2 §P2).
-- [ ] Cluster section emitted in `--knowledge-summary` markdown, bounded with the existing `... and N more` truncation convention (BL-302 P2 §P3).
-- [ ] EXP-012 degeneracy-floor gate run and recorded **before** any fixture freeze (BL-302 P2 §P4).
-- [ ] Tests alongside each phase; existing suite stays green (701 passed / 1 skipped baseline).
-- [ ] Docs: CLI `--help` and README note the cluster section and the default exclusions.
+
+> **Dispositions marked S57 per DEC-012.** `[x]` delivered, `[~]` cancelled with the
+> phase, `[-]` no longer applicable. Kept as a record of what the sprint intended;
+> nothing below is outstanding work.
+
+- [x] `DEFAULT_EXCLUDES` merged with `config.exclude`, so `--knowledge-summary` emits zero `.venv/`, `site-packages/`, or `.pytest_cache/` directories (BL-302 P2 §P1). **Shipped S55.**
+- [x] Explicit opt-out for callers that want dependency content included (BL-302 P2 §P1). **Shipped S55.**
+- [~] Leiden community detection over the cleaned reference graph, seeded for reproducible output (BL-302 P2 §P2). **Cancelled.**
+- [~] Cluster section emitted in `--knowledge-summary` markdown, bounded with the existing `... and N more` truncation convention (BL-302 P2 §P3). **Cancelled.**
+- [~] EXP-012 degeneracy-floor gate run and recorded **before** any fixture freeze (BL-302 P2 §P4). **Not run.** The gate form is retained as reusable machinery under DEC-012's revisit trigger; EXP-012 was never registered in `data/experiments/`.
+- [x] Tests alongside each phase; existing suite stays green (701 passed / 1 skipped baseline). **Held for P1.**
+- [-] Docs: CLI `--help` and README note the cluster section and the default exclusions. **Partially applicable:** the cluster half is void; the default-exclusions half remains open against P1 and carries forward to Sprint 19's docs pass.
 
 ### SHOULD (expected, defer if blocked)
 - [ ] Coverage ≥ 91% (current baseline; no regression).
@@ -112,3 +118,9 @@ All phase detail (sub-tasks, design notes, acceptance criteria) lives in
 - [ ] Blog publication tracker updated (`dsm-docs/blog/README.md`)
 - [ ] Repository README updated (status, results, structure)
 - [ ] Next steps summary (3-5 sentences: next sprint goal, key deliverables, relevant plan reference)
+- [ ] **Local:** Epoch plan updated (completed tasks checked off, sprint status updated)
+- [ ] **Local:** Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)
+
+> **Reconciled S57.** Items 1-9 are DSM_2.0.C §1 Template 8 verbatim; 10-11 are local
+> additions carried over from `.claude/CLAUDE.md`, which previously held a divergent
+> 7-item list. Neither list was a subset of the other. Both now carry the same 11.

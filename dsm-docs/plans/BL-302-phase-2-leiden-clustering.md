@@ -1,12 +1,49 @@
 # BL-302 Phase 2: Leiden Clustering for Knowledge-Summary Output
 
-**Status:** OPEN
+**Status:** CLOSED, clustering **not adopted** (S57, 2026-07-31, per [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md)). P1 shipped; P2/P3 cancelled; P4 survives as reusable validation machinery. See "Resolution" below.
 **Priority:** High
 **Date Created:** 2026-07-21
 **Origin:** DEC-010 (this project) + DSM Central BL-367 (format research) + GE S47 Q3, continues the BL-302 line (Phase 1 shipped Sprint 16, Phase 1.5 CLOSED Sprint 17)
 **Author:** Alberto Diaz Durana
-**Target:** Sprint 18 (Epoch 5)
-**Related:** [BL-302 Phase 1.5](BL-302-phase-1.5-toon-migration.md), [DEC-009](../decisions/DEC-009-no-local-llm-dependencies.md), [DEC-010](../decisions/DEC-010-toon-migration-format.md), [epoch-5-plan.md](epoch-5-plan.md)
+**Target:** Sprint 18 (Epoch 5), closed without delivery; replaced by Sprint 19 (BL-GE-002)
+**Related:** [BL-302 Phase 1.5](BL-302-phase-1.5-toon-migration.md), [DEC-009](../decisions/DEC-009-no-local-llm-dependencies.md), [DEC-010](../decisions/DEC-010-toon-migration-format.md), [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md), [epoch-5-plan.md](epoch-5-plan.md)
+
+---
+
+## Sprint 18 Closure (2026-07-31, Session 57)
+
+### Resolution (2026-07-31, Session 57): closed as out-of-vision-scope
+
+Session 56 halted this phase on a premise failure. Session 57 resolved the P4 gate
+ambiguity, then re-derived the aim from the Intrinsic-ToC vision instead of continuing to
+compare candidate designs. The decisive finding is that **clustering is absent from the
+vision**: §4 lists what Layer 1 maps (project structure, hub documents, cross-reference
+hotspots, orphan files) and §2 defines connectivity as hubs, orphans and hotspots.
+Clustering is in neither, nor in the §4 condensation budget. It entered through S49's
+GraphRAG fit study, whose separation of Leiden from the entity extraction that feeds it
+was already refuted in S56.
+
+`generate_knowledge_summary` was verified to emit all four specified components, so
+**Layer 1 as specified has been complete since Sprint 16**, and this phase would have
+added an unspecified fifth to a substrate measured at 2.8% modularity excess over a
+degree-preserving null with ~25% file coverage.
+
+Rationale, counter-evidence, revisit trigger and consequences are recorded in
+[DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md) and are not
+restated here.
+
+**Phase disposition:**
+
+| Phase | Disposition |
+|---|---|
+| P1, graph scope exclusion | **Shipped** (S55, in master). Retains independent value: removed 16 dependency directories from the summary. Its original framing as a clustering prerequisite no longer applies. |
+| P2, Leiden clustering | **Cancelled.** The `cluster` extra (`leidenalg` + `igraph`) may remain installed or be removed; nothing depends on it. |
+| P3, cluster emission | **Cancelled.** |
+| P4, validation gate | **Retained as machinery, not run.** The null-controlled degeneracy floor resolved below is the standing validation form for any future partition-based feature, per DEC-012's revisit trigger. |
+
+**This does not refute clustering as a technique.** It is out-of-vision-scope on this
+substrate, at this coverage, for this artifact. DEC-012 records the conditions under
+which it may be re-proposed.
 
 ---
 
@@ -163,6 +200,12 @@ indistinguishable from it. The clause was authored 2026-07-21 before that eviden
 existed; disambiguating it would have produced a gate that still could not do its job.
 
 ## Acceptance Criteria
+
+> **Superseded S57 (see Resolution above).** Criteria 1, 2, 6 and 7 were met by P1 and
+> stand. Criteria 3, 4 and 5 are **unmet and unreachable** under DEC-012, since they
+> require the cancelled clustering phases. They are kept as a record of what the phase
+> intended, not as outstanding work. Per the S55 lesson, a criterion that has become
+> unsatisfiable is annotated rather than silently left open.
 
 1. `--knowledge-summary` on this repository emits **zero** `.venv/`, `site-packages/`,
    or `.pytest_cache/` directories

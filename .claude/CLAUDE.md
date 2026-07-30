@@ -201,14 +201,25 @@ above (managed by `/dsm-align`). They are deliberately not restated here.
 ## DSM Alignment
 
 - Check `_inbox/` at session start for hub-spoke communication
-- At sprint boundaries, follow the Sprint Boundary Checklist:
+- At sprint boundaries, follow the Sprint Boundary Checklist. Items 1-9 are DSM_2.0.C §1
+  Template 8 verbatim; items 10-11 are local additions. Reconciled S57, see below.
   - [ ] Checkpoint document created (`dsm-docs/checkpoints/`)
-  - [ ] Per-session feedback files written (`dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_*.md`)
+  - [ ] Feedback files updated (per-session `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_{backlogs,methodology}.md`)
   - [ ] Decision log updated with sprint decisions (`dsm-docs/decisions/`)
+  - [ ] Tests passing (DSM 4.0 projects)
+  - [ ] `dsm-docs/guides/smoke-tests.md` current (or N/A if no smoke tests recorded this sprint)
   - [ ] Blog journal entry written (`dsm-docs/blog/<epoch>/journal.md`)
+  - [ ] Blog publication tracker updated (`dsm-docs/blog/README.md`)
   - [ ] Repository README updated (status, results, structure)
-  - [ ] Epoch plan updated (completed tasks checked off, sprint status updated)
-  - [ ] Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)
+  - [ ] Next steps summary (3-5 sentences: next sprint goal, key deliverables, relevant plan reference)
+  - [ ] **Local:** Epoch plan updated (completed tasks checked off, sprint status updated)
+  - [ ] **Local:** Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)
+- Reconciliation note (S57): this list previously had 7 items and the sprint plans had 9.
+  It was not a subset relationship. The plans matched Template 8 exactly, while this list
+  omitted 4 canonical items (tests passing, smoke-tests currency, blog publication
+  tracker, next-steps summary) and carried 2 items the template does not have. The
+  canonical 9 are now adopted verbatim and the 2 local items are marked as local. Sprint
+  plans carry the same 11.
 - At phase boundaries (intra-sprint): update blog materials if insights worth sharing
 
 ## Blog Integration
