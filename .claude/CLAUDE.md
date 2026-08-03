@@ -119,9 +119,13 @@ When an em dash ("—") connects phrases, replace it directly with a comma in th
 
 ### App Development Protocol (reinforces inherited protocol)
 - Explain why before each action
-- Create files via Write/Edit tools; user approves via permission window
-- Wait for user confirmation before proceeding to next step
-- Build incrementally: imports → constants → one function → test → next function
+- A bite is the smallest increment the user can verify (DSM_6.0 §1.1): one testable function for code (test-first), one cell producing one output for notebooks, a short passage for prose
+- Describe the file and get concept approval in conversation BEFORE creating it. The permission window approves a write, not the concept, and never substitutes for the description stop, including when write permissions are auto-approved
+- Approving a build sequence or file list authorizes starting, not authoring every file in it. Each file gets its own description stop
+- One bite per stop: author exactly one bite, then stop for review, regardless of how many were planned
+- Cadence follows the artifact's medium, not the previous artifact's rhythm. Where media differ, the finer gate wins
+- Code is test-first: write and agree the test before the implementation it drives
+- Build incrementally: imports → constants → one test → the function it drives → next test
 <!-- END DSM_0.2 ALIGNMENT -->
 
 # Project: DSM Graph Explorer
@@ -184,27 +188,38 @@ I always want to understand what we are doing. Before generating any file I want
 ## Development Protocol
 
 - Do NOT use `AskUserQuestion` for approvals (modal blocks IDE reading). Plain text approvals only.
-- Build modules incrementally, one module at a time, tests alongside
-- Run `pytest tests/` after each module to verify before proceeding
+- Run `pytest tests/` after each bite to verify before proceeding
 - Keep changes focused: one logical unit per step
 
 ## Development Approach
 
-- **TDD (Test-Driven Development)**: Write tests before implementation
-- **Incremental development**: Build one function at a time, test, then next
 - **Blog as deliverable**: Document journey throughout (Section 2.5.6-2.5.8)
+
+Test-first and the bite cadence are stated once, in the App Development Protocol
+above (managed by `/dsm-align`). They are deliberately not restated here.
 
 ## DSM Alignment
 
 - Check `_inbox/` at session start for hub-spoke communication
-- At sprint boundaries, follow the Sprint Boundary Checklist:
+- At sprint boundaries, follow the Sprint Boundary Checklist. Items 1-9 are DSM_2.0.C §1
+  Template 8 verbatim; items 10-11 are local additions. Reconciled S57, see below.
   - [ ] Checkpoint document created (`dsm-docs/checkpoints/`)
-  - [ ] Per-session feedback files written (`dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_*.md`)
+  - [ ] Feedback files updated (per-session `dsm-docs/feedback-to-dsm/YYYY-MM-DD_sN_{backlogs,methodology}.md`)
   - [ ] Decision log updated with sprint decisions (`dsm-docs/decisions/`)
+  - [ ] Tests passing (DSM 4.0 projects)
+  - [ ] `dsm-docs/guides/smoke-tests.md` current (or N/A if no smoke tests recorded this sprint)
   - [ ] Blog journal entry written (`dsm-docs/blog/<epoch>/journal.md`)
+  - [ ] Blog publication tracker updated (`dsm-docs/blog/README.md`)
   - [ ] Repository README updated (status, results, structure)
-  - [ ] Epoch plan updated (completed tasks checked off, sprint status updated)
-  - [ ] Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)
+  - [ ] Next steps summary (3-5 sentences: next sprint goal, key deliverables, relevant plan reference)
+  - [ ] **Local:** Epoch plan updated (completed tasks checked off, sprint status updated)
+  - [ ] **Local:** Hub/portfolio notified of sprint completion (`_inbox/` in DSM Central and portfolio)
+- Reconciliation note (S57): this list previously had 7 items and the sprint plans had 9.
+  It was not a subset relationship. The plans matched Template 8 exactly, while this list
+  omitted 4 canonical items (tests passing, smoke-tests currency, blog publication
+  tracker, next-steps summary) and carried 2 items the template does not have. The
+  canonical 9 are now adopted verbatim and the 2 local items are marked as local. Sprint
+  plans carry the same 11.
 - At phase boundaries (intra-sprint): update blog materials if insights worth sharing
 
 ## Blog Integration

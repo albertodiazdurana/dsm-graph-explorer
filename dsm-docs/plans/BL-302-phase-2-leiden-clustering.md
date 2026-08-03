@@ -1,12 +1,49 @@
 # BL-302 Phase 2: Leiden Clustering for Knowledge-Summary Output
 
-**Status:** OPEN
+**Status:** CLOSED, clustering **not adopted** (S57, 2026-07-31, per [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md)). P1 shipped; P2/P3 cancelled; P4 survives as reusable validation machinery. See "Resolution" below.
 **Priority:** High
 **Date Created:** 2026-07-21
 **Origin:** DEC-010 (this project) + DSM Central BL-367 (format research) + GE S47 Q3, continues the BL-302 line (Phase 1 shipped Sprint 16, Phase 1.5 CLOSED Sprint 17)
 **Author:** Alberto Diaz Durana
-**Target:** Sprint 18 (Epoch 5)
-**Related:** [BL-302 Phase 1.5](BL-302-phase-1.5-toon-migration.md), [DEC-009](../decisions/DEC-009-no-local-llm-dependencies.md), [DEC-010](../decisions/DEC-010-toon-migration-format.md), [epoch-5-plan.md](epoch-5-plan.md)
+**Target:** Sprint 18 (Epoch 5), closed without delivery; replaced by Sprint 19 (BL-GE-002)
+**Related:** [BL-302 Phase 1.5](BL-302-phase-1.5-toon-migration.md), [DEC-009](../decisions/DEC-009-no-local-llm-dependencies.md), [DEC-010](../decisions/DEC-010-toon-migration-format.md), [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md), [epoch-5-plan.md](epoch-5-plan.md)
+
+---
+
+## Sprint 18 Closure (2026-07-31, Session 57)
+
+### Resolution (2026-07-31, Session 57): closed as out-of-vision-scope
+
+Session 56 halted this phase on a premise failure. Session 57 resolved the P4 gate
+ambiguity, then re-derived the aim from the Intrinsic-ToC vision instead of continuing to
+compare candidate designs. The decisive finding is that **clustering is absent from the
+vision**: §4 lists what Layer 1 maps (project structure, hub documents, cross-reference
+hotspots, orphan files) and §2 defines connectivity as hubs, orphans and hotspots.
+Clustering is in neither, nor in the §4 condensation budget. It entered through S49's
+GraphRAG fit study, whose separation of Leiden from the entity extraction that feeds it
+was already refuted in S56.
+
+`generate_knowledge_summary` was verified to emit all four specified components, so
+**Layer 1 as specified has been complete since Sprint 16**, and this phase would have
+added an unspecified fifth to a substrate measured at 2.8% modularity excess over a
+degree-preserving null with ~25% file coverage.
+
+Rationale, counter-evidence, revisit trigger and consequences are recorded in
+[DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md) and are not
+restated here.
+
+**Phase disposition:**
+
+| Phase | Disposition |
+|---|---|
+| P1, graph scope exclusion | **Shipped** (S55, in master). Retains independent value: removed 16 dependency directories from the summary. Its original framing as a clustering prerequisite no longer applies. |
+| P2, Leiden clustering | **Cancelled.** The `cluster` extra (`leidenalg` + `igraph`) may remain installed or be removed; nothing depends on it. |
+| P3, cluster emission | **Cancelled.** |
+| P4, validation gate | **Retained as machinery, not run.** The null-controlled degeneracy floor resolved below is the standing validation form for any future partition-based feature, per DEC-012's revisit trigger. |
+
+**This does not refute clustering as a technique.** It is out-of-vision-scope on this
+substrate, at this coverage, for this artifact. DEC-012 records the conditions under
+which it may be re-proposed.
 
 ---
 
@@ -61,7 +98,7 @@ Phase 1.5 carries a matching amendment.
 - Leiden community detection over the existing reference graph (structural only)
 - A cluster section in `--knowledge-summary` markdown output
 - Tests alongside each phase, per the project's TDD protocol
-- An early validation gate on cluster quality
+- An early validation gate: a degeneracy floor against a degree-preserving null
 
 ### Out of scope
 
@@ -121,19 +158,63 @@ Run early, before any fixture freeze. This is the direct lesson of Sprint 17, wh
 DEC-010 C3 gate was sequenced after a golden-fixture freeze and, when finally run,
 failed, having nearly enshrined a schema that could not ship.
 
-Gate: do the clusters correspond to recognizable project areas on a repository whose
-structure is known independently? A cluster set that cuts across obvious boundaries, or
-collapses to one giant cluster, fails the gate regardless of modularity score.
+**Gate (resolved S57):** a **degeneracy floor**, not a quality bar. It asks whether the
+partition is non-degenerate and therefore worth shipping at all, and it is answered
+against a **degree-preserving null model**, never an absolute threshold. Two failure
+modes:
+
+1. **Null-indistinguishable.** The partition's modularity must exceed a
+   degree-preserving rewire of the same graph by a margin pre-registered before the run.
+2. **Collapse.** A partition resolving to one giant cluster, or to near-singletons,
+   fails regardless of modularity score.
+
+Whether the clusters are *good* is deliberately out of scope. That is what the direction
+decision, and under option D the agent A/B, exists to answer.
+
+**Operationalization is direction-conditional** and is not pinned here, because the
+direction decision ([research §7](../research/2026-07-21_cluster-quality-graph-density.md))
+is open:
+
+| Direction | P4 becomes |
+|---|---|
+| A, centrality pivot | Retired, no clusters to gate |
+| B, grow the graph | Survives in shape; the *new* graph needs its own null (thresholded similarity graphs inflate clustering coefficients, research §4) |
+| C, connected core | Live gate as above, plus coverage disclosure |
+| D, agent A/B | Superseded by cross-arm task performance; the degeneracy floor drops to a pre-condition on the cluster arm |
+
+**Amendment (S57): the "cuts across obvious boundaries" clause is struck.** It read:
+
+> Gate: do the clusters correspond to recognizable project areas on a repository whose
+> structure is known independently? A cluster set that cuts across obvious boundaries, or
+> collapses to one giant cluster, fails the gate regardless of modularity score.
+
+Struck because all three available readings fail, and not because of the ambiguity. Read
+as **folder boundaries**, the gate is self-defeating, the folder tree already answers it
+and `generate_hierarchy` already emits it, and its instrument (NMI-vs-directories) was
+eliminated as invalid. Read as **topical coherence**, it has no null control and is the
+metric class the null-model test invalidated. Read as a **degeneracy screen** (the reading
+the "or collapses to one giant cluster" conjunction supports, and the one adopted above),
+it is valid but was written before the evidence that answers it: real modularity beats the
+null in 0/50 replicates (z = 2.68) while cluster count and size distribution are
+indistinguishable from it. The clause was authored 2026-07-21 before that evidence
+existed; disambiguating it would have produced a gate that still could not do its job.
 
 ## Acceptance Criteria
+
+> **Superseded S57 (see Resolution above).** Criteria 1, 2, 6 and 7 were met by P1 and
+> stand. Criteria 3, 4 and 5 are **unmet and unreachable** under DEC-012, since they
+> require the cancelled clustering phases. They are kept as a record of what the phase
+> intended, not as outstanding work. Per the S55 lesson, a criterion that has become
+> unsatisfiable is annotated rather than silently left open.
 
 1. `--knowledge-summary` on this repository emits **zero** `.venv/`, `site-packages/`,
    or `.pytest_cache/` directories
 2. Default exclusions are overridable by an explicit opt-out
 3. Leiden clustering runs on the cleaned graph and emits a bounded cluster section
 4. Cluster output is markdown, no format flag involvement
-5. P4 validation gate passes on a known-structure repository, with the result recorded
-   before any fixture freeze
+5. P4 degeneracy floor is run against a degree-preserving null with the margin
+   pre-registered, and the result recorded before any fixture freeze, including a FAIL,
+   which is a successful gate
 6. Tests alongside each phase; existing suite stays green
 7. No new required dependencies, graph libraries remain optional extras (DEC-009)
 

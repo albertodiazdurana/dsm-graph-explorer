@@ -1,3 +1,5 @@
+**Consumed at:** Session 57 start (2026-07-30)
+
 # Session 56 Checkpoint
 **Date:** 2026-07-21
 **Branch:** sprint-18/leiden-clustering (Level 3, off session-56/2026-07-21)
