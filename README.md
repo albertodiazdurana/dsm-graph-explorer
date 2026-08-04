@@ -1,7 +1,7 @@
 # DSM Graph Explorer
 
 **Version:** 0.4.0
-**Status:** Epoch 4 in progress (Sprint 16 complete, BL-302 Phase 1 delivered)
+**Status:** Epoch 5 in progress (Sprints 17-18 closed, Sprint 19 in planning)
 
 Repository integrity validator and graph database explorer for the [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite) framework and its engine, the Deliberate Systematic Methodology (DSM).
 
@@ -413,7 +413,7 @@ For more details, see [epoch-1-plan.md](dsm-docs/plans/epoch-1-plan.md) (complet
   - Phase 12.2: `src/graph/repo_diff.py` (compare_inventories, three-pass matching, 13 tests)
   - Phase 12.3: CLI `--compare-repo INV_A INV_B`, `--drift-report` (10 tests)
 
-### Epoch 4: Resilience & Ecosystem Analysis (In Progress)
+### Epoch 4: Resilience & Ecosystem Analysis (Complete)
 - [x] **Sprint 13:** BL-090 Resilience + Heading-Based Sections — EXP-007 multi-file validation, heading-based section detection, BL-170 architecture audit, DEC-008 (531 tests, 95% coverage)
   - Phase 13.0: EXP-007 multi-file document resilience (real DSM_0.2 split data)
   - Phase 13.1: BL-042 heading-based section detection in graph builder (18 new tests)
@@ -425,6 +425,20 @@ For more details, see [epoch-1-plan.md](dsm-docs/plans/epoch-1-plan.md) (complet
   - Phase 15.2: Prescribed + observed references (`prescribed_refs.py`, `observed_refs.py`)
   - Phase 15.3: Usage report + CLI (`usage_report.py`, `usage_diff.py`, `--protocol-usage`, `--usage-compare`)
   - EXP-009: Protocol usage validation, procedural protocols 4/4 pass, behavioral protocols 0/3 (methodology limitation)
+
+Retrospective: `dsm-docs/checkpoints/epoch-4/epoch-4-retrospective.md`
+
+### Epoch 5: Intrinsic-ToC Evolution (In Progress)
+
+Two sprints closed so far, and neither shipped the feature it was scoped for. Both were
+stopped by a validation gate that ran before the build, which is the outcome those gates
+exist to produce.
+
+- [x] **Sprint 17:** BL-302 Phase 1.5, TOON migration — **closed, TOON not adopted.** The DEC-010 C3 gate required a 10% token reduction and measured +1.74% on DSM Central and +7.58% on Graph Explorer. EXP-011 then measured the thing nobody had tested: whether the ToC helps an agent navigate at all. It does (ToC arms used ~6x fewer tool calls), but markdown beat TOON outright, including a TOON answer of 15 orphans where the truth was 112. `--knowledge-summary` stays markdown. See [DEC-010](dsm-docs/decisions/DEC-010-toon-migration-format.md) Amendment 2.
+- [x] **Sprint 18:** BL-302 Phase 2, Leiden clustering — **closed without delivery.** A degree-preserving null model showed the Leiden partition beating a randomised graph with the same degree sequence by only 2.8%, and the quality metric used through most of that session (NMI against directory labels) scored *higher* on the null than on the real graph, so it had been measuring nothing. Root cause is sparsity: ~25% of files carry any cross-reference. Re-reading the Intrinsic-ToC vision then showed clustering appears nowhere in it and that Layer 1's four specified components all ship already. See [DEC-012](dsm-docs/decisions/DEC-012-close-phase-2-clustering-vision-scope.md). P1 (`DEFAULT_EXCLUDES`) shipped and keeps independent value.
+- [ ] **Sprint 19:** BL-GE-002, graph source expansion — planned. Extends the graph beyond markdown to config/YAML plus cross-file links, answering the vision's own Open Question 4 (open since 2026-04) and unblocking Layer 4. Python AST is explicitly out of scope.
+- [ ] **Sprint 20:** Hop distance + EXP-001 reference-graph validation
+- [ ] **Sprint 21:** Ecosystem graph foundations (Avatar Layer 3)
 
 ---
 
@@ -464,7 +478,7 @@ Published at [blog.take-ai-bite.com](https://blog.take-ai-bite.com):
 
 ---
 
-**Last Updated:** 2026-03-17
-**Current Status:** Epoch 4 in progress (Sprint 16 complete: knowledge summary export, BL-302 Phase 1 delivered, DEC-009)
-**Tests:** 547 passed, 95% coverage
+**Last Updated:** 2026-08-04
+**Current Status:** Epoch 5 in progress. Sprints 17 and 18 both closed on validation gates rather than deliveries (DEC-010 Amendment 2, DEC-012). Sprint 19 (BL-GE-002, graph source expansion) is planned.
+**Tests:** 722 passed, 1 skipped, 91% coverage
 **DSM Feedback:** 47 methodology entries, 42 improvement proposals (legacy files archived; per-session format from Sprint 14)
