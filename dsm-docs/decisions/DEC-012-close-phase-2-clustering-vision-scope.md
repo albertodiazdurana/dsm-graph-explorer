@@ -111,6 +111,24 @@ difference visible rather than flatten it.
    as a genuine, cheap Layer 1 quality improvement, and closing Phase 2 neither
    delivers nor forecloses it.
 
+   > **Annotation S58 (2026-08-04), reproduction.** The S57 check was run inline and no
+   > script survived, so these figures could not be regenerated. They now can:
+   > `scripts/check_pagerank_vs_degree.py`. The re-run **confirms the verdict** (material
+   > reordering on both corpora) and reproduces DSM Central's Pearson r (0.9204) and its
+   > 2 new entrants. It **diverges on the positions-changed counts**, reporting GE 7/10
+   > and Central 8/10 against the 9/10 and 5/10 recorded above. Both corpora moved in the
+   > interval (Central released v1.19.0), and S57's exact projection cannot be inspected,
+   > so the causes are not separable. The conclusion is unaffected, because it rests on
+   > the pre-registered threshold being cleared rather than on the specific count, and the
+   > threshold is cleared by a wider margin in the re-run than in the original. The text
+   > above is left as the S57 record; this annotation is the correction.
+   >
+   > The re-run also fixes a defect in the S57 script that the original session disclosed:
+   > degree counts were looked up in a top-10-only dictionary, so entrants from outside
+   > the top 10 printed as "0 refs". This script ranks the full file set. Its degree
+   > output was validated position-for-position against the shipped
+   > `--knowledge-summary` hub table.
+
 2. **Option C (ship the connected core with disclosure) is defensible.** Partial
    coverage with explicit disclosure is the documented shipping norm for comparable
    systems. Choosing closure over C trades a shippable-but-weak feature for scope
