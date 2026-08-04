@@ -107,7 +107,8 @@ Phase 1.5 carries a matching amendment.
   purely structural, derived from graph edges.
 - Author-declared or extracted semantic concepts, that is BL-GE-001 (Layer 4.5)
 - Re-opening the output format question, markdown is settled (DEC-010 Amendment 2)
-- Cross-repo / ecosystem clustering, that is Sprint 20
+- Cross-repo / ecosystem clustering, that is Sprint 21 (was Sprint 20, renumbered S57 per
+  [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md))
 
 ## Phases
 
