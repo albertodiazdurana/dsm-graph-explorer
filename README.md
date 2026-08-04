@@ -1,6 +1,6 @@
 # DSM Graph Explorer
 
-**Version:** 0.4.0
+**Version:** 0.3.0
 **Status:** Epoch 5 in progress (Sprints 17-18 closed, Sprint 19 in planning)
 
 Repository integrity validator and graph database explorer for the [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite) framework and its engine, the Deliberate Systematic Methodology (DSM).
