@@ -1,6 +1,6 @@
 # Last /dsm-staa run
-date: 2026-08-04
-analyzed_session: 57
+date: 2026-08-05
+analyzed_session: 58
 analyzed_transcript: .claude/session-transcript.md
-appended_lessons: 9
-pruned_lessons: 9
+appended_lessons: 13
+pruned_lessons: 25

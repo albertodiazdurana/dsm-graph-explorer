@@ -171,9 +171,21 @@ if [[ -n "$PREV_TS" && -n "$NEW_TS" ]]; then
   DELTA=$(( NEW_MIN - PREV_MIN ))
 
   if (( DELTA < 0 )); then
-    # Day rollover is legitimate: late-evening block followed by an early-morning one.
+    # Two legitimate ways for a stamp to run backwards, both allowed:
+    #   1. Midnight rollover: a late-evening block followed by an early-morning one.
+    #   2. A DECLARED day change. The delimiter carries HH:MM with no date, so a
+    #      session that sits open across days produces a legitimately smaller HH:MM
+    #      that is indistinguishable from a backdated one. The author declaring the
+    #      resumption is the only available signal, so the same marker that
+    #      suppresses the gap warning below also clears this. Found the hard way:
+    #      this check blocked its own author's wrap-up append at 17:12 -> 10:52
+    #      after S58 sat open for a month, which the 20:00/04:59 rollover window
+    #      cannot cover. Same root cause as the S57 lesson that elapsed time reads
+    #      as clock drift.
     if (( 10#$PREV_H >= ROLLOVER_EVENING_HOUR && 10#$NEW_H <= ROLLOVER_MORNING_HOUR )); then
-      : # rollover, allowed
+      : # midnight rollover, allowed
+    elif echo "$APPENDED" | grep -qiE '\[RETROACTIVE\]|gap marker|session (pause|resumed)|resumed after|days? later|next day'; then
+      : # declared day change, allowed
     else
       cat >&2 <<EOF
 BLOCKED: Session transcript violation — timestamp runs backwards (DSM_0.2 §7, check 4/4).
@@ -185,8 +197,12 @@ A block cannot be stamped earlier than the block before it. Observed in S57, whe
 an Output block stamped 01:52 answered a User block stamped 02:16.
 
 FIX: use the current 24-hour local time for this block. It must be >= ${PREV_H}:${PREV_M}.
-Never backdate. If this is a genuine day rollover, the previous block must be at or
-after ${ROLLOVER_EVENING_HOUR}:00 and this one at or before 0${ROLLOVER_MORNING_HOUR}:59.
+Never backdate. Two legitimate exceptions:
+  - Midnight rollover: previous block at or after ${ROLLOVER_EVENING_HOUR}:00 and this one
+    at or before 0${ROLLOVER_MORNING_HOUR}:59.
+  - A session left open across days: say so in the block ([RETROACTIVE], "resumed
+    after", "session pause"). The delimiter has no date, so a declared resumption
+    is the only way this check can tell a new day from a backdated stamp.
 EOF
       exit 2
     fi
