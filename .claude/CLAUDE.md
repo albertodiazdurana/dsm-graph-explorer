@@ -7,51 +7,18 @@
 **Participation pattern:** Spoke
 
 ### Session Transcript Protocol (reinforces inherited protocol)
-- Append thinking to `.claude/session-transcript.md` BEFORE acting
-- Output summary AFTER completing work
-- Conversation text = results only
-- Use Session Transcript Delimiter Format for every block:
+- Each turn, before acting (first tool call), append a short work-notes entry to
+  `.claude/session-transcript.md` stating the plan for what you are about to do;
+  append a result summary after. Conversation text carries results only.
+- Use the Session Transcript Delimiter Format for every entry:
   <------------Start Thinking / HH:MM------------>
   <------------Start Output / HH:MM------------>
   <------------Start User / HH:MM------------>
-- HH:MM is 24-hour local time when the block begins; no end delimiter needed
-- Append technique: read last 3 lines, use last non-empty line as anchor.
-  NEVER match earlier content for mid-file insertion.
-- NEVER use Edit `replace_all: true` on `.claude/session-transcript.md`. The
-  append-anchor rule assumes a unique last-line anchor; `replace_all` duplicates
-  content at every match and explodes the file (observed: IronCalc S17 reached
-  95 MB). Recovery from a botched transcript Edit is a `[RETROACTIVE]`
-  Bash-heredoc append, never a `replace_all` cleanup. The
-  `validate-transcript-edit.sh` hook blocks this case (check 0/3).
-- Per-turn enforcement: a `UserPromptSubmit` hook in `.claude/settings.json`
-  injects a reminder every turn. The hook enforces *occurrence*; the
-  existing `validate-transcript-edit.sh` PreToolUse hook enforces *shape*.
-  IDE monitoring and session-start behavioral activation are user
-  affordances, not enforcement. The hook is the mechanism.
-- Turn-boundary self-check: every turn begins with a transcript append. If
-  your first tool call this turn was not a transcript append, the protocol
-  was violated. This includes pure-reasoning turns (decision analysis,
-  recommendation, trade-off comparison) that would otherwise touch no files,
-  the transcript append is the one required tool call. The only exemption
-  is content-trivial turns (one-word acknowledgments, single-fact
-  confirmations with no new reasoning). Recover by appending a
-  `[RETROACTIVE]` entry with the current HH:MM (never backdate) and a note
-  explaining the gap; do not edit history.
-- Process narration: thinking blocks narrate reasoning as it unfolds,
-  including considered-and-rejected paths, doubts, loops, and reversals.
-  Clean post-hoc summaries hide inefficiency signals that are the primary
-  input to reasoning-efficiency analysis. Brevity is not the goal,
-  auditability is.
-- Unconditional activation: if `.claude/session-transcript.md` exists in
-  the project, the protocol is active. No skill needs to activate it. The
-  presence of the file is the activation signal. This rule is independent
-  of `/dsm-go` Step 6 and applies to continuation sessions that defer
-  from `/dsm-light-go` to `/dsm-go` mid-flight.
-- Heredoc anti-pattern: when appending to the transcript via Bash, never
-  use single-quoted heredoc (`<< 'EOF'`) if the content contains shell
-  expansions like `$(date +%H:%M)`. Capture the timestamp into a variable
-  first and use unquoted heredoc, or prefer the Edit-tool append path
-  (read last 3 lines, anchor on last non-empty line).
+- HH:MM is 24-hour local time when the entry begins; no end delimiter needed
+- Append technique: read last 3 lines, anchor on the last non-empty line; NEVER
+  match earlier content for mid-file insertion; never `replace_all` on the file
+- Full protocol + enforcement detail: DSM_0.2 §7 and DSM_0.2.G (read on demand).
+  Occurrence and shape are hook-enforced.
 
 ### Pre-Generation Brief Protocol (reinforces inherited protocol)
 - Four-gate model: collaborative definition (confirm threads → dependencies → packaging) → concept (explain) → implementation (diff review) → run (when applicable)

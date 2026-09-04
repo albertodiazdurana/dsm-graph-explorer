@@ -17,8 +17,10 @@ Two tracks, to avoid collision with DSM Central's BL registry:
 
 | BL | Title | Track | Priority | Status |
 |----|-------|-------|----------|--------|
-| BL-302 | TOON Migration for `--knowledge-summary` (Phase 1.5) | Central-imported | High | Open |
-| BL-GE-001 | Semantic Concept Layer (Layer 4.5) | Local-origin | Medium | Proposed |
+| BL-GE-002 | Graph Source Expansion (config/YAML + cross-file links) | Local-origin | High | Planned (Sprint 19) |
+| BL-GE-001 | Semantic Concept Layer (Layer 4.5) | Local-origin | Medium | Proposed (DEC-011 accepted, Epoch 6 plan pending) |
+| BL-302 Phase 1.5 | TOON Migration for `--knowledge-summary` | Central-imported | High | Closed S53, TOON not adopted (DEC-010 Amendment 2) |
+| BL-302 Phase 2 | Leiden Clustering | Central-imported | High | Closed S57 without delivery ([DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md)) |
 
 ## Epoch Roadmaps
 
@@ -28,7 +30,7 @@ Two tracks, to avoid collision with DSM Central's BL registry:
 | `epoch-2-plan.md` | Epoch 2 | Complete |
 | `epoch-3-plan.md` | Epoch 3 | Complete |
 | `epoch-4-plan.md` | Epoch 4 | Complete |
-| `epoch-5-plan.md` | Epoch 5 | Scoped (current) |
+| `epoch-5-plan.md` | Epoch 5 | In progress (current), Sprints 17-18 closed, Sprint 19 in planning |
 
 ## Lifecycle
 

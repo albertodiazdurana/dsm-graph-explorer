@@ -2,7 +2,7 @@
 
 **Project Type:** Software Engineering (DSM 4.0 Track)
 **Start Date:** 2026-06-25 (Sprint 17 kickoff; scoped 2026-04-20)
-**Status:** IN PROGRESS (Sprint 17 closed, Sprint 18 planned)
+**Status:** IN PROGRESS (Sprints 17 and 18 closed, Sprint 19 in planning)
 **Prerequisite:** Epoch 4 Complete ([epoch-4-plan.md](done/epoch-4-plan.md)), see [epoch-4-retrospective.md](../checkpoints/epoch-4/epoch-4-retrospective.md)
 **Project Lead:** Alberto Diaz Durana (with AI assistance)
 
@@ -59,7 +59,17 @@ All four S47 open questions answered (see
   structure worked as intended, the isolated C3 gate rejected the migration before
   Phase 2 was built on it.
 
-### Sprint 18: BL-302 Phase 2 (Leiden Clustering)
+### Sprint 18: BL-302 Phase 2 (Leiden Clustering), CLOSED WITHOUT DELIVERY
+
+> **Outcome (S57): closed without delivery per
+> [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md).** Clustering
+> appears nowhere in the Intrinsic-ToC vision, Layer 1's four specified components all
+> ship already, and a degree-preserving null model showed the Leiden partition exceeds a
+> randomised graph by only 2.8% at ~25% file cross-reference coverage. The scope below is
+> retained as the record of what was planned. Only P1 (`DEFAULT_EXCLUDES`) shipped; it
+> keeps independent value but its clustering-prerequisite justification no longer applies.
+> The sprint's deliverables are the research file, the resolved P4 degeneracy floor, and
+> DEC-012 itself.
 
 - Graph scope exclusion prerequisite: `DEFAULT_EXCLUDES` so clustering runs on project
   content, not dependencies. Added S55 after `--knowledge-summary` was observed emitting
@@ -80,19 +90,33 @@ All four S47 open questions answered (see
 > has no format prerequisite. See
 > [BL-302 Phase 1.5 §Post-Closure Correction](BL-302-phase-1.5-toon-migration.md).
 
-### Sprint 19: Hop Distance + EXP-001 Validation
+### Sprint 19: BL-GE-002 Graph Source Expansion
+
+Replaces the closed Sprint 18 per
+[DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md). Answers
+Intrinsic-ToC Vision §9 Open Question 4, open since 2026-04 and gating Layer 4.
+
+- Extend graph indexing beyond markdown to config/YAML files
+- Cross-file link extraction from the newly indexed sources
+- **Python AST work is explicitly out of scope** for this sprint
+- Boundary against BL-GE-001: BL-GE-001 adds concept *edges* between existing nodes,
+  BL-GE-002 adds *nodes* from new file types
+- Scope detail: [BL-GE-002](BL-GE-002_graph-source-expansion.md)
+- Sprint plan: [epoch-5-sprint-19-plan.md](epoch-5-sprint-19-plan.md)
+
+### Sprint 20: Hop Distance + EXP-001 Validation
 
 - Hop distance from entry point in `--graph-stats`
 - Validate GE parser output against EXP-001's 286-edge reference graph
 - Two-tier threshold model (core ≤3 hops, modules ≤1 hop)
 
-### Sprint 20: Ecosystem Graph Foundations (Avatar Layer 3)
+### Sprint 21: Ecosystem Graph Foundations (Avatar Layer 3)
 
 - Cross-repo references materialized in Intrinsic-ToC entries
 - Ecosystem-level graph connecting spoke ToCs
 - Persistence strategy decision (FalkorDB vs linked markdown)
 
-### Overflow (Sprint 21 if Epoch 5 extends)
+### Overflow (Sprint 22 if Epoch 5 extends)
 
 Options:
 - BL-302 Phase 3 (project-type navigation)
@@ -111,8 +135,16 @@ Options:
       the phase reaching a recorded resolution, not by the gate passing, a gate
       that correctly rejects its candidate is a successful gate. See
       [DEC-010](../decisions/DEC-010-toon-migration-format.md) Amendment 2.
-- [ ] BL-302 Phase 2 delivered (concept clusters in knowledge summary,
-      markdown output, structural only per DEC-009)
+- [x] BL-302 Phase 2 **resolved** (Sprint 18). Superseded S57: the original criterion
+      required Phase 2 to be *delivered* (concept clusters in the knowledge summary,
+      markdown output, structural only per DEC-009). The phase was closed without
+      delivery instead, because clustering is absent from the Intrinsic-ToC vision and
+      the substrate does not support it (2.8% modularity excess over a degree-preserving
+      null at ~25% file coverage). Following the precedent set two bullets above when the
+      DEC-010 C3 gate failed, the criterion is satisfied by the phase reaching a recorded
+      resolution, not by the feature shipping. See
+      [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md).
+- [ ] BL-GE-002 graph source expansion resolved (Sprint 19)
 - [ ] EXP-001 reference graph validation complete (pass/fail against 286 edges)
 - [ ] Cross-repo reference support in `--knowledge-summary`
 - [ ] 3 new experiments (validation gates for each significant feature)
@@ -125,7 +157,7 @@ Options:
 |------|------------|--------|------------|
 | ~~TOON ecosystem instability~~ | - | - | **Retired S55:** TOON not adopted (Sprint 17), no TOON dependency remains |
 | ~~DEC-010 C3 validation gate fails~~ | - | - | **Materialized S52.** The gate failed (+1.74% Central / +7.58% GE vs required -10%) and the migration was abandoned. Rated Low likelihood / Medium impact; the likelihood estimate was wrong |
-| Leiden clustering quality on sparse graphs | Medium | Medium | Start with EXP to validate; fall back to simpler approaches if quality is poor |
+| ~~Leiden clustering quality on sparse graphs~~ | - | - | **Materialized S56, retired S57.** The risk landed exactly as written: a degree-preserving null model showed only 2.8% modularity excess at ~25% file cross-reference coverage. The mitigation ("start with EXP to validate") worked, the validation ran before any feature was built and rejected it. Outcome was closure, not a simpler approach. See [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md) |
 | FalkorDBLite maintainer silence continues | High | Low | Merge/don't-merge not under our control; publish blog regardless |
 
 ---
@@ -142,4 +174,8 @@ Options:
   [BL-302 Phase 1.5 §Post-Closure Correction](BL-302-phase-1.5-toon-migration.md).
 - Sprint ordering may still shift based on ecosystem priorities surfaced by
   DSM Central or portfolio (see [DSM Central responses above](#centrals-responses-2026-04-14-s47-inbox-response)).
-- Epoch 5 is expected to be 4 sprints; overflow (Sprint 21) only if scope expands.
+- Epoch 5 was scoped as 4 sprints (17-20); overflow (Sprint 21) only if scope expanded.
+  **Updated S57 (DEC-012):** now 5 sprints (17-21). Sprint 18 closed without delivery and
+  was replaced by a new Sprint 19 (BL-GE-002), pushing hop distance to 20 and the
+  ecosystem graph to 21. Overflow becomes Sprint 22. The sprint count grew but the
+  delivered scope did not, one sprint produced a decision rather than a feature.
