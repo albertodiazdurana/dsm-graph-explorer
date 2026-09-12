@@ -1,14 +1,11 @@
 #!/bin/bash
 # Hook: Enforce session transcript append-only rule (DSM_0.2 §7)
 # Fires on PreToolUse for Edit calls to *session-transcript.md
-# Validations (check 0 runs first; 1-3 block; 4 blocks on (a), warns on (b)):
-# 0. replace_all is categorically forbidden
+# Four validations (0-3 block; 4 warns):
 # 1. old_string must be anchored to the last non-empty line of the file
 # 2. new_string must start with old_string (append-only, no replacement)
 # 3. Appended content must contain a <------------Start {timestamp}------------>
 #    delimiter (ensures every entry is timestamped)
-# 4. The delimiter's HH:MM must not run backwards (blocks, day rollover excepted),
-#    and a gap over 4h should carry a marker (warns only)
 
 set -e
 
@@ -42,7 +39,7 @@ fi
 # is wrong regardless of their state.
 if [[ "$REPLACE_ALL" == "true" ]]; then
   cat >&2 <<EOF
-BLOCKED: Session transcript violation — replace_all forbidden (DSM_0.2 §7, check 0/3).
+BLOCKED: Session transcript violation — replace_all forbidden (DSM_0.2 §7, check 0/4).
 
 Edit with replace_all: true is never allowed on .claude/session-transcript.md.
 The append-anchor rule assumes a unique last-line anchor; replace_all duplicates
@@ -71,7 +68,7 @@ fi
 # --- Check 1: old_string anchored to last non-empty line ---
 if ! echo "$LAST_LINE" | grep -qF -- "$FIRST_OLD_LINE"; then
   cat >&2 <<EOF
-BLOCKED: Session transcript violation — wrong anchor (DSM_0.2 §7, check 1/3).
+BLOCKED: Session transcript violation — wrong anchor (DSM_0.2 §7, check 1/4).
 
 old_string is not anchored to the last non-empty line of the file.
 
@@ -90,7 +87,7 @@ fi
 # --- Check 2: new_string starts with old_string (append-only) ---
 if [[ "$NEW_STRING" != "$OLD_STRING"* ]]; then
   cat >&2 <<EOF
-BLOCKED: Session transcript violation — content replaced (DSM_0.2 §7, check 2/3).
+BLOCKED: Session transcript violation — content replaced (DSM_0.2 §7, check 2/4).
 
 new_string must START WITH old_string verbatim. You are replacing content
 instead of appending after it.
@@ -107,7 +104,7 @@ APPENDED="${NEW_STRING#"$OLD_STRING"}"
 # Check for <------------Start {anything}------------>
 if ! echo "$APPENDED" | grep -q '<------------Start '; then
   cat >&2 <<EOF
-BLOCKED: Session transcript violation — missing delimiter (DSM_0.2 §7, check 3/3).
+BLOCKED: Session transcript violation — missing delimiter (DSM_0.2 §7, check 3/4).
 
 Every appended entry must contain a timestamped delimiter:
   <------------Start {timestamp}------------>
@@ -115,113 +112,72 @@ Every appended entry must contain a timestamped delimiter:
 Your appended content does not contain this delimiter.
 
 FIX: Start your appended block with:
-  <------------Start Thinking / HH:MM------------>
+  <------------Start Plan / HH:MM------------>
 or for output blocks:
   <------------Start Output / HH:MM------------>
 EOF
   exit 2
 fi
 
-# --- Check 4: block timestamp sanity (monotonicity + unmarked gaps) ---
-# Added S58 per the S57 STAA. Transcript timestamp hygiene has now failed in S49,
-# S54 and S57; S49 entry 50 classified it as the mechanism-not-another-lesson
-# case and S54 entry 109 asked for this hook. Two shapes are detectable:
+# --- Check 4: delimiter timestamp against the wall clock (WARNS, never blocks) ---
+# (DSM_0.2 §7; BL-517). Checks 0-3 validate the SHAPE of an append; this one
+# validates the VALUE of the timestamp it carries. Three recorded incidents of
+# HH:MM drift (S234 ~13h, S248 ~8h27m, S249 a non-monotone 132-minute swing in
+# both directions) went undetected because no check ever read the number.
 #
-#   (a) Non-monotonic: S57 had an Output block stamped 01:52 answering a User
-#       block stamped 02:16. A backwards stamp is never correct outside a day
-#       rollover, and the fix (write the right HH:MM) is trivial, so this BLOCKS.
-#   (b) Unmarked long gap: S57 had 15.5 hours between User 08:04 and Thinking
-#       23:32 with no marker. Long pauses are legitimate, so this only WARNS.
+# Exit 1 (not 2) is the non-blocking channel: stderr surfaces to the user
+# without vetoing the call. The same convention validate-cross-repo-write.sh
+# documents, and chosen here for the same reason. The harm from a drifted
+# stamp is a mislabelled log entry, not a corrupted file, and blocking an
+# append over it would wedge the very protocol the hook exists to keep running.
 #
-# Note on (b)'s reach: a PreToolUse hook's stderr is delivered to the agent only
-# on exit 2. Warning at exit 0 surfaces in transcript mode but is not guaranteed
-# to reach the model, so (b) is advisory by construction. Escalating it to a
-# block was rejected: it would fire on every legitimate overnight or multi-day
-# session pause and make the protocol unusable, which is the failure mode the
-# warn-only choice exists to avoid.
+# [RETROACTIVE] delimiters are deliberately NOT exempt: §7 requires them to
+# carry the CURRENT time, so they must satisfy this check like any other.
+#
+# Tolerance is 5 minutes, not the 10 the BL proposed. That figure rested on
+# "both observed failures were off by hours"; S249's drift was sub-hour and a
+# 10-minute bound would have passed most of it. Warning rather than blocking
+# is what makes tightening cheap: a false positive costs one line of stderr.
+DELIM_TS=$(printf '%s' "$APPENDED" | grep -oE '<-+Start [^>]*[0-9]{2}:[0-9]{2}-+>' | head -1 | grep -oE '[0-9]{2}:[0-9]{2}' | head -1 || true)
 
-GAP_WARN_MINUTES=240   # 4 hours
-ROLLOVER_EVENING_HOUR=20
-ROLLOVER_MORNING_HOUR=4
-
-# Prints "HH MM" for a delimiter timestamp, or nothing. $1 = text, $2 = first|last
-_extract_hhmm() {
-  local _match
-  if [[ "$2" == "first" ]]; then
-    _match=$(echo "$1" | grep -oE 'Start [A-Za-z]+ */ *[0-9]{1,2}:[0-9]{2}' | head -1 || true)
-  else
-    _match=$(echo "$1" | grep -oE 'Start [A-Za-z]+ */ *[0-9]{1,2}:[0-9]{2}' | tail -1 || true)
+if [ -n "$DELIM_TS" ]; then
+  NOW_TS=$(date +%H:%M)
+  # 10# forces base 10: "08" and "09" are invalid octal and would abort here.
+  D_MIN=$(( 10#${DELIM_TS%%:*} * 60 + 10#${DELIM_TS##*:} ))
+  N_MIN=$(( 10#${NOW_TS%%:*} * 60 + 10#${NOW_TS##*:} ))
+  DRIFT=$(( D_MIN - N_MIN ))
+  if [ "$DRIFT" -lt 0 ]; then
+    DRIFT=$(( 0 - DRIFT ))
   fi
-  [[ -z "$_match" ]] && return 0
-  echo "$_match" | sed -E 's/.*\/ *([0-9]{1,2}):([0-9]{2}).*/\1 \2/'
-}
+  # Take the smaller of the direct and wrap-around distance, so a block
+  # composed at 23:59 and written at 00:01 reads as 2 minutes, not 1438.
+  WRAP=$(( 1440 - DRIFT ))
+  if [ "$WRAP" -lt "$DRIFT" ]; then
+    DRIFT=$WRAP
+  fi
+  # No `&&` chaining anywhere above: under `set -e`, a false test at the head
+  # of an AND-list aborts the hook, which would turn a warning into a silent
+  # veto (DSM_0.2 §19.2's family).
+  if [ "$DRIFT" -gt 5 ]; then
+    cat >&2 <<WARNEOF
+WARNING: Session transcript delimiter timestamp drift (DSM_0.2 §7, check 4/4).
 
-PREV_TS=$(_extract_hhmm "$(cat "$FILE_PATH")" last)
-NEW_TS=$(_extract_hhmm "$APPENDED" first)
+  delimiter says : $DELIM_TS
+  wall clock is  : $NOW_TS
+  drift          : $DRIFT minutes
 
-# Only evaluate when both sides carry a parseable timestamp. Legacy blocks
-# without one, and appends that add no new delimiter, are silently skipped.
-if [[ -n "$PREV_TS" && -n "$NEW_TS" ]]; then
-  PREV_H=$(echo "$PREV_TS" | cut -d' ' -f1); PREV_M=$(echo "$PREV_TS" | cut -d' ' -f2)
-  NEW_H=$(echo "$NEW_TS" | cut -d' ' -f1);   NEW_M=$(echo "$NEW_TS" | cut -d' ' -f2)
+This is a WARNING, not a block. The append has gone through.
 
-  # 10# forces base-10 so 08 and 09 do not parse as invalid octal
-  PREV_MIN=$(( 10#$PREV_H * 60 + 10#$PREV_M ))
-  NEW_MIN=$(( 10#$NEW_H * 60 + 10#$NEW_M ))
-  DELTA=$(( NEW_MIN - PREV_MIN ))
+A delimiter's HH:MM is the time the block BEGINS, read from the clock at that
+moment, never carried forward from an earlier block or estimated. A drifted
+stamp makes the transcript unusable as a timeline: three recorded sessions had
+an action logged BEFORE the turn that authorised it.
 
-  if (( DELTA < 0 )); then
-    # Two legitimate ways for a stamp to run backwards, both allowed:
-    #   1. Midnight rollover: a late-evening block followed by an early-morning one.
-    #   2. A DECLARED day change. The delimiter carries HH:MM with no date, so a
-    #      session that sits open across days produces a legitimately smaller HH:MM
-    #      that is indistinguishable from a backdated one. The author declaring the
-    #      resumption is the only available signal, so the same marker that
-    #      suppresses the gap warning below also clears this. Found the hard way:
-    #      this check blocked its own author's wrap-up append at 17:12 -> 10:52
-    #      after S58 sat open for a month, which the 20:00/04:59 rollover window
-    #      cannot cover. Same root cause as the S57 lesson that elapsed time reads
-    #      as clock drift.
-    if (( 10#$PREV_H >= ROLLOVER_EVENING_HOUR && 10#$NEW_H <= ROLLOVER_MORNING_HOUR )); then
-      : # midnight rollover, allowed
-    elif echo "$APPENDED" | grep -qiE '\[RETROACTIVE\]|gap marker|session (pause|resumed)|resumed after|days? later|next day'; then
-      : # declared day change, allowed
-    else
-      cat >&2 <<EOF
-BLOCKED: Session transcript violation — timestamp runs backwards (DSM_0.2 §7, check 4/4).
-
-Previous block: ${PREV_H}:${PREV_M}
-This block:     ${NEW_H}:${NEW_M}
-
-A block cannot be stamped earlier than the block before it. Observed in S57, where
-an Output block stamped 01:52 answered a User block stamped 02:16.
-
-FIX: use the current 24-hour local time for this block. It must be >= ${PREV_H}:${PREV_M}.
-Never backdate. Two legitimate exceptions:
-  - Midnight rollover: previous block at or after ${ROLLOVER_EVENING_HOUR}:00 and this one
-    at or before 0${ROLLOVER_MORNING_HOUR}:59.
-  - A session left open across days: say so in the block ([RETROACTIVE], "resumed
-    after", "session pause"). The delimiter has no date, so a declared resumption
-    is the only way this check can tell a new day from a backdated stamp.
-EOF
-      exit 2
-    fi
-  elif (( DELTA > GAP_WARN_MINUTES )); then
-    if ! echo "$APPENDED" | grep -qiE '\[RETROACTIVE\]|gap marker|session (pause|resumed)|resumed after'; then
-      cat >&2 <<EOF
-WARNING: Session transcript — unmarked $(( DELTA / 60 ))h$(( DELTA % 60 ))m gap (DSM_0.2 §7, check 4/4).
-
-Previous block: ${PREV_H}:${PREV_M}
-This block:     ${NEW_H}:${NEW_M}
-
-Long pauses are legitimate and this is not blocked. But an unmarked gap makes the
-transcript unreadable as a sequence later (S57 carried a 15.5h gap and a 3-day one,
-both unmarked, both found only at STAA time three sessions on).
-
-SUGGESTED: note the pause in this block, or prefix it [RETROACTIVE] if you are
-recording work done earlier. Never backdate the delimiter.
-EOF
-    fi
+FIX: read the clock (\`date +%H:%M\`) when you open the block. If this append is
+a [RETROACTIVE] entry, it must still carry the CURRENT time, not the time you
+are reconstructing.
+WARNEOF
+    exit 1
   fi
 fi
 

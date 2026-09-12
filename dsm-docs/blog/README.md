@@ -10,21 +10,27 @@ item was unsatisfiable as written. This table is that tracker.
 
 | Post | Epoch | Status | Where |
 |------|-------|--------|-------|
-| [Validating 7,400 Lines of Documentation with Compiler Architecture](epoch-1/2026-02-05-blog-draft.md) | 1 | **Published** 2026-02-05 | [LinkedIn](https://www.linkedin.com/posts/albertodiazdurana_technicalwriting-docsascode-documentation-activity-7425203346304835585-9fZJ) (also [LinkedIn short form](epoch-1/2026-02-05-linkedin-post.md)) |
-| [WSL migration](epoch-2/2026-02-06-wsl-migration-post.md) | 2 | Draft v1, unpublished since 2026-02-06 | , |
-| [How a Fleet of Agents Red-Carded My Own Decision](epoch-5/2026-07-06-multi-agent-red-card.md) | 5 | Drafted 2026-07-06, **no status line in the file**, publication state unrecorded | , |
+| [Validating 7,400 Lines of Documentation with Compiler Architecture](done/2026-02-05-blog-draft.md) | 1 | **Published** 2026-02-05 | [LinkedIn](https://www.linkedin.com/posts/albertodiazdurana_technicalwriting-docsascode-documentation-activity-7425203346304835585-9fZJ) (also [LinkedIn short form](done/2026-02-05-linkedin-post.md)) |
+| [WSL migration](epoch-2/2026-02-06-wsl-migration-post.md) | 2 | Draft v1, unpublished since 2026-02-06 | not published |
+| [How a Fleet of Agents Red-Carded My Own Decision](done/2026-07-06-multi-agent-red-card.md) | 5 | **Published** 2026-08-05 (post dated 2026-07-06, matching DEC-010's last amendment) | [Take AI Bite](https://take-ai-bite.com/blog/2026-07-06-multi-agent-red-card/) · [LinkedIn](https://www.linkedin.com/posts/albertodiazdurana_multiagent-humanaicollaboration-claudecode-share-7491033806167265280-IonJ/) |
 
-Epochs 3 and 4 produced a journal but no post. Sprint 18's journal entry is outstanding,
-see the Workflow note below.
+Epochs 3 and 4 produced a journal but no post.
+
+**Layout rule:** anything published, including short forms, lives in `done/`. The
+per-epoch folders keep the journal, materials and images that produced it. Unpublished
+drafts stay in their epoch until they ship, so a post sitting in an epoch folder is
+unpublished by construction. That is what makes the table above checkable.
 
 ## Structure
 
 ```
 dsm-docs/blog/
 ├── journal.md         # Top-level append-only capture (pre-epoch-split)
-├── epoch-1/           # Epoch 1: Parser MVP & Validator (Sprints 1-3)
+├── done/              # Published posts and their published short forms
 │   ├── 2026-02-05-blog-draft.md
 │   ├── 2026-02-05-linkedin-post.md
+│   └── 2026-07-06-multi-agent-red-card.md
+├── epoch-1/           # Epoch 1: Parser MVP & Validator (Sprints 1-3)
 │   ├── blog-materials-sprints.md
 │   ├── journal.md
 │   ├── materials.md
@@ -40,7 +46,6 @@ dsm-docs/blog/
 │   ├── journal.md
 │   └── materials.md
 └── epoch-5/           # Epoch 5: Intrinsic-ToC evolution
-    ├── 2026-07-06-multi-agent-red-card.md
     ├── journal.md
     └── materials.md
 ```

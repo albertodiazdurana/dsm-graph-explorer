@@ -1,10 +1,10 @@
 # /dsm-align persistent report
 
-**Timestamp:** 2026-07-30T23:30+02:00
-**DSM version:** v1.19.0 (from ~/dsm-agentic-ai-data-science-methodology/CHANGELOG.md latest heading)
+**Timestamp:** 2026-09-04T21:26:25+02:00
+**DSM version:** 1.26.3 (from ~/dsm-agentic-ai-data-science-methodology/CHANGELOG.md latest heading)
 **Run mode:** post-change
-**Project:** DSM Graph Explorer
-**Project type:** Application (DSM 4.0) , no override
+**Project:** dsm-graph-explorer
+**Project type:** Application (DSM 4.0) (no override section present; matches detection)
 
 ---
 
@@ -14,18 +14,14 @@
 /dsm-align post-change report:
 - Project type: Application (DSM 4.0)
 - Created: none
-- Already correct: 31 (8 canonical folders, 6 done/ subfolders, 6 template files,
-  _inbox/ + done/ + README.md, .gitattributes, 3 .claude/ files, 4 hook scripts,
-  settings.json hook entries)
-- Fixed: CLAUDE.md alignment block regenerated to v1.19.0 (App Development Protocol,
-  3 lines replaced by 7, per BL-478)
+- Already correct: 8 dsm-docs/ folders, 6 done/ subfolders, 7 template files, _inbox/ (+done/, README.md), .gitattributes, .claude/{dsm-ecosystem,reasoning-lessons,session-transcript}, 4 hook scripts, settings.json hook entries
+- Fixed: CLAUDE.md alignment block regenerated 1.19.0-era -> 1.26.3 (8 lines changed, `### Punctuation` removed)
 - Collisions: none
-- Warnings: 3 (see full text below)
-- CLAUDE.md alignment: Drift detected and regenerated (1 section, -3/+7 lines)
-- CLAUDE.md content: OK (no type mismatches; no Notebook protocol in an Application project)
-- CLAUDE.md redundancy: 2 redundant section(s) found (Development Protocol,
-  Development Approach)
-- CLAUDE.md paths: OK (7 resolve; 2 are `<epoch>` template placeholders, not stale)
+- Warnings: 1 (see below)
+- CLAUDE.md alignment: Regenerated (198 -> 196 lines; only heading-level change is the removal of `### Punctuation`)
+- CLAUDE.md content: OK
+- CLAUDE.md redundancy: 1 minor, unchanged from the earlier run (project-specific "Working Style" partially overlaps the template's "### Working Style")
+- CLAUDE.md paths: OK (the 2 `<epoch>` strings are placeholders; both resolve for epoch-5)
 - .gitattributes: OK
 - Command sync: N/A (not DSM Central)
 - Feedback pushed: none pending
@@ -34,30 +30,18 @@
 
 ## Warnings (full text)
 
-1. **CLAUDE.md redundancy , `## Development Protocol`.** Its bullets "Build modules
-   incrementally, one module at a time, tests alongside" and "Run `pytest tests/`
-   after each module to verify before proceeding" now overlap the regenerated
-   alignment block's App Development Protocol, which states test-first and
-   one-bite-per-stop as standing rules. The project-specific line describes a
-   *module* cadence where the template now specifies a *bite* cadence (the smallest
-   increment the user can verify). Keeping both risks the coarser project wording
-   being read as the operative one. The section's first bullet ("Do NOT use
-   `AskUserQuestion` for approvals") is genuinely project-specific and should stay.
-   Not auto-removed; the user decides.
-
-2. **CLAUDE.md redundancy , `## Development Approach`.** "TDD (Test-Driven
-   Development): Write tests before implementation" and "Incremental development:
-   Build one function at a time, test, then next" duplicate the alignment block's
-   "Code is test-first" and are the *old* build order that BL-478 explicitly calls a
-   regression ("any future text reintroducing 'one function, test, next function' is
-   a regression"). The project-specific copy still carries that retired phrasing.
-   Not auto-removed; the user decides.
-
-3. **Sprint Boundary Checklist divergence (carried from S55, unresolved).** The
-   project-specific `## DSM Alignment` section lists a 7-item Sprint Boundary
-   Checklist, while `epoch-5-sprint-17-plan.md` and `epoch-5-sprint-18-plan.md` each
-   carry a 9-item version. `/dsm-go` Step 3.6's hard gate compares against an
-   ambiguous standard while both exist. Not auto-reconciled.
+1. **The alignment block was regenerated, which removes this project's standing
+   punctuation rule. This is intended, and it is a behavioural change that takes
+   effect immediately.** `### Punctuation` (convert a phrase-connecting em dash to
+   `, `) is gone from the managed block because DSM 1.26.1 **retired** the rule
+   fleet-wide. Central's reasoning: the `humanizer` skill performs the
+   normalization on demand against a finished document, whereas a standing rule
+   billed every author and every agent a check on every pass, forever, for the
+   same result. Going forward, reach for `humanizer` when a document is bound for
+   an outside reader. Do not re-derive the standing rule from this repository's
+   git history, from `MEMORY.md`, or from files written earlier today while it was
+   still live , those are records of what was true then, not statements that it is
+   current.
 
 ## Collisions (full text)
 
@@ -65,38 +49,31 @@ None.
 
 ## Already correct
 
-- `_inbox/`, `_inbox/done/`, `_inbox/README.md`
-- All 8 canonical `dsm-docs/` folders: blog, checkpoints, decisions,
-  feedback-to-dsm, guides, handoffs, plans, research
-- All 6 required `done/` subfolders
-- All 6 template files (blog/journal.md + 5 README.md)
-- Sprint-plan structural audit: both candidates (`epoch-5-sprint-17-plan.md`,
-  `epoch-5-sprint-18-plan.md`) carry all 5 required Template 8 sections and all 3
-  header-block fields. No warnings.
-- Feedback compliance: no legacy `backlogs.md` / `methodology.md`; no unpushed
-  per-session files; no `technical.md`
-- Consumed handoffs: none outside `done/` (moved by `/dsm-go` Step 3 this session)
-- CLAUDE.md `@` reference valid, target exists
+- 8 canonical `dsm-docs/` folders; `done/` in all 6 that require it
+- All 7 template files present
+- `_inbox/` with `done/` and `README.md`
 - `.gitattributes` enforces `* text=auto eol=lf`
-- `.claude/session-transcript.md`, `.claude/dsm-ecosystem.md`,
-  `.claude/reasoning-lessons.md` all present, correct header on reasoning-lessons
-- Transcript hooks: 4 scripts byte-identical to Central and executable
-  (0 installed / 0 updated / 4 ok); settings.json hook entries already merged
-  (5 template entries all present), no write
+- `@` reference valid and resolves
+- ALIGNMENT delimiters present; no override section, correctly or otherwise placed
+- Ecosystem registry present; both paths resolve
+- Hooks: 4 already byte-identical to Central, all re-chmod'd; `settings.json` already ok
+- Sprint-plan audit (Step 3a): 3 candidates, all 5 Template 8 sections present in each
+- No stray handoffs outside `done/`
+- Step 6 found 0 files matching `YYYY-MM-DD_sN_*.md` outside `done/`
 
 ## Steps skipped
 
-- Step 3-EC skipped: not an External Contribution
-- Step 6 skipped: no pushable feedback entries
-- Step 11 skipped: not DSM Central
-- Step 11b skipped: not DSM Central
-- Step 11c skipped: no `dsm-docs/blog/feature-trail.md` (hub-only artifact)
+- Step 11 / 11b / 11c: not DSM Central
+- Step 3-EC: not an External Contribution project
+- Step 6b / 6c: no legacy feedback files, no `technical.md`
 
-## Spoke actions surfaced (v1.18.0 → v1.19.0)
+## Spoke actions, 1.26.0 -> 1.26.3
 
-| Spoke action | Status |
-|---|---|
-| Review DSM_0.2 §8.9.2 for behavioural changes (BL-476, High-Token-Cost Action Gate) | **Open , user action.** Directly relevant to the Sprint 18 direction decision: option D is a multi-arm agent A/B whose EXP-011 precedent cost ~644K subagent tokens, which is exactly the fan-out shape §8.9.2 now gates. |
-| Run `scripts/sync-commands.sh --deploy` (BL-474, changed BL template) | **N/A here.** The script is Central-side; this spoke has no `scripts/sync-commands.sh`. Run it in DSM Central. |
-| Run `scripts/sync-commands.sh --deploy` (BL-475, changed wrap-up + checkpoint skills) | **N/A here.** Same, Central-side. |
-| Run `/dsm-align` to update the reinforcement block (BL-478) | **Done.** Applied this run. |
+| Version | Action | State |
+|---|---|---|
+| 1.26.1 | Run `/dsm-align` ("a spoke that already realigned on 1.26.0 should realign again") | **Done by this run** |
+| 1.26.2 | Run `scripts/sync-commands.sh --deploy` (`/dsm-wrap-up` and `/dsm-align` both changed) | **Already satisfied** , measured 0 of 20 command files differing; runtime mtime 19:52:40 is 67s after the source commit 7fccfbc at 19:51:33 |
+| 1.26.3 | None. The corrected guide arrives with the next mirror sync | No action |
+
+Carried forward, unresolved: the 12 open DSM_0.2 review items consolidated in
+`_inbox/2026-09-04_open-review-items.md`.
