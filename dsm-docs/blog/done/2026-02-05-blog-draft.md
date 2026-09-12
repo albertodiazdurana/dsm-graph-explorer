@@ -63,7 +63,7 @@ Found 6 errors, 0 warnings
 
 Six genuine broken references, all pointing to **Section 2.6**, which doesn't exist in the documentation. The tool found real issues.
 
-![Broken reference examples from the integrity report](images/broken-refs-example.png)
+![Broken reference examples from the integrity report](../epoch-1/broken-refs-example.png)
 
 *The integrity report shows exactly where broken references occur: file, line number, and the target that couldn't be resolved.*
 

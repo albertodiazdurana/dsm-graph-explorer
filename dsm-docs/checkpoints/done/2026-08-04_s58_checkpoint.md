@@ -1,3 +1,5 @@
+**Consumed at:** Session 59 start (2026-09-04)
+
 # Session 58 Checkpoint
 **Date:** 2026-08-04 (session opened; wrap-up ran 2026-09-04 after a month-long pause)
 **Branch:** session-58/2026-08-04
