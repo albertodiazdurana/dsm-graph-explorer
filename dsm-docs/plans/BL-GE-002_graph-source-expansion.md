@@ -166,7 +166,7 @@ Small, well-bounded, and deliberately first because P4 cannot be interpreted wit
 ### P4: EXP-013 coverage gate
 
 The sprint's capability experiment. Run after P3, against the P1 baseline, with the
-threshold pre-registered **before** the measurement.
+pre-registration fixed **before** the measurement (done at S60, see below).
 
 - **What it gates, stated precisely, because this is easy to get wrong:** the outcome does
   **not** decide whether Sprint 19 ships. Config nodes and their edges are real repository
@@ -174,8 +174,15 @@ threshold pre-registered **before** the measurement.
   whether [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md)
   §Conditions 2's clustering revisit trigger fires. A "fail" here is a finding about
   clustering, not a failed sprint.
-- Pre-registered threshold: see Open Question 5, unresolved at authoring time and to be
-  fixed before P4 runs, never after.
+- **Pre-registration: RESOLVED S60, and it is a prediction rather than a threshold.** See
+  [DEC-012 Amendment (2026-09-12)](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md).
+  The metric is the coverage ratio at a denominator fixed to the document corpus
+  (headline), with connected-component count reported alongside. No numeric threshold is
+  set, because the ceiling was measured: config files reference scripts rather than
+  documents, so at that denominator this work can move coverage by at most +1.07pp, and
+  any bar meaning "materially above ~25%" would be a gate that can only fail. What is
+  pre-registered instead is the prediction that **this BL will not fire the §Conditions 2
+  revisit trigger**, with its falsifier stated in the amendment. See Open Question 5.
 - **Success:** the coverage delta is measured and recorded whichever way it goes, and the
   revisit-trigger question is answered rather than left open.
 
@@ -202,11 +209,27 @@ threshold pre-registered **before** the measurement.
 4. **Whether `--glob` remains the control surface** or the new file classes are selected
    by a separate flag. Reusing `--glob` is simplest but makes "markdown plus config" hard
    to express as a single pattern.
-5. **The P4 pre-registered threshold, and it needs a human decision.** What coverage delta
-   would count as "materially above the measured ~25%" for the purposes of DEC-012
-   §Conditions 2? This is deliberately left unset here rather than guessed, because a
-   threshold chosen after the parser exists is a threshold chosen by whoever knows which
-   way the number went. Fix it at sprint kickoff, before P2 begins.
+5. ~~**The P4 pre-registered threshold, and it needs a human decision.**~~ **RESOLVED
+   S60 (2026-09-12), and the answer supersedes the question.** Asked as posed, no
+   threshold could be chosen, because the *metric* was underdetermined: "coverage"
+   splits on whether the denominator stays at the document corpus or widens with the
+   newly indexed config files, and the two readings return opposite verdicts on the
+   same sprint. The widened denominator is degenerate, since config files arrive already
+   covered and the ratio (42 + k)/(187 + k) rises with k toward 100% regardless of
+   connectivity. At the fixed denominator the ceiling is +1.07pp, measured rather than
+   estimated, because the only in-repo config-to-markdown references anywhere are
+   `README.md` and `dsm-docs/guides/config-reference.md`.
+
+   Resolved in [DEC-012 Amendment (2026-09-12)](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md),
+   which fixes the metric and records a falsifiable **prediction** in place of a
+   threshold: this BL will not fire the §Conditions 2 revisit trigger, because config
+   files reference scripts rather than documents and therefore build a second component
+   beside the document core instead of connecting the 145 isolated files. The trigger
+   belongs to BL-GE-001, which adds edges between nodes that already exist.
+
+   The original wording is struck rather than deleted, because the reasoning it records
+   (fix the bar before the parser exists) is what made the resolution necessary and is
+   still correct.
 
 ## Acceptance criteria
 

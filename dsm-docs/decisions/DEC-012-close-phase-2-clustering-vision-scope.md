@@ -1,10 +1,105 @@
 # DEC-012: Close BL-302 Phase 2 (clustering), vision scope governs the Intrinsic-ToC
 
-**Status:** Accepted
+**Status:** Accepted. EXP-013 metric fixed and BL-GE-002 pre-registered as **not** firing the revisit trigger, 2026-09-12 (S60) — see Amendment.
 **Date:** 2026-07-31
 **Session:** S57
 **Author:** Alberto Diaz Durana
 **Related:** BL-302 Phase 2 (Leiden clustering), BL-GE-002 (graph source expansion, to be created), DEC-009 (no local LLM dependencies), DEC-011 (Semantic Concept Layer), research `2026-07-21_cluster-quality-graph-density.md`, Intrinsic-ToC Vision §2 / §4 / §9
+
+---
+
+## Amendment (2026-09-12, Session 60): EXP-013 metric fixed, BL-GE-002 pre-registered as not firing the revisit trigger
+
+§Conditions 2 below makes cross-reference coverage the trigger for re-proposing
+clustering, and BL-GE-002 §Open Question 5 left the threshold deliberately unset, to be
+fixed at sprint kickoff before the parser exists. Setting it surfaced a prior problem:
+the threshold could not be chosen, because the **metric was underdetermined** and its
+candidate readings return opposite verdicts on the same sprint.
+
+This amendment fixes the metric and records a prediction in place of a threshold. It
+**refines** §Conditions 2, it does not replace it; the original wording stands as the
+record of what was decided at S57.
+
+### The metric
+
+**Headline: the coverage ratio at a denominator fixed to the document corpus**, the same
+187-file markdown set S56 measured, so the post-change number is comparable to the ~25%
+that §Conditions 2 names. **Secondary: connected-component count**, reported alongside.
+At the S56 baseline the two are one fact seen twice, since the 42 covered files form a
+single component and the remaining 145 are singletons (145 + 1 = 146, the recorded
+component count). They separate only once new nodes can merge or fail to merge islands.
+
+**"Fixed denominator" means a fixed method, not the literal 187.** The document corpus
+grows between sessions, so BL-GE-002 §P1's baseline re-measurement is what establishes
+the comparison point: the markdown file set as the graph indexes it immediately before
+config expansion, measured the way S56 measured it. The ~25% and the 187 are S56's
+recorded values, cited here as the origin of the trigger rather than as a denominator to
+be reused literally. If the re-measured baseline differs materially from 22.46%, report
+both figures and compare against the re-measured one.
+
+**The widened denominator is rejected as degenerate.** Config files are indexed precisely
+because they carry path references, so they arrive already covered and the ratio becomes
+(42 + k) / (187 + k), which rises with k toward 100% regardless of how connected the
+corpus is: 36.12% at k = 40, 45.69% at k = 80. Any threshold below 100% could then be
+cleared by widening a glob. It also contradicts BL-GE-002 §Motivation 3, which requires
+coverage to rise "by adding real edges rather than by loosening a threshold".
+
+### Why no threshold is set: the ceiling is measured
+
+At the fixed denominator the ratio can only move when a config file references a
+**markdown** file. Every YAML, TOML and JSON file in the repository was searched
+(2026-09-12, with `.venv`, `.git` and `.pytest_cache` pruned). Genuine in-repo
+config-to-markdown targets: **two**, `README.md` (from `pyproject.toml` and
+`.dsm-graph-explorer.yml`) and `dsm-docs/guides/config-reference.md` (from
+`.dsm-graph-explorer.yml`).
+
+| | Covered / total | Coverage |
+|---|---|---|
+| S56 baseline | 42 / 187 | 22.46% |
+| Ceiling after config expansion | 44 / 187 | 23.53% |
+
+**+1.07 percentage points is a ceiling, not an estimate**, and it is lower still if
+either file already carries a cross-reference. No threshold meaning "materially above
+~25%" is reachable, so any number set here would be a gate that can only fail, which is
+the defect this decision's own P4 resolution (S57) was written to remove.
+
+Two reference classes were excluded from that count, recorded here because they are
+evidence for BL-GE-002 §Open Question 2. `.claude/settings.local.json` yields
+`nCLAUDE.md`, a regex artifact from an escaped newline inside a prose string, naming a
+file that does not exist. `data/experiments/EXP-009-protocol-usage-validation/stage-a-results.json`
+yields 13 skill filenames that are experiment data about DSM Central's skills, all
+out-of-repo. Naive path extraction manufactures edges to files that do not exist and to
+files outside the repository.
+
+### The pre-registration
+
+Recorded **before** BL-GE-002 P2 begins, in place of a threshold:
+
+> **BL-GE-002 will not raise document-corpus coverage materially above the S56 baseline,
+> and will not fire the §Conditions 2 revisit trigger.**
+
+The reason is structural rather than a matter of execution quality. Config files
+reference scripts (`.sh`, `.py`), not documents. The subgraph they form touches the
+document core only at the two points above, so expansion builds a **second component
+beside the core** rather than merging the 145 singletons. Those files are isolated
+because markdown files do not reference each other, and no config edge changes that.
+
+**Falsifier.** The prediction is wrong if P4 measures document-corpus coverage at or
+above ~25%, or a material fall in component count among the original 187 files. Either
+result reopens the threshold question on evidence instead of on a guess.
+
+**A "fail" here remains a finding about clustering, not a failed sprint**, exactly as
+BL-GE-002 §P4 already states. Config nodes and their edges are real repository
+dependencies and retain their value at any coverage number.
+
+### Consequence for the revisit trigger
+
+§Conditions 2 names BL-GE-002 **or** BL-GE-001 as possible triggers. On this analysis the
+trigger belongs to **BL-GE-001**, the mechanism that can actually move the metric:
+BL-GE-002's own boundary table records that BL-GE-001 adds *edges between nodes that
+already exist*, while BL-GE-002 adds *nodes from new file types*. Density of the existing
+document graph is the former's mechanism. BL-GE-002 is not diminished by this; it closes
+Vision §9 Q4 and unblocks Layer 4, which is why this decision promoted it.
 
 ---
 

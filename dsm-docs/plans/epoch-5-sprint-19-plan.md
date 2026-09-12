@@ -46,14 +46,17 @@ path edges are real dependencies that exist in the repository regardless of what
 coverage number turns out to be. What EXP-013 decides is whether
 [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md) §Conditions 2's
 clustering revisit trigger fires, that is, whether cross-reference coverage rises
-materially above the ~25% S56 measured. A result below threshold is a finding about
-clustering, not a failed sprint. Sprint 18 spent two sessions arguing a component-level
+materially above the ~25% S56 measured. **The metric and the pre-registration were fixed
+at S60; see the [DEC-012 Amendment (2026-09-12)](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md).**
+A result below the bar is a finding about clustering, not a failed sprint. Sprint 18 spent two sessions arguing a component-level
 gate while the aim-level question went unmeasured; the distinction is written into the
 plan this time.
 
 **Sequencing:** P1 takes the baseline before any parser exists, P4 measures against it.
-The threshold is pre-registered at kickoff (Open Design Question 4), before P2 begins and
-therefore before anyone knows which way the number moves. Sprint 17 sequenced its C3 gate
+The pre-registration was fixed at S60 (Open Design Question 4), before P2 begins and
+therefore before anyone knows which way the number moves. It is a falsifiable prediction
+rather than a numeric threshold, for the reasons recorded in the DEC-012 amendment; the
+ordering requirement it satisfies is unchanged. Sprint 17 sequenced its C3 gate
 after a fixture freeze and nearly enshrined a schema that could not ship; that ordering is
 not repeated.
 
@@ -75,7 +78,7 @@ in MEMORY until the Sprint Boundary Checklist below actually runs.
 - [ ] `DEFAULT_EXCLUDES` verified against the widened file set; zero dependency directories in `--knowledge-summary` output at the new glob, with before/after counts recorded (BL-GE-002 §P1)
 - [ ] Structured-config parser for YAML, TOML and JSON producing graph nodes, test-first (BL-GE-002 §P2)
 - [ ] Path-valued cross-file references materialised as edges to existing file nodes, test-first (BL-GE-002 §P3)
-- [ ] EXP-013 run and recorded in `data/experiments/`, with the threshold pre-registered before P2 (BL-GE-002 §P4)
+- [ ] EXP-013 run and recorded in `data/experiments/`, measured against the S60 pre-registration (BL-GE-002 §P4, [DEC-012 Amendment](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md))
 - [ ] Existing suite stays green (baseline **722 passed, 1 skipped, 91% coverage**, measured 2026-08-04 on this branch)
 - [ ] Docs: CLI `--help` and README cover the new source classes, **and** the `DEFAULT_EXCLUDES` documentation Sprint 18 left open and explicitly carried forward to this sprint
 
@@ -103,7 +106,7 @@ All phase detail (sub-tasks, design notes, success criteria) lives in
 | P1: Baseline + exclusions | Coverage baseline; `DEFAULT_EXCLUDES` re-verified at the widened file set | measurement | Baseline recorded; zero dependency directories in output |
 | P2: Config parser | YAML/TOML/JSON to graph nodes | code | Config file yields nodes carrying its identity and structure; suite green |
 | P3: Link extraction | Path-valued references to edges | code | A known previously-invisible dependency appears as an edge |
-| P4: EXP-013 | Coverage delta vs the P1 baseline, threshold pre-registered | experiment | Delta measured and recorded; DEC-012 revisit-trigger question answered either way |
+| P4: EXP-013 | Coverage delta vs the P1 baseline, against the S60 pre-registration | experiment | Delta measured and recorded; DEC-012 revisit-trigger question answered either way |
 | P5: Layer 1 integration | Summary surfacing + docs pass | code | Config nodes within budget, or exclusion recorded with a reason |
 
 ---
@@ -121,14 +124,14 @@ All phase detail (sub-tasks, design notes, success criteria) lives in
 1. **Node granularity for a config document.** One node per file, or one per top-level key the way markdown headings become sections? Resolve at P2 against real parsed output (BL-GE-002 §Open questions 1).
 2. **Unresolvable and out-of-repo path references.** Config files routinely point outside the repo (`~/dsm-agentic-ai-data-science-methodology/`). Edge to nothing, orphan-style node, or no edge? Needs a stated rule before P3 (BL-GE-002 §Open questions 2).
 3. **Control surface.** Reuse `--glob`, or add a separate source-class flag? Reusing `--glob` is simplest but makes "markdown plus config" awkward as a single pattern (BL-GE-002 §Open questions 4).
-4. **The EXP-013 pre-registered threshold, and it needs a human decision at kickoff.** What coverage delta counts as "materially above ~25%" for DEC-012 §Conditions 2? Deliberately unset at authoring time: a threshold fixed after the parser exists is a threshold fixed by someone who knows which way the number went (BL-GE-002 §Open questions 5).
+4. ~~**The EXP-013 pre-registered threshold, and it needs a human decision at kickoff.**~~ **RESOLVED S60 (2026-09-12).** No numeric threshold is set, because the question could not be answered as posed: "coverage" is a ratio, and the sprint changes its denominator, so the candidate readings return opposite verdicts. At a denominator fixed to the document corpus the ceiling is +1.07pp (config files reference scripts, not documents); at the widened denominator the ratio rises with the number of files indexed regardless of connectivity. What is pre-registered instead is a falsifiable prediction that this sprint will **not** fire the DEC-012 §Conditions 2 revisit trigger, which belongs to BL-GE-001. See [DEC-012 Amendment (2026-09-12)](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md) and BL-GE-002 §Open questions 5. The struck wording is kept because its reasoning (fix the bar before the parser exists) is what forced the resolution and is still correct.
 
 ---
 
 ## How to Resume
 1. Read this sprint plan.
 2. Read [BL-GE-002](BL-GE-002_graph-source-expansion.md) for phase detail, the scope boundary against BL-GE-001, and the out-of-scope reasoning on Python AST.
-3. Read [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md), especially §Conditions, which sets the revisit trigger EXP-013 tests.
+3. Read [DEC-012](../decisions/DEC-012-close-phase-2-clustering-vision-scope.md): the **Amendment (2026-09-12)** first, which fixes the EXP-013 metric and records the pre-registration, then §Conditions, which sets the revisit trigger EXP-013 tests.
 4. Read the four pipeline stages any new source class must pass through: `src/cli.py:36` (`collect_markdown_files`), `src/parser/markdown_parser.py:56` (`parse_markdown_file`), `src/parser/cross_ref_extractor.py:37` (`extract_cross_references`), `src/graph/graph_builder.py:62` (`build_reference_graph`).
 5. Read `dsm-docs/research/2026-07-21_cluster-quality-graph-density.md` for the ~25% coverage measurement and the methodology P1/P4 must reuse.
 

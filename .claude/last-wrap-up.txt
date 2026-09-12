@@ -1,3 +1,10 @@
-session: 58
-date: 2026-09-04
+session: 60
+date: 2026-09-12
 type: full
+note: Marker written BEFORE the Step 9 commit, deviating from /dsm-wrap-up Step 12's
+  position, so it lands in the wrap-up commit instead of being stranded after it. This
+  is the SECOND recorded instance of the defect the S59 reasoning-lessons entry parked
+  as "one more instance and it is a BL" (S59 had to reset --soft a commit over it). The
+  deviation is recorded here and in the transcript rather than applied silently.
+  Session resolved the EXP-013 pre-registration (DEC-012 Amendment) and dispositioned
+  the 12 open DSM_0.2 review items.
